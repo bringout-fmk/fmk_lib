@@ -585,3 +585,24 @@ return aColl
 *}
 
 
+/*! \fn FlushMemo(aMemo)
+ *  \brief Vraca vrijednost memo niza u string
+ */
+function FlushMemo(aMemo)
+*{
+local i, cPom
+altd()
+cPom:=""
+cPom += Chr(16)
+for i:=1 to LEN(aMemo)
+	cPom += aMemo[i]
+	cPom += Chr(17)
+	cPom += Chr(16)
+next 
+
+return cPom
+*}
+
+
+
+
