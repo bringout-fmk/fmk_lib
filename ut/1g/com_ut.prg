@@ -99,12 +99,7 @@ if TestComPort(nPort, 4000)==1
 		// provjeri da nije jos sta ostalo
 		do while nRest > 0
 			nRest:=COM_SEND(nPort, cOutPut)
-			? "send total: ", nRest
 		enddo
-		
-		nComCount:=COM_COUNT(nPort)
-		cInBfr:=COM_READ(nPort, nComCount)
-		MsgBeep("InBFR:" + STR(nComCount) + " STR:" + cInBfr)
 		COM_CLOSE(nPort)
 	else
 		MsgBeep("Ne mogu odraditi COM_INIT()")
