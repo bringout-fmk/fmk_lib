@@ -3,7 +3,7 @@ MODUL=sc1g_par
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\params\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\params\\1g\\
 
 
 PRGS=params.prg ini.prg
