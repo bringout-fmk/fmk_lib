@@ -3,7 +3,7 @@ MODUL=sc1g_ost
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\ostalo\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\ostalo\\1g\\
 
 
 PRGS=fvidi.prg konvzn.prg install.prg
