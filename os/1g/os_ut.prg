@@ -286,3 +286,12 @@ return
 //return
 
 *}
+
+
+function ShowOsInfo(gsOsInfo)
+*{
+
+@ 24, 2 SAY gsOsInfo
+
+return
+*}
