@@ -1,9 +1,9 @@
 VERZIJA=CDX
 MODUL=sc2g_cui
 
-include /cl/sigma/Makefile_clipper
+include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\cl\\sigma\\sclib\\cui\\2g\\
+SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\cui\\2g\\
 
 
 PRGS=desk.prg form.prg

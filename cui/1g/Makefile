@@ -1,9 +1,9 @@
 VERZIJA=CDX
 MODUL=sc1g_cui
 
-include /cl/sigma/Makefile_clipper
+include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\cl\\sigma\\sclib\\cui\\1g\\
+SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\cui\\1g\\
 
 
 PRGS=cgrid.prg cui.prg std_dlg.prg

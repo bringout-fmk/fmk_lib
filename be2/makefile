@@ -1,11 +1,11 @@
 VERZIJA=CDX
 MODUL=BE2
 
-PRGS=/cl/sigma/sclib/be2/be2.prg
+PRGS=/sclib/be2/be2.prg
 CS=
 ASMS=
 
-include /cl/sigma/Makefile_clipper
+include /sclib/Makefile_clipper
 
 FMK_LIBS=fmk_svi.lib fmk_roba.lib
 
@@ -25,8 +25,8 @@ all:    mod
 mod: $(OBJS)
 	echo Prilikom kompilacije obj se napravi u tekucem direktoriju
 	echo a blinker opet trazi obj fajl u orig direktoriju
-	/cl/sigma/form_blinker_lnk.sh $(LINKCMD)
-	/cl/sigma/form_blinker_lnk_2.sh $(FMKLIBCMD)
+	/sclib/form_blinker_lnk.sh $(LINKCMD)
+	/sclib/form_blinker_lnk_2.sh $(FMKLIBCMD)
 	$(LINKEREXE) @_bl_.lnk   @_bl_2_.lnk $(DEBUGLINK) @H:\\CLIPPER\\$(VERZIJA)\\BL.LNK output e.exe
 	cp e.exe $(EXEDEST)/$(MODUL).EXE
 

@@ -1,9 +1,9 @@
 VERZIJA=CDX
 MODUL=sc1g_rpt
 
-include /cl/sigma/Makefile_clipper
+include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\cl\\sigma\\sclib\\rpt\\1g\\
+SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\rpt\\1g\\
 
 
 PRGS=rpt.prg fmkpi.prg rtf.prg

@@ -1,18 +1,51 @@
+ifdef CLIP
+	include /sclib/Makefile_clip
+endif
 
-LINKEREXE=/cl/SC_CLIB/blink.sh
-LIBEXE=/cygdrive/p/l/lib.exe
-#CLIPPERCOMP=/cl/SC_CLIB/clip52.sh
-CLIPPERCOMP=/clip/bin/clip
+ifndef CLIP
+LINKEREXE=/sclib/blink.sh
 
-CLIPPERFLAGS0= -DCLIP -DC52 -D$(VERZIJA) -U$(VERZIJA)/std.ch
-CLIPPERROOT=/CLIPPER
-ASMCOMP=./ASM52.bat
+#LIBEXE=/cl/sigma/lib.bat
+#LIBEXE=start /w /m h:\\clipper\\c5\\bin\\lib.exe
+
+
+#DBUILDVAL=`date +%d%m%y%H%M`
+
+ifdef WXP
+	LIBSUFFIX=,,
+	LIBEXE=/sclib/lib.bat
+	#LIBEXE=tlib
+	#LIBEXE=start /w /m h:\\clipper\\c5\\bin\\lib.exe
+else
+	LIBSUFFIX=,,
+	LIBEXE=h:\\clipper\\c5\\bin\\lib.exe
+endif
+
+#ifdef W98
+#LIBEXE=h:\\clipper\\C5\\bin\\lib.exe
+#endif
+
+
+#za tlib ovo ne treba
+#LIBSUFFIX=
+
+
+LIBEXT=.lib
+CLIPPERCOMP=/sclib/clip52.sh
+CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /u\\CDX\\STD.CH
+
+CLIPPERROOT=/clipper
+CLIPPERROOT_DOS=h:\\clipper
+
+
+ASMCOMP=/sclib/asm52.sh
 ASMFLAGS=
-EXEDEST=/c/SIGMA
-CCOMP=gcc
-CFLAGS=-Wall -I. -I./include -g -I/clip/include
+EXEDEST=/h/SIGMA
+EXEDOSDEST=h:\\sigma
+CCOMP=/sclib/c52.sh 
+CFLAGS=/n /w /c /AL /FPa /Gs /Zl
 
-SRCDOSROOT=/clip/sigma/sc_clib/
+ROBODOC=robodoc
 
 ifndef DEBUG
 	DEBUG=0
@@ -25,9 +58,9 @@ endif
 	
 ifeq "${DEBUG}" "1"
 	CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)
-	DEBUGLINK=file p:\\CLIPPER\\LIB\\CLD.LIB
-	DEBUGDIR=/DEBUG
-	DEBUGDIR2=DEBUG/
+	DEBUGLINK=file h:\\clipper\\lib\\CLD.LIB
+	DEBUGDIR=/debug
+	DEBUGDIR2=DEBUG\\
 else
 
 	CLIPPERFLAGS=$(CLIPPERFLAGS0)
@@ -36,3 +69,53 @@ else
 	DEBUGDIR2=
 endif
 
+ifeq "${DEBUG}" "1"
+	LIB_DEST=$(CLIPPERROOT)/debug/$(VERZIJA)/
+	LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\debug\\$(VERZIJA)\\
+
+else
+	LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
+	LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
+endif
+
+
+ifeq "${PP}" "1"
+ CLIPPERFLAGS += /p
+endif
+
+ifeq "${LIB}" "1"
+	
+	
+	CLIPPERFLAGS += /DLIB
+endif
+
+OBJPRGS=$(PRGS:.prg=.obj)
+OBJCS=$(CS:.c=.obj)
+OBJASMS=$(ASMS:.asm=.obj)
+
+LIBCMD=$(addprefix +, $(OBJPRGS) $(OBJASMS) $(OBJCS) )
+
+PREFPLUS=fi
+LINKCMD=$(addprefix $(PREFPLUS) , $(OBJPRGS) $(OBJASMS) $(OBJCS) )
+
+#napravi dokumente
+
+DOCS=$(PRGS:.prg=.html)
+XREFS=$(DOCS:.html=.xref)
+
+
+.SUFFIXES: .asm .obj
+.SUFFIXES: .c .obj	
+.SUFFIXES: .prg .obj
+
+.prg.obj: 
+	$(CLIPPERCOMP) $(SRCDOSROOT)$< $(CLIPPERFLAGS) 
+	
+
+.asm.obj:
+	$(ASMCOMP) $(ASMFLAGS) $< 
+
+.c.obj:
+	$(CCOMP) $(CFLAGS) $<
+
+endif

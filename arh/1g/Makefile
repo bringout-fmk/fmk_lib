@@ -1,9 +1,9 @@
 VERZIJA=CDX
 MODUL=sc1g_arh
 
-include /cl/sigma/Makefile_clipper
+include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\cl\\sigma\\sclib\\arh\\1g\\
+SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\arh\\1g\\
 
 
 PRGS=arh.prg 

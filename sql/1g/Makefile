@@ -1,9 +1,9 @@
 VERZIJA=CDX
 MODUL=sc1g_sql
 
-include /cl/sigma/Makefile_clipper
+include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\cl\\sigma\\sclib\\sql\\1g\\
+SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\sql\\1g\\
 
 
 PRGS=sql.prg sql_db.prg sql_ut.prg sql_ext.prg

@@ -32,7 +32,7 @@ all: $(OBJS)
 	$(LIBEXE) $(MODUL) $(LIBCMD) ,,
 	cp $(MODUL).lib $(LIB_DEST)
 	cp std.ch $(CLIPPERROOT)/$(VERZIJA)/
-	cp /cl/sigma/sclib/$(VERZIJA)/bl.lnk $(CLIPPERROOT)/$(VERZIJA)/
+	cp /sclib/$(VERZIJA)/bl.lnk $(CLIPPERROOT)/$(VERZIJA)/
 	cp  o_s_baze.ch no_cui.ch end_mprg.ch sc_std.ch  $(CLIPPERROOT)$(DEBUGDIR)/
 
 endif

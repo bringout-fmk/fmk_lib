@@ -208,7 +208,7 @@
 
 #define P_NRED QOUT()
 
-#include "h:\cl\sigma\sclib\base\1g\sc_std.ch"
+#include "h:\dev\af\cl-sclib\sclib\base\1g\sc_std.ch"
 #include "inkey.ch"
 #include "box.ch"
 #include "dbedit.ch"
@@ -256,11 +256,11 @@
 
 
 #ifndef FMK_DEFINED
-	#include "h:\cl\sigma\fmk\fmk.ch"
+	#include "h:\dev\Fmk\AF\cl-AF\fmk.ch"
 #endif
 
 #ifdef CDX
-	#include "h:\cl\sigma\sclib\db\1g\sc_db.ch"
+	#include "h:\dev\AF\cl-sclib\sclib\db\1g\sc_db.ch"
 	#ifndef CLIP
 		#include "cm52.ch"
 	#endif
