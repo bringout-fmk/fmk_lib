@@ -1072,18 +1072,22 @@ return nil
 *}
 
 
-/*! \fn SmReplace(cField, xValue)
- *  \brief Smart Replace - vrsi replace samo ako je nova vrijednost razlicita od trenutne vrijednosti u tabeli
+/*! \fn SmReplace(cField, xValue, lReplAlways)
+ *  \brief Smart Replace - vrsi replace. Ako je lReplAlways .T. uvijek vrsi, .F. samo ako je vrijdnost polja razlicita 
  *  \note vrsi se i REPLSQL, kada je gSql=="D"
  */
  
-function SmReplace(cField, xValue)
+function SmReplace(cField, xValue, lReplAlways)
 *{
 private cPom
 
+if (lReplAlways == nil)
+	lReplAlways := .f.
+endif
+
 cPom:=cField
 
-if &cPom<>xValue
+if ((&cPom<>xValue) .or. (lReplAlways == .t.))
 	REPLACE &cPom WITH xValue
 	if (gSql=="D")
 		REPLSQL &cPom WITH xValue
