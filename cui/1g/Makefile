@@ -3,7 +3,7 @@ MODUL=sc1g_cui
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\cui\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\cui\\1g\\
 
 
 PRGS=cgrid.prg cui.prg std_dlg.prg
