@@ -3,7 +3,7 @@ MODUL=sc1g_ut
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\ut\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\ut\\1g\\
 
 
 PRGS=num_ut.prg str_ut.prg time_ut.prg ut.prg arr_ut.prg log.prg com_ut.prg test_str.prg
