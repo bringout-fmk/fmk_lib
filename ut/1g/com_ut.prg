@@ -21,6 +21,19 @@ return VAL(cComPort)
 *}
 
 
+/*! \fn GetComBaudRate()
+ *  \brief Baud rate
+ */
+function GetComBaudRate()
+*{
+cBaudRate:=IzFmkIni("Ports","BaudRate","9600",KUMPATH)
+if Empty(cBaudRate)
+	cBaudRate:="9600"
+endif
+return VAL(cBaudRate)
+*}
+
+
 /*! \fn TestComPort(nPort, nBuffSize, lClose)
  *  \brief Testiranje COM porta
  *  \param nPort - oznaka COM port-a
@@ -56,7 +69,9 @@ return
 function InitComPort(nPort)
 *{
 local lInitOK
-lInitOK:=COM_INIT(nPort, 1200, "N", 8, 1)
+
+nBaudR:=GetComBaudRate()
+lInitOK:=COM_INIT(nPort, nBaudR, "N", 8, 1)
 if lInitOK
 	return 1
 else
