@@ -3,7 +3,7 @@ MODUL=sc2g_db
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\db\\2g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\db\\2g\\
 
 
 PRGS=db.prg
