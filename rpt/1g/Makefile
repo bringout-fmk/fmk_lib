@@ -3,7 +3,7 @@ MODUL=sc1g_rpt
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\rpt\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\rpt\\1g\\
 
 
 PRGS=rpt.prg fmkpi.prg rtf.prg
