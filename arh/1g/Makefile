@@ -3,7 +3,7 @@ MODUL=sc1g_arh
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\arh\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\arh\\1g\\
 
 
 PRGS=arh.prg 
