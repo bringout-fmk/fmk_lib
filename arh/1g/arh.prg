@@ -1,5 +1,8 @@
 #include "SC.CH"
 
+/*! \fn ArhSigma()
+ *  \brief Arhiviranje podataka 
+ */
 function ArhSigma()
 *{
 local cPomD
