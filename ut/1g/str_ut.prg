@@ -274,21 +274,30 @@ next
 return nLTxt2
 *}
 
-FUNCTION TokToNiz(cTok,cSE)
+
+/*! \fn TokToNiz(cTok, cSE)
+ *  \brief Token pretvori u niz
+ *  \param cTok - token
+ *  \param cSE - separator niza
+ */
+function TokToNiz(cTok,cSE)
 *{
-// -------------------------
-// token pretvori u niz
-// cTok - string tokena
-// cSE - separator elemenata
-// -------------------------
-  LOCAL aNiz:={}, nE:=0, i:=0, cE:=""
-  IF cSE==NIL ; cSE := "." ; ENDIF
-  nE := NUMTOKEN(cTok,cSE)
-  FOR i:=1 TO nE
-    cE := TOKEN(cTok,cSE,i)
-    AADD(aNiz,cE)
-  NEXT
-RETURN (aNiz)
+local aNiz:={}
+local nE:=0
+local i:=0
+local cE:=""
+
+if cSE==NIL 
+	cSE := "." 
+endif
+  
+nE := NUMTOKEN(cTok,cSE)
+
+for i:=1 to nE
+	cE := TOKEN(cTok,cSE,i)
+    	AADD(aNiz,cE)
+next
+return (aNiz)
 *}
 
 
@@ -496,6 +505,51 @@ local fDec,fSto:=.f.,i
 
 
 return cRez
+*}
+
+
+
+/*! \fn CreateHashString(aColl)
+ *  \brief Kreira hash string na osnovu podataka iz matrice aColl
+ *  \brief primjer: aColl[1] = "podatak1"
+ 	            aColl[2] = "podatak2"
+		    CreateHashString(aColl) => "podatak1#podatak2"
+ *  \param aColl - matrica sa podacima
+ *  \return cHStr - hash string
+ */
+function CreateHashString(aColl)
+*{
+cHStr:=""
+
+// Ako je duzina matrice 0 izadji
+if LEN(aColl)==0
+	return cHStr
+endif
+
+for i:=1 to LEN(aColl)
+	cHStr += aColl[i]
+	if (i <> LEN(aColl))
+		cHStr += "#"
+	endif
+next
+
+return cHStr
+*}
+
+/*! \fn ReadHashString(cHashString)
+ *  \brief Iscitava hash string u matricu
+ *  \return aColl - matrica popunjena podacima iz stringa
+ */
+function ReadHashString(cHashString)
+*{
+if LEN(cHashString)==0
+	return null
+endif
+
+aColl:={}
+aColl:=TokToNiz(cHashString, "#")
+
+return aColl
 *}
 
 
