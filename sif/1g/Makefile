@@ -3,7 +3,7 @@ MODUL=sc1g_sif
 
 include /sclib/Makefile_clipper
 
-SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\sif\\1g\\
+SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\sif\\1g\\
 
 
 PRGS=sif_brow.prg sif_prn.prg
