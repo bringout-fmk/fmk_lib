@@ -2,12 +2,13 @@ VERZIJA=CDX
 MODUL=sc_clib
 
 ifeq "${CLIP}" "1"
-include makefile_clip
+	include /sclib/makefile_clip
 else
-include makefile_clipper
+	include /sclib/makefile_clipper
 endif
 
 PRGS=sc_base.prg sc_cui.prg sc_db.prg sc_sqldb.prg sc_adb.prg sc_ausr.prg sc_asez.prg sc_cgrid.prg sc_bsif.prg sc_rpt.prg sc_fmkpi.prg sc_prn.prg sc_gprn.prg sc_fvidi.prg sc_event.prg sc_par.prg sc_sql.prg sc_ql.prg sc_err.prg sc_arh.prg os_ut.prg str_ut.prg sql_ut.prg sc_dlg.prg sc_kzn.prg fmk_ut.prg time_ut.prg num_ut.prg rtf_ut.prg gen_ut.prg sc_ini.prg sc_get.prg sc_arr.prg cre_db.prg gvars.prg table.prg 
+
 CS=ARG0.C
 ASMS=BSORT.ASM SETDATE.ASM SETTIME.ASM LPTSWAP.ASM MKDIR.ASM RMDIR.ASM
 
@@ -48,7 +49,7 @@ all: $(OBJS)
 	#cp ./$(DEBUGDIR2)*.CH $(CLIPPERROOT)$(DEBUGDIR)
 
 sregs: SREGS.OBJ FMK_UT.OBJ
-	$(LINKEREXE) fi SREGS.OBJ fi FMK_UT.OBJ $(DEBUGLINK) @P:\\CLIPPER$(DEBUGDIR)\\$(VERZIJA)\\BL.LNK   output SREGS.exe
+	$(LINKEREXE) fi SREGS.OBJ fi FMK_UT.OBJ $(DEBUGLINK) @H:\\CLIPPER$(DEBUGDIR)\\$(VERZIJA)\\BL.LNK   output SREGS.exe
 	cp SREGS.exe $(EXEDEST)/SREGS.EXE
 
 	

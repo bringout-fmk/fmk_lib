@@ -1307,7 +1307,7 @@ return .t.
 #ifdef CLIP
 function Arg0()
 *{
-return "/cl/sigma/fmk/pos/1g/e.exe"
+return "/dev/fmk/pos/1g/e.exe"
 *}
 #endif
 

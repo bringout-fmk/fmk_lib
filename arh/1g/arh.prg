@@ -1,7 +1,5 @@
 #include "SC.CH"
 
-
-
 function ArhSigma()
 *{
 local cPomD

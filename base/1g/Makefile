@@ -7,6 +7,7 @@ SRCDOSROOT=h:\\dev\\af\\cl-sclib\\sclib\\base\\1g\\
 
 
 PRGS=base.prg err.prg gvars.prg gw.prg
+
 ifdef CLIP
 	CS=
 else
