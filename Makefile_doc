@@ -1,0 +1,82 @@
+SHELL = /bin/sh
+.SUFFIXES:
+
+ROBODOC=robodoc
+ROBOOPTS=C SORT 
+
+PROJECT=SC_CLIB
+
+# Your source files.
+#
+SOURCES=$(PRGS) $(CS) $(ASMS)
+
+
+# The various documentation files, derived from the source files.
+# HTML
+#
+HTMLDOCS=$(SOURCES:=.html)
+HTMLXREFS=$(HTMLDOCS:.html=.xref)
+HTMLXREFSFILE=$(PROJECT)._xrefs
+
+# Some common targets
+xrefall: xhtml 
+docall: html 
+
+# Create the xref files for the various formats.
+xhtml: $(HTMLXREFSFILE) 
+
+# Create the documentation files for the various formats.
+html: $(PROJECT)_mi.html $(HTMLDOCS)  
+tex:  $(PROJECT)_mi.tex $(LATEXDOCS)
+rtf: $(RTFDOCS)
+ascii: $(ASCIIDOCS)
+
+# master index file, currently works only for html and latex documentation.
+$(PROJECT)_mi.html: $(HTMLXREFSFILE) 
+	$(ROBODOC) $< $@ INDEX HTML TITLE "$(PROJECT) Master Index"
+
+
+# create xrefs file (file with the names of all .xref files).
+$(HTMLXREFSFILE) : $(HTMLXREFS)
+	/bin/ls $(HTMLXREFS) > $(PROJECT).xrefs
+
+# Rule to create an .xref file from a source file for the various formats.
+%.xref : %
+	$(ROBODOC) $<  $(@:.xref=.html) GENXREF $@ HTML INTERNAL
+
+# Rule to create html documentation from a source file.
+%.html : % $(SOURCES)
+	$(ROBODOC) $< $@ HTML $(ROBOOPTS) XREF $(HTMLXREFSFILE)
+
+# Rule to create latex documentation from a source file.
+# We do not include source items, and generate laxtex documents
+# than can be included in a master document.
+
+# Use netscape to view the master index file for our project.
+htmlview: html
+	netscape $(PROJECT)_mi.html
+
+# Use the latex programs to generate a .dvi from the master index file
+# for our prokect. View this .dvi file with xdvi
+texview:  tex
+	latex $(PROJECT)_mi
+	makeindex $(PROJECT)_mi
+	latex $(PROJECT)_mi
+	latex $(PROJECT)_mi
+	xdvi  $(PROJECT)_mi.dvi
+
+# Clean-up the mess we made
+#
+cleandoc:
+	rm -f $(HTMLXREFS) 
+	rm -f $(HTMLDOCS) 
+	rm -f $(LATEXXREFS)
+	rm -f $(LATEXDOCS) 
+	rm -f $(PROJECT)_mi.* *.aux
+	rm -f $(RTFXREFS)
+	rm -f $(RTFDOCS)
+	rm -f $(ASCIIDOCS)
+	rm -f $(HTMLXREFSFILE) 
+	rm -f $(LATEXXREFSFILE) 
+	rm -f $(RTFXREFSFILE)
+

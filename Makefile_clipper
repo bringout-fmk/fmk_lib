@@ -1,0 +1,38 @@
+
+LINKEREXE=/cl/SC_CLIB/blink.sh
+LIBEXE=/cygdrive/p/l/lib.exe
+#CLIPPERCOMP=/cl/SC_CLIB/clip52.sh
+CLIPPERCOMP=/clip/bin/clip
+
+CLIPPERFLAGS0= -DCLIP -DC52 -D$(VERZIJA) -U$(VERZIJA)/std.ch
+CLIPPERROOT=/CLIPPER
+ASMCOMP=./ASM52.bat
+ASMFLAGS=
+EXEDEST=/c/SIGMA
+CCOMP=gcc
+CFLAGS=-Wall -I. -I./include -g -I/clip/include
+
+SRCDOSROOT=/clip/sigma/sc_clib/
+
+ifndef DEBUG
+	DEBUG=0
+	#echo "Definisem debug"
+endif  
+
+ifndef VERZIJA
+	VERZIJA=CDX
+endif
+	
+ifeq "${DEBUG}" "1"
+	CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)
+	DEBUGLINK=file p:\\CLIPPER\\LIB\\CLD.LIB
+	DEBUGDIR=/DEBUG
+	DEBUGDIR2=DEBUG/
+else
+
+	CLIPPERFLAGS=$(CLIPPERFLAGS0)
+	DEBUGLINK=
+	DEBUGDIR=
+	DEBUGDIR2=
+endif
+
