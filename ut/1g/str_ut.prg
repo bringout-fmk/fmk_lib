@@ -543,7 +543,7 @@ return cHStr
 function ReadHashString(cHashString)
 *{
 if LEN(cHashString)==0
-	return null
+	cHashString:=""
 endif
 
 aColl:={}
