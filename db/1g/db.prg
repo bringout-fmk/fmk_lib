@@ -719,8 +719,13 @@ ENDIF
 return nil
 *}
 
+
 function SetROnly()
 *{
+
+if !SigmaSif("ZAKSEZ")
+	return
+endif
 
 IF "U" $ TYPE("gGlBaza")
    MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza nedefinisana!")
