@@ -553,3 +553,35 @@ return aColl
 *}
 
 
+/*! \fn StrToArray(cStr, nLen)
+ *  \brief Kreiraj array na osnovu stringa
+ *  \param cStr - string
+ *  \param nLen - na svakih nLen upisi novu stavku u array 
+ */
+function StrToArray(cStr, nLen)
+*{
+aColl:={}
+cTmp:=""
+cStr:=ALLTRIM(cStr)
+
+if (LEN(cStr) < nLen)
+	AADD(aColl, cStr)
+	return aColl
+endif
+
+nCnt:=0
+
+for i:=1 to LEN(cStr)
+	nCnt++
+	cTmp+=SUBSTR(cStr, i, 1)
+	if (nCnt==nLen .or. ((nCnt<nLen) .and. i == LEN(cStr)))
+		AADD(aColl, cTmp)
+		nCnt:=0
+		cTmp:=""
+	endif
+next
+
+return aColl
+*}
+
+
