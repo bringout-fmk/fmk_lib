@@ -72,7 +72,7 @@ function CryptSC(cStr)
 *{
 local nLen,cC,cPom,i
 
-
+altd()
 cPom:=""
 nLen:=len(cStr)
 for i=1 to int(nLen/2)
