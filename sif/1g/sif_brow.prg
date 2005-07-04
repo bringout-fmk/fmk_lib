@@ -2011,42 +2011,44 @@ LOCAL cPom2
 LOCAL nOrder
 LOCAL nDuz
 
-PRIVATE cK1:="", cImeVar:="", cNumDio:=""
- IF ALIAS()<>"ROBA" .or. IzFMKINI("ROBA","Planika","N",SIFPATH)<>"D" .or.;
-    FIELDPOS("K1")==0 .or. !((cImeVar:=READVAR())=="WID") .or.;
-    !EMPTY(cK1:=SPACE(LEN(K1))) .or.;
-    !VarEdit({ {"Unesite K1","cK1",,"@!",} },10,23,14,56,"Odredjivanje nove sifre artikla","B5")
-   RETURN (NIL)
- ENDIF
- cNumDio := IzFMKINI("ROBA","NumDio","SUBSTR(ID,7,3)",SIFPATH)
- cPom2   := &(cImeVar)
- nDuz    := LEN(cPom2)
- cPom2   := RTRIM(cPom2)
- cPom    := cK1+CHR(255)
- PushWA()
+private cK1:=""
+private cImeVar:=""
+private cNumDio:=""
 
- nOrder:=ORDNUMBER("BROBA")
- IF nOrder=0
-   MsgBeep("Ako ste u mrezi, svi korisnici moraju napustiti FMK. Zatim pritisnite Enter!")
-   MsgO("Kreiram tag(index) 'BROBA'")
-    cSort := IzFMKINI("ROBA","Sort","K1+SUBSTR(ID,7,3)",SIFPATH)
-    INDEX ON &cSort TAG BROBA
-   MsgC()
- ENDIF
- set order to tag "BROBA"
- GO TOP
- SEEK cPom
- SKIP -1
- cNumDio := &cNumDio
- IF K1 == cK1
-   &(cImeVar) := PADR( cPom2 + PADL(ALLTRIM(STR(VAL(cNumDio)+1)),LEN(cNumDio),"0") , nDuz )
- ELSE
-   &(cImeVar) := PADR( cPom2 + PADL("1",LEN(cNumDio),"0") , nDuz )
- ENDIF
- wk1 := cK1
- AEVAL(GetList,{|o| o:display()})
- PopWA()
- KEYBOARD CHR(K_END)
+IF ALIAS()<>"ROBA" .or. IzFMKINI("ROBA","Planika","N",SIFPATH)<>"D" .or. FIELDPOS("K1")==0 .or. !((cImeVar:=READVAR())=="WID") .or. !EMPTY(cK1:=SPACE(LEN(K1))) .or. !VarEdit({ {"Unesite K1","cK1",,"@!",} },10,23,14,56,"Odredjivanje nove sifre artikla","B5")
+	RETURN (NIL)
+ENDIF
+
+cNumDio := IzFMKINI("ROBA","NumDio","SUBSTR(ID,7,3)",SIFPATH)
+cPom2   := &(cImeVar)
+nDuz    := LEN(cPom2)
+cPom2   := RTRIM(cPom2)
+cPom    := cK1+CHR(255)
+PushWA()
+
+nOrder:=ORDNUMBER("BROBA")
+IF nOrder=0
+	MsgBeep("Ako ste u mrezi, svi korisnici moraju napustiti FMK. Zatim pritisnite Enter!")
+   	MsgO("Kreiram tag(index) 'BROBA'")
+    	cSort := IzFMKINI("ROBA","Sort","K1+SUBSTR(ID,7,3)",SIFPATH)
+    	INDEX ON &cSort TAG BROBA
+   	MsgC()
+ENDIF
+set order to tag "BROBA"
+GO TOP
+SEEK cPom
+SKIP -1
+cNumDio := &cNumDio
+IF K1 == cK1
+	&(cImeVar) := PADR( cPom2 + PADL(ALLTRIM(STR(VAL(cNumDio)+1)),LEN(cNumDio),"0") , nDuz )
+else
+   	&(cImeVar) := PADR( cPom2 + PADL("1",LEN(cNumDio),"0") , nDuz )
+ENDIF
+
+wk1 := cK1
+AEVAL(GetList,{|o| o:display()})
+PopWA()
+KEYBOARD CHR(K_END)
 RETURN (NIL)
 *}
 
