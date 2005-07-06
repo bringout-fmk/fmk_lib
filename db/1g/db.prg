@@ -720,46 +720,103 @@ return nil
 *}
 
 
+function CheckROnly( cFileName )
+*{
+if FILEATTR(cFileName) == 1 
+	gReadOnly := .t.
+	@ 1, 55 SAY "READ ONLY" COLOR "W/R"
+else
+	gReadOnly := .f.
+	@ 1, 55 SAY "         "
+endif
+
+return
+*}
+
+
 function SetROnly()
 *{
+
+IF gReadOnly
+   	MsgBeep("Podrucje je vec zakljucano!")
+   	if Pitanje(,"Zelite otkljucati podrucje ?","N") == "D"
+		SetWOnly()
+		return
+	endif
+	RETURN
+ENDIF
 
 if !SigmaSif("ZAKSEZ")
 	return
 endif
 
 IF "U" $ TYPE("gGlBaza")
-   MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza nedefinisana!")
-   RETURN
+	MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza nedefinisana!")
+   	RETURN
 ENDIF
 
 IF EMPTY(gGlBaza)
-   MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza prazna!")
-   RETURN
+  	MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza prazna!")
+   	RETURN
 ENDIF
 
-IF gReadOnly
-   MsgBeep("Zakljucenje podrucja je vec izvrseno!")
-   RETURN
-ENDIF
 
-MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucenje poslovne godine. #"+;
+MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucavanje poslovne godine. #"+;
          "To znaci da nakon ove opcije nikakve ispravke podataka u trenutno #"+;
          "aktivnom podrucju nece biti moguce. Ukoliko ste sigurni da to zelite #"+;
          "na sljedece pitanje odgovorite potvrdno!" )
 IF Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
 
 #ifdef CLIP
-   IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
+   	IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
 #else
-   IF SETFATTR(cDirRad+SLASH+gGlBaza,1)==0
+   	IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
 #endif
-     gReadOnly:=.t.
-   ELSE
-     MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
-   ENDIF
+     		gReadOnly:=.t.
+		CheckROnly(cDirRad + SLASH + gGlBaza)
+   	ELSE
+     		MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
+   	ENDIF
 ENDIF
 return
 *}
+
+/*! \fn SetWOnly()
+ *  \brief Set write atributa
+ */
+function SetWOnly()
+*{
+if !SigmaSif("OTKSEZ")
+	return
+endif
+
+IF "U" $ TYPE("gGlBaza")
+	MsgBeep("Nemoguce izvrsiti otljucavanje. Varijabla gGlBaza nedefinisana!")
+   	RETURN
+ENDIF
+
+IF EMPTY(gGlBaza)
+  	MsgBeep("Nemoguce izvrsiti otkljucavanje. Varijabla gGlBaza prazna!")
+   	RETURN
+ENDIF
+
+IF Pitanje(,"Jeste li sigurni da zelite ukloniti zastitu? (D/N)","N")=="D"
+
+#ifdef CLIP
+   	IF SETFATTR(goModul:oDatabase:cDirKum + SLASH + gGlBaza, 0) == 0
+#else
+   	IF SETFATTR(cDirRad + SLASH + gGlBaza, 0) == 0
+#endif
+     		gReadOnly:=.f.
+		CheckROnly(cDirRad + SLASH + gGlBaza)
+   	ELSE
+     		MsgBeep("Greska! F-ja ukidanje zastite onemogucena! (SETFATTR)")
+   	ENDIF
+ENDIF
+
+return
+*}
+
 
 /*! \fn SkratiAZaD(aStruct)
  *  \brief skrati matricu za polje D
@@ -1197,7 +1254,6 @@ for i:=1 to 250
 	cDbfName:=DbfName(i,.t.)
 	if !EMPTY(cDbfName)
 		if FILE(cDbfName+"."+DBFEXT)
-			altd()
 			USEX (cDbfName)
 			if (RECCOUNT()<>RecCount2())
 				MsgO("Pakujem "+cDbfName)
