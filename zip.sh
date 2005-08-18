@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#echo "Parametri $@"
-
+echo "-----------------------------------------"
+echo "== ZIP modul ============================"
 CMD=$@
+echo "++++ Ulazni parametri: $CMD" 
+echo ""
+/h/sigma/zip.exe $CMD
+echo "+++++++++++++++++++++"
 
-echo "Parametri: $CMD"
-
-/h/sigma/zip.exe $CMD 
