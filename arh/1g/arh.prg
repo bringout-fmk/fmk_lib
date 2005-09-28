@@ -234,11 +234,18 @@ if nPos<>0; fclose(aFilesP[nPos,2]); endif
 return
 *}
 
-function Zipuj(aFiles,cImeArh,cDest)
+function Zipuj(aFiles, cImeArh, cDest)
 *{
-local cabc:="A"
+local cAbc:="A"
 local fRet:=.t.
+local nH
+local cFileName
 
+if IzFmkIni("Svi","Arh7zip","N", EXEPATH)=="D"
+	l7zip := .t.
+else
+	l7zip := .f.
+endif
 
 #ifdef CLIP
 	MsgBeep("Nije implementirano")
@@ -246,18 +253,53 @@ local fRet:=.t.
 #else
 
 if cDest==NIL // zadaj destinaciju
-Box(,1,50)
- @ m_x+1,m_y+2 SAY "Arhivirati na disk A/B/C/D/E/F/G ?" get cabc pict "@!" valid cabc $ "ABCDEFG"
- read;ESC_BCR
-BoxC()
-cDest:=cAbc+":\"
+	Box(,1,50)
+ 	@ m_x+1,m_y+2 SAY "Arhivirati na disk A/B/C/D/E/F/G ?" get cabc pict "@!" valid cabc $ "ABCDEFG"
+ 	read
+	ESC_BCR
+	BoxC()
+	cDest:=cAbc+":\"
 endif
 
-if cimearh==NIL
-  cImeArh:="ARHSIG"
+if cImearh==NIL
+  	cImeArh:="ARHSIG"
 endif
 
-cKom:="ARJ A "+cDest+cImeArh+" -jf  -x*.bak !list.cmd"
+if !l7zip
+	cKom:="ARJ A " + cDest + cImeArh + " -jf  -x*.bak !list.cmd"
+else
+	cKom:="7z a -tzip " + cDest + cImeArh + " @" + PRIVPATH + "arhlist.txt"
+	// napravi fajl arhlist
+	save screen to cScr
+	cls
+	?
+	? "7Zip arhiviranje u toku:"
+	?
+	cFileName := PRIVPATH + "arhlist.txt"
+	if (nH:=fcreate(cFileName))==-1
+   		Beep(4)
+   		Msg("Greska pri kreiranju fajla: "+cFileName+" !",6)
+   		return
+	endif
+	fclose(nH)
+
+	set printer to (cFileName)
+	set printer off
+	set printer on
+	
+	for i:=1 to len(aFiles)
+  		? aFiles[i] + " "
+	next
+	
+	set printer to
+	set printer off
+	set printer on
+	
+	run &cKom
+	
+	restore screen from cScr
+	return
+endif
 
 save screen to cScr
 cls
@@ -300,6 +342,7 @@ closeret
 return
 *}
 
+
 function UnZipuj(cImeArh,cLokacija,cDest)
 *{
 
@@ -309,26 +352,42 @@ function UnZipuj(cImeArh,cLokacija,cDest)
 
 local cabc:="A",n123:=1, fRet:=.t.
 
-if cDest==NIL
-Box(,1,50)
- @ m_x+1,m_y+2 SAY "Arhiva je na disku A/B/C/D/E/F/G ?" get cabc pict "@!" valid cabc $ "ABCDEFG"
- read;ESC_BCR
-BoxC()
-cDest:=cabc+":\"
+if IzFmkIni("Svi","Arh7zip","N", EXEPATH)=="D"
+	l7zip := .t.
+else
+	l7zip := .f.
 endif
 
-
+if cDest==NIL
+	Box(,1,50)
+ 	@ m_x+1,m_y+2 SAY "Arhiva je na disku A/B/C/D/E/F/G ?" get cabc pict "@!" valid cabc $ "ABCDEFG"
+ 	read
+	ESC_BCR
+	BoxC()
+	cDest:=cAbc+":\"
+endif
 
 if cImeArh==NIL
-  cImeArh:="ARHSIG"
+	cImeArh:="ARHSIG"
 endif
 if cLokacija==NIL
-  cLokacija:=PRIVPATH
+  	cLokacija:=PRIVPATH
 endif
 
 save screen to cScr
 cls
-cKom:="ARJ E "+cDest+cImeArh+" -jf -jyo "+cLokacija
+if !l7zip
+	cKom:="ARJ E "+cDest+cImeArh+" -jf -jyo "+cLokacija
+else
+	cKom:="7z e " + cDest + cImeArh + ".zip -o" + PRIVPATH + " -y"
+	?
+	? "7Zip dearhiviranje u toku:"
+	?
+	run &cKom
+	restore screen from cScr
+	return .t.
+endif
+
 ?
 ? "Izvrsavam komandu DEARHIVIRANJA:"
 ? cKom
