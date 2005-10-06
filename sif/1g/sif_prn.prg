@@ -999,6 +999,7 @@ local cZag:="",i:=0,cLin:="",cNLin:=""
       endif
   enddo
   setprc(prow()+nPodStr(NRED,cZag),pcol())
+  ?
   fclose(nHZ)
  endif
 return

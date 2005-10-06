@@ -2006,19 +2006,19 @@ return
 // nove sifre
 function NNSifru2()     
 *{
-LOCAL cPom
-LOCAL cPom2
-LOCAL nOrder
-LOCAL nDuz
+local cPom
+local cPom2
+local nOrder
+local nDuz
 
 private cK1:=""
 private cImeVar:=""
 private cNumDio:=""
 
-IF ALIAS()<>"ROBA" .or. IzFMKINI("ROBA","Planika","N",SIFPATH)<>"D" .or. FIELDPOS("K1")==0 .or. !((cImeVar:=READVAR())=="WID") .or. !EMPTY(cK1:=SPACE(LEN(K1))) .or. !VarEdit({ {"Unesite K1","cK1",,"@!",} },10,23,14,56,"Odredjivanje nove sifre artikla","B5")
-	RETURN (NIL)
-ENDIF
-
+if ALIAS()<>"ROBA" .or. IzFMKINI("ROBA","Planika","N",SIFPATH)<>"D" .or. FIELDPOS("K1")==0 .or. !((cImeVar:=READVAR())=="WID") .or. !EMPTY(cK1:=SPACE(LEN(K1))) .or. !VarEdit({ {"Unesite K1","cK1",,"@!",} },10,23,14,56,"Odredjivanje nove sifre artikla","B5")
+	return (NIL)
+endif
+altd()
 cNumDio := IzFMKINI("ROBA","NumDio","SUBSTR(ID,7,3)",SIFPATH)
 cPom2   := &(cImeVar)
 nDuz    := LEN(cPom2)
@@ -2051,6 +2051,7 @@ PopWA()
 KEYBOARD CHR(K_END)
 RETURN (NIL)
 *}
+
 
 function NovaSifra(cSifra)
 *{
