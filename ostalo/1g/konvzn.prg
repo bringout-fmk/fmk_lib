@@ -1,37 +1,64 @@
 #include "SC.CH"
 
-FUNCTION KonvZnWin(cTekst, cWinKonv)
-*
- //LOCAL aNiz:={  {"[","Ê","\'8a","S"}, {"{","Á","\'9a","s"}, {"}","Ü","\'e6","c"}, {"]","è", "\'c6","C"}, {"^","¨", "\'c8","C"},;
- //                {"~","ü","\'e8","c"}, {"`","ß","\'9e","z"}, {"@","¶","\'8e","Z"}, {"|","–", "\'f0","dj"}, {"\","—", "\'d0","DJ"}  }
+/*! \fn KonvZnWin(cTekst, cWinKonv)
+ *  \brief Konverzija znakova u stringu
+ *  \param cTekst - tekst
+ *  \param cWinKonv - tip konverzije
+ */
+function KonvZnWin(cTekst, cWinKonv)
+*{
+local aNiz:={}
+local i
+local j
 
- LOCAL aNiz:={  {"[","Ê",chr(138),"S"}, {"{","Á",chr(154),"s"}, {"}","Ü",chr(230),"c"}, {"]","è", chr(198),"C"}, {"^","¨", chr(200),"C"},;
-                {"~","ü",chr(232),"c"}, {"`","ß",chr(158),"z"}, {"@","¶",chr(142),"Z"}, {"|","–", chr(240),"dj"}, {"\","—", chr(208),"DJ"}  }
- LOCAL i,j
+AADD(aNiz, {"[","Ê",chr(138),"S","ä"})
+AADD(aNiz, {"{","Á",chr(154),"s","Á"})
+AADD(aNiz, {"}","Ü",chr(230),"c","Ü"})
+AADD(aNiz, {"]","è", chr(198),"C","è"})
+AADD(aNiz, {"^","¨", chr(200),"C","¨"})
+AADD(aNiz, {"~","ü",chr(232),"c","ü"})
+AADD(aNiz, {"`","ß",chr(158),"z","ß"})
+AADD(aNiz, {"@","¶",chr(142),"Z","¶"})
+AADD(aNiz, {"|","–", chr(240),"dj",""})
+AADD(aNiz, {"\","—", chr(208),"DJ","—"})
 
- if cWinKonv=NIL
-  cWinKonv:=IzFmkIni("DelphiRb","Konverzija","5")
- endif
+if cWinKonv = NIL
+	cWinKonv:=IzFmkIni("DelphiRb","Konverzija","5")
+endif
 
- i:=1; j:=1
- if cWinKonv=="1"
-    i:=1; j:=2
- elseif cWinKonv=="2"
-    i:=1; j:=4  // 7->A
- elseif cWinKonv=="3"
-    i:=2; j:=1   // 852->7
- elseif cWinKonv=="4"
-    i:=2; j:=4  // 852->A
- elseif cWinKonv=="5"
-    i:=2; j:=3  // 852->win1250
- elseif cWinKonv=="6"
-    i:=1; j:=3  // 7->win1250
- endif
- if i<>j
-  AEVAL(aNiz,{|x| cTekst:=STRTRAN(cTekst,x[i],x[j])})
- endif
+i:=1
+j:=1
 
-RETURN cTekst
+if cWinKonv=="1"
+	i:=1
+	j:=2
+elseif cWinKonv=="2"
+	i:=1
+	j:=4  // 7->A
+elseif cWinKonv=="3"
+	i:=2
+	j:=1   // 852->7
+elseif cWinKonv=="4"
+	i:=2
+	j:=4  // 852->A
+elseif cWinKonv=="5"
+	i:=2
+	j:=3  // 852->win1250
+elseif cWinKonv=="6"
+	i:=1
+	j:=3  // 7->win1250
+elseif cWinKonv=="8"
+	i:=3
+	j:=5
+endif
+
+if i<>j
+	AEVAL(aNiz,{|x| cTekst:=STRTRAN(cTekst,x[i],x[j])})
+endif
+
+return cTekst
+*}
+
 
 
 /*! \fn StrKZN(cInput, cIz, cU)
@@ -44,7 +71,9 @@ local a852:={"Ê","—","¨","è","¶","Á","–","ü","Ü","ß"}
 local a437:={"[","\","^","]","@","{","|","~","}","`"}
 local aEng:={"S","D","C","C","Z","s","d","c","c","z"}
 local aEngB:={"SS","DJ","CH","CC","ZZ","ss","dj","ch","cc","zz"}
+local aWin:= {"ä", "–", "∆", "»", "é", "ö", "", "Ê", "Ë", "û"}
 local i:=0, aIz:={}, aU:={}
+
 
 // sasa, 04.02.04, konverzija "B"
 if cIz=="7"
@@ -53,6 +82,8 @@ elseif cIz=="8"
 	aIz:=a852
 elseif (goModul:oDataBase:cName=="LD" .and. cIz=="B")
 	aIz:=aEngB
+elseif (cIz=="W")
+	aIz:=aWin
 else
 	aIz:=aEng
 endif
