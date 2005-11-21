@@ -479,7 +479,7 @@ gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
  	
 	PUBLIC EVar:="#Erky#12345678901234567890#0000"
  	gNaslov+=" , Reg: "+SUBSTR(EVar,7,20)
- 	EXTERNAL _CLD
+ 	//EXTERNAL _CLD
 
 #endif
 return
