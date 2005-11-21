@@ -430,7 +430,7 @@ return
 
 method modstruAll()
 local i
-
+altd()
 ::lAdmin:=.t.
 
 aSezone:=ASezona(::cDirKum)
