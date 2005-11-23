@@ -1109,7 +1109,7 @@ local cDN:="N"
 local cPom
 
 if lScreen==nil
- lScreen:=.t.
+	lScreen:=.t.
 endif
 
 select (F_KORISN)
@@ -1132,8 +1132,11 @@ if lScreen
 	READ
 	ESC_BCR
 	BoxC()
+	
+	if !gReadOnly
+		Gather()
+	endif
 
-	Gather()
 	@ 0,24 SAY PADR(trim(ImeKorisn)+":"+cDirPriv,25) COLOR INVERT
 endif
 
@@ -1143,32 +1146,27 @@ oApp:oDatabase:setDirPriv(_DirPriv)
 oApp:oDatabase:setDirSif(_DirSif)
 oApp:oDatabase:setDirKum(_DirRad)
 
-if gReadOnly
-  cCD:=""
-  if file(EXEPATH+'scshell.ini')
-        cCD:=""
-        cCD:=R_IniRead ( 'TekucaLokacija', 'CD', "",EXEPATH+'scshell.INI' )
-  endif
-
-  if empty(cCD) .and. Pitanje(,"Citati podatke sa CD-a ?","D")=="D"
-   cCd:="E"
-   Box(,1,60)
-     @ m_x+1,m_y+2 SAY "CD UREDJAJ:" GET cCD pict "@!"
-     read
-  BoxC()
-  endif
-
-  if !empty(cCD)
-	cPom:=cCD+SUBSTR(oApp:oDatabase:cDirPriv,2)
-	oApp:oDatabase:setDirPriv(cPom)
-	
-	cPom:=cCD+SUBSTR(oApp:oDatabase:cDirSif,2)
-	oApp:oDatabase:setDirSif(cPom)
-
-	cPom:=cCD+SUBSTR(oApp:oDatabase:cDirKum,2)
-	oApp:oDatabase:setDirKum(cPom)
-  endif
-
+if gReadOnly .and. (IzFmkIni('Svi','CitatiCD','N',EXEPATH) == "D")
+	cCD:=""
+  	if file(EXEPATH+'scshell.ini')
+        	cCD:=""
+        	cCD:=R_IniRead ( 'TekucaLokacija', 'CD', "",EXEPATH+'scshell.INI' )
+  	endif
+	if empty(cCD) .and. Pitanje(,"Citati podatke sa CD-a ?","N")=="D"
+   		cCd:="E"
+   		Box(,1,60)
+     			@ m_x+1,m_y+2 SAY "CD UREDJAJ:" GET cCD pict "@!"
+     			read
+  		BoxC()
+  	endif
+	if !empty(cCD)
+		cPom:=cCD+SUBSTR(oApp:oDatabase:cDirPriv,2)
+		oApp:oDatabase:setDirPriv(cPom)
+		cPom:=cCD+SUBSTR(oApp:oDatabase:cDirSif,2)
+		oApp:oDatabase:setDirSif(cPom)
+		cPom:=cCD+SUBSTR(oApp:oDatabase:cDirKum,2)
+		oApp:oDatabase:setDirKum(cPom)
+  	endif
 endif
 *}
 
