@@ -366,22 +366,33 @@ function Reindex(ff)
 local nDbf
 
 IF (ff<>nil .and. ff==.t.) .or. if(!gAppSrv, Pitanje("","Reindeksirati DB (D/N)","N")=="D", .t.)
+
 if !gAppSrv
 	Box("xx",1,56,.f.,"Vrsi se reindeksiranje DB-a ")
 else
 	? "Vrsi se reindex tabela..."
 endif
-   close all
-   // CDX verzija
-   set exclusive on
-   for nDbf:=1 to 250
-   if !gAppSrv
-       @ m_x+1,m_y+2 SAY SPACE(54)
-   endif
-#ifndef PROBA
-    
-	bErr:=ERRORBLOCK({|o| MyErrHt(o)})
-	BEGIN SEQUENCE
+
+// Provjeri da li je sezona zakljucana
+lZakljucana := .f.
+
+if gReadOnly
+	lZakljucana := .t.
+	// otkljucaj sezonu
+	SetWOnly(.t.)
+endif
+//
+
+close all
+// CDX verzija
+set exclusive on
+for nDbf:=1 to 250
+	if !gAppSrv
+       		@ m_x+1,m_y+2 SAY SPACE(54)
+   	endif
+	#ifndef PROBA
+		bErr:=ERRORBLOCK({|o| MyErrHt(o)})
+		BEGIN SEQUENCE
 		// sprijeciti ispadanje kad je neko vec otvorio bazu
 		goModul:oDatabase:obaza(nDbf)
 		RECOVER
@@ -392,17 +403,14 @@ endif
 			? "Ne mogu administrirati: " + DBFName(nDbf) + " / " + ALLTRIM(STR(nDBF))
 		endif
 		inkey(3)
-	END SEQUENCE
-	bErr:=ERRORBLOCK(bErr)
-
-#else
-
-	goModul:oDatabase:obaza(nDbf)
-	if !gAppSrv
-		@ m_x+1,m_y+2  SAY SPACE(40)
-	endif
-#endif
-
+		END SEQUENCE
+		bErr:=ERRORBLOCK(bErr)
+	#else
+		goModul:oDatabase:obaza(nDbf)
+		if !gAppSrv
+			@ m_x+1,m_y+2  SAY SPACE(40)
+		endif
+	#endif
 
 	DBSELECTArea (nDbf)
 	if !gAppSrv
@@ -410,6 +418,7 @@ endif
 	else
 		? "Reindexiram: " + ALIAS(nDBF)
 	endif
+
 	if used()
 		beep(1)
 		ordsetfocus(0)
@@ -424,6 +433,10 @@ endif
    if !gAppSrv
    	BoxC()
    endif	
+endif
+
+if lZakljucana
+	SetROnly(.t.)
 endif
 
 closeret

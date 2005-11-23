@@ -708,13 +708,13 @@ return
 function JelReadOnly()
 *{
 IF !( "U" $ TYPE("gGlBaza") )
-    IF !EMPTY(gGlBaza)
-#ifdef CLIP      
-      gReadOnly := ( FILEATTR(ToUnix(goModul:oDatabase:cDirKum+SLASH+gGlBaza))==1 )
-#else
-      gReadOnly := ( FILEATTR(ToUnix(cDirRad+SLASH+gGlBaza))==1 )
-#endif
-    ENDIF
+	IF !EMPTY(gGlBaza)
+		#ifdef CLIP      
+      			gReadOnly := ( FILEATTR(ToUnix(goModul:oDatabase:cDirKum+SLASH+gGlBaza))==1 )
+		#else
+      			gReadOnly := ( FILEATTR(ToUnix(cDirRad+SLASH+gGlBaza))==1 )
+		#endif
+    	ENDIF
 ENDIF
 return nil
 *}
@@ -734,10 +734,18 @@ return
 *}
 
 
-function SetROnly()
+function SetROnly(lSilent)
 *{
 
-IF gReadOnly
+if (lSilent == nil)
+	lSilent := .f.
+endif
+
+if lSilent
+	MsgO("Zakljucavam sezonu...")
+endif
+
+IF !lSilent .and. gReadOnly
    	MsgBeep("Podrucje je vec zakljucano!")
    	if Pitanje(,"Zelite otkljucati podrucje ?","N") == "D"
 		SetWOnly()
@@ -746,73 +754,112 @@ IF gReadOnly
 	RETURN
 ENDIF
 
-if !SigmaSif("ZAKSEZ")
+if !lSilent .and. !SigmaSif("ZAKSEZ")
 	return
 endif
 
 IF "U" $ TYPE("gGlBaza")
-	MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza nedefinisana!")
-   	RETURN
+	if !lSilent
+		MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza nedefinisana!")
+   	endif
+	RETURN
 ENDIF
 
 IF EMPTY(gGlBaza)
-  	MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza prazna!")
-   	RETURN
+  	if !lSilent
+		MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza prazna!")
+   	endif
+	RETURN
 ENDIF
 
-
-MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucavanje poslovne godine. #"+;
+if !lSilent
+	MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucavanje poslovne godine. #"+;
          "To znaci da nakon ove opcije nikakve ispravke podataka u trenutno #"+;
          "aktivnom podrucju nece biti moguce. Ukoliko ste sigurni da to zelite #"+;
          "na sljedece pitanje odgovorite potvrdno!" )
-IF Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
+endif
 
-#ifdef CLIP
-   	IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
-#else
-   	IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
-#endif
-     		gReadOnly:=.t.
-		CheckROnly(cDirRad + SLASH + gGlBaza)
-   	ELSE
-     		MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
-   	ENDIF
+IF !lSilent .and. Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
+
+	#ifdef CLIP
+   		IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
+	#else
+   		IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
+	#endif
+     			gReadOnly:=.t.
+			CheckROnly(cDirRad + SLASH + gGlBaza)
+		ELSE
+ 			MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
+   		ENDIF
+ELSE
+	IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
+		gReadOnly:=.t.
+	ENDIF	
 ENDIF
+
+if lSilent
+	Sleep(3)
+	MsgC()
+	CheckROnly(cDirRad + SLASH + gGlBaza)
+endif
+
 return
 *}
 
 /*! \fn SetWOnly()
  *  \brief Set write atributa
  */
-function SetWOnly()
+function SetWOnly(lSilent)
 *{
-if !SigmaSif("OTKSEZ")
+
+if (lSilent == nil)
+	lSilent := .f.
+endif
+
+if lSilent
+	MsgO("Otkljucavam sezonu...")
+endif
+
+if !lSilent .and. !SigmaSif("OTKSEZ")
 	return
 endif
 
 IF "U" $ TYPE("gGlBaza")
-	MsgBeep("Nemoguce izvrsiti otljucavanje. Varijabla gGlBaza nedefinisana!")
-   	RETURN
+	if !lSilent
+		MsgBeep("Nemoguce izvrsiti otljucavanje. Varijabla gGlBaza nedefinisana!")
+   	endif
+	RETURN
 ENDIF
 
 IF EMPTY(gGlBaza)
-  	MsgBeep("Nemoguce izvrsiti otkljucavanje. Varijabla gGlBaza prazna!")
-   	RETURN
+  	if !lSilent
+		MsgBeep("Nemoguce izvrsiti otkljucavanje. Varijabla gGlBaza prazna!")
+   	endif
+	RETURN
 ENDIF
 
-IF Pitanje(,"Jeste li sigurni da zelite ukloniti zastitu? (D/N)","N")=="D"
-
-#ifdef CLIP
-   	IF SETFATTR(goModul:oDatabase:cDirKum + SLASH + gGlBaza, 0) == 0
-#else
-   	IF SETFATTR(cDirRad + SLASH + gGlBaza, 0) == 0
-#endif
-     		gReadOnly:=.f.
-		CheckROnly(cDirRad + SLASH + gGlBaza)
-   	ELSE
-     		MsgBeep("Greska! F-ja ukidanje zastite onemogucena! (SETFATTR)")
-   	ENDIF
+IF !lSilent .and. Pitanje(,"Jeste li sigurni da zelite ukloniti zastitu? (D/N)","N")=="D"
+	#ifdef CLIP
+   		IF SETFATTR(goModul:oDatabase:cDirKum + SLASH + gGlBaza, 0) == 0
+	#else
+   		IF SETFATTR(cDirRad + SLASH + gGlBaza, 0) == 0
+	#endif
+     			gReadOnly:=.f.
+			CheckROnly(cDirRad + SLASH + gGlBaza)
+   		ELSE
+     			MsgBeep("Greska! F-ja ukidanje zastite onemogucena! (SETFATTR)")
+   		ENDIF
+ELSE
+   		IF SETFATTR(cDirRad + SLASH + gGlBaza, 0) == 0
+			gReadOnly:=.f.
+		ENDIF
 ENDIF
+
+if lSilent
+	Sleep(3)
+	MsgC()
+	CheckROnly(cDirRad + SLASH + gGlBaza)
+endif
 
 return
 *}
