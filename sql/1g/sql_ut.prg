@@ -156,3 +156,67 @@ endif
 return
 *}
 
+/*! fn New_Record(cTn)
+ *  \brief Napravi novi record na osnovu postojeceg
+ */
+function New_Record(cTn)
+*{
+local cSQL
+local i
+local aStruct
+local nSet
+local fNoviCiklus
+local cAkcija
+local nRec
+local nTOid
+private cImeP
+
+GW_STATUS="GEN_SQL_LOG"
+GW_HANDLE:=0
+
+islog:=0
+fNoviCiklus:=.t.
+GW_HANDLE:=0
+nCnt:=0
+
+if goModul:lSqlDirektno
+	cAkcija:="L"
+else
+	cAkcija:="P"
+endif
+
+// procitaj vrijednosti
+scatter()
+
+// dodaj ovaj slog
+append blank
+sql_append()
+
+//update komanda na osnovu procitanih vrijednosti
+if !goModul:lSqlDirektno  
+	if Len(GW_STRING())>6000 // 6 kb
+		islog:=0
+	      	cAkcija:="Z"
+	else
+		cAkcija:="D"
+	endif
+endif
+
+// "_" - ime varijable, .t. - dodaji slog
+Gathsql("_",.t., @GW_HANDLE, cAkcija)
+
+if !goModul:lSqlDirektno  
+	if cAkcija="Z"
+      		cAkcija:="P"
+   	endif
+endif
+
+if !goModul:lSqlDirektno .and. cAkcija<>"Z"
+	// zatvori zadnju komandu
+ 	Gw("", @GW_HANDLE,"Z")
+endif
+
+return
+*}
+
+
