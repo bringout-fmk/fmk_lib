@@ -469,117 +469,132 @@ private GetList:={}
 
 PushWa()
 
-private cSection:="1",cHistory:=" "; aHistory:={}
-select (F_PARAMS);USE
+private cSection:="1"
+private cHistory:=" "
+private aHistory:={}
+
+select (F_PARAMS)
+USE
 O_PARAMS
+
 RPar("p?",@cPosebno)
 
 gArhDir:=padr(gArhDir,20)
 gPFont:=padr(gPFont,20)
 Box(,19,70)
- set cursor on
- @ m_x+ 1,m_y+2 SAY "Parametre pohraniti posebno za korisnika "  GET cPosebno valid cPosebno $ "DN" pict "@!"
- read
- WPAr("p?",cPosebno)
- select params; use
- if cPosebno=="D"
-   if !file(PRIVPATH+"gparams.dbf")
+	set cursor on
+ 	@ m_x+ 1,m_y+2 SAY "Parametre pohraniti posebno za korisnika "  GET cPosebno valid cPosebno $ "DN" pict "@!"
+ 	read
+ 	WPAr("p?",cPosebno)
+ 	select params
+	use
+ 	if cPosebno=="D"
+   		if !file(PRIVPATH+"gparams.dbf")
+			cScr:=""
+      			save screen to cscr
+      			CopySve("gpara*.*", SLASH, PRIVPATH)
+      			restore screen from cScr
 
-      cScr:=""
-      save screen to cscr
-      CopySve("gpara*.*", SLASH, PRIVPATH)
-      restore screen from cScr
+   		endif
+ 	endif
+ 	if cPosebno=="D"
+   		select (F_GPARAMSP)
+   		use
+   		O_GPARAMSP
+ 	else
+   		select (F_GPARAMS)
+   		use
+   		O_GPARAMS
+ 	endif
 
-   endif
- endif
- if cPosebno=="D"
-   select (F_GPARAMSP)
-   use
-   O_GPARAMSP
- else
-   select (F_GPARAMS)
-   use
-   O_GPARAMS
- endif
+ 	gPtkonv:=padr(gPtkonv,2)
+ 	@ m_x+ 3,m_y+2 SAY "Konverzija znakova BEZ, 7-852, 7-A, 852-7, 852-A"
+ 	@ m_x+ 4,m_y+2 SAY "                    0  / 1   /  2  / 3   /   4  "  GET gPTKonv pict "@!" valid subst(gPtkonv,2,1)$ " 1"
+ 	@ m_x+ 6,m_y+2 SAY "Unos podataka u sifrarnike velika/mala slova/konv.u 852 (V/M/8)"  GET gPicSif valid gpicsif $ "VM8" pict "@!"
+ 	@ m_x+ 7,m_y+2 SAY "Stroga kontrola ispravki/brisanja sifara     (D/N)"  GET gSKSif valid gSKSif $ "DN" pict "@!"
+ 	@ m_x+ 8,m_y+2 SAY "Direktorij pomocne kopije podataka" GET gArhDir pict "@!"
+ 	@ m_x+ 9,m_y+2 SAY "Default odgovor na pitanje 'Izlaz direktno na printer?' (D/N/V/E)" GET gcDirekt valid gcDirekt$"DNVER" pict "@!"
+ 	@ m_x+10,m_y+2 SAY "Shema boja za prikaz na ekranu 'V' (B1/B2/.../B7):" GET gShemaVF
+ 	@ m_x+11,m_y+2 SAY "Windows font:" GET gPFont
+ 	@ m_x+12,m_y+2 SAY "Kodna strana:" GET gKodnaS valid gKodnaS $ "78" pict "9"
+ 	@ m_x+13,m_y+2 SAY "Word 97  D/N:" GET gWord97 valid gWord97 $ "DN" pict "@!"
+ 	@ m_x+14,m_y+2 SAY "Zaok 50f (5):" GET g50f    valid g50f    $ " 5" pict "9"
+ 	@ m_x+15,m_y+2 SAY "Prenijeti podatke na lokalni disk (NDCX):" GET gKesiraj    valid gKesiraj $ "NDCX" pict "@!"
+ 	@ m_x+16,m_y+2 SAY "Omoguciti kolor-prikaz? (D/N)" GET gFKolor valid gFKolor$"DN" pict "@!"
+ 	@ m_x+16,col()+2 SAY "SQL log ? (D/N)" GET gSql pict "@!"
+ 
+	@ m_x+17,m_y+2 SAY "PDV rezim rada? (D/N)" GET gPDV pict "@!" VALID gPDV$"DN"
 
- gPtkonv:=padr(gPtkonv,2)
- @ m_x+ 3,m_y+2 SAY "Konverzija znakova BEZ, 7-852, 7-A, 852-7, 852-A"
- @ m_x+ 4,m_y+2 SAY "                    0  / 1   /  2  / 3   /   4  "  GET gPTKonv pict "@!" valid subst(gPtkonv,2,1)$ " 1"
- @ m_x+ 6,m_y+2 SAY "Unos podataka u sifrarnike velika/mala slova/konv.u 852 (V/M/8)"  GET gPicSif valid gpicsif $ "VM8" pict "@!"
- @ m_x+ 7,m_y+2 SAY "Stroga kontrola ispravki/brisanja sifara     (D/N)"  GET gSKSif valid gSKSif $ "DN" pict "@!"
- @ m_x+ 8,m_y+2 SAY "Direktorij pomocne kopije podataka" GET gArhDir pict "@!"
- @ m_x+ 9,m_y+2 SAY "Default odgovor na pitanje 'Izlaz direktno na printer?' (D/N/V/E)" GET gcDirekt valid gcDirekt$"DNVER" pict "@!"
- @ m_x+10,m_y+2 SAY "Shema boja za prikaz na ekranu 'V' (B1/B2/.../B7):" GET gShemaVF
- @ m_x+11,m_y+2 SAY "Windows font:" GET gPFont
- @ m_x+12,m_y+2 SAY "Kodna strana:" GET gKodnaS valid gKodnaS $ "78" pict "9"
- @ m_x+13,m_y+2 SAY "Word 97  D/N:" GET gWord97 valid gWord97 $ "DN" pict "@!"
- @ m_x+14,m_y+2 SAY "Zaok 50f (5):" GET g50f    valid g50f    $ " 5" pict "9"
- @ m_x+15,m_y+2 SAY "Prenijeti podatke na lokalni disk (NDCX):" GET gKesiraj    valid gKesiraj $ "NDCX" pict "@!"
- @ m_x+16,m_y+2 SAY "Omoguciti kolor-prikaz? (D/N)" GET gFKolor valid gFKolor$"DN" pict "@!"
- @ m_x+16,col()+2 SAY "SQL log ? (D/N)" GET gSql pict "@!"
-
- @ m_x+18,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
- @ m_x+18,m_y+36 SAY "M - FMKMREZ"
- read
+ 	@ m_x+18,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
+ 	@ m_x+18,m_y+36 SAY "M - FMKMREZ"
+ 	read
 BoxC()
 
 if cFMKIni $ "DSPKM"
-   private cKom:="q "
-   if cFMKINI=="D"
-     cKom+=EXEPATH
-   elseif  cFMKINI=="K"
-     cKom+=KUMPATH
-   elseif  cFMKINI=="P"
-     cKom+=PRIVPATH
-   elseif  cFMKINI=="S"
-     cKom+=SIFPATH
-   endif
-    //-- M je za ispravku FMKMREZ.BAT
-    if cFMKINI=="M"
-     cKom+=EXEPATH+"FMKMREZ.BAT"
-    else
-     cKom+="FMK.INI"
-    endif
+	private cKom:="q "
+   	if cFMKINI=="D"
+     		cKom+=EXEPATH
+   	elseif  cFMKINI=="K"
+     		cKom+=KUMPATH
+   	elseif  cFMKINI=="P"
+     		cKom+=PRIVPATH
+   	elseif  cFMKINI=="S"
+     		cKom+=SIFPATH
+   	endif
+    	//-- M je za ispravku FMKMREZ.BAT
+    	if cFMKINI=="M"
+     		cKom+=EXEPATH+"FMKMREZ.BAT"
+    	else
+     		cKom+="FMK.INI"
+    	endif
 
-   Box(,25,80)
-   run &ckom
-   BoxC()
-   IniRefresh() // izbrisi iz cache-a
+   	Box(,25,80)
+   		run &ckom
+   	BoxC()
+   	IniRefresh() // izbrisi iz cache-a
 endif
 
 
 if lastkey()<>K_ESC
-  Wpar("pt",gPTKonv)
-  Wpar("pS",gPicSif)
-  Wpar("SK",gSKSif)
-  Wpar("DO",gcDirekt)
-  Wpar("FK",gFKolor)
-  Wpar("S9",gSQL)
-  UzmiIzIni(KUMPATH+"fmk.ini","Svi","SqlLog",gSql,"WRITE")
-  Wpar("SB",gShemaVF)
-  Wpar("Ad",trim(gArhDir))
-  Wpar("FO",trim(gPFont))
-  Wpar("KS",gKodnaS)
-  Wpar("W7",gWord97)
-  Wpar("5f",g50f)
- if gKesiraj $ "CD"
-   if sigmaSif("SKESH")
-    Wpar("kE",gKesiraj)
-   else
-    MsgBeep("Neispravna sifra!")
-   endif
- else
-    Wpar("kE",gKesiraj)
- endif
-
+	Wpar("pt",gPTKonv)
+  	Wpar("pS",gPicSif)
+  	Wpar("SK",gSKSif)
+  	Wpar("DO",gcDirekt)
+  	Wpar("FK",gFKolor)
+  	Wpar("S9",gSQL)
+  	UzmiIzIni(KUMPATH+"fmk.ini","Svi","SqlLog",gSql,"WRITE")
+  	Wpar("SB",gShemaVF)
+  	Wpar("Ad",trim(gArhDir))
+  	Wpar("FO",trim(gPFont))
+  	Wpar("KS",gKodnaS)
+  	Wpar("W7",gWord97)
+  	Wpar("5f",g50f)
+ 	if gKesiraj $ "CD"
+   		if sigmaSif("SKESH")
+    			Wpar("kE",gKesiraj)
+   		else
+    			MsgBeep("Neispravna sifra!")
+   		endif
+ 	else
+    		Wpar("kE",gKesiraj)
+ 	endif
 endif
+
 KonvTable()
-select gparams; use
+
+select gparams
+use
 PopWa()
 SETCOLOR(cOldBoje)
 
+// upisi i u params parametre za PDV / PRIVPATH+params.dbf
+O_PARAMS
+select params
+WPar("PD", gPDV)
+
 return
 *}
+
 
 /*! \fn TAppMod::setTGVars() 
  *  \brief Setuje globalne varijable, te setuje incijalne vrijednosti objekata koji pripadaju glavnom app objektu
