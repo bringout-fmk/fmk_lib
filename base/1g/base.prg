@@ -207,6 +207,7 @@ gModul:=oApp:cName
 gVerzija:=oApp:cVerzija
 
 gAppSrv:=.f.
+
 if mpar37("/APPSRV", oApp)
   ? "Pokrecem App Serv ..."
   gAppSrv:=.t.
