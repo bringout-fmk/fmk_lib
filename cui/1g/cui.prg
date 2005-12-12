@@ -1441,6 +1441,43 @@ endif
 return nil
 *}
 
+function PDVBoje()
+*{
+public  Invert
+public  Normal
+public  Blink
+public  Nevid
+
+if TYPE("gFKolor")<>"C"
+	gFKolor:="D"
+endif
+
+#ifdef CLIP
+	Invert:="B/W,R/N+,,,R/B+"
+	Normal:="W/B,R/N+,,,N/W"
+	Blink:="R"+REPLICATE("*",4)+"/W,W/B,,,W/RB"
+	Nevid:="W/W,N/N"
+#else
+if (gFKolor=="D" .and. ISCOLOR())
+
+	Invert:="B/W,R/N+,,,R/B+"
+	Normal:="W/G,R/N+,,,N/W"
+	Blink:="R"+REPLICATE("*",4)+"/W,W/B,,,W/RB"
+	Nevid:="W/W,N/N"
+else
+
+	Invert:="N/W,W/N,,,W/N"
+	Normal:="W/N,N/W,,,N/W"
+	Blink:="N"+REPLICATE("*",4)+"/W,W/N,,,W/N"
+	Nevid:="W/W,N/N"
+endif
+#endif
+
+return nil
+*}
+
+
+
 function BtoEU(cInput) 
 *{
 local i,cpom, cChar, cChar2,nPos, fdupli
