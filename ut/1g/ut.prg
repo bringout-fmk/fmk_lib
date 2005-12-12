@@ -5,20 +5,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/ut/1g/ut.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.4 $
- * $Log: ut.prg,v $
- * Revision 1.4  2003/01/19 23:44:19  ernad
- * test network speed (sa), korekcija bl.lnk
- *
- * Revision 1.3  2002/06/30 09:34:08  ernad
- *
- *
- *
- * doxy-ranje
- *
- *
  */
  
 /*! \fn nToLongC(nN)
