@@ -265,8 +265,6 @@ method gProc(Ch)
 
 local i
 
-altd()
-
 do case
 
 	case (Ch==K_SH_F12)
