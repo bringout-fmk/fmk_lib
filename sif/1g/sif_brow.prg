@@ -1295,10 +1295,6 @@ local xRet:=""
 local nTr1, nTr2 , xVal
 private cPom:=""
 
-IF IzFmkIni('Svi','Sifk','N')<>'D'
-  RETURN (NIL)
-ENDIF
-
 PushWa()
 cDBF:=padr(cDBF,8)
 cOznaka:=padr(cOznaka,4)

@@ -3,39 +3,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/base/1g/gvars.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.10 $
- * $Log: gvars.prg,v $
- * Revision 1.10  2003/01/29 06:00:36  ernad
- * citanje ini fajlova
- *
- * Revision 1.9  2003/01/21 16:18:22  ernad
- * planika gSQL=D bug tops
- *
- * Revision 1.8  2002/08/19 10:01:47  ernad
- *
- *
- * podesenja za CLIP
- *
- * Revision 1.7  2002/07/30 17:40:59  ernad
- * SqlLog funkcije - Fin modul
- *
- * Revision 1.6  2002/06/30 20:28:44  ernad
- *
- *
- *
- * pos meni za odabir firme /MNU_INI
- *
- * Revision 1.5  2002/06/24 17:04:15  ernad
- *
- *
- * omoguceno da se "restartuje" program .... nakon podesenja sistemskog sata -> oApp:run() ....
- *
- * Revision 1.4  2002/06/17 09:49:43  ernad
- * uveden TAppMod:gParams, dodana opcija install DB-a pri <s-F10>
- *
- *
  */
  
 /****v SC_BASE/GW_STATUS ***
@@ -188,7 +155,7 @@ PUBLIC gKonvertPath
 gKonvertPath:=IzFmkIni('FMK','KonvertPath','N', EXEPATH )
 
 PUBLIC gSifk
-gSifk:=IzFmkIni("Svi","Sifk","D")
+gSifk:=.t.
 
 PUBLIC gHostOS
 gHostOS:="Win9X"
