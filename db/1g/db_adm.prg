@@ -5,56 +5,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/db/1g/db_adm.prg,v $
- * $Author: sasavranic $ 
- * $Revision: 1.19 $
- * $Log: db_adm.prg,v $
- * Revision 1.19  2004/02/06 10:02:50  sasavranic
- * Konverzija sifrarnika LD radnika i ld, ali samo polja ID i IDRADN
- *
- * Revision 1.18  2004/01/13 19:07:28  sasavranic
- * appsrv konverzija
- *
- * Revision 1.17  2003/01/24 21:22:57  mirsad
- * no message
- *
- * Revision 1.16  2003/01/19 23:44:19  ernad
- * test network speed (sa), korekcija bl.lnk
- *
- * Revision 1.15  2002/11/22 10:30:42  mirsad
- * prebacivanje security iz modula u SCLIB
- *
- * Revision 1.14  2002/11/18 12:12:58  mirsad
- * dorade i korekcije-security
- *
- * Revision 1.13  2002/11/18 09:00:57  mirsad
- * korekcija: br.oblasti 200->300, 105->300
- *
- * Revision 1.12  2002/07/03 07:31:12  ernad
- *
- *
- * planika, debug na terenu
- *
- * Revision 1.11  2002/06/25 12:04:07  ernad
- *
- *
- * ubaceno kreiranje SECUR-a (posto je prebacen u kumpath)
- *
- * Revision 1.10  2002/06/23 11:57:23  ernad
- * ciscenja sql - planika
- *
- * Revision 1.9  2002/06/21 02:28:36  ernad
- * interni sql parser - init, testiranje pos-sql
- *
- * Revision 1.8  2002/06/17 18:44:33  ernad
- *
- *
- * podsenje makefile sistema
- *
- * Revision 1.7  2002/06/16 14:00:46  ernad
- * IsFreeForReading: bug fopen() bez fclose()
- *
- *
  */
  
 *static string
@@ -365,7 +315,7 @@ function Reindex(ff)
 
 local nDbf
 
-IF (ff<>nil .and. ff==.t.) .or. if(!gAppSrv, Pitanje("","Reindeksirati DB (D/N)","N")=="D", .t.)
+IF (ff<>nil .and. ff==.t.) .or. if( !gAppSrv,  Pitanje("","Reindeksirati DB (D/N)","N")=="D", .t.)
 
 if !gAppSrv
 	Box("xx",1,56,.f.,"Vrsi se reindeksiranje DB-a ")
@@ -384,6 +334,7 @@ endif
 //
 
 close all
+
 // CDX verzija
 set exclusive on
 for nDbf:=1 to 250
@@ -402,7 +353,11 @@ for nDbf:=1 to 250
 		else
 			? "Ne mogu administrirati: " + DBFName(nDbf) + " / " + ALLTRIM(STR(nDBF))
 		endif
-		inkey(3)
+
+		if !EMPTY(DBFName(nDbf))
+			// ovaj modul "zna" za ovu tabelu, ali postoji problem
+			inkey(3)
+		endif
 		END SEQUENCE
 		bErr:=ERRORBLOCK(bErr)
 	#else
