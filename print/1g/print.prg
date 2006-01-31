@@ -522,7 +522,7 @@ return fPrn
 
 function PPrint()
 *{
-local fused:=.f.,ch
+local fused:=.f., ch
 local cSekvence:="N"
 
 PushWa()

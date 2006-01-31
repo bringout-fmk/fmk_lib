@@ -5,24 +5,6 @@
  * ----------------------------------------------------------------
  */
  
-/****v SC_BASE/GW_STATUS ***
-
-*AUTOR
- Ernad Husremovic ernad@sigma-com.net
-
-*IME
- GW_STATUS
-
-*OPIS
- "-"                Gateway je slobodan
- "K_NA_CEKI_SQL"    Vrsi se import SQL loga
- "GEN_SQL_LOG"          Trenutno generisem SQL Log
- 
-*PRIMJER
-
-*BILJESKE
-
-****/
 
 /****v SC_BASE/gVeryBusyInterval ***
 
@@ -315,7 +297,9 @@ function IniPrinter()
 * postavi shift F2 kao hotkey
 
 
-if gModul $ "TOPS#HOPS"
+if gModul $ "EPDV"
+  public gPrinter:="R"
+elseif gModul $ "TOPS#HOPS"
  public gPrinter:="0"
 else
  public gPrinter:="1"

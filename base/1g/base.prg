@@ -197,7 +197,6 @@ RDDSETDEFAULT(RDDENGINE)
 
 set exclusive on
 oApp:oDatabase:lAdmin:=.t.
-altd()
 CreKorisn()
 @ 10,30 SAY ""
 
@@ -216,7 +215,7 @@ if Pitanje(,"Izvrsiti instalaciju fajlova (D/N) ?","N")=="D"
     oApp:oDatabase:kreiraj()
 endif
 
-gPrinter:="1"
+gPrinter:="R"
 InigEpson()
 
 O_GPARAMS
@@ -226,7 +225,9 @@ gValIz:="280 "
 gValU:="000 "
 gKurs:="1"
   
-private cSection:="1",cHistory:=" "; aHistory:={}
+private cSection:="1"
+private cHistory:=" "
+private aHistory:={}
 RPar("px",@gPrinter)
 RPar("vi",@gValIz)
 RPar("vu",@gValU)
@@ -235,7 +236,9 @@ select params
 use
 
 select gparams
-private cSection:="P",cHistory:=gPrinter; aHistory:={}
+private cSection:="P"
+private cHistory:=gPrinter
+private aHistory:={}
 RPar_Printer()
 
 gPTKONV:="0"
@@ -245,7 +248,7 @@ gSKSif:="D"
 gArhDir:=ToUnix("C:"+SLASH+"SIGARH")
 gPFont:="Arial"
 
-private cSection:="1",cHistory:=" "; aHistory:={}
+private cSection:="1", cHistory:=" "; aHistory:={}
 Rpar("pt",@gPTKonv)
 Rpar("pS",@gPicSif)
 Rpar("SK",@gSKSif)
