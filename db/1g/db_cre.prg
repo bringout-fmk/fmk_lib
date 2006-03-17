@@ -4,33 +4,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/db/1g/db_cre.prg,v $
- * $Author: sasavranic $ 
- * $Revision: 1.8 $
- * $Log: db_cre.prg,v $
- * Revision 1.8  2004/02/06 10:02:50  sasavranic
- * Konverzija sifrarnika LD radnika i ld, ali samo polja ID i IDRADN
- *
- * Revision 1.7  2003/01/14 03:23:34  ernad
- * exclusiv ... probelm mreza W2K ...
- *
- * Revision 1.6  2002/06/25 12:17:57  ernad
- *
- *
- *
- * debug kreiraj(F_SECUR)
- *
- * Revision 1.5  2002/06/24 16:11:53  ernad
- *
- *
- * planika - uvodjenje izvjestaja 98-reklamacija, izvjestaj planika/promet po vrstama placanja, debug
- *
- * Revision 1.4  2002/06/21 13:32:42  ernad
- *
- *
- * planika - debug aZabIsp / EditSifIte, razrada gw - import db
- *
- *
  */
 
 function CreKorisn(nArea)

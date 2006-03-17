@@ -4,15 +4,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/ut/1g/str_ut.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.2 $
- * $Log: str_ut.prg,v $
- * Revision 1.2  2002/06/27 17:22:41  ernad
- *
- *
- * ciscenja, prenos fja iz fakt-a
- *
  *
  */
  
@@ -72,7 +63,6 @@ function CryptSC(cStr)
 *{
 local nLen,cC,cPom,i
 
-altd()
 cPom:=""
 nLen:=len(cStr)
 for i=1 to int(nLen/2)
@@ -194,7 +184,8 @@ return cPom
 *}
 
 
-
+// ---------------------------
+// ---------------------------
 FUNCTION Razrijedi (cStr)
 *{
 LOCAL cRazrStr, nLenM1, nCnt
@@ -604,5 +595,46 @@ return cPom
 *}
 
 
+// -------------------------------------
+// -------------------------------------
+function show_number(nNumber, cPicture)
+local nDec
+local nLen
+local nExp
+local i
 
+nLen := LEN(cPicture)
 
+// 99999.999"
+//     AT(".") = 6
+// LEN 9
+	 
+nDec:=AT(".", cPicture)
+
+altd()
+
+if nDec > 0
+        //  nDec =  9  - 6  = 3
+	nDec := nLen - nDec 
+endif
+
+// max velicina koja se moze prikazati sa ovim picture
+// 5  =  9 - 3 - 1  => 10 ^ 5
+// 
+nExp := nLen - nDec - 1
+
+//     0  -> 3
+for i:=0 to nDec
+  // nNum 177 000  < 10**5 -1 = 100 000 - 1 = 99 999
+  if nNumber/(10**i) < (10**(nExp)-1)
+  	if i=0
+		return TRANSFORM(nNumber, cPicture)
+	else
+		return STR(nNumber, nLen, nDec - i)
+	endif
+  endif
+next
+
+return REPLICATE("*", nLen)
+
+	
