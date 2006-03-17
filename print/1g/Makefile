@@ -6,7 +6,7 @@ include /sclib/Makefile_clipper
 SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\print\\1g\\
 
 
-PRGS=print.prg
+PRGS=print.prg ptxt.prg
 CS=
 ifdef CLIP
 	ASMS=
