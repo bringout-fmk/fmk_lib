@@ -7,7 +7,7 @@
  
 
 #define SC_DEFINED
-#define SC_CLIB_VER  "02.06"
+#define SC_CLIB_VER  "02.10"
 
 #ifdef CLIP
 	#DEFINE SLASH "/"

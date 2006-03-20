@@ -399,7 +399,7 @@ RPar("p?",@cPosebno)
 
 gArhDir:=padr(gArhDir,20)
 gPFont:=padr(gPFont,20)
-Box(,19,70)
+Box(, 20, 70)
 	set cursor on
  	@ m_x+ 1,m_y+2 SAY "Parametre pohraniti posebno za korisnika "  GET cPosebno valid cPosebno $ "DN" pict "@!"
  	read
@@ -425,7 +425,8 @@ Box(,19,70)
    		O_GPARAMS
  	endif
 
- 	gPtkonv:=padr(gPtkonv,2)
+ 	gPtkonv := padr(gPtkonv, 2)
+	gLokal := PADR(gLokal, 2)
  	@ m_x+ 3,m_y+2 SAY "Konverzija znakova BEZ, 7-852, 7-A, 852-7, 852-A"
  	@ m_x+ 4,m_y+2 SAY "                    0  / 1   /  2  / 3   /   4  "  GET gPTKonv pict "@!" valid subst(gPtkonv,2,1)$ " 1"
  	@ m_x+ 6,m_y+2 SAY "Unos podataka u sifrarnike velika/mala slova/konv.u 852 (V/M/8)"  GET gPicSif valid gpicsif $ "VM8" pict "@!"
@@ -445,7 +446,10 @@ Box(,19,70)
 
  	@ m_x+18,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
  	@ m_x+18,m_y+36 SAY "M - FMKMREZ"
- 	read
+ 	@ m_x+19, m_y+36 SAY "Lokalizacija 0/hr/ba " GET gLokal ;
+		VALID gLokal $ "0 #hr#ba#sr#en" ;
+		
+ 	READ
 BoxC()
 
 if cFMKIni $ "DSPKM"
@@ -474,19 +478,19 @@ endif
 
 
 if lastkey()<>K_ESC
-	Wpar("pt",gPTKonv)
-  	Wpar("pS",gPicSif)
-  	Wpar("SK",gSKSif)
-  	Wpar("DO",gcDirekt)
-  	Wpar("FK",gFKolor)
-  	Wpar("S9",gSQL)
+	Wpar("pt", gPTKonv)
+  	Wpar("pS", gPicSif)
+  	Wpar("SK", gSKSif)
+  	Wpar("DO", gcDirekt)
+  	Wpar("FK", gFKolor)
+  	Wpar("S9", gSQL)
   	UzmiIzIni(KUMPATH+"fmk.ini","Svi","SqlLog",gSql,"WRITE")
-  	Wpar("SB",gShemaVF)
-  	Wpar("Ad",trim(gArhDir))
-  	Wpar("FO",trim(gPFont))
-  	Wpar("KS",gKodnaS)
-  	Wpar("W7",gWord97)
-  	Wpar("5f",g50f)
+  	Wpar("SB", gShemaVF)
+  	Wpar("Ad", trim(gArhDir))
+  	Wpar("FO", trim(gPFont))
+  	Wpar("KS", gKodnaS)
+  	Wpar("W7", gWord97)
+  	Wpar("5f", g50f)
  	if gKesiraj $ "CD"
    		if sigmaSif("SKESH")
     			Wpar("kE",gKesiraj)
@@ -496,6 +500,7 @@ if lastkey()<>K_ESC
  	else
     		Wpar("kE",gKesiraj)
  	endif
+	WPar("L8", ALLTRIM(gLokal) )
 endif
 
 KonvTable()
