@@ -566,8 +566,6 @@ endif
 
 if Ch==K_CTRL_N
 	fNovi:=.t.
-//      append blank
-//      sql_append()
 	go bottom
 	skip 1
 endif
@@ -575,8 +573,6 @@ endif
 
 if Ch==K_F4
 	fNovi:=.t.
-//      append blank
-//      sql_append()
 endif
 
 
@@ -585,19 +581,6 @@ do while .t.
     // setuj varijable za tekuci slog
     SetSifVars()
    
-
-    // Scatter("w")  nisam upotrijebio fju da bi mogao deklarisati priv. varijable
-    //Logg("ImeKol="+STR(LEN(aStruct)))
-    // kraj scatttera
-    
-    /*nTrecf4:=1
-    if Ch==K_F4  // dupliciranje zapisa
-       nTrecf4:=recno()
-       fNovi:=.t.
-       append blank
-       sql_azur(.t.)
-       sql_append()
-    endif*/
 
     nTrebaredova:=LEN(ImeKol)
     for i:=1 to LEN(ImeKol)
@@ -628,10 +611,6 @@ do while .t.
 	    do while .t.  // i brojac
 
 	    
-	    //SetSifVars()
-	    
-	    // kraj scatttera
-	    //nTrecf4:=1
 	     if empty(ImeKol[i,3])  // ovdje se kroji matrica varijabli.......
 		cPom:=""  // area->nazpolja
 	     else
@@ -801,14 +780,12 @@ do while .t.
 
    if lastkey()==K_ESC
       if fNovi
-         //sql_delete()
-         //delete
 	 go (nPrevRecNo)
          return 0
       elseif Ch==K_F2
          return 0
       else
-         return 1
+         return 0
       endif
    else
       if fNovi
@@ -820,7 +797,7 @@ do while .t.
       sql_azur(.t.)
       Scatter("w")
       GathSQL("w")
-      if Ch==K_F4 .and. Pitanje(,"Vrati se na predhodni zapis","D")=="D"
+      if Ch==K_F4 .and. Pitanje( , "Vrati se na predhodni zapis","D")=="D"
         go (nPrevRecNo)
       endif
       return 1
