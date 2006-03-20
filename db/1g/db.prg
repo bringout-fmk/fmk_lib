@@ -1,4 +1,6 @@
 #include "sc.ch"
+static aWaStack:={}
+static aBoxStack:={}
 
 /*
  * ----------------------------------------------------------------
@@ -1242,4 +1244,52 @@ next
 CLOSE ALL
 return
 *}
+
+// --------------------------------
+// --------------------------------
+function PushWA()
+if used()
+ StackPush(aWAStack,{select(),IndexOrd(),DBFilter(),RECNO()})
+else
+ StackPush(aWAStack,{NIL,NIL,NIL,NIL})
+endif
+return NIL
+
+
+// ---------------------------
+// ---------------------------
+function PopWA()
+
+local aWa
+local i
+
+aWa:=StackPop(aWaStack)
+if aWa[1]<>nil
+   
+   // select
+   SELECT(aWa[1])
+   
+   // order
+   if used()
+	   if !empty(aWa[2])
+	      ordsetfocus(aWa[2])
+	   else
+	    set order to
+	   endif
+   endif
+
+   // filter
+   if !empty(aWa[3])
+     set filter to &(aWa[3])
+   else
+     if !empty(dbfilter())
+       set filter to
+     endif
+     //   DBCLEARFILTER( )
+   endif
+   
+   go aWa[4]
+   
+endif  // wa[1]<>NIL
+return NIL
 

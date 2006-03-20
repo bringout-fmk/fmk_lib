@@ -262,7 +262,7 @@ return
 *void TAppMod::gProc(char Ch)
 *{
 method gProc(Ch)
-
+local lPushWa
 local i
 
 do case
@@ -383,9 +383,15 @@ local cFMKINI:="N"
 local cPosebno:="N"
 local cOldBoje:=SETCOLOR(INVERT)
 local cInstall:="N"
+local lPushWa := .f.
 private GetList:={}
 
-PushWa()
+if used()
+	lPushWa:=.t.
+	PushWa()
+else
+	lPushWa:=.f.
+endif
 
 private cSection:="1"
 private cHistory:=" "
@@ -446,7 +452,7 @@ Box(, 20, 70)
 
  	@ m_x+18,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
  	@ m_x+18,m_y+36 SAY "M - FMKMREZ"
- 	@ m_x+19, m_y+36 SAY "Lokalizacija 0/hr/ba " GET gLokal ;
+ 	@ m_x+19, m_y+2 SAY "Lokalizacija 0/hr/ba/en/sr " GET gLokal ;
 		VALID gLokal $ "0 #hr#ba#sr#en" ;
 		
  	READ
@@ -507,14 +513,18 @@ KonvTable()
 
 select gparams
 use
-PopWa()
+
 SETCOLOR(cOldBoje)
 
 // upisi i u params parametre za PDV / PRIVPATH+params.dbf
 O_PARAMS
 select params
 WPar("PD", gPDV)
+use
 
+if lPushWa
+	PopWa()
+endif
 return
 *}
 
