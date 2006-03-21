@@ -18,9 +18,8 @@ gPI_OFF:="#%IOFF_#"
 gPFF   :="#%NSTR_#"
 gPO_Port:="#%PORTR#"
 gPO_Land:="#%LANDS#"
-// gRPL_Normal:="#%RPLNO#"        // u PTXT-u nije implementirano
+
 gRPL_Normal:=""
-// gRPL_Gusto:="#%RPLGU#"         // u PTXT-u nije implementirano
 gRPL_Gusto:=""
 return
 
@@ -42,18 +41,12 @@ endif
 
 cKom:=EXEPATH+"PTXT "+cImeF+" "
 
-
-
-//if !file(EXEPATH+'FMK.INI')
-//  nFH:=FCreate(EXEPATH+'FMK.INI')
-//  FWrite(nFh,";------- Ini Fajl FMK-------")
-//  Fclose(nFH)
-//  cPTXTSW:=R_IniWrite ( 'DOS','PTXTSW',  "/P", EXEPATH+'FMK.INI')
-//endif
-
-// switchewi za ptxt
-
 cKom += " "+ cPtxtSw
+
+if compat50()
+	// postavi compatibility
+	cKom += " /c50"
+endif
 
 
 Run(cKom)
@@ -62,3 +55,20 @@ Run(cKom)
 return
 *}
 
+// -----------------------------------------------
+// ako gPTxtC50 varijabla nije definisana
+// onda se mora ici ka PTXT kompatibilnost
+// ako postoji varijabla onda je ona  logicka
+// i vraca se postavka PTXT-a
+// -----------------------------------------------
+static function compat50()
+local cType
+
+cType:=TYPE("gPtxtC50")
+do case
+	case cType == "L"
+		return gPtxtC50
+	otherwise
+		return .t.
+endcase
+	
