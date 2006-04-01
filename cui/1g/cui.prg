@@ -1684,7 +1684,7 @@ if fMain
 endif
 
 do while .t.
-   Izbor:=menu(cIzp,opc,Izbor,.f.)
+   Izbor:=menu(cIzp, opc, Izbor, .f.)
    do case
      case Izbor==0
        if fMain
@@ -1706,8 +1706,9 @@ do while .t.
        endif
      case lBug
         LOOP
+	
      otherwise
-      	 if opcexe[izbor]<>NIL
+      	 if opcexe[izbor] <> nil
           private xPom:=opcexe[izbor]
 	  if VALTYPE(xPom)="C"
 	     xDummy:=&(xPom)
@@ -1716,6 +1717,7 @@ do while .t.
 	  endif
 	 endif  
      endcase
+     
 enddo
 return
 *}
