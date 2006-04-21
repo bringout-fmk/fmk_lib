@@ -26,10 +26,17 @@ endcase
 return
 *}
 
-function SjeciStr(cStr,nLen)
+// --------------------------------
+// --------------------------------
+function SjeciStr(cStr, nLen, aRez)
 *{
 
-aRez:={}
+if aRez == nil
+	aRez:={}
+else
+	// prosljedjena je matrica da se dodaju elementi
+	// sa SjeciStr(cStr, nLen, @aRez)
+endif
 
 cStr:=Trim(cStr)
 
@@ -38,24 +45,32 @@ do while  !empty(cStr)
   fProsao:=.f.
   if len(cStr)>nLen
    for i:=nLen to int(nLen/2) step -1
-     if substr(cStr,i,1) $ " ,/-:)"
-        AADD(aRez,PADR(left(cStr,i),nLen))
-        cStr:=substr(cStr,i+1)
+   
+     if substr(cStr, i, 1) $ " ,/-:)"
+        AADD(aRez,PADR(left(cStr,i), nLen))
+        cStr:=substr(cStr, i+1)
         i:=1
         fProsao:=.t.
      endif
+     
    next
+   
   else
-    AADD(aRez,PADR(cStr,nLen))
+  
+    AADD( aRez, PADR(cStr,nLen) )
     fProsao:=.t.
     cStr:=""
+    
   endif
+  
   if !fProsao
-     AADD(aRez,padr(left(cStr,nLen-1)+iif(len(cStr)>nLen,"-",""),nLen))
+     AADD(aRez,padr(left(cStr,nLen-1)+iif(len(cStr)>nLen, "-", ""),nLen))
      cStr:=substr(cStr,nLen)
   endif
 enddo
-if len(aRez)==0; AADD(aRez,space(nLen)); endif
+if len(aRez)==0
+	AADD(aRez,space(nLen))
+endif
 return aRez
 *}
 
@@ -597,25 +612,36 @@ return cPom
 
 // -------------------------------------
 // -------------------------------------
-function show_number(nNumber, cPicture)
+function show_number(nNumber, cPicture, nExtra)
 local nDec
 local nLen
 local nExp
 local i
 
-nLen := LEN(cPicture)
-
-// 99999.999"
-//     AT(".") = 6
-// LEN 9
-	 
-nDec:=AT(".", cPicture)
-
 altd()
 
-if nDec > 0
-        //  nDec =  9  - 6  = 3
-	nDec := nLen - nDec 
+if nExtra <> NIL
+	nLen := ABS(nExtra)
+
+else
+	nLen := LEN(cPicture)
+endif
+
+
+if cPicture == nil
+	nDec = kolko_decimala( nNumber )
+else
+	// 99999.999"
+	//     AT(".") = 6
+	// LEN 9
+	 
+	nDec:=AT(".", cPicture)
+
+	if nDec > 0
+        	//  nDec =  9  - 6  = 3
+		nDec := nLen - nDec 
+	endif
+
 endif
 
 // max velicina koja se moze prikazati sa ovim picture
@@ -628,7 +654,11 @@ for i:=0 to nDec
   // nNum 177 000  < 10**5 -1 = 100 000 - 1 = 99 999
   if nNumber/(10**i) < (10**(nExp)-1)
   	if i=0
-		return TRANSFORM(nNumber, cPicture)
+		if cPicture == nil
+			return STR(nNumber, nLen, nDec)
+		else
+			return TRANSFORM(nNumber, cPicture)
+		endif
 	else
 		return STR(nNumber, nLen, nDec - i)
 	endif
@@ -637,4 +667,21 @@ next
 
 return REPLICATE("*", nLen)
 
-	
+// ---------------------------------
+// ---------------------------------
+static function kolko_decimala( nNumber)
+local nDec
+local i
+
+// prepostavka da je maximalno 4
+nDec := 4
+
+// nadji broj potrebnih decimala
+for i:=0 to 4
+	if ROUND(nNumber, i) == ROUND(nNumber, nDec)
+		return i
+ 	endif
+next
+
+return nDec
+
