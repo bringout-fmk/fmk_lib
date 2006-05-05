@@ -1,4 +1,3 @@
-
 /*
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
@@ -7,27 +6,16 @@
  
 
 #define SC_DEFINED
-#define SC_CLIB_VER  "02.15"
+#define SC_CLIB_VER  "02.16"
 
-#ifdef CLIP
-	#DEFINE SLASH "/"
-	#DEFINE INDEXEXTENS "cdx"
-	#DEFINE INDEXEXT "cdx"
-	#DEFINE DBFEXT "dbf"
-	#DEFINE MEMOEXT "fpt"
-	#DEFINE RDDENGINE "DBFCDX"
-	#DEFINE DRVPATH "/c/"
-	#define NRED chr(10)
-#else
-	#DEFINE SLASH "\"
-	#DEFINE INDEXEXTENS "CDX"
-	#DEFINE INDEXEXT "CDX"
-	#DEFINE DBFEXT "DBF"
-	#DEFINE MEMOEXT "FPT"
-	#DEFINE RDDENGINE "COMIX"
-	#DEFINE DRVPATH ":\"
-	#define NRED chr(13)+chr(10)
-#endif
+#DEFINE SLASH "\"
+#DEFINE INDEXEXTENS "CDX"
+#DEFINE INDEXEXT "CDX"
+#DEFINE DBFEXT "DBF"
+#DEFINE MEMOEXT "FPT"
+#DEFINE RDDENGINE "COMIX"
+#DEFINE DRVPATH ":\"
+#define NRED chr(13)+chr(10)
 
 #define P_NRED QOUT()
 
@@ -82,14 +70,8 @@
 	#include "\dev\Fmk\AF\cl-AF\fmk.ch"
 #endif
 
-#ifdef CDX
-	#include "\dev\AF\cl-sclib\sclib\db\1g\sc_db.ch"
-	#ifndef CLIP
-		#include "cm52.ch"
-	#endif
-#else
-	#include "ax\sc_db.ch"
-#endif
+#include "\dev\AF\cl-sclib\sclib\db\1g\sc_db.ch"
+#include "cm52.ch"
 
 //korisnicke licence
 #define AL_INET 1

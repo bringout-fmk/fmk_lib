@@ -49,25 +49,11 @@ local cImeDbf
 
 public gAppSrv
 
-#ifdef CLIP
-	? "setujem engine (sc_start)"
-#endif
-
 if !oApp:lStarted	
 	
-#ifdef CLIP
-	? "setujem default engine ..."
-#endif
 	RDDSETDEFAULT(RDDENGINE)
-#ifdef CLIP
-	? "startujem oApp:db()"
-#endif
 	oApp:initdb()
 endif
-
-#ifdef CLIP
-	? "setujem globalne varijable"
-#endif
 
 SetgaSDbfs()
 SetScGVars()
