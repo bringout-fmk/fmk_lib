@@ -318,6 +318,7 @@ if !PostDir(::cDirKum) .and. Pitanje(,"Formirati sezonske direktorije","N")=="D"
 	dirmake(::cDirPriv)
 endif
 
+altd()
 lURp:=fURp
 
 ::oApp:SetGVars()

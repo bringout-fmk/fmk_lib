@@ -513,7 +513,6 @@ do case
   case Ch==K_F10
       SifPopup(nOrder)
       RETURN DE_CONT
-      
   otherwise
 
      if nRet>-1
@@ -543,6 +542,8 @@ local nTekRed
 local nTrebaRedova
 local oTable
 local nPrevRecNo
+private nXP
+private nYP
 private cPom
 private aQQ
 private aUsl
@@ -609,9 +610,10 @@ do while .t.
 
 	    nTekRed:=1
 	    do while .t.  // i brojac
-
 	    
-	     if empty(ImeKol[i,3])  // ovdje se kroji matrica varijabli.......
+	    lShowPGroup := .f.
+	    
+	    if empty(ImeKol[i,3])  // ovdje se kroji matrica varijabli.......
 		cPom:=""  // area->nazpolja
 	     else
 	       if left(ImeKol[i,3],6)!="SIFK->"
@@ -619,6 +621,10 @@ do while .t.
 		// ako provjerimo strukturu, onda mozemo vidjeti da trebamo uzeti
 		// varijablu karakteristike("ROBA","V2")
 	       else
+	         // ako je SIFK->GRUP, prikazuj status
+	         if ALIAS() == "PARTN" .and. RIGHT(ImeKol[i,3],4) == "GRUP"
+		    lShowPGroup := .t.
+		 endif
 		 cPom:= "wSifk_"+substr(ImeKol[i,3],7)
 		 &cPom:= IzSifk(ALIAS(),substr(ImeKol[i,3],7))
 		 if &cPom = NIL  // ne koristi se !!!
@@ -681,8 +687,19 @@ do while .t.
 		 if nKolona=1
 		     nTekRed++
 		 endif
-		 @ m_x+nTekRed , m_y+nKolona SAY if(nKolona>1,"  "+alltrim(ImeKol[i,1]) , PADL( alltrim(ImeKol[i,1]) ,15))  GET &cPom  VALID eval(bValid)  PICTURE cPic
-
+		
+		 if lShowPGroup
+		   nXP := nTekRed
+		   nYP := nKolona
+		 endif
+		 
+		 @ m_x+nTekRed , m_y+nKolona SAY if(nKolona>1,"  "+alltrim(ImeKol[i,1]) , PADL( alltrim(ImeKol[i,1]) ,15))  GET &cPom VALID eval(bValid) PICTURE cPic
+		 // stampaj grupu za stavku "GRUP"
+		 if lShowPGroup
+		 	altd()
+		 	p_gr(&cPom, nXP+1, nYP+1)
+		 endif
+		
 		 if cPom = "wSifk_"
 		   // uzmi when valid iz SIFK
 		   private cWhenSifk, cValidSifk
@@ -698,6 +715,8 @@ do while .t.
 		   else
 		      GetList[nGet]:PostBlock:=bValid
 		   endif
+		   
+		  
 		 else
 
 		  GetList[nGet]:PreBlock:=bWhen
@@ -841,18 +860,22 @@ oTable:write()
 RETURN
 */
 
+
+
 function SifPopup(nOrder)
 *{
 private Opc:={}
 private opcexe:={}
 private Izbor
 
-AADD(Opc, "1. novi  ")
+AADD(Opc, "1. novi                  ")
 AADD(opcexe, {|| EditSifItem(K_CTRL_N, nOrder) } )
 AADD(Opc, "2. edit  ")
 AADD(opcexe, {|| EditSifItem(K_F2, nOrder) } )
 AADD(Opc, "3. dupliciraj  ")
 AADD(opcexe, {|| EditSifItem(K_F4, nOrder) } )
+AADD(Opc, "4. <a+R> za sifk polja  ")
+AADD(opcexe, {|| repl_sifk_item() } )
 
 Izbor:=1
 Menu_Sc("bsif")
@@ -980,7 +1003,111 @@ endif
       end case
      enddo
      m_x:=am_x; m_y:=am_y
+     
 return DE_REFRESH
+*}
+
+
+function repl_sifk_item()
+*{
+local cTable := ALIAS()
+local cField := SPACE(4)
+local cStVr
+local cNovVr
+local cPtnField
+
+Box(,3,60, .f.)
+	private GetList:={}
+	set cursor on
+	
+	nTekX := m_x
+	nTekY := m_y
+	
+	@ m_x+1,m_y+2 SAY " SifK polje:" GET cField VALID g_sk_flist(@cField)
+	read
+	
+	cStVr:= "wSifk_" + cField
+	&cStVr:= IzSifk(ALIAS(), cField)
+	cOldVal := &cStVr
+	cNewVal := SPACE(LEN(cOldVal))
+	
+	m_x := nTekX
+	m_y := nTekY
+	
+	@ m_x+2,m_y+2 SAY "      Trazi:" GET cOldVal
+        @ m_x+3,m_y+2 SAY "Zamijeni sa:" GET cNewVal
+	
+        read 
+BoxC()
+
+if LastKey()==K_ESC
+	return 0
+endif
+
+if Pitanje(,"Izvrsiti zamjenu polja? (D/N)","D") == "N"
+	return 0
+endif
+
+nTRec := RecNo()
+cStVr2 := cStVr
+
+do while !EOF()
+	&cStVr2 := IzSifK(ALIAS(), cField)
+	if &cStVr2 == cOldVal
+		USifK(ALIAS(), cField, (ALIAS())->id, cNewVal)
+	endif
+	skip
+enddo
+
+go (nTRec)
+
+return 0
+*}
+
+
+function g_sk_flist(cField)
+*{
+local aFields:={}
+local cCurrAlias := ALIAS()
+local nArr
+local nField
+
+nArr := SELECT()
+
+select sifk
+set order to tag "ID"
+cCurrAlias := PADR(cCurrAlias,8)
+seek cCurrAlias
+
+do while !EOF() .and. field->id == cCurrAlias
+	AADD(aFields, {field->oznaka, field->naz})
+	skip
+enddo
+
+select (nArr)
+
+if !EMPTY(cField) .and. ASCAN(aFields, {|xVal| xVal[1] == cField}) > 0
+	return .t.
+endif
+
+if LEN(aFields) > 0
+	private Izbor:=1
+	private opc:={}
+	private opcexe:={}
+	private GetList:={}
+	
+	for i:=1 to LEN(aFields)
+		AADD(opc, PADR(aFields[i, 1] + " - " + aFields[i, 2], 40))
+		AADD(opcexe, {|| nField := Izbor, Izbor:=0})
+	next
+	
+	Izbor:=1
+	Menu_SC("skf")
+endif
+
+cField := aFields[nField, 1]
+
+return .t.
 *}
 
 

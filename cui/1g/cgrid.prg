@@ -709,7 +709,8 @@ DO CASE
      private cKolona
      if len(Imekol[TB:colPos])>2
        if !empty(ImeKol[TB:colPos,3])
-          cKolona:=ImeKol[TB:ColPos,3]
+          altd()
+	  cKolona:=ImeKol[TB:ColPos,3]
           if valtype(&cKolona) $  "CD"
 
             Box(,2,60,.f.)
