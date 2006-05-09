@@ -1012,8 +1012,9 @@ function repl_sifk_item()
 *{
 local cTable := ALIAS()
 local cField := SPACE(4)
-local cStVr
-local cNovVr
+local cOldVal
+local cNewVal
+local cCurrVal
 local cPtnField
 
 Box(,3,60, .f.)
@@ -1026,9 +1027,9 @@ Box(,3,60, .f.)
 	@ m_x+1,m_y+2 SAY " SifK polje:" GET cField VALID g_sk_flist(@cField)
 	read
 	
-	cStVr:= "wSifk_" + cField
-	&cStVr:= IzSifk(ALIAS(), cField)
-	cOldVal := &cStVr
+	cCurrVal:= "wSifk_" + cField
+	&cCurrVal:= IzSifk(ALIAS(), cField)
+	cOldVal := &cCurrVal
 	cNewVal := SPACE(LEN(cOldVal))
 	
 	m_x := nTekX
@@ -1049,11 +1050,10 @@ if Pitanje(,"Izvrsiti zamjenu polja? (D/N)","D") == "N"
 endif
 
 nTRec := RecNo()
-cStVr2 := cStVr
 
 do while !EOF()
-	&cStVr2 := IzSifK(ALIAS(), cField)
-	if &cStVr2 == cOldVal
+	&cCurrVal := IzSifK(ALIAS(), cField)
+	if &cCurrVal == cOldVal
 		USifK(ALIAS(), cField, (ALIAS())->id, cNewVal)
 	endif
 	skip
