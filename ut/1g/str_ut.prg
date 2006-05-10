@@ -501,7 +501,7 @@ local fDec,fSto:=.f.,i
        endif
      else
        if empty(cRez)
-          cRez:="nula DEM"
+          cRez:="nula " + cDINDEM
        else
           cRez+=" "+cDINDEM
        endif
