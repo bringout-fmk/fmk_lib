@@ -2430,12 +2430,12 @@ return ( nLength )
 
 //ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ\\
 
-static FUNCTION NumToken( cString, cDelimiter )
+static function NumToken( cString, cDelimiter )
 RETURN AllToken( cString, cDelimiter )
 
 //ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ\\
 
-static FUNCTION Token( cString, cDelimiter, nPointer )
+static function Token( cString, cDelimiter, nPointer )
 RETURN AllToken( cString, cDelimiter, nPointer, 1 )
 
 //ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ\\
@@ -2602,7 +2602,7 @@ return ( aRay )
 
 //ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ\\
 
-static FUNCTION NumAt( cSearch, cString )
+static function NumAt( cSearch, cString )
 
    LOCAL n := 0, nAt := 0, nPos := 0
    WHILE ( nAt := at( cSearch, substr( cString, nPos + 1 ) )) > 0

@@ -1,34 +1,28 @@
 VERZIJA=CDX
 MODUL=sc1g_pr
 
-include /sclib/Makefile_clipper
+OS_NAME=$(shell uname)
+ifeq "$(OS_NAME)" "Linux"
+  include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper_linux
+else
+  include /sclib/Makefile_clipper
+endif
+
 
 SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\print\\1g\\
 
 
 PRGS=print.prg ptxt.prg
 CS=
-ifdef CLIP
-	ASMS=
-else
-	ASMS=isprint.asm lptswap.asm
-endif
+#ASMS=isprint.asm lptswap.asm
 
 OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
 
 
-ifdef CLIP
-
-all: $(OBJS)
-	clip_makeslib $(MODUL)$(LIBEXT) $(LIBCMD)
-	cp $(MODUL).dll* $(LIB_DEST)
-
-else
 all: $(OBJS)
 	rm -f $(MODUL)$(LIBEXT) 
 	$(LIBEXE) $(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)
 	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
-endif
 
 	
 clean:
