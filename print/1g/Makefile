@@ -14,10 +14,9 @@ SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\print\\1g\\
 
 PRGS=print.prg ptxt.prg
 CS=
-#ASMS=isprint.asm lptswap.asm
+ASMS=isprint.asm lptswap.asm
 
 OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
-
 
 all: $(OBJS)
 	rm -f $(MODUL)$(LIBEXT) 

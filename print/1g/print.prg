@@ -1,9 +1,7 @@
 #include "sc.ch"
-
 /*! \file sc1g/print/print.prg
  *  \brief Print engine
  */
-
 
 /*! \var *string FmkIni_ExePath_Printeri_DirektnoOUTFTXT
   * \brief OUTF.TXT direktno na stampac ?

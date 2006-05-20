@@ -22,9 +22,11 @@
 #
 #
 # Copyright (c) 2006 Sigma-com, 
-# 17.05.06, ver. 02.00
+# 17.05.06-19.05.06, ver. 02.01
 #
 # Licensed under the same terms as Ruby
+
+VER = '02.02'
 
 require 'optparse'
 require 'rdoc/usage'
@@ -56,88 +58,44 @@ class Builder
 	def rewrite_path
 	  sc_dir = ENV['SC_BUILD_HOME_DIR'] + '/'
           # test.prg => /home/hernad/sc/sclib/db/1g/test.prg
-	  if  @prg_name[0] != '/' 
+	  if  @prg_name[0].chr != '/' 
 		@prg_name = (`pwd`).strip! + '/' + @prg_name.strip
 		#puts "dodao tekuci dir  #{@prg_name}"
           end
 
 	  @prg_name = @prg_name.sub(sc_dir, @dos_base_path)
-	  @dir_name = File.dirname(@prg_name)
+	  
 
-	  # unix -> dos
-	  @prg_name = @prg_name.gsub(/\//, '\\\\')
-	  @dir_name = @dir_name.gsub(/\//, '\\\\')
-
-	  #if not ( @prg_name.include? @dos_base_path )
-          #    @dos_cmd +=  @dos_base_path
-          #end
 
         end
+         
+	def unix_to_dos(path)
+		path.gsub(/\//, '\\\\')
+        end
 
-	def compile(prgname, sw="")
+	def stop(xvar="")
+                puts xvar
+		STDOUT.puts "press any key to continue ..."
+		STDIN.readchar     
+        end
+
+	def compile(prgname, sw="", compile_batch_name="run_clp.bat")
 	  @prg_name = prgname
 	  self.rewrite_path
 	  @switches += " " + sw
-	  @dos_cmd = "#{@dos_base_path}\\clp_bc\\run_clp.bat " 
+	  @dos_cmd = "#{@dos_base_path}clp_bc\\#{compile_batch_name} " 
 
-     	  #svim skriptama moram proslijediti i bazni direktorij da bi dosemu
-          #mogao da se pozicionira u taj direktorij
-	  @dos_cmd += @dir_name 
-
-     	  @dos_cmd += " "+ @prg_name
+	  # + c:\dev\sclib\print\1g
+	  @dos_cmd += unix_to_dos(File.dirname(@prg_name))
+	  # + ptxt.prg
+     	  @dos_cmd += " "+ File.basename(@prg_name)
+	  # /DC52
           @dos_cmd += " "+ @switches
 
 	  @dosemu_launch_cmd = "dosemu -dumb -E \"#{@dos_cmd}\""
 
-	  puts "Launch dosemu: #{@dosemu_launch_cmd}"
+	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
 	  result = system(@dosemu_launch_cmd)
-	  result = system("echo DOS Clipper 52e Compiler output")
-	  result = system("----------------------------------------")
-	  result = system("cat /tmp/clperr.txt")
-	end
-
-	def asm_compile(asmname, sw="")
-	  @asm_name = asmname
-	  self.rewrite_path
-	  @switches += " " + sw
-	  @dos_cmd = "#{@dos_base_path}\\clp_bc\\asm52.bat " 
-
-     	  #svim skriptama moram proslijediti i bazni direktorij da bi dosemu
-          #mogao da se pozicionira u taj direktorij
-	  @dos_cmd += @dir_name 
-
-     	  @dos_cmd += " "+ @asm_name
-          @dos_cmd += " "+ @switches
-
-	  @dosemu_launch_cmd = "dosemu -dumb -E \"#{@dos_cmd}\""
-
-	  puts "Launch dosemu: #{@dosemu_launch_cmd}"
-	  result = system(@dosemu_launch_cmd)
-	  #result = system("echo Macro asembler output")
-	  #result = system("----------------------------------------")
-	  #result = system("cat /tmp/clperr.txt")
-	end
-
-	def c_compile(cname, sw="")
-	  @c_name = cname
-	  self.rewrite_path
-	  @switches += " " + sw
-	  @dos_cmd = "#{@dos_base_path}\\clp_bc\\c52.bat " 
-
-     	  #svim skriptama moram proslijediti i bazni direktorij da bi dosemu
-          #mogao da se pozicionira u taj direktorij
-	  @dos_cmd += @dir_name 
-
-     	  @dos_cmd += " "+ @c_name
-          @dos_cmd += " "+ @switches
-
-	  @dosemu_launch_cmd = "dosemu -dumb -E \"#{@dos_cmd}\""
-
-	  puts "Launch dosemu: #{@dosemu_launch_cmd}"
-	  result = system(@dosemu_launch_cmd)
-	  #result = system("echo Macro asembler output")
-	  #result = system("----------------------------------------")
-	  #result = system("cat /tmp/clperr.txt")
 	end
 
 end
@@ -147,7 +105,7 @@ builder = Builder.new
 opts.on("-h", "--help") { RDoc::usage }
 opts.on("-s", "--switches SW") { |sw| builder.switches += " " + sw }
 opts.on("-c", "--compile ARGS") { |args| builder.compile(args) }
-opts.on("-ac", "--asm-compile ARGS") { |args| builder.asm_compile(args) }
-opts.on("-cc", "--c-compile ARGS") { |args| builder.c_compile(args) }
+opts.on("-ac", "--asm-compile ARGS") { |args| builder.compile(args, "", "asm52.bat") }
+opts.on("-cc", "--c-compile ARGS") { |args| builder.compile(args, "", "c52.bat") }
 
 opts.parse(ARGV) 

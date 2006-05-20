@@ -35,32 +35,32 @@ CFLAGS=/n /w /c /AL /FPa /Gs /Zl
 ROBODOC=robodoc
 
 ifndef DEBUG
-	DEBUG=0
+ DEBUG=0
 endif  
 
 ifndef VERZIJA
-	VERZIJA=CDX
+ VERZIJA=CDX
 endif
 	
 ifeq "$(DEBUG)" "1"
-	CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)
-	DEBUGLINK=file $(CLIPPERROOT_DOS)\\lib\\CLD.LIB
-	DEBUGDIR=/debug
-	DEBUGDIR2=DEBUG\\
+ CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)
+ DEBUGLINK=file $(CLIPPERROOT_DOS)\\lib\\CLD.LIB
+ DEBUGDIR=/debug
+ DEBUGDIR2=DEBUG\\
 else
-	CLIPPERFLAGS=$(CLIPPERFLAGS0)
-	DEBUGLINK=
-	DEBUGDIR=
-	DEBUGDIR2=
+ CLIPPERFLAGS=$(CLIPPERFLAGS0)
+ DEBUGLINK=
+ DEBUGDIR=
+ DEBUGDIR2=
 endif
 
 ifeq "$(DEBUG)" "1"
-	LIB_DEST=$(CLIPPERROOT)/debug/$(VERZIJA)/
-	LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\debug\\$(VERZIJA)\\
+ LIB_DEST=$(CLIPPERROOT)/debug/$(VERZIJA)/
+ LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\debug\\$(VERZIJA)\\
 
 else
-	LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
-	LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
+ LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
+ LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
 endif
 
 
@@ -69,7 +69,7 @@ ifeq "${PP}" "1"
 endif
 
 ifeq "${LIB}" "1"
-	CLIPPERFLAGS += /DLIB
+ CLIPPERFLAGS += /DLIB
 endif
 
 OBJPRGS=$(PRGS:.prg=.obj)
@@ -99,9 +99,10 @@ XREFS=$(DOCS:.html=.xref)
 	$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile $< 
 
 .asm.obj:
-	$(ASMCOMP) $(ASMFLAGS) $< 
+	$(CLIPPERCOMP) --switches '$(ASMFLAGS)' --asm-compile $< 
 
 .c.obj:
+	$(CLIPPERCOMP) --switches '$(CFLAGS)' --c-compile $< 
 	$(CCOMP) $(CFLAGS) $<
 
 
