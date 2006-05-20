@@ -107,5 +107,6 @@ opts.on("-s", "--switches SW") { |sw| builder.switches += " " + sw }
 opts.on("-c", "--compile ARGS") { |args| builder.compile(args) }
 opts.on("-ac", "--asm-compile ARGS") { |args| builder.compile(args, "", "asm52.bat") }
 opts.on("-cc", "--c-compile ARGS") { |args| builder.compile(args, "", "c52.bat") }
+opts.on("-lib", "--make-lib") { |args| builder.compile(args, "", "lib.bat") }
 
 opts.parse(ARGV) 

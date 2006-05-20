@@ -22,7 +22,7 @@ CLIPPERROOT_DOS=c:\\dev\clp_bc\\clipper
 EXEDEST=$(SC_BUILD_HOME_DIR)/sigma
 EXEDOSDEST=c:\\dev\\sc\\exe
 LINKEREXE=$(SC_BUILD_HOME_DIR)/sclib/blink_linux.sh
-LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/lib_linux.sh
+LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb --make-lib 
 
 #asembler
 ASMCOMP=$(SC_BUILD_HOME_DIR)/sclib/asm52_linux.sh
