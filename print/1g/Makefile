@@ -18,11 +18,8 @@ ASMS=isprint.asm lptswap.asm
 
 OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
 
-all: $(OBJS)
-	rm -f $(MODUL)$(LIBEXT) 
-	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
-	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
-
+all:
+	lib
 	
 clean:
 	rm -f *~
