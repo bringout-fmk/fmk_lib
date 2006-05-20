@@ -1,37 +1,10 @@
 VERZIJA=CDX
 MODUL=sc1g_sql
 
-include /sclib/Makefile_clipper
-
 SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\sql\\1g\\
-
 
 PRGS=sql.prg sql_db.prg sql_ut.prg sql_ext.prg
 CS=
 ASMS=
 
-OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
-
-ifdef CLIP
-
-all: $(OBJS)
-	clip_makeslib $(MODUL)$(LIBEXT) $(LIBCMD)
-	cp $(MODUL).dll* $(LIB_DEST)
-
-else
-all: $(OBJS)
-	rm -f $(MODUL)$(LIBEXT) 
-	$(LIBEXE) $(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)
-	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
-endif
-
-	
-clean:
-	rm -f *~
-	rm -f *.xref
-	rm -f *.xrefs
-	rm -f *.html
-	rm -f *.OBJ *.obj *.o
-	rm -f xref_files
-	rm -f $(OBJS) *.bak *.BAK
-
+include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper

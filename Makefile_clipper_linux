@@ -9,7 +9,7 @@ OS_NAME=$(shell uname)
 
 BUILD_ENV_LINUX=1
 
-LIBSUFFIX=,,
+LIBSUFFIX=
 
 LIBEXT=.lib
 
@@ -19,8 +19,10 @@ CLIPPERCOMP=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb
 CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /usc_cdx.ch
 CLIPPERROOT=$(SC_BUILD_HOME_DIR)/clp_bc/clipper
 CLIPPERROOT_DOS=c:\\dev\clp_bc\\clipper
+
 EXEDEST=$(SC_BUILD_HOME_DIR)/sigma
 EXEDOSDEST=c:\\dev\\sc\\exe
+
 LINKEREXE=$(SC_BUILD_HOME_DIR)/sclib/blink_linux.sh
 LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb --make-lib 
 
@@ -87,9 +89,17 @@ DOCS=$(PRGS:.prg=.html)
 XREFS=$(DOCS:.html=.xref)
 
 
+OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
+
 .SUFFIXES: .asm .obj
 .SUFFIXES: .c .obj	
 .SUFFIXES: .prg .obj
+
+lib : $(OBJS)
+	rm -f $(MODUL)$(LIBEXT) 
+	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
+	#cp $(MODUL)$(LIBEXT) $(LIB_DEST)
+
 
 # copy st_cdx.ch
 #$(SC_BUILD_HOME_DIR)/clp_bc/clipper/include/sc_%.ch:  $(SC_BUILD_ROOT_DOS)/sclib/%/std.ch
@@ -103,11 +113,5 @@ XREFS=$(DOCS:.html=.xref)
 
 .c.obj:
 	$(CLIPPERCOMP) --switches '$(CFLAGS)' --c-compile $< 
-	$(CCOMP) $(CFLAGS) $<
 
-
-lib: $(OBJS)
-	rm -f $(MODUL)$(LIBEXT) 
-	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
-	#cp $(MODUL)$(LIBEXT) $(LIB_DEST)
 

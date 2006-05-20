@@ -95,7 +95,35 @@ class Builder
 	  @dosemu_launch_cmd = "dosemu -dumb -E \"#{@dos_cmd}\""
 
 	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
+
 	  result = system(@dosemu_launch_cmd)
+	end
+	
+        def lib(libcmd, sw="", compile_batch_name="lib.bat")
+	  @prg_name = libcmd
+	  self.rewrite_path
+	  @switches += " " + sw
+
+          #libname.lib +obj1 +obj2 +obj3 ,,
+	  lib_cmds = File.basename(@prg_name) 
+	  
+	  a_cmds = lib_cmds.split(' ')
+	  lib_name = a_cmds[0]
+
+	  for i in 1..(a_cmds.size-1)
+	     @dos_cmd = "#{@dos_base_path}clp_bc\\#{compile_batch_name} " 
+	     # + c:\dev\sclib\print\1g
+	     @dos_cmd += unix_to_dos(File.dirname(@prg_name))
+	     # + libname.lib  +obj1
+     	     @dos_cmd += " "+lib_name+" "+a_cmds[i] 
+             @dos_cmd += " "+ @switches
+
+  	     @dosemu_launch_cmd = "dosemu -dumb -E \"#{@dos_cmd}\""
+	     puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
+	     result = system(@dosemu_launch_cmd)
+          end
+
+
 	end
 
 end
@@ -107,6 +135,6 @@ opts.on("-s", "--switches SW") { |sw| builder.switches += " " + sw }
 opts.on("-c", "--compile ARGS") { |args| builder.compile(args) }
 opts.on("-ac", "--asm-compile ARGS") { |args| builder.compile(args, "", "asm52.bat") }
 opts.on("-cc", "--c-compile ARGS") { |args| builder.compile(args, "", "c52.bat") }
-opts.on("-lib", "--make-lib") { |args| builder.compile(args, "", "lib.bat") }
+opts.on("-lib", "--make-lib ARGS") { |args| builder.lib(args, "", "lib.bat") }
 
 opts.parse(ARGV) 

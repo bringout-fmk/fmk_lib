@@ -1,25 +1,17 @@
+include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
 
-include /sclib/Makefile_clipper
-
-PREF2=/clip/
-SVI1A=$(addprefix $(PREF2), $(FMKLIBS) )
-
-
-LIB=libsclib.a
-SLIB=libsclib.dll.a
-
-all:
+liball:
 	rm -f cui/1g/cui.obj
-	cp sc.ch /clipper
-	cp sc.ch /clipper/debug
-	make -C arh/1g
-	make -C base/1g
-	make -C base/2g
-	make -C db/1g
-	make -C db/2g
-	make -C sif/1g
-	make -C sql/1g
-	make -C os/1g
+	#cp sc.ch /clipper
+	#cp sc.ch /clipper/debug
+	make -C arh/1g 
+	make -C base/1g 
+	make -C base/2g 
+	make -C db/1g 
+	make -C db/2g 
+	make -C sif/1g 
+	make -C sql/1g 
+	make -C os/1g 
 	make -C ut/1g
 	make -C print/1g
 	make -C cui/1g
@@ -30,9 +22,9 @@ all:
 	make -C keyb/1g
 
 
-clean:
-	cp sc.ch /clipper
-	cp sc.ch /clipper/debug
+cleanall:
+	#cp sc.ch /clipper
+	#cp sc.ch /clipper/debug
 	cd arh/1g; make clean
 	cd base/1g; make clean
 	cd base/2g; make clean
@@ -51,8 +43,4 @@ clean:
 	cd keyb/1g; make clean
 	rm -f *.obj
 
-lib:	
-	rm -f *.o
-	./arlibs
-	clip_makeslib $(SLIB) *.o
-
+sclib:	cleanall liball

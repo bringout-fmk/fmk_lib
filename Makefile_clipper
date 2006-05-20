@@ -5,3 +5,17 @@ else
   include /sclib/Makefile_clipper_cygwin
 endif
 
+
+all:
+	lib
+	
+clean:
+	rm -f *~
+	rm -f *.xref
+	rm -f *.xrefs
+	rm -f *.html
+	rm -f *.OBJ *.obj *.o
+	rm -f xref_files
+	rm -f $(OBJS) *.bak *.BAK
+
+
