@@ -106,3 +106,8 @@ XREFS=$(DOCS:.html=.xref)
 	$(CCOMP) $(CFLAGS) $<
 
 
+lib: $(OBJS)
+	rm -f $(MODUL)$(LIBEXT) 
+	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
+	#cp $(MODUL)$(LIBEXT) $(LIB_DEST)
+
