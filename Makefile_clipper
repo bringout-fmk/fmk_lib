@@ -6,16 +6,9 @@ else
 endif
 
 
-all:
-	lib
+all:    lib
 	
 clean:
-	rm -f *~
-	rm -f *.xref
-	rm -f *.xrefs
-	rm -f *.html
-	rm -f *.OBJ *.obj *.o
-	rm -f xref_files
-	rm -f $(OBJS) *.bak *.BAK
+	rm  -f *~  *.xref *.xrefs xref_files *.LST *.lst  *.OBJ *.obj *.o  *.bak *.BAK *.lib
 
 

@@ -27,11 +27,9 @@ LINKEREXE=$(SC_BUILD_HOME_DIR)/sclib/blink_linux.sh
 LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb --make-lib 
 
 #asembler
-ASMCOMP=$(SC_BUILD_HOME_DIR)/sclib/asm52_linux.sh
 ASMFLAGS=
 
 #c kompajler
-CCOMP=$(SC_BUILD_HOME_DIR)/sclib/c52_linux.sh 
 CFLAGS=/n /w /c /AL /FPa /Gs /Zl
 
 ROBODOC=robodoc
@@ -57,12 +55,10 @@ else
 endif
 
 ifeq "$(DEBUG)" "1"
- LIB_DEST=$(CLIPPERROOT)/debug/$(VERZIJA)/
- LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\debug\\$(VERZIJA)\\
+ LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
 
 else
- LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
- LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
+ LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
 endif
 
 
@@ -91,6 +87,11 @@ XREFS=$(DOCS:.html=.xref)
 
 OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
 
+PREF2=lib $(LIB_DOS_DEST)
+FMKLIBCMD=$(addprefix $(PREF2), $(SCLIB_LIBS) $(FMK_LIBS) $(MODUL_LIBS) )
+
+CURR_DIR=$(shell pwd)
+
 .SUFFIXES: .asm .obj
 .SUFFIXES: .c .obj	
 .SUFFIXES: .prg .obj
@@ -98,12 +99,25 @@ OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
 lib : $(OBJS)
 	rm -f $(MODUL)$(LIBEXT) 
 	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
-	#cp $(MODUL)$(LIBEXT) $(LIB_DEST)
+	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
+
+exe: $(OBJS)
+	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh create $(FMKLIBCMD)
+	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh add $(LINKCMD)
+	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" --blink $(CURR_DIR) 
 
 
-# copy st_cdx.ch
-#$(SC_BUILD_HOME_DIR)/clp_bc/clipper/include/sc_%.ch:  $(SC_BUILD_ROOT_DOS)/sclib/%/std.ch
-#	cp -v $(SC_BUILD_ROOT_DOS)/sclib/cdx/std.ch $(SC_BUILD_HOME_DIR)/clp_bc/clipper/include/sc_cdx.ch
+zip:
+	$(SC_BUILD_HOME_DIR)/sclib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+
+commit:
+	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
+	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
+
+7exe:
+	$(SC_BUILD_HOME_DIR)/sclib/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+
+
 
 %.obj : %.prg $(SC_BUILD_HOME_DIR)/clp_bc/clipper/include/sc_cdx.ch 
 	$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile $< 
