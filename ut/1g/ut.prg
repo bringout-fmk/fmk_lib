@@ -1,5 +1,5 @@
 #include "sc.ch"
-#include "h:\clipper\blinker\Clp\Blinker.ch"
+#include "Blinker.ch"
 
 /*
  * ----------------------------------------------------------------

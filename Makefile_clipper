@@ -9,6 +9,6 @@ endif
 all:    lib
 	
 clean:
-	rm  -f *~  *.xref *.xrefs xref_files *.LST *.lst  *.OBJ *.obj *.o  *.bak *.BAK *.lib
+	rm  -f *~  *.xref *.xrefs xref_files *.LST *.lst  *.OBJ *.obj *.o  *.bak *.BAK *.lib *.LIB
 
 

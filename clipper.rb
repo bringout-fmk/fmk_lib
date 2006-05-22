@@ -101,7 +101,7 @@ class Builder
 	
         def lib(libcmd, sw="", compile_batch_name="lib.bat")
 	  @prg_name = libcmd
-	  self.rewrite_path
+	  @prg_name = rewrite_path(@prg_name)
 	  @switches += " " + sw
 
           #libname.lib +obj1 +obj2 +obj3 ,,
@@ -143,9 +143,26 @@ class Builder
 	  f_lnk = File.open( f_lnk_full_name, "a+")
 
           f_lnk.puts "#---- #{Time.now} ----"
+	  f_lnk.puts "blinker exe ext"
 	  f_lnk.puts "blinker exe compress"
- 	  f_lnk.puts "blinker exe CLIPPER F:90"
-	  f_lnk.puts "BLINKER EXECUTABLE IPX 96,64"
+ 	  f_lnk.puts "blinker exe CLIPPER F:100"
+	  #f_lnk.puts "BLINKER EXECUTABLE IPX 96,64"
+	  f_lnk.puts "stack 8192"
+
+
+	  f_lnk.puts "search #{@dos_base_path}\\clp_bc\\blinker\\lib\\blxclp52.lib"
+	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmxfox52.obj"
+	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cm52.obj"
+	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmx52.obj"
+	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\CSY\\LIB\\CSYINSP.LIB"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\comix\\lib\\cm52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\comix\\lib\\cmx52.lib"
+	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\ct\\obj\\ctusp.obj"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\ct\\lib\\ctp52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\daveh\\lib\\oslib.lib"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\CSY\\LIB\\CLASSY.LIB"
+
+
 
 	  if self.debug == "1"          
 		f_lnk.puts "lib #{@dos_base_path}\\sc_bc\\clipper\\lib\\cld.lib"

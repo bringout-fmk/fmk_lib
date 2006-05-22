@@ -1,5 +1,3 @@
-include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
-
 liball:
 	rm -f cui/1g/cui.obj
 	#cp sc.ch /clipper
