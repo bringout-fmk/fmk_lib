@@ -99,6 +99,7 @@ class Builder
 	  result = system(@dosemu_launch_cmd)
 	end
 	
+
         def lib(libcmd, sw="", compile_batch_name="lib.bat")
 	  @prg_name = libcmd
 	  @prg_name = rewrite_path(@prg_name)
@@ -134,6 +135,40 @@ class Builder
 
 	end
 
+        def compile_all(compile_cmd, sw="", compile_batch_name="run_clp.bat /noexit ")
+	  @prg_name = compile_cmd
+	  @switches += " " + sw
+
+	  a_cmds = @prg_name.split(' ')
+
+	  
+	  # create a batch file c:\dev\clp_bc\tmp\lib.bat
+          f_bat_name = 'clptmp.bat'
+          f_bat_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_bat_name
+	  f_bat = File.open( f_bat_full_name, 'w')
+          f_bat.puts "@echo off"
+          f_bat.puts "@echo --- clipper.rb ver. #{VER} ---"
+	  for i in 1..(a_cmds.size-1)
+	     @dos_cmd = "call #{@dos_base_path}clp_bc\\#{compile_batch_name} " 
+
+	     # + c:\dev\sclib\print\1g
+             tmp = unix_to_dos(a_cmds[0])
+	     @dos_cmd += tmp
+	     # + print.prg
+     	     @dos_cmd += " " + a_cmds[i]
+             @dos_cmd += " " + @switches
+             f_bat.puts @dos_cmd
+          end
+
+	  f_bat.puts "exitemu"
+	  f_bat.close
+	  @dos_cmd = "#{@dos_base_path}clp_bc\\tmp\\#{f_bat_name} " 
+	  @dosemu_launch_cmd = "dosemu -dumb -quiet -E \"#{@dos_cmd}\""
+	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
+	  result = system(@dosemu_launch_cmd)
+
+	end
+
         def blink(base_dir)
 
 	  base_dir = rewrite_path(base_dir)
@@ -151,13 +186,14 @@ class Builder
 
 
 	  f_lnk.puts "search #{@dos_base_path}\\clp_bc\\blinker\\lib\\blxclp52.lib"
-	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmxfox52.obj"
+	  #f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmxfox52.obj"
 	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cm52.obj"
 	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmx52.obj"
 	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\CSY\\LIB\\CSYINSP.LIB"
+	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\ct\\obj\\ctusp.obj"
+
 	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\comix\\lib\\cm52.lib"
 	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\comix\\lib\\cmx52.lib"
-	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\ct\\obj\\ctusp.obj"
 	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\ct\\lib\\ctp52.lib"
 	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\daveh\\lib\\oslib.lib"
 	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\CSY\\LIB\\CLASSY.LIB"
@@ -185,11 +221,15 @@ end
 
 opts = OptionParser.new
 builder = Builder.new
+
 opts.on("-h", "--help") { RDoc::usage }
 opts.on("-s", "--switches SW") { |sw| builder.switches += " " + sw }
 opts.on("-c", "--compile ARGS") { |args| builder.compile(args) }
+opts.on("-ca", "--compile-all ARGS") { |args| builder.compile_all(args) }
+
 opts.on("-ac", "--asm-compile ARGS") { |args| builder.compile(args, "", "asm52.bat") }
 opts.on("-cc", "--c-compile ARGS") { |args| builder.compile(args, "", "c52.bat") }
+
 opts.on("-lib", "--make-lib ARGS") { |args| builder.lib(args, "", "lib.bat") }
 opts.on("-d", "--debug ARG") { |arg| builder.debug = arg}
 opts.on("-out", "--output-exe ARGS") { |arg| builder.output_exe_name = arg }

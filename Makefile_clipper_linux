@@ -93,8 +93,9 @@ commit:
 
 
 
-%.obj : %.prg $(SC_BUILD_HOME_DIR)/clp_bc/clipper/include/sc_cdx.ch 
+%.obj : %.prg  
 	$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile $< 
+	#$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile-all "$(SRCDOSROOT) $(PRGS)"
 
 .asm.obj:
 	$(CLIPPERCOMP) --switches '$(ASMFLAGS)' --asm-compile $< 
