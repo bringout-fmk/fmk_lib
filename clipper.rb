@@ -22,11 +22,11 @@
 #
 #
 # Copyright (c) 2006 Sigma-com, 
-# 17.05.06-22.05.06, ver. 02.05
+# 17.05.06-22.05.06, ver. 02.06
 #
 # Licensed under the same terms as Ruby
 
-VER = '02.05'
+VER = '02.06'
 
 require 'optparse'
 require 'rdoc/usage'
@@ -79,7 +79,7 @@ class Builder
 		STDIN.readchar     
         end
 
-	def compile(prgname, sw="", compile_batch_name="run_clp.bat")
+	def compile(prgname, sw="", compile_batch_name="run_clp.bat", sw_first=FALSE)
 	  @prg_name = prgname
 	  @prg_name = rewrite_path(@prg_name)
 	  @switches += " " + sw
@@ -88,9 +88,16 @@ class Builder
 	  # + c:\dev\sclib\print\1g
 	  @dos_cmd += unix_to_dos(File.dirname(@prg_name))
 	  # + ptxt.prg
+	  if sw_first
+            @dos_cmd += " "+ @switches
+          end
+	      
      	  @dos_cmd += " "+ File.basename(@prg_name)
-	  # /DC52
-          @dos_cmd += " "+ @switches
+
+          if not sw_first
+	    # /DC52
+            @dos_cmd += " "+ @switches
+          end
 
 	  @dosemu_launch_cmd = "dosemu -dumb -quiet -E \"#{@dos_cmd}\""
 
@@ -178,25 +185,38 @@ class Builder
 	  f_lnk = File.open( f_lnk_full_name, "a+")
 
           f_lnk.puts "#---- #{Time.now} ----"
-	  f_lnk.puts "blinker exe ext"
+          f_lnk.puts "blinker message noblink"
+#         f_lnk.puts "verbose"
 	  f_lnk.puts "blinker exe compress"
- 	  f_lnk.puts "blinker exe CLIPPER F:100"
+ 	  f_lnk.puts "BLINKER EXECUTABLE EXTENDED"
+	  f_lnk.puts "blinker exe CLIPPER F:100"
 	  #f_lnk.puts "BLINKER EXECUTABLE IPX 96,64"
+
+#	  f_lnk.puts "BLINKER HOST DPMI  OFF"
+	  f_lnk.puts "BLINKER HOST MESSAGE ON"
+#	  f_lnk.puts "BLINKER HOST QDPMI OFF"
+#	  f_lnk.puts "BLINKER HOST VCPI OFF"
+#	  f_lnk.puts "BLINKER HOST XMS OFF"
+#	  f_lnk.puts "BLINKER LINK EMS OFF"
+
 	  f_lnk.puts "stack 8192"
 
+	  f_lnk.puts "search #{@dos_base_path}clp_bc\\blinker\\lib\\blxclp52.lib"
 
-	  f_lnk.puts "search #{@dos_base_path}\\clp_bc\\blinker\\lib\\blxclp52.lib"
-	  #f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmxfox52.obj"
-	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cm52.obj"
-	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\comix\\obj\\cmx52.obj"
-	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\CSY\\LIB\\CSYINSP.LIB"
-	  f_lnk.puts "file #{@dos_base_path}\\clp_bc\\ct\\obj\\ctusp.obj"
+	  #f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmxfox52.obj"
+	  f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cm52.obj"
+	  f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmx52.obj"
+	  f_lnk.puts "file #{@dos_base_path}clp_bc\\ct\\obj\\ctusp.obj"
 
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\comix\\lib\\cm52.lib"
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\comix\\lib\\cmx52.lib"
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\ct\\lib\\ctp52.lib"
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\daveh\\lib\\oslib.lib"
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\CSY\\LIB\\CLASSY.LIB"
+	  f_lnk.puts "file #{@dos_base_path}clp_bc\\CSY\\LIB\\CSYINSP.LIB"
+
+	  #cm*.lib mora ici prva, pa onda cmx*.lib
+	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\comix\\lib\\cm52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\comix\\lib\\cmx52.lib"
+
+	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\ct\\lib\\ctp52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\daveh\\lib\\oslib.lib"
+	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\CSY\\LIB\\CLASSY.LIB"
 
 
 
@@ -228,7 +248,7 @@ opts.on("-c", "--compile ARGS") { |args| builder.compile(args) }
 opts.on("-ca", "--compile-all ARGS") { |args| builder.compile_all(args) }
 
 opts.on("-ac", "--asm-compile ARGS") { |args| builder.compile(args, "", "asm52.bat") }
-opts.on("-cc", "--c-compile ARGS") { |args| builder.compile(args, "", "c52.bat") }
+opts.on("-cc", "--c-compile ARGS") { |args| builder.compile(args, "", "c52.bat", TRUE) }
 
 opts.on("-lib", "--make-lib ARGS") { |args| builder.lib(args, "", "lib.bat") }
 opts.on("-d", "--debug ARG") { |arg| builder.debug = arg}

@@ -3,36 +3,8 @@
 
 /*
  * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
+ *                          Copyright Sigma-com software 1994-2006 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/params/1g/ini.prg,v $
- * $Author: mirsad $ 
- * $Revision: 1.10 $
- * $Log: ini.prg,v $
- * Revision 1.10  2003/03/05 08:39:18  mirsad
- * no message
- *
- * Revision 1.9  2003/01/29 06:00:36  ernad
- * citanje ini fajlova
- *
- * Revision 1.8  2003/01/21 13:35:54  ernad
- * test problem ini
- *
- * Revision 1.7  2002/10/04 08:26:09  mirsad
- * ispravka f-je I_At() radi optimiziranja koristenja memorije
- *
- * Revision 1.6  2002/10/03 16:59:40  mirsad
- * uveo koristenje IniRefresh() radi cesceg oslobadjanja memorije
- *
- * Revision 1.5  2002/07/05 08:01:02  ernad
- *
- *
- * FmkIni - dodan lAppend parametar
- *
- * Revision 1.4  2002/06/19 13:17:29  ernad
- * debug - ubaci sekciju kada je nema
- *
- *
  */
  
 
