@@ -19,7 +19,7 @@
 
 #define P_NRED QOUT()
 
-#include "\dev\af\cl-sclib\sclib\base\1g\sc_std.ch"
+#include "sc_base.ch"
 #include "inkey.ch"
 #include "box.ch"
 #include "dbedit.ch"
@@ -70,7 +70,7 @@
 	#include "\dev\Fmk\AF\cl-AF\fmk.ch"
 #endif
 
-#include "\dev\AF\cl-sclib\sclib\db\1g\sc_db.ch"
+#include "sc_db.ch"
 #include "cm52.ch"
 
 //korisnicke licence

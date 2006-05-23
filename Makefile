@@ -1,7 +1,5 @@
 liball:
 	rm -f cui/1g/cui.obj
-	#cp sc.ch /clipper
-	#cp sc.ch /clipper/debug
 	make -C arh/1g 
 	make -C base/1g 
 	make -C base/2g 
@@ -21,8 +19,6 @@ liball:
 
 
 cleanall:
-	#cp sc.ch /clipper
-	#cp sc.ch /clipper/debug
 	cd arh/1g; make clean
 	cd base/1g; make clean
 	cd base/2g; make clean
