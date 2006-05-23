@@ -88,7 +88,7 @@ lib: $(OBJS)
 exe: $(OBJS)
 	echo Prilikom kompilacije obj se napravi u tekucem direktoriju
 	echo a blinker opet trazi obj fajl u orig direktoriju
-	cp e.obj /dev/fmk/fin/main/1g/
+	cp e.obj /dev/fmk/$(MODUL)/main/1g/
 	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk.sh $(LINKCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk_2.sh $(FMKLIBCMD)
 	$(LINKEREXE) @_bl_.lnk  @_bl_2_.lnk $(DEBUGLINK) @H:\\CLIPPER\\$(VERZIJA)\\BL.LNK output e.exe
