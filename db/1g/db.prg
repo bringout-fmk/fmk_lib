@@ -251,7 +251,6 @@ if funl==nil; funl:=.t.; endif
 
 if gReadonly; return; endif
 
-
 do while .t.
 set deleted off
 
@@ -472,11 +471,7 @@ if gReadonly; return; endif
 
 PushWa()
 
-#ifdef CAX
-if AX_IsShared()
-#else
 if cmxShared()
-#endif
        do while .t.
        if flock()
           set order to 0 // neophodno, posto je index po kriteriju deleted() !!
@@ -552,7 +547,6 @@ return fRet
 */
 
 function SigmaSif(cSif)
-*{
 local lGw_Status
 
 lGw_Status:=IF("U"$TYPE("GW_STATUS"),"-",gw_status)
@@ -578,7 +572,6 @@ else
 endif
 
 return
-*}
 
 /*! \fn O_POMDB(nArea,cImeDBF)
  *  \brief otvori pomocnu tabelu, koja ako se nalazi na CDU npr se kopira u lokalni
@@ -586,7 +579,6 @@ return
  */
 
 function O_POMDB(nArea,cImeDBF)
-*{
 
 select (nArea)
 
@@ -630,10 +622,8 @@ else
 endif
 
 return
-*}
 
 function JelReadOnly()
-*{
 IF !( "U" $ TYPE("gGlBaza") )
 	IF !EMPTY(gGlBaza)
 		#ifdef CLIP      
@@ -644,11 +634,9 @@ IF !( "U" $ TYPE("gGlBaza") )
     	ENDIF
 ENDIF
 return nil
-*}
 
 
 function CheckROnly( cFileName )
-*{
 if FILEATTR(cFileName) == 1 
 	gReadOnly := .t.
 	@ 1, 55 SAY "READ ONLY" COLOR "W/R"
@@ -658,12 +646,9 @@ else
 endif
 
 return
-*}
 
 
 function SetROnly(lSilent)
-*{
-
 if (lSilent == nil)
 	lSilent := .f.
 endif
@@ -708,11 +693,7 @@ endif
 
 IF !lSilent .and. Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
 
-	#ifdef CLIP
-   		IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
-	#else
    		IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
-	#endif
      			gReadOnly:=.t.
 			CheckROnly(cDirRad + SLASH + gGlBaza)
 		ELSE
@@ -789,7 +770,6 @@ if lSilent
 endif
 
 return
-*}
 
 
 /*! \fn SkratiAZaD(aStruct)
@@ -801,7 +781,6 @@ return
 */
 
 function SkratiAZaD(aStruct)
-*{
 nLen:=len(aStruct)
 for i:=1 to nLen
     // sistemska polja
@@ -814,7 +793,6 @@ next
 ASIZE(aStruct,nLen)
 
 return nil
-*}
 
  
 /*! \fn Append2()
@@ -823,7 +801,6 @@ return nil
  */
 
 function Append2()
-*{
 local nRec
 select(nArr)
 DbAppend()
@@ -833,7 +810,6 @@ DbAppend()
 replace recno with nRec
 
 return nil
-*}
 
 /*! \fn DbfName(nArea, lFull)
  *  \param nArea
@@ -842,7 +818,6 @@ return nil
  */
  
 function DbfName(nArea, lFull)
-*{
 local nPos
 local cPrefix
 
@@ -869,10 +844,8 @@ else
  return cPrefix+gaDbfs[nPos,2]
 endif
 return
-*}
 
 function DbfPath(nPath)
-*{
 do case
 	CASE nPath==P_PRIVPATH
 		return PRIVPATH
@@ -894,10 +867,8 @@ do case
 		return goModul:oDatabase:cSigmaBD+SLASH+"SECURITY"+SLASH
 end case
 return 
-*}
 
 function DbfArea(cImeDBF, nVarijanta)
-*{
 local nPos
 
 cImeDBF:=ToUnix(cImeDBF)
@@ -930,21 +901,15 @@ else
  endif
 endif
 return
-*}
 
 function nDBF(cBaza)
-*{
 return DbfArea(cBaza)
-*}
 
 function nDBFPos(cBaza)
 // pozicija u agDBFs
-*{
 return DbfArea(cBaza,1)
-*}
 
 function F_Baze(cBaza)
-*{
 local nPos
 nPos:=nDBF(cBaza)
 IF nPos<=0
@@ -952,10 +917,8 @@ IF nPos<=0
 	QUIT
 ENDIF
 return nPos
-*}
 
 function Sel_Bazu(cBaza)
-*{
 local nPos
  
  nPos:=nDBFPos(cBaza)
@@ -965,10 +928,8 @@ local nPos
    CLOSE ALL; QUIT
  ENDIF
 return
-*}
 
 function gaDBFDir(nPos)
-*{
 nPom:=gaDBFs[nPos,3]
 do case
   case nPom=P_KUMPATH
@@ -984,10 +945,8 @@ do case
   otherwise
    return ""
 endcase
-*}
 
 function O_Bazu(cBaza)
-*{
 
 LOCAL nPos:=nDBFPos(cBaza)
 IF nPos>0
@@ -998,7 +957,6 @@ ELSE
    QUIT
 ENDIF
 return
-*}
 
 
 /*! \fn ExportBaze(cBaza)
@@ -1009,7 +967,6 @@ return
 */
 
 function ExportBaze(cBaza)
-*{
 LOCAL nArr:=SELECT()
   FERASE(cBaza+"."+INDEXEXT)
   FERASE(cBaza+"."+DBFEXT)
@@ -1022,66 +979,6 @@ LOCAL nArr:=SELECT()
   USE
   SELECT (nArr)
 return
-*}
-
-
-#ifdef CLIP
-
-function cmxAutoOpen(lYesNo)
-*{
-return
-*}
-
-function cmxKeyCount()
-*{
-return ordKeyCount()
-*}
-
-function cmxShared()
-*{
-return .t.
-*}
-
-function setScope(nTopBottom,xScope)
-*{
-OrdScope(nTopBottom,xScope)
-return
-*}
-
-function clrScope()
-*{
-OrdScope(0,"")
-OrdScope(1,"")
-return
-*}
-
-function cm2str(xValue)
-*{
-local cPom
-
-if VALTYPE(xValue)=="C"
-  return "'"+str(xValue)+"'"
-endif
-
-if VALTYPE(xValue)=="D"
-  return "CTOD('"+DTOC(xValue)+"')"
-endif
-
-if VALTYPE(xValue)=="N"
-  return alltrim(str(xValue))
-endif
-
-cPom:= "Nisam zavrsio cm2str ..."
-Logg(cPom)
-
-inkey(0)
-
-quit
-return nil
-
-*}
-
-#endif
 
 
 function PoljeBrisano(cImeDbf)
@@ -1161,14 +1058,6 @@ endif
 nPreuseLevel:=1
 
 cOnlyName:=ChangeEXT(ExFileName(cImeDbf),"DBF","")
-/*
-nArea:=DbfArea(UPPER(cOnlyName))
-if ((UPPER(cOnlyName)<>"GPARAM") .and. USED())
-	// ne otvaraj 2 x, a kod GPARAM je problem sto imamo u root-u i PRIVPATH-u
-	nPreuseEvent:=0
-	return
-endif
-*/
 
 cImeGwu:=ChangeEXT(cImeDbf, DBFEXT, "gwu")
 cImeCdx:=ChangeEXT(cImeDbf, DBFEXT, INDEXEXT)
@@ -1190,22 +1079,6 @@ if (GW_STATUS="-" .and. FILE(cImeGwu))
 	goModul:oDatabase:kreiraj(nArea)
 	FERASE(cImeGwu)
 		
-	/*
-	     MsgO("Reindeksiram + pakujem (gwu) "+cImeDbf)
-	     Beep(1)
-	     //REINDEKSIRAJ i Pakuj DBF
-	     nArea:=DBFArea(UPPER(cOnlyName))
-	     select(nArea)
-	     dbCloseArea()
-	     // ? "SC: prije dbusearea", cImeDbf
-	     dbUseArea( .f., nil , cImeDbf , nil , .f., .f. )  
-	     dbReindex()
-	     __dbPack()
-	     dbCloseArea()
-	     FErase(cPom)
-	     MsgC()
-     */
-     
 endif
 
 nPreuseLevel:=0
@@ -1217,7 +1090,6 @@ return cImeDbf
  *  \note sve tabele koje je gateway azurirao bice indeksirane
  */
 function ScanDb()
-*{
 local i
 local cDbfName
 
@@ -1243,7 +1115,6 @@ for i:=1 to 250
 next
 CLOSE ALL
 return
-*}
 
 // --------------------------------
 // --------------------------------
