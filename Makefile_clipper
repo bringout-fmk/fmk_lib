@@ -1,10 +1,36 @@
 OS_NAME=$(shell uname)
+
+OBJPRGS=$(PRGS:.prg=.obj)
+OBJCS=$(CS:.c=.obj)
+OBJASMS=$(ASMS:.asm=.obj)
+
+LIBCMD=$(addprefix +, $(OBJPRGS) $(OBJASMS) $(OBJCS) )
+
+PREFPLUS=fi
+LINKCMD=$(addprefix $(PREFPLUS) , $(OBJPRGS) $(OBJASMS) $(OBJCS) )
+
+#napravi dokumente
+
+DOCS=$(PRGS:.prg=.html)
+XREFS=$(DOCS:.html=.xref)
+
+
+OBJS=$(OBJPRGS) $(OBJCS) $(OBJASMS)
+
+PREF2=lib $(LIB_DOS_DEST)
+FMKLIBCMD=$(addprefix $(PREF2), $(SCLIB_LIBS) $(FMK_LIBS) $(MODUL_LIBS) )
+
+CURR_DIR=$(shell pwd)
+
+.SUFFIXES: .asm .obj
+.SUFFIXES: .c .obj	
+.SUFFIXES: .prg .obj
+
 ifeq "$(OS_NAME)" "Linux"
   include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper_linux
 else
   include /sclib/Makefile_clipper_cygwin
 endif
-
 
 all:    lib
 	

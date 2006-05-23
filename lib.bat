@@ -1,3 +1,5 @@
+@echo off
+
 set LIBNAME=%1
 set COMMAND=%COMMAND% %2
 shift
