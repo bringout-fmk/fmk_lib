@@ -80,10 +80,4 @@
 #define AL_GOLD 4
 #define AL_PLATINIUM 5
 
-#ifdef CLIP
-
-#xcommand method <Met> =>;
-   static function <Met>
-
-#endif
 

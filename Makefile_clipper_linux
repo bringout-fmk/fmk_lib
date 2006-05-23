@@ -14,7 +14,7 @@ LIBEXT=.lib
 
 SC_BUILD_ROOT_DOS=c:\\dev
 CLIPPERCOMP=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb
-CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /usc_cdx.ch
+CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /ustd_cdx.ch
 CLIPPERROOT=$(SC_BUILD_HOME_DIR)/clp_bc/clipper
 CLIPPERROOT_DOS=c:\\dev\clp_bc\\clipper
 
