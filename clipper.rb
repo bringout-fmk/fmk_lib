@@ -202,9 +202,9 @@ class Builder
 	  f_lnk.puts "stack 8192"
 
           # standard clipper libs
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\CLIPPER.LIB"
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\EXTEND.LIB"
-	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\DBFNTX.LIB"
+	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\CLIPPER.LIB"
+	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\EXTEND.LIB"
+	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\DBFNTX.LIB"
 
 	  f_lnk.puts "search #{@dos_base_path}clp_bc\\blinker\\lib\\blxclp52.lib"
 
