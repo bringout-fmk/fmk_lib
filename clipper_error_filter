@@ -2,7 +2,7 @@
 # --------------------------------------------------
 # Sigma-com software
 # ernad.husremovic@sigma-com.net
-# 01.15, 25.05.06
+# 01.16, 25.05.06
 # --------------------------------------------------
 
 
@@ -21,7 +21,11 @@ class ClipperErrorFilter
     def dos_to_unix(fname)
        tmp = fname.gsub('c:\\dev\\', ENV['SC_BUILD_HOME_DIR'] + '/')
        tmp = tmp.gsub('\\', '/')
-       return tmp.downcase
+       #pretpostavlja se da je  filename malim slovima !
+       tmp2 = File.dirname(tmp)
+       tmp2 += '/'  if not tmp2.empty?
+       tmp2 += File.basename(tmp).downcase
+       return tmp2
     end
     
     def catch_compiler_message(line)
@@ -36,7 +40,7 @@ class ClipperErrorFilter
        @err_line += self.dos_to_unix(md[1])
        #line number
        @err_line += SEPARATOR + md[2]
-       @err_line += SEPARATOR + "CLIPPER - " + md[3].sub('[\r\n]','')
+       @err_line += SEPARATOR + "CLIPPER - " + md[3].chomp
        self.out
       end
     end
