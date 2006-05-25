@@ -976,7 +976,8 @@ AEVAL(MGetList,{|oE|  oE:Display() })
 return .t.
 
 
-
+// -----------------------------
+// -----------------------------
 function InkeySc(nSec)
 *{
 if (nSec==0)
