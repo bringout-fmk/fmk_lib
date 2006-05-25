@@ -22,11 +22,11 @@
 #
 #
 # Copyright (c) 2006 Sigma-com, 
-# 17.05.06-22.05.06, ver. 02.06
+# 17.05.06-22.05.06, ver. 02.07
 #
 # Licensed under the same terms as Ruby
 
-VER = '02.06'
+VER = '02.07'
 
 require 'optparse'
 require 'rdoc/usage'
@@ -201,6 +201,11 @@ class Builder
 
 	  f_lnk.puts "stack 8192"
 
+          # standard clipper libs
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\CLIPPER.LIB"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\EXTEND.LIB"
+	  f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\DBFNTX.LIB"
+
 	  f_lnk.puts "search #{@dos_base_path}clp_bc\\blinker\\lib\\blxclp52.lib"
 
 	  #f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmxfox52.obj"
@@ -219,9 +224,13 @@ class Builder
 	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\CSY\\LIB\\CLASSY.LIB"
 
 
+          # clp_bc/vendor
+	  f_lnk.puts "lib CLIPMOUS.LIB"
+
+
 
 	  if self.debug == "1"          
-		f_lnk.puts "lib #{@dos_base_path}\\sc_bc\\clipper\\lib\\cld.lib"
+		f_lnk.puts "lib #{@dos_base_path}clp_bc\\clipper\\lib\\cld.lib"
           end
 
 	  f_lnk.puts "output #{self.output_exe_name}"

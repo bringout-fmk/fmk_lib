@@ -1,3 +1,8 @@
+#---------------------------
+# sigma-com Zenica
+# ver 01.20, 24.05.06
+# --------------------------
+
 OS_NAME=$(shell uname)
 
 OBJPRGS=$(PRGS:.prg=.obj)
@@ -10,6 +15,23 @@ PREFPLUS=fi
 LINKCMD=$(addprefix $(PREFPLUS) , $(OBJPRGS) $(OBJASMS) $(OBJCS) )
 
 #napravi dokumente
+
+
+CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /ustd_cdx.ch
+
+ifeq "$(DEBUG)" "1"
+ CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)
+ DEBUGLINK=file $(CLIPPERROOT_DOS)\\lib\\CLD.LIB
+ DEBUGDIR=/debug
+ DEBUGDIR2=DEBUG\\
+else
+ CLIPPERFLAGS=$(CLIPPERFLAGS0)
+ DEBUGLINK=
+ DEBUGDIR=
+ DEBUGDIR2=
+endif
+
+CLIPPERFLAGS+=$(CLP_FLAGS)
 
 DOCS=$(PRGS:.prg=.html)
 XREFS=$(DOCS:.html=.xref)

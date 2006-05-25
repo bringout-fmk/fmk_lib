@@ -14,7 +14,6 @@ LIBEXT=.lib
 
 SC_BUILD_ROOT_DOS=c:\\dev
 CLIPPERCOMP=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb
-CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /ustd_cdx.ch
 CLIPPERROOT=$(SC_BUILD_HOME_DIR)/clp_bc/clipper
 CLIPPERROOT_DOS=c:\\dev\clp_bc\\clipper
 
@@ -36,21 +35,18 @@ ifndef DEBUG
  DEBUG=0
 endif  
 
+ifndef BLINKER_SEARCH_EXT
+ BLINKER_SEARCH_EXT=1
+endif
+
+ifndef BLINKER_SEARCH_FIONS
+ BLINKER_SEARCH_FIONS=1
+endif 
+
 ifndef VERZIJA
  VERZIJA=CDX
 endif
 	
-ifeq "$(DEBUG)" "1"
- CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)
- DEBUGLINK=file $(CLIPPERROOT_DOS)\\lib\\CLD.LIB
- DEBUGDIR=/debug
- DEBUGDIR2=DEBUG\\
-else
- CLIPPERFLAGS=$(CLIPPERFLAGS0)
- DEBUGLINK=
- DEBUGDIR=
- DEBUGDIR2=
-endif
 
 ifeq "$(DEBUG)" "1"
  LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
@@ -76,6 +72,8 @@ lib : $(OBJS)
 	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
 
 exe: $(OBJS)
+	@echo BLINKER_SEARCH_EXT=$(BLINKER_SEARCH_EXT)
+	@echo BLINKER_SEARCH_FIONS=$(BLINKER_SEARCH_FIONS)
 	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh create $(FMKLIBCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh add $(LINKCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" --blink $(CURR_DIR) 
