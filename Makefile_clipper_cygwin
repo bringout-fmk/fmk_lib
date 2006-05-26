@@ -61,6 +61,9 @@ ifeq "${LIB}" "1"
  CLIPPERFLAGS += /DLIB
 endif
 
+ifndef EOBJCOPY
+   EOBJCOPY=cp /dev/fmk/$(MODUL)/main/1g/e.obj e.obj
+endif
 
 lib: $(OBJS)
 	echo dependency: $(OBJS)
@@ -71,7 +74,7 @@ lib: $(OBJS)
 exe: $(OBJS)
 	echo Prilikom kompilacije obj se napravi u tekucem direktoriju
 	echo a blinker opet trazi obj fajl u orig direktoriju
-	cp /dev/fmk/$(MODUL)/main/1g/e.obj e.obj
+	$(EOBJCOPY)
 	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk.sh $(LINKCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk_2.sh $(FMKLIBCMD)
 	$(LINKEREXE) @_bl_.lnk  @_bl_2_.lnk $(DEBUGLINK) @H:\\CLIPPER\\$(VERZIJA)\\BL.LNK output e.exe
