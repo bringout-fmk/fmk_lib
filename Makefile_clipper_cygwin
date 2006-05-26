@@ -46,7 +46,7 @@ endif
 	
 ifeq "${DEBUG}" "1"
   LIB_DEST=$(CLIPPERROOT)/debug/$(VERZIJA)/
-  LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\debug\\$(VERZIJA)\\
+  LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
 else
   LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
   LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
@@ -62,14 +62,11 @@ ifeq "${LIB}" "1"
 endif
 
 
-
-
 lib: $(OBJS)
 	echo dependency: $(OBJS)
 	rm -f $(MODUL)$(LIBEXT) 
 	$(LIBEXE) $(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)
 	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
-
 
 exe: $(OBJS)
 	echo Prilikom kompilacije obj se napravi u tekucem direktoriju
@@ -78,7 +75,7 @@ exe: $(OBJS)
 	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk.sh $(LINKCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk_2.sh $(FMKLIBCMD)
 	$(LINKEREXE) @_bl_.lnk  @_bl_2_.lnk $(DEBUGLINK) @H:\\CLIPPER\\$(VERZIJA)\\BL.LNK output e.exe
-	cp e.exe $(EXEDEST)/$(MODUL).EXE
+	cp e.exe $(EXEDEST)/$(EXENAME)
 
 zip:
 	$(SC_BUILD_HOME_DIR)/sclib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE

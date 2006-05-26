@@ -49,6 +49,12 @@ CURR_DIR=$(shell pwd)
 .SUFFIXES: .c .obj	
 .SUFFIXES: .prg .obj
 
+
+# za exe destinaciju ime exe fajla
+ifndef EXENAME
+  EXENAME=$(MODUL).exe
+endif
+
 ifeq "$(OS_NAME)" "Linux"
   include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper_linux
 else

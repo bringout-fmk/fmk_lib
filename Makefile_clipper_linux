@@ -79,7 +79,7 @@ exe: $(OBJS)
 	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh create $(FMKLIBCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh add $(LINKCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" $(DEBUGCMD) --blink $(CURR_DIR) 
-	mv $(CURR_DIR)/e.exe $(SC_BUILD_HOME_DIR)/sc/exe/$(MODUL).exe 
+	mv $(CURR_DIR)/e.exe $(SC_BUILD_HOME_DIR)/sc/exe/$(EXENAME) 
 
 zip:
 	$(SC_BUILD_HOME_DIR)/sclib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
