@@ -49,10 +49,12 @@ endif
 	
 
 ifeq "$(DEBUG)" "1"
- LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
-
+ #LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
+ LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
+ DEBUGCMD=--debug 1
 else
  LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
+ DEBUGCMD=
 endif
 
 
@@ -76,7 +78,7 @@ exe: $(OBJS)
 	@echo BLINKER_SEARCH_FIONS=$(BLINKER_SEARCH_FIONS)
 	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh create $(FMKLIBCMD)
 	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh add $(LINKCMD)
-	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" --blink $(CURR_DIR) 
+	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" $(DEBUGCMD) --blink $(CURR_DIR) 
 	mv $(CURR_DIR)/e.exe $(SC_BUILD_HOME_DIR)/sc/exe/$(MODUL).exe 
 
 zip:
@@ -92,7 +94,7 @@ commit:
 
 
 %.obj : %.prg  
-	$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile $< 
+	$(CLIPPERCOMP) $(DEBUGCMD) --switches '$(CLIPPERFLAGS)' --compile $< 
 	#$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile-all "$(SRCDOSROOT) $(PRGS)"
 
 .asm.obj:

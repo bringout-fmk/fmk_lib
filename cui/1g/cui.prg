@@ -478,8 +478,9 @@ endif
 return
 *}
 
-function Achoice2(x1,y1,x2,y2,Items,f1,cFunc,nItemNo)
-*{
+// --------------------------------------------------------
+// --------------------------------------------------------
+function Achoice2(x1, y1, x2, y2, Items, f1, cFunc, nItemNo)
 
 local i,ii
 local nWidth,nLen
@@ -567,14 +568,17 @@ do case
       otherwise
          goModul:GProc(nChar)
    endcase
-   if nItemNo>nLen; nItemNo--; endif
+   if nItemNo>nLen
+         nItemNo--
+   endif
    if nItemNo<1; nItemNo++; endif
 
 enddo
+
 setcursor(iif(nOldCurs==0,0,iif(readinsert(),2,1)))
+
 setcolor(cOldColor)
 return nItemNo
-*}
 
 /*! \fn AChoice3(x1,y1,x2,y2,Items,f1,cFunc,nItemNo)
  *  \brief AChoice za broj stavki > 16
@@ -668,17 +672,15 @@ setcolor(cOldColor)
 return nItemNo
 *}
 
-
+// ------------------------------------
+// ------------------------------------
 function Menu2(x1,y1,aNiz,nIzb)
-*{
-
 LOCAL xM:=0,yM:=0
  xM:=LEN(aNiz); AEVAL(aNiz,{|x| IF(LEN(x)>yM,yM:=LEN(x),)})
  Prozor1(x1,y1,x1+xM+1,y1+yM+1,,,,,,0)
- nIzb:=ACHOICE(x1+1,y1+1,x1+xM,y1+yM,aNiz,,"KorMenu2",nIzb)
+ nIzb:=ACHOICE2(x1+1, y1+1, x1+xM, y1+yM, aNiz,, "KorMenu2", nIzb)
  Prozor0()
 return nIzb
-*}
 
 function Menu3(x1,y1,aNiz,nIzb,cNasl)
 *{

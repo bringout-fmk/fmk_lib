@@ -85,8 +85,6 @@ return cRez
 
 
 function WaitScrSav(lKeyb)
-*{
-
 local cTmp
 LOCAL nBroji, nBroji2, nChar, nCekaj
 
@@ -100,8 +98,6 @@ nBroji2:=SECONDS()
 nCekaj:=gCekaScreenSaver
 
 while nextkey() == 0
-
-   //OL_Yield()
    cTmp:=CekaHandler(@nBroji2)
 
    if (SECONDS()-nBroji)/60 >= nCekaj
@@ -118,7 +114,6 @@ IF lKeyb
 ENDIF
 
 RETURN nChar
-*}
 
 function ScreenSaver()
 *{

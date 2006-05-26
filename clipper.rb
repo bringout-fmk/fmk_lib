@@ -230,7 +230,7 @@ class Builder
 
 
 	  if self.debug == "1"          
-		f_lnk.puts "lib #{@dos_base_path}clp_bc\\clipper\\lib\\cld.lib"
+		f_lnk.puts "file #{@dos_base_path}clp_bc\\clipper\\lib\\cld.lib"
           end
 
 	  f_lnk.puts "output #{self.output_exe_name}"

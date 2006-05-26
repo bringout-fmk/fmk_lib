@@ -17,7 +17,8 @@ LINKCMD=$(addprefix $(PREFPLUS) , $(OBJPRGS) $(OBJASMS) $(OBJCS) )
 #napravi dokumente
 
 
-CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /ustd_cdx.ch
+#CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /DDBUILD='00' /ustd_cdx.ch
+CLIPPERFLAGS0=/n /q /DC52 /D$(VERZIJA) /ustd_cdx.ch
 
 ifeq "$(DEBUG)" "1"
  CLIPPERFLAGS=/b /DPROBA $(CLIPPERFLAGS0)

@@ -7,7 +7,6 @@
 * NAME
 *   Standard clipper 5.2 GET/READ subsistem
 *
-*
 ****/
 
 
@@ -69,7 +68,7 @@ local get
 local pos
 local savedGetSysVars
 
-nTimeOut:=IF(nTime == NIL, 0, nTime)
+nTimeOut:=IIF(nTime == NIL, 0, nTime)
 lTimedOut := .f.
 
 
@@ -164,12 +163,10 @@ if ( GetPreValSC(get) )
 			do while ( get:exitState == GE_NOEXIT )
 				ol_yield()
 				GetApplyKSC( get, MyInKeySC() )
-				//GetApplyKey( get, InkeySc(0) )
 			enddo
 
 			// disallow exit if the VALID condition is not satisfied
 			if ( !GetPstValSC(get) )
-				
 				get:exitState := GE_NOEXIT
 			endif
 
@@ -941,13 +938,10 @@ if (gSQL=="D")
 	enddo
 endif
 
-//@ 0,10 SAY "nKey="; ?? nKey
 RETURN (nKey)
 
 /*
- *
  * Go to a particular get
- *
  */
 
 FUNCTION GoToGet(nGet)
@@ -979,8 +973,7 @@ return .t.
 // -----------------------------
 // -----------------------------
 function InkeySc(nSec)
-*{
-if (nSec==0)
+if (nSec==0) .or. (nSec == nil)
 	do while NEXTKEY()==0
 	 	ol_yield()
 	enddo
@@ -988,5 +981,4 @@ if (nSec==0)
 else
 	return INKEY(nSec)
 endif
-*}
 

@@ -72,12 +72,7 @@ SetNaslov(oApp)
 
 SET DELETED ON
 
-#IFDEF CAX
-  #define AX
-  #define D_VERZIJA "AX"
-#ELSE
-  #define D_VERZIJA "CDX"
-#ENDIF
+#define D_VERZIJA "CDX"
 
 if mpar37("/INSTALL",oApp)
 	oApp:oDatabase:lAdmin:=.t.
@@ -307,10 +302,9 @@ return
 
 
 function SetNaslov(oApp)
-*{
-
 gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
 #ifndef PROBA
+
 	SETCANCEL(.f.)
 
 	#ifndef TRIAL
@@ -338,7 +332,6 @@ gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
  	
 	PUBLIC EVar:="#Erky#12345678901234567890#0000"
  	gNaslov+=" , Reg: "+SUBSTR(EVar,7,20)
- 	//EXTERNAL _CLD
 
 #endif
 return

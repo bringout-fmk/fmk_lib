@@ -60,6 +60,13 @@ class ClipperErrorFilter
        # ime modula - REQUEST md[3]
        # ime funkcije md[4]
        refs = find_reference(md[4])
+       if refs.empty?
+           @err_line = "thisfile"
+	   @err_line += SEPARATOR + "0"
+	   @err_line += md[0]
+	   self.out
+	   return
+       end
        # refs je string "./test.prg:9:function bof()\n./db/test2.prg:22:function bof()
        arefs = refs.split(/[\r\n]/)
        arefs.each  do |line_ref|
