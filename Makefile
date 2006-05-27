@@ -1,5 +1,4 @@
 liball:
-	rm -f cui/1g/cui.obj
 	make -C arh/1g 
 	make -C base/1g 
 	make -C base/2g 
