@@ -22,11 +22,11 @@
 #
 #
 # Copyright (c) 2006 Sigma-com, 
-# 17.05.06-22.05.06, ver. 02.07
+# 17.05.06-27.05.06, ver. 02.08
 #
 # Licensed under the same terms as Ruby
 
-VER = '02.07'
+VER = '02.08'
 
 require 'optparse'
 require 'rdoc/usage'
@@ -99,6 +99,8 @@ class Builder
             @dos_cmd += " "+ @switches
           end
 
+	  STDERR.puts "clipper compiler DOS ver 5.2e, clipper.rb ver #{VER}"
+	  STDERR.puts "cmd : #{@dos_cmd}"
 	  @dosemu_launch_cmd = "dosemu -dumb -quiet -E \"#{@dos_cmd}\""
 
 	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
@@ -117,7 +119,7 @@ class Builder
 	  
 	  a_cmds = lib_cmds.split(' ')
 	  lib_name = a_cmds[0]
-
+          STDERR.puts "creating lib:" + lib_name
 	  # create a batch file c:\dev\clp_bc\tmp\lib.bat
           f_bat_name = 'libtmp.bat'
           f_bat_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_bat_name
@@ -180,6 +182,7 @@ class Builder
 
 	  base_dir = rewrite_path(base_dir)
 
+	  STDERR.puts "creating exe - blinking ..."
           f_lnk_name = '_bl_.lnk'
           f_lnk_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_lnk_name
 	  f_lnk = File.open( f_lnk_full_name, "a+")

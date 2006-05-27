@@ -66,10 +66,12 @@ ifeq "${LIB}" "1"
  CLIPPERFLAGS += /DLIB
 endif
 
+lib:    $(MODUL).lib
+	@echo $(MODUL).lib
 
-
-lib : $(OBJS)
-	rm -f $(MODUL)$(LIBEXT) 
+%.lib : $(OBJS)
+	@echo pravim library koja ovisio o: $(OBJS)
+	rm -f $(MODUL).lib 
 	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
 	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
 

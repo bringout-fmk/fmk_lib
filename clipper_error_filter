@@ -2,9 +2,9 @@
 # --------------------------------------------------
 # Sigma-com software
 # ernad.husremovic@sigma-com.net
-# 01.16, 25.05.06
+# 01.18, 26.05.06
 # --------------------------------------------------
-
+VER="01.18"
 
 SEPARATOR=":"
 
@@ -72,7 +72,7 @@ class ClipperErrorFilter
        arefs.each  do |line_ref|
          #                     1       2       3
          #primjer output-a: ./test.prg:2:external bof
-	 re = Regexp.new('([A-Za-z\/\.\\\\:]+):(\d+):(.*)')
+	 re = Regexp.new('([0-9_A-Za-z\/\.\\\\:]+):(\d+):(.*)')
 	 mdref = re.match(line_ref)
          @err_line = ""
 	 if mdref != nil
@@ -128,16 +128,17 @@ class ClipperErrorFilter
 	
     end
 
-    def find_reference(func_name)
-      #fnd surfa po poddirektorijumima
-      #cmd = 'fnd "'+func_name+'\s*\(.*\)|extern.*\s+'+func_name+'\s*$" "*.prg"'
-      #mi medjutim blinker greske lovimo samo u tekucem direktoriju
+    def find_reference(func_name, recursive=TRUE)
+      if recursive
+         cmd = 'fnd "'
+      else
+        cmd = 'grep -i -n -H -E "'
+      end
 
       if @blinker_search_fions=="0" and @blinker_search_ext=="0"
          return ""
       end
       
-      cmd = 'grep -i -n -H -E "'
       first = TRUE
       if @blinker_search_fions == "1"
         cmd += func_name+'\s*\(.*\)'
@@ -149,7 +150,13 @@ class ClipperErrorFilter
 	end
         cmd += 'extern.*\s+'+func_name+'\s*$"'
       end
-      cmd += ' *.prg'
+
+      if recursive
+        cmd += ' "*.prg"'
+      else
+        cmd += ' *.prg'
+      end
+
       #puts "echo search blinker fions: _#{@blinker_search_fions}_  ext: _#{@blinker_search_ext}_"
       a = Kernel.`(cmd)
       #lista linija gdje se pojavljuje poziv funkcije ili external funkcije
@@ -162,4 +169,6 @@ class ClipperErrorFilter
 end
 
 filter = ClipperErrorFilter.new
+STDERR.puts "Clipper build system sigma-com, filter ver. #{VER}"
 filter.process_stdin
+STDERR.puts "--- cliper build zavrsen " + "-"*15
