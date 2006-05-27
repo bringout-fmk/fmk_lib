@@ -8,3 +8,5 @@ CS=
 ASMS=
 
 include  $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
+
+cui.obj : $(SC_BUILD_HOME_DIR)/sclib/sc.ch $(SC_BUILD_HOME_DIR)/sclib/std_cdx.ch

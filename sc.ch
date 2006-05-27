@@ -1,12 +1,12 @@
 /*
  * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
+ *                         Copyright Sigma-com software 1996-2006 
  * ----------------------------------------------------------------
  */
  
 
 #define SC_DEFINED
-#define SC_CLIB_VER  "02.18c"
+#define SC_LIB_VER  "02.19c"
 
 #DEFINE SLASH "\"
 #DEFINE INDEXEXTENS "CDX"

@@ -1,4 +1,4 @@
-#include "SC.CH"
+#include "sc.ch"
 #include "set.ch"
 
 *array
@@ -1287,7 +1287,7 @@ return cK1
 // ----------------------------
 // ----------------------------
 function ElibVer()
-return SC_CLIB_VER
+return SC_LIB_VER
 
 function ZaSvakiSlucaj(cDir,fCdx,aDirs,fRecurse)
 *{

@@ -2,9 +2,9 @@
 # --------------------------------------------------
 # Sigma-com software
 # ernad.husremovic@sigma-com.net
-# 01.18, 26.05.06
+# 01.19, 29.05.06
 # --------------------------------------------------
-VER="01.18"
+VER="01.19"
 
 SEPARATOR=":"
 
@@ -169,6 +169,8 @@ class ClipperErrorFilter
 end
 
 filter = ClipperErrorFilter.new
-STDERR.puts "Clipper build system sigma-com, filter ver. #{VER}"
+STDERR.puts "ClipperLinuxBuildSystem: clipper linux build system, filter #{VER}"
+STDERR.puts "-"*20
 filter.process_stdin
-STDERR.puts "--- cliper build zavrsen " + "-"*15
+STDERR.puts "cliper build zavrsen " 
+STDERR.puts "-"*20

@@ -119,7 +119,9 @@ class Builder
 	  
 	  a_cmds = lib_cmds.split(' ')
 	  lib_name = a_cmds[0]
-          STDERR.puts "creating lib:" + lib_name
+	  STDERR.puts "library manager M$ 3.17"
+	  STDERR.puts "cmd : create #{lib_name}"
+
 	  # create a batch file c:\dev\clp_bc\tmp\lib.bat
           f_bat_name = 'libtmp.bat'
           f_bat_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_bat_name
@@ -180,9 +182,11 @@ class Builder
 
         def blink(base_dir)
 
+	  STDERR.puts "link with blinker 5.00"
+	  STDERR.puts "cmd : create #{base_dir}/#{self.output_exe_name}"
+
 	  base_dir = rewrite_path(base_dir)
 
-	  STDERR.puts "creating exe - blinking ..."
           f_lnk_name = '_bl_.lnk'
           f_lnk_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_lnk_name
 	  f_lnk = File.open( f_lnk_full_name, "a+")

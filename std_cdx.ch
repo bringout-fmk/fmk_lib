@@ -1,5 +1,5 @@
 #ifndef _SET_DEFINED
-#include "Set.ch"
+ #include "Set.ch"
 #endif
 
 
@@ -49,7 +49,6 @@
 ***
 *  Compatibility
 *
-
 #command SET ECHO <*x*>         =>
 #command SET HEADING <*x*>      =>
 #command SET MENU <*x*>         =>
@@ -65,7 +64,6 @@
 ***
 *  System SETs
 *
-
 #command SET EXACT <x:ON,OFF,&>         => Set( _SET_EXACT, <(x)> )
 #command SET EXACT (<x>)                => Set( _SET_EXACT, <x> )
 
@@ -82,10 +80,9 @@
 #command SET DEFAULT TO                 => Set( _SET_DEFAULT, "" )
 
 
-
-***
-*  Date format SETs
-*
+//
+//  Date format SETs
+//
 
 #command SET CENTURY <x:ON,OFF,&>       => __SetCentury( <(x)> )
 #command SET CENTURY (<x>)              => __SetCentury( <x> )
@@ -105,10 +102,7 @@
 
 
 
-***
-*  Terminal I/O SETs
-*
-
+// Terminal I/O SETs
 #command SET ALTERNATE <x:ON,OFF,&>     => Set( _SET_ALTERNATE, <(x)> )
 #command SET ALTERNATE (<x>)            => Set( _SET_ALTERNATE, <x> )
 

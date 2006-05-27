@@ -106,3 +106,5 @@ FMKLIBCMD=$(addprefix $(PREF2), $(SCLIB_LIBS) $(FMK_LIBS) $(MODUL_LIBS) )
 .c.obj :
 	$(CCOMP) $(CFLAGS) $<
 
+
+
