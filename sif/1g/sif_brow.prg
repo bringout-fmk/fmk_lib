@@ -2,18 +2,18 @@
 
 #include "dbstruct.ch"
 
-*static integer
+// static integer
 static __PSIF_NIVO__:=0
-*;
+// ;
 
-*static array __A_SIFV__;
+// static array __A_SIFV__;
 #ifndef CPP
 static __A_SIFV__:= { {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}}
 #endif
 
 function PostojiSifra(nDbf,nNtx,nVisina,nSirina,cNaslov,cID,dx,dy,;
                       bBlok,aPoredak,bPodvuci,aZabrane, fInvert, aZabIsp)
-*{
+
 local cRet, cIdBK
 local i
 private cNazSrch
@@ -257,10 +257,10 @@ set filter to
 PopSifV()
 PopWa()
 return .t.
-*}
+
 
 function ID_J(nOffSet)
-*{
+
 if nOffset=NIL
  nOffset:=1
 endif
@@ -270,10 +270,10 @@ else
   return __A_SIFV__[1,1]
 endif
 return
-*}
+
 
 function SIF_TEKREC(cDBF, nOffset)
-*{
+
 local xVal
 local nArr
 if nOffset=NIL
@@ -292,25 +292,26 @@ if cDBF<>NIL
     select (nArr)
 endif
 return xVal
-*}
 
+// ---------------------------------------------------
+// ---------------------------------------------------
 function PushSifV()
-*{
 __PSIF_NIVO__ ++
 if __PSIF_NIVO__ > len(__A_SIFV__)
   AADD(__A_SIFV__,{"",0,0})
 endif
 return
-*}
+
 
 static function PopSifV()
-*{
+
 --__PSIF_NIVO__
 return
-*}
 
-static function EdSif(nDbf,cNaslov,bBlok,azabrane,aZabIsp)
-*{
+// ------------------------------------------------------------
+// -----------------------------------------------------------
+static function EdSif(nDbf, cNaslov, bBlok, aZabrane, aZabIsp)
+
 local i
 local j
 local jg
@@ -328,7 +329,7 @@ private cPom
 private aQQ
 private aUsl
 private aStruct
-private fnovi
+private lNovi
 
 // matrica zabrana
 if aZabrane=nil
@@ -373,13 +374,13 @@ endif
 
 cSecur:=SecurR(klevel,"Sifrarnici")
 
-if (Ch==K_CTRL_N .and.  !ImaSlovo("AN",cSecur)  )  .or. ;
-   (Ch==K_CTRL_A .and.  !ImaSlovo("AI",cSecur)  )  .or. ;
-   (Ch==K_F2     .and.  !ImaSlovo("AI",cSecur)  )  .or. ;
-   (Ch==K_CTRL_T .and.  !ImaSlovo("AB",cSecur)  )  .or. ;
-   (Ch==K_F4     .and.  !ImaSlovo("AI",cSecur)  )  .or. ;
-   (Ch==K_CTRL_F9 .and.  !ImaSlovo("A9",cSecur)  ) .or. ;
-   ASCAN(azabrane,Ch)<>0  // tipka postoji u listi zabrana
+if (Ch==K_CTRL_N .and.  !ImaSlovo("AN", cSecur)  )  .or. ;
+   (Ch==K_CTRL_A .and.  !ImaSlovo("AI", cSecur)  )  .or. ;
+   (Ch==K_F2     .and.  !ImaSlovo("AI", cSecur)  )  .or. ;
+   (Ch==K_CTRL_T .and.  !ImaSlovo("AB", cSecur)  )  .or. ;
+   (Ch==K_F4     .and.  !ImaSlovo("AI", cSecur)  )  .or. ;
+   (Ch==K_CTRL_F9 .and.  !ImaSlovo("A9", cSecur)  ) .or. ;
+   ASCAN(azabrane,Ch)<>0  
    MsgBeep("Nivo rada:"+klevel+":"+cSecur+": Opcija nedostupna !")
    return DE_CONT
 endif
@@ -403,7 +404,8 @@ endif
 do case
 
   case Ch==K_ENTER
-    if gMeniSif // ako sam u sifrarniku a ne u unosu dokumenta
+    // ako sam u sifrarniku a ne u unosu dokumenta 
+    if gMeniSif 
      return DE_CONT
     else
      // u unosu sam dokumenta
@@ -425,7 +427,8 @@ do case
     BoxC()
 
     if !empty(cUslovSrch)
-      SetSifFilt(cUslovSrch)  // postavi filter u sifrarniku
+      // postavi filter u sifrarniku
+      SetSifFilt(cUslovSrch)  
     else
       set filter to
     endif
@@ -440,7 +443,6 @@ do case
     RETURN DE_CONT
     
   case Ch==K_CTRL_P
-
 
     PushWa()
     IzborP2(Kol,PRIVPATH+alias())
@@ -523,11 +525,10 @@ do case
 
 endcase
 return
-*}
 
+// ------------------------------------------
+// ------------------------------------------
 function EditSifItem(Ch, nOrder, aZabIsp)
-*{
-//local fNovi
 local i
 local j
 local jg
@@ -550,7 +551,7 @@ private aUsl
 private aStruct
 
 nPrevRecNo:=RECNO()
-fNovi:=.f.
+lNovi:=.f.
 
 __A_SIFV__[__PSIF_NIVO__,3]:=  Ch
 
@@ -566,14 +567,14 @@ endif
 
 
 if Ch==K_CTRL_N
-	fNovi:=.t.
+	lNovi:=.t.
 	go bottom
 	skip 1
 endif
 
 
 if Ch==K_F4
-	fNovi:=.t.
+	lNovi:=.t.
 endif
 
 
@@ -763,7 +764,7 @@ do while .t.
 	    endif
 
 
-   next // jg
+   next 
    BoxC()
 
 
@@ -786,7 +787,7 @@ do while .t.
      else
       skip
      endif
-     if eof() //.and. !bof();
+     if eof()
          skip -1; exit
      endif
     endif
@@ -798,7 +799,7 @@ do while .t.
    endif
 
    if lastkey()==K_ESC
-      if fNovi
+      if lNovi
 	 go (nPrevRecNo)
          return 0
       elseif Ch==K_F2
@@ -807,12 +808,12 @@ do while .t.
          return 0
       endif
    else
-      if fNovi
+      if lNovi
 	append blank
 	sql_append()
       endif
       GatherR("w")
-      GatherSifk("w", fnovi )
+      GatherSifk("w", lNovi )
       sql_azur(.t.)
       Scatter("w")
       GathSQL("w")
@@ -823,11 +824,11 @@ do while .t.
     endif
 
 return 0
-*}
+
 
  
 function SetSifVars()
-*{
+
 aStruct:=DBSTRUCT()
 SkratiAZaD(@aStruct)
 for i:=1 to LEN(aStruct)
@@ -836,34 +837,12 @@ for i:=1 to LEN(aStruct)
      &cVar:=&cImeP
 next
 return
-*}
 
 
-/*
-STATIC FUNCTION editStavka()
-local oTable
-PRIVATE GetList
-
-oTable:=TableNew(NIL)
-oTable:read()
-
-GetList:={}
-
-Box(,5,70)
-  for i:=1 to 5
-     @ m_x+1+i, m_y+2 SAY oTable:fields[i] GET  oTable:fieldValues[i] 
-  next
-  READ
-BoxC()
-
-oTable:write()
-RETURN
-*/
-
-
-
+//-------------------------------------------------------
+//-------------------------------------------------------
 function SifPopup(nOrder)
-*{
+
 private Opc:={}
 private opcexe:={}
 private Izbor
@@ -881,11 +860,11 @@ Izbor:=1
 Menu_Sc("bsif")
 
 return 0
-*}
+
 
 
 function SifClipBoard()
-*{
+
 if !SigmaSif("CLIP")
        msgBeep("Neispravna lozinka ....")
        return DE_CONT
@@ -1005,11 +984,11 @@ endif
      m_x:=am_x; m_y:=am_y
      
 return DE_REFRESH
-*}
+
 
 
 function repl_sifk_item()
-*{
+
 local cTable := ALIAS()
 local cField := SPACE(4)
 local cOldVal
@@ -1062,11 +1041,11 @@ enddo
 go (nTRec)
 
 return 0
-*}
+
 
 
 function g_sk_flist(cField)
-*{
+
 local aFields:={}
 local cCurrAlias := ALIAS()
 local nArr
@@ -1108,7 +1087,7 @@ endif
 cField := aFields[nField, 1]
 
 return .t.
-*}
+
 
 
 /*!
@@ -1127,9 +1106,8 @@ return .t.
  * Otvorene tabele SIFK, SIFV
  *
  */
-
 function IzSifk(cDBF,cOznaka, cIdSif, fNiL, fPretrazivanje)
-*{
+
 local cJedanod:=""
 local xRet:=""
 local nTr1, nTr2 , xVal
@@ -1169,7 +1147,8 @@ SEEK cDBF+cOznaka
 xVal:=nil
 
 if found()
-  cPom:=Uslov   // da li uopste traziti
+  // da li uopste traziti
+  cPom:=Uslov   
   if !empty(cPom)
      xVal=&cPom
   endif
@@ -1222,10 +1201,10 @@ endif
 PopWa()
 
 return xRet
-*}
+
 
 static function UVSifv()
-*{
+
 local xRet
 if sifk->tip=="C"
    xRet:= padr(naz,sifk->duzina)
@@ -1237,10 +1216,10 @@ else
    xRet:= "NEPTIP"
 endif
 return xRet
-*}
+
 
 function IzSifkNaz(cDBF,cOznaka)
-*{
+
 local xRet:="", nArea
 
 PushWA()
@@ -1251,11 +1230,11 @@ seek cDBF+cOznaka
 xRet:=sifk->Naz
 PopWA()
 return xRet
-*}
 
+// ------------------------------------------
+// ------------------------------------------
 function IzSifkWV
-*{
-parameters cDBF,cOznaka,cWhen,cValid
+parameters cDBF, cOznaka, cWhen, cValid
 
 local xRet:=""
 
@@ -1271,7 +1250,7 @@ cValid:=sifk->KVALID
 
 PopWa()
 return NIL
-*}
+
 
 /*!
  *\fn USifk
@@ -1284,9 +1263,8 @@ return NIL
  *\param xValue  vrijednost (moze biti tipa C,N,D)
  *
  */
- 
-function USifk(cDBF,cOznaka,cIdSif,xValue)
-*{
+function USifk(cDBF, cOznaka, cIdSif, xValue)
+
 local ntrec, numtok
 private cPom:=""
 
@@ -1381,7 +1359,7 @@ endif
 
 PopWa()
 return
-*}
+
 
 /*!
  @function ImauSifv
@@ -1393,7 +1371,7 @@ return
  @param cIDSif   00000232 - interna sifra
 */
 function ImaUSifv(cDBF,cOznaka,cVOznaka, cIdSif)
-*{
+
 local cJedanod:=""
 local xRet:=""
 local nTr1, nTr2 , xVal
@@ -1406,34 +1384,34 @@ cOznaka:=padr(cOznaka,4)
 xVal:=NIL
 
 select sifv
-PushWa() // spasi stanje sifv
+PushWa() 
 set order to tag "NAZ"
 hseek cDbf + cOznaka + cVOznaka
 if found()
    cIdSif:=IdSif
 endif
-PopWa()   // sifv
+PopWa()
 
 PopWa()
 return
-*}
 
 
-/*!
+
+/*
  @function   GatherSifk
  @abstract
  @discussion Popunjava ID_J (uz pomoc fje NoviId_A()),
              te puni SIFV (na osnovu ImeKol)
  @param cTip  prefix varijabli sa kojima se tabela puni
- @param fNovi .t. - radi se o novom slogu
+ @param lNovi .t. - radi se o novom slogu
 
 */
-function GatherSifk(cTip, fNovi)
-*{
+function GatherSifk(cTip, lNovi)
+
 local i
 private cPom
 
-if fnovi
+if lNovi
 if IzFmkIni('Svi','SifAuto','N')=='D'
     sql_azur(.t.)
     Scatter()
@@ -1454,7 +1432,7 @@ for i:=1 to len(ImeKol)
 next
 
 return
-*}
+
 
 /*!
  @function    NoviID_A
@@ -1464,7 +1442,7 @@ return
               Zato ce se nove sifre davati po kljucu Chr(246)+Chr(246) + sekvencijalni dio
 */
 function NoviID_A()
-*{
+
 local cPom , xRet
 
 PushWA()
@@ -1506,7 +1484,7 @@ enddo
 PopWa()
 
 return xRet
-*}
+
 
 
 /*!
@@ -1522,7 +1500,7 @@ return xRet
 
 */
 function Fill_IDJ(cSTR)
-*{
+
 local nTrec , cPoz
 
 PushWA()
@@ -1555,7 +1533,7 @@ if (__A_SIFV__[__PSIF_NIVO__,3]==K_F4) .or. ;
 endif
 PopWa()
 return .t.
-*}
+
 
 /*!
  @function   SetSifFilt
@@ -1571,7 +1549,7 @@ return .t.
 // formiraj filterski uslov
 // Ulaz 
 function SetSifFilt(cSearch)
-*{
+
 local n1,n2,cVarijabla, cTipVar
 local fAddNaPost := .f.
 local fOrNaPost  := .f.
@@ -1717,12 +1695,12 @@ SET FILTER TO  &cFM1
 go top
 
 return
-*}
+
 
 // prikaz idroba
 // nalazim se u tabeli koja sadrzi IDROBA, IDROBA_J
 function StIdROBA()
-*{
+
 static cPrikIdRoba:=""
 
 if cPrikIdroba == ""
@@ -1743,18 +1721,23 @@ for i=1 to len(aUsl)
    endif
 next
 return .t.
-*}
 
-function NNSifru()      
-*{
-
+// ----------------------------------------------------
 // nadji novu sifru - radi na pritisak F8 pri unosu
 // nove sifre
+// ----------------------------------------------------
+function NNSifru()      
+ local cPom
+ local nDuzSif:=0
+ local lPopuni:=.f.
+ local nDuzUn:=0
+ local cLast:="¨è¶Ê—"
+ local nKor:=0
 
- LOCAL cPom, nDuzSif:=0, lPopuni:=.f., nDuzUn:=0, cLast:="¨è¶Ê—", nKor:=0
  IF IzFmkIni("NovaSifraOpc_F8","PopunjavaPraznine","N")=="D"
    lPopuni:=.t.
  ENDIF
+
  PRIVATE cImeVar:=READVAR()
  cPom:=&(cImeVar)
  IF cImeVar=="WID"
@@ -1798,7 +1781,7 @@ function NNSifru()
   PopWA()
  ENDIF
 RETURN (NIL)
-*}
+
 
 
 /*! \fn VpSifra(wId)
@@ -1807,7 +1790,7 @@ RETURN (NIL)
  */
 
 function VpSifra(wId)
-*{
+
 local nRec:=RecNo()
 local nRet:=.t.
 local cUpozorenje:=" !!! Ovaj ID vec postoji !!! "
@@ -1830,7 +1813,7 @@ elseif (gSKSif=="D" .and. FOUND())   // nasao na ispravci ili dupliciranju
 endif
 go nRec
 return nRet
-*}
+
 
 
 
@@ -1840,7 +1823,7 @@ return nRet
  */
  
 function VpNaziv(wNaziv)
-*{
+
 
 local nRec:=RecNo()
 local nRet:=.t.
@@ -1871,11 +1854,11 @@ set order to tag "ID"
 go nRec
 
 return nRet
-*}
 
 
-function ImaSlovo(cSlova,cString)
-*{
+// ---------------------------------
+// ---------------------------------
+function ImaSlovo(cSlova, cString)
 local i
 for i:=1 to len(cSlova)
  if substr(cSlova,i,1)  $ cString
@@ -1883,10 +1866,10 @@ for i:=1 to len(cSlova)
  endif
 next
 return .f.
-*}
 
+// ------------------------------
+// ------------------------------
 function UslovSif()
-*{
 local aStruct:=DBSTRUCT()
 SkratiAZaD(@aStruct)
 
@@ -1953,10 +1936,11 @@ else
 endif
 go top
 return NIL
-*}
 
-function P_Sifk(cId,dx,dy)
-*{
+
+//---------------------------------
+//---------------------------------
+function P_Sifk(cId, dx, dy)
 local i
 private imekol,kol
 Kol:={}
@@ -1986,7 +1970,6 @@ ImeKol:={ { padr("Id",15), {|| id}, "id"  }           ,;
 FOR i:=1 TO LEN(ImeKol); AADD(Kol,i); NEXT
 Private gTBDir:="N"
 return PostojiSifra(F_SIFK,1,10,65,"sifk - Karakteristike",@cId,dx,dy)
-*}
 
 
 /*!
@@ -2000,7 +1983,7 @@ return PostojiSifra(F_SIFK,1,10,65,"sifk - Karakteristike",@cId,dx,dy)
               Kada je EAN<>13 vraca broj duzine DuzSekvenca BEZ PREFIXA
 */
 function NoviBK_A(cPrefix)
-*{
+
 local cPom , xRet
 local nDuzPrefix, nDuzSekvenca, cEAN
 
@@ -2046,7 +2029,7 @@ endif
 PopWa()
 
 return cRez
-*}
+
 
 /*!
  @function   KEAN13 ( ckod)
@@ -2055,7 +2038,7 @@ return cRez
  @param      ckod   kod od dvanaest mjesta
 */
 function KEAN13(cKod)
-*{
+
 local n2,n4
 local n1:= val(substr(cKod,2,1)) + val(substr(cKod,4,1)) + val(substr(ckod,6,1)) + val(substr (ckod,8,1)) + val(substr(ckod,10,1)) + val(substr(ckod,12,1))
 local n3:= val(substr(cKod,1,1)) +val(substr(cKod,3,1)) + val(substr(ckod,5,1)) + val(substr (ckod,7,1)) + val(substr(ckod,9,1)) + val(substr(ckod,11,1))
@@ -2068,10 +2051,10 @@ if n4=0
 else
  return  str( 10 - n4 , 1)   // n5
 endif
-*}
+
 
 function Barkod(cId)
-*{
+
 // postoje barcodovi!!!!!!!!!!!!!
 *
 local cIdRoba:=""
@@ -2100,12 +2083,12 @@ endif
 cId:=padr(cId,10)
 PopWa()
 return
-*}
+
 
 // nadji novu sifru - radi na pritisak F5 pri unosu
 // nove sifre
 function NNSifru2()     
-*{
+
 local cPom
 local cPom2
 local nOrder
@@ -2150,17 +2133,18 @@ AEVAL(GetList,{|o| o:display()})
 PopWA()
 KEYBOARD CHR(K_END)
 RETURN (NIL)
-*}
 
 
-function NovaSifra(cSifra)
-*{
-
+// -----------------------------------------------------------------------
 * F-ja vraca novu sifru koju odredjuje uvecavanjem postojece po sljedecem
 * principu: Provjeravaju se znakovi pocevsi od posljednjeg i dok god je
 * znak cifra "9" uzima se sljedeci znak, a "9" se mijenja sa "0". Ukoliko
 * provjeravani znak nije "9", zamjenjuje se sa znakom ciji je kod veci za 1
 * i zavrsava se sa pravljenjem sifre tj. neprovjeravani znakovi ostaju isti.
+// -----------------------------------------------------------------------
+
+function NovaSifra(cSifra)
+
 
 LOCAL i:=0,cPom
  IF EMPTY(cSifra); cSifra:=STRTRAN(cSifra," ","0"); ENDIF
@@ -2172,12 +2156,11 @@ LOCAL i:=0,cPom
    cSifra:=STUFF(cSifra,i,1,IF(i==1,IF(cPom=="9","A",CHR(ASC(cPom)+1)),"0"))
  NEXT
 RETURN cSifra
-*}
+
 
 
 
 function SeekBarKod(cId,cIdBk,lNFGR)
-*{
 local nRec
 if lNFGR==nil
 	lNFGR:=.f.
@@ -2200,7 +2183,8 @@ else
 	seek "‡·‚"
 endif
 
-if !found()   // nisam nasao barkod u polju BARKOD
+// nisam nasao barkod u polju BARKOD
+if !found()   
 	cIdBK:=cID
 	cId:=""
 	ImauSifV("ROBA","BARK", cIdBK, @cId)
@@ -2224,5 +2208,5 @@ if lNFGR .and. !FOUND()
 	go (nRec)
 endif
 return
-*}
+
 

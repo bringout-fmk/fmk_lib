@@ -1265,7 +1265,6 @@ return
  */
  
 function SecurR(cLevel,cStavka)
-*{
 local cK1:="AT", fZatv:=.f., nSelect
 
 nSelect:=select()
@@ -1284,12 +1283,11 @@ endif
 
 select(nSelect)
 return cK1
-*}
 
+// ----------------------------
+// ----------------------------
 function ElibVer()
-*{
 return SC_CLIB_VER
-*}
 
 function ZaSvakiSlucaj(cDir,fCdx,aDirs,fRecurse)
 *{
