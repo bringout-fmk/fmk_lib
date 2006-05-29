@@ -2,9 +2,9 @@
 # --------------------------------------------------
 # Sigma-com software
 # ernad.husremovic@sigma-com.net
-# 01.19, 29.05.06
+# 01.20, 29.05.06
 # --------------------------------------------------
-VER="01.19"
+VER="01.20"
 
 SEPARATOR=":"
 
@@ -13,7 +13,7 @@ class ClipperErrorFilter
     attr_reader :error_filter
 
     def initialize
-       @test = false
+       @test = FALSE
        @blinker_search_fions="1"
        @blinker_search_ext="1"
     end
@@ -29,8 +29,9 @@ class ClipperErrorFilter
     end
     
     def catch_compiler_message(line)
-      #                     1                   2                 3 
-      re = Regexp.new('^([0-9_A-Za-z\/\.\\\\:]*)\((\d+)\)\s+Error\s+([0-9_A-Za-z\/\s]+)')
+      #                     1                       2                 3 
+      #re = Regexp.new('^([0-9_A-Za-z\/\.\\\\:]*)\((\d+)\)\s+Error\s+([\:\'0-9_A-Za-z\/\s]+)')
+      re = Regexp.new('^(.+)\((\d+)\)\s+Error\s+(.+)')
       #match definition object
       md = re.match(line)
       if (md != nil) and (md.size>0)
@@ -48,7 +49,7 @@ class ClipperErrorFilter
     def catch_blinker_message(line)
       #                                 1                                 2                     3              4
       #                BLINKER   :    1115   :     REQUEST.OBJ        ( REQUEST  )     :    '  BOF  '   :    unresolved external"
-      re = Regexp.new('BLINKER\s+:\s+(\d+)\s+:\s+([0-9_A-Za-z\/\.\\\\:]+)\s*\(([0_9A-Za-z_]+)\)\s*:\s*\'(.*)\'\s+:\s+(.*)')
+      re = Regexp.new('BLINKER\s+:\s+(\d+)\s+:\s+([0-9_A-Za-z\/\.\\\\:]+)\s*\(([\'0_9A-Za-z_]+)\)\s*:\s*\'(.*)\'\s+:\s+(.*)')
       #puts re
       #match definition object
       md = re.match(line)
@@ -108,6 +109,8 @@ class ClipperErrorFilter
 	  f_in=[]
 	  f_in << "test/testfilename.prg(100) Error C200 message"
 	  f_in << "c:\\dev\\test\\testfilename.prg(122) Error C23 message"
+          f_in << "c:\\dev\\AF\\cl-sclib\\sclib\\print\\1g\\PRINT.PRG(36) Error C2016  Name conflicts with previous declaration: 'CKOM'"
+          f_in << "c:\\dev\\AF\\clsclib\\sclib\\print\\PRINT.PRG(37) Error C2016  Name conflicts with previous declaration CKOM"
           f_in << "BLINKER : 1115 : REQUEST.OBJ(REQUEST) : 'BOF' : unresolved external"
           f_in << "BLINKER : 1115 : REQUEST.OBJ(REQUEST) : 'PROW' : unresolved external"
           for i in 1..10

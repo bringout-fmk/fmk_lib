@@ -1,59 +1,40 @@
 #include "sc.ch"
-/*! \file sc1g/print/print.prg
- *  \brief Print engine
- */
-
-/*! \var *string FmkIni_ExePath_Printeri_DirektnoOUTFTXT
-  * \brief OUTF.TXT direktno na stampac ?
-  * \param D - ide direktno na stampac; N ne ide 
-  * \sa StartPrint
-  */
-*string FmkIni_ExePath_Printeri_DirektnoOUTFTXT;
 
 
-*static string
-static FPrn:="D" 
-*;
+// file sc1g/print/print.prg
+// fmk - Print engine
 
-*static integer
+// fmk.ini/EXPATH: Printeri_DirektnoOUTFTXT - D/N
+//  * D - ide direktno na stampac
+//  * N - ne ide
+
+static lPrn:="D" 
+
 static nZagrada:=0 
-*;
 
-*static string
 static cKom:="" 
-*;
 
-*static integer
 static nSekundi:=0 
-*;
 
-*static string
 static cTekprinter:="" 
-*;
 
-*static string
 static cFName:="OUTF.TXT" 
-*;
 
 
-/*! \fn StartPrint(lUlFajl, cF)
- *  \brief Pocetna procedura za stampu u OUTF.TXT
- *  \param lUFajl - True -> cDirekt="V", False - default varijanta ?? nije mi bas jasno
- *  \param cF - ime izlaznog fajla <> OUTF.TXT
- *  \sa FmkIni_ExePath_Printeri_DirektnoOUTFTXT
- *  \todo Rastumaciti parametar lUFajl
- */
-
-function StartPrint(lUFajl, cF)
-*{
+// -------------------------------------------------------------------
+// StartPrint(lUlFajl, cF)
+// Pocetna procedura za stampu u OUTF.TXT
+//  * lUFajl - True -> cDirekt="V", False - tekuca postavka varijanta 
+//  * cF - ime izlaznog fajla, tekuca vrijednost OUTF.TXT
+//  * FmkIni/ExePath/Printeri_DirektnoOUTFTXT
+// --------------------------------------------------------------
+function StartPrint(lUFajl, cF, cDocumentName)
 local cDirekt
 local cLpt
 local cDDir
 local cOutfTXT
 
-private GetList:={}
-
-if (lUFajl==nil)
+if lUFajl==nil
 	lUFajl:=.f.
 endif
 
@@ -61,7 +42,14 @@ if cF<>nil
 	cFName:=cF
 endif
 
+if (cDocumentName == nil)
+  cDocumentName :=  gModul + '_' + DTOC(DATE()) 
+endif
+
+private GetList:={}
+
 setprc(0,0)
+
 cDirekt:=gcDirekt
 cLpt:="1"
 nZagrada:=0
@@ -84,40 +72,17 @@ if !(lUFajl)
 		PtxtSekvence()
 	endif
 
+        // transformisi cKom varijablu za portove > 4
+        GPPortTransform(@cKom)
 
-	if gPPort>"4"
-		if gpport=="5"
-			cKom:="LPT1"
-		elseif gPPort=="6"
-			cKom:="LPT2"
-		elseif gPPort=="7"
-			cKom:="LPT3"
-		elseif gPPort $ "89"
-			if gKesiraj $ "CD"
-				cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3),gKesiraj+DRVPATH)
-				DirMak2(cpom)
-				cKom:=cPom+cFName
-			elseif gKesiraj == "X"
-				cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3),"C"+DRVPATH)
-				DirMak2(cpom)
-				cKom:=cPom+cFName
-			else
-				cKom:=PRIVPATH+cFName
-				if gnDebug>=5
-					MsgBeep("Inicijalizacija var cKom##var cKom=" + AllTrim(cKom))
-				endif
-			endif
-		// copy
-		endif
-	endif
-
+        
 set confirm on
 
 else
 	cDirekt:="V"
 endif
 
-fPrn:=cDirekt
+lPrn:=cDirekt
 
 if cDirekt=="D" .and. gPrinter<>"R" .and. cOutfTxt<>"D"
 	do while .t.
@@ -149,17 +114,19 @@ else
 		MsgO("Priprema izvjestaja...")
 	endif
 	set console off
+	
 	if gKesiraj $ "CD"
-		cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3),gKesiraj+DRVPATH)
+		cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3), gKesiraj+DRVPATH)
 		DirMak2(cpom)
 		cKom:=cPom+cFName
 		elseif gKesiraj == "X"
-		cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3),"C"+DRVPATH)
+		cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3), "C"+DRVPATH)
 		DirMak2(cpom)
 		cKom:=cPom+cFName
 	else
 		cKom:=PRIVPATH+cFName
 	endif
+
 	if gnDebug>=5
 		MsgBeep("Direktno N, cKom=" + AllTrim(cKom))
 	endif
@@ -171,23 +138,21 @@ set device to printer
 
 cDDir:=SET(_SET_DEFAULT)
 set default to
+
 if cKom="LPT1" .and. gPPort<>"8"
 	set printer to
+
 elseif ckom=="LPT2" .and. gPPort<>"9"
 	Set( 24, "lpt2", .F. )
 else
-
-	#ifdef CLIP
-		MsgBeep("CLIP: Ovdje treba nesto skontati za unix path ? ("+DRVPATH+") ")
-	#endif
-
-	if DRVPATH $ cKom   // radi se o fajlu
+        // radi se o fajlu
+	if DRVPATH $ cKom  
 		bErr:=ERRORBLOCK({|o| MyErrH(o)})
 		begin sequence
 		set printer to (ckom)
 		recover
 		bErr:=ERRORBLOCK(bErr)
-		cKom:=ToUnix("C"+DRVPATH+"sigma"+SLASH+cFName)  // lokalni disk !
+		cKom:=ToUnix("C"+DRVPATH+"sigma"+SLASH+cFName) 
 		if gnDebug>=5
 			MsgBeep("Radi se o fajlu !##set printer to (cKom)##var cKom=" + AllTrim(cKom))
 		endif
@@ -200,7 +165,7 @@ else
 			MsgBeep("set printer to (cKom)##var cKom=" + AllTrim(cKom))
 		endif
 		set printer to (ckom)
-	endif // $
+	endif 
 
 endif
 
@@ -209,14 +174,52 @@ set printer on
 nSekundi:=seconds()
 
 SET(_SET_DEFAULT,cDDir)
-P_INI
+altd()
+GpIni(cDocumentName)
 
 return .t.
-*}
 
+// --------------------------------------
+// za portove > 4 izvrsi transformaciju
+//  cKom
+// -------------------------------------
+static function GPPortTransform(cKom)
+
+if gPPort>"4"
+	if gpport=="5"
+		cKom:="LPT1"
+	elseif gPPort=="6"
+		cKom:="LPT2"
+	elseif gPPort=="7"
+		cKom:="LPT3"
+	elseif gPPort $ "89"
+		if gKesiraj $ "CD"
+			cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3), gKesiraj+DRVPATH)
+			DirMak2(cpom)
+			cKom:=cPom+cFName
+		elseif gKesiraj == "X"
+			cPom:=strtran(PRIVPATH,LEFT(PRIVPATH,3), "C"+DRVPATH)
+			DirMak2(cpom)
+			cKom:=cPom + cFName
+		else
+			cKom:=PRIVPATH+cFName
+			if gnDebug>=5
+				MsgBeep("Inicijalizacija var cKom##var cKom=" + AllTrim(cKom))
+			endif
+		endif
+	endif
+endif
+
+return
+
+
+// ----------------------------------------
+// ----------------------------------------
 function EndPrint()
-*{
-local cS,i, nSek2, coutftxt
+local cS
+local i
+local nSek2
+local cOutfTxt
 PRIVATE cPom
 
 SET DEVICE TO SCREEN
@@ -234,14 +237,14 @@ Tone(440,2)
 Tone(440,2)
 
 * ako nije direktno na printer
-if fPrn<>"D" .or. (gPPort $ "89" .and. fPrn=="D") .or. gPrinter=="R" .or. (cOutftxt=="D" .and. fPrn=="D")  
+if lPrn<>"D" .or. (gPPort $ "89" .and. lPrn=="D") .or. gPrinter=="R" .or. (cOutftxt=="D" .and. lPrn=="D")  
 
 
 if gAppSrv
     return
 endif
 
-if fprn<>"D"  .or. gPrinter=="R"  .or. (cOutftxt=="D" .and. fPrn=="D")
+if lPrn<>"D"  .or. gPrinter=="R"  .or. (cOutftxt=="D" .and. lPrn=="D")
  MsgC()
 endif
 
@@ -249,13 +252,13 @@ endif
 
 save screen to cS
 
-if cOutfTXT=="D" .and. fprn="D"
+if cOutfTXT=="D" .and. lPrn="D"
 	// direktno na printer, ali preko outf.txt
 	cKom:=ckom+" LPT"+gPPort
 	cPom:=cKom
 	!copy &cPom
 
-elseif gPPort $ "89" .and. fprn="D"
+elseif gPPort $ "89" .and. lPrn="D"
 	cKom:=ckom+" LPT"
 	if gPPort=="8"
 	cKom+="1"
@@ -267,13 +270,13 @@ elseif gPPort $ "89" .and. fprn="D"
 	if gnDebug>=5
 		MsgBeep("LPT port 8 ili 9##!copy " + AllTrim(cKom))
 	endif
-elseif fprn=="N"
+elseif lPrn=="N"
 	cPom:=cKom
 	!ll &cPom
-elseif fprn=="E"
+elseif lPrn=="E"
 	cPom:=cKom
 	!q &cPom
-elseif fprn=="V"
+elseif lPrn=="V"
 	IF "U" $ TYPE("gaZagFix")
 		gaZagFix:=NIL
 	ENDIF
@@ -303,7 +306,7 @@ else
 endif
 restore screen from cS
 endif 
-// fprn
+// lPrn
 
 // nemoj "brze izvjestaje"
 if nSek2-nSekundi>10  
@@ -490,17 +493,16 @@ endif
 return
 *}
 
-function FPrn()
+function lPrn()
 *{
-return fPrn
+return lPrn
 *}
 
-/*! \fn PPrint()
- *  \brief Podesenja parametara stampaca
- */
-
+// ------------------------------------------
+// PPrint()
+// Podesenja parametara stampaca
+// ------------------------------------------
 function PPrint()
-*{
 local fused:=.f., ch
 local cSekvence:="N"
 
@@ -645,11 +647,10 @@ IF !EMPTY(gPPTK)
   SetGParams("1"," ","pt","gPTKonv",gPPTK)
 ENDIF
 return
-*}
 
+// ----------------------------------------------
+// ----------------------------------------------
 static function UzmiPPr(cProc,nline,cVar)
-*{
-
 LOCAL cOzn:=" ", GetList:={}
 Box(,1,77)
  @ m_x+1,m_y+2 SAY "Ukucajte oznaku stampaca cije parametre zelite preuzeti:" GET cOzn
@@ -662,10 +663,10 @@ Box(,1,77)
  ENDIF
 BoxC()
 RETURN
-*}
 
-static function PSeqv(cProc,nLine,cVar)
-*{
+// --------------------------------------------
+// --------------------------------------------
+static function PSeqv(cProc, nLine, cVar)
 Box(,1,70)
 
 @ m_x+1,m_y+2 SAY Odsj(&cVar)
@@ -678,17 +679,16 @@ INKEY()
 BoxC()
 
 return
-*}
 
-
+// ----------------------------------
+// ----------------------------------
 function GetPStr(cStr, nDuzina)
-*{
 local i
 local cPom:=""
 local cNum
 local fSl
 
-if nduzina==NIL
+if nDuzina==NIL
   nDuzina:=60
 endif
 
@@ -713,23 +713,19 @@ for i:=1 to len(cStr)
 
 next
 
-return padr(cPom,nduzina)
-*}
+return padr(cPom, nDuzina)
 
-/*
-* nZnak  - broj znakova u redu
-* cPapir - "4" za A4, ostalo za A3
-*/
-
-function GuSt(nZnak,cPapir)
-*{
+// ----------------------------------------------
+// * nZnak  - broj znakova u redu
+// * cPapir - "4" za A4, ostalo za A3
+// -----------------------------------------------
+function GuSt(nZnak, cPapir)
 if cPapir=="POS"
 	RETURN gP12cpi
 ENDIF
 
 nZnak=IF(cPapir=="4",nZnak*2-1,nZnak)
 return IIF(nZnak<161, gP10cpi, IIF(nZnak<193, gP12cpi, IIF(nZnak<275,gPCOND,gPCond2)))
-*}
 
 /*
 * nZnak  - broj znakova u redu
@@ -766,8 +762,9 @@ else
 endif
 *}
 
+// -----------------------------------
+// -----------------------------------
 function Odsj(cStr)
-*{
 local nPos,cPom,cnum
 cPom:=""
 do while .t.
@@ -795,51 +792,67 @@ cStr:=cPom
 return cPom
 *}
 
+// ----------------------------------------
+// izbaci ini seqvencu za printer
+//  * posalji i docname 
+// ----------------------------------------
+function GpIni(cDocumentName)
+local lKonvTable:=nil
 
-function gpINI()
-*{
+if cDocumentName == nil
+ cDocumentName := ""
+endif
+
 Setpxlat()
-qqout(gpini)
 
-konvtable(iif(gPrinter="R",.t.,NIL))
+qqout(gPini)
 
-return ""
-*}
+if !empty(cDocumentName)
+ qqout("#%DOCNA#" + cDocumentName)
+endif
 
+if gPrinter=="R"
+  lKonvTable:=.t.
+endif
+konvtable( lKonvTable ) 
+
+return 
+
+// ----------------------------------------
+// ---------------------------------------
 function gpCOND()
-*{
-
 Setpxlat()
 qqout(gpCOND)
 konvtable(iif(gPrinter="R",.t.,NIL))
 
 return ""
-*}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpCOND2()
-*{
 Setpxlat()
 qqout(gpCOND2)
 konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
-*}
 
+// ----------------------------------------
+// ---------------------------------------
 function gp10CPI()
-*{
 Setpxlat()
 qqout(gP10CPI)
 konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
-*}
 
+// ----------------------------------------
+// ---------------------------------------
 function gp12CPI()
-*{
 Setpxlat()
 qqout(gP12CPI)
 konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
-*}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpB_ON()
 *{
 Setpxlat()
@@ -848,6 +861,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpB_OFF()
 *{
 Setpxlat()
@@ -856,6 +871,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpU_ON()
 *{
 Setpxlat()
@@ -864,6 +881,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpU_OFF()
 *{
 Setpxlat()
@@ -872,6 +891,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpI_ON()
 *{
 Setpxlat()
@@ -880,6 +901,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpI_OFF()
 *{
 Setpxlat()
@@ -888,6 +911,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpReset()
 *{
 Setpxlat()
@@ -896,6 +921,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpNR()
 *{
 Setpxlat()
@@ -904,6 +931,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gPFF()
 *{
 Setpxlat()
@@ -913,6 +942,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpO_Port()
 *{
 Setpxlat()
@@ -921,6 +952,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gpO_Land()
 *{
 Setpxlat()
@@ -929,6 +962,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gRPL_Normal()
 *{
 Setpxlat()
@@ -937,6 +972,8 @@ konvtable(iif(gPrinter="R",.t.,NIL))
 return ""
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function gRPL_Gusto()
 *{
 Setpxlat()
@@ -946,6 +983,8 @@ return ""
 *}
 
 
+// ----------------------------------------
+// ---------------------------------------
 function CurToExtBase(ccExt)
 *{ 
 LOCAL nArr:=SELECT()
@@ -964,7 +1003,8 @@ LOCAL nArr:=SELECT()
 return
 *}
 
-
+// ----------------------------------------
+// ---------------------------------------
 function RPar_Printer()
 *{
 RPAR("01",@gPINI)
@@ -994,9 +1034,9 @@ RPar("pt",@gPPTK)
 return
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function WPar_Printer()
-*{
-
 WPAR("01",gPINI)
 WPAR("02",gPCOND)
 WPAR("03",gPCOND2)
@@ -1028,11 +1068,7 @@ return
 /*! \fn InigEpson()
  *  \brief Inicijaliziraj globalne varijable za Epson stampace (matricne) ESC/P2
  */
-
 function InigEpson()
-*{
-
-//public gPINI:="x0O"
 public gPIni:=""
 public gPCond:="P"
 public gPCond2:="M"
@@ -1057,8 +1093,9 @@ public gPFF:=Chr(12)
 return
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function InigHP()
-*{
 public gPINI:=  Chr(27)+"(17U(s4099T&l66F"
 public gPCond:= Chr(27)+"(s4102T(s18H"
 public gPCond2:=Chr(27)+"(s4102T(s22H"
@@ -1082,9 +1119,9 @@ public gRPL_Gusto :="&l8D(s12H&a6L"
 return
 *}
 
+// ----------------------------------------
+// ---------------------------------------
 function All_GetPstr()
-*{
-
 gPINI       := GetPStr( gPINI   )
 gPCond      := GetPStr( gPCond  )
 gPCond2     := GetPStr( gPCond2 )
@@ -1104,10 +1141,10 @@ gRPL_Normal := GetPStr( gRPL_Normal )
 gRPL_Gusto  := GetPStr( gRPL_Gusto  )
 
 return
-*}
 
+// ----------------------------------------
+// ----------------------------------------
 function SetGParams(cs ,ch ,cid ,cvar     ,cval)
-*{
 local cPosebno:="N"
 private GetList:={}
 PushWa()
@@ -1139,4 +1176,3 @@ PushWa()
  use
 PopWa()
 return
-*}:

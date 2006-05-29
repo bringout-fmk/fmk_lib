@@ -4,7 +4,8 @@
 # authors:
 #  - ernad.husremovic@sigma-com.net
 #
-
+# ver 02.00, 28.05.06
+#
 BUILD_ENV_LINUX=1
 
 LIBSUFFIX=
@@ -23,7 +24,7 @@ EXEDOSDEST=c:\\dev\\sc\\exe
 LINKEREXE=$(SC_BUILD_HOME_DIR)/sclib/blink_linux.sh
 LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb --make-lib 
 CPLIB=cp
-RMLIB=rm
+RMLIB=rm -f 
 
 #asembler
 ASMFLAGS=
@@ -59,7 +60,7 @@ else
  DEBUGCMD=
 endif
 
-ALL_LIBS=$(addprefix $(LIB_DEST), $(FMK_LIBS) $(SC_LIBS) $(MODUL_LIBS) )
+ALL_LIBS=$(addprefix $(LIB_DEST), $(FMK_LIBS) $(SCLIB_LIBS) $(MODUL_LIBS) )
 
 LINKCMD=$(addprefix $(PREFPLUS) , $(OBJPRGS) $(OBJASMS) $(OBJCS) )
 
