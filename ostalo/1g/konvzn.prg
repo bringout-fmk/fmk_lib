@@ -6,7 +6,6 @@
  *  \param cWinKonv - tip konverzije
  */
 function KonvZnWin(cTekst, cWinKonv)
-*{
 local aNiz:={}
 local i
 local j
@@ -33,20 +32,25 @@ if cWinKonv=="1"
 	i:=1
 	j:=2
 elseif cWinKonv=="2"
+        // 7->A
 	i:=1
-	j:=4  // 7->A
+	j:=4  
 elseif cWinKonv=="3"
+        // 852->7
 	i:=2
-	j:=1   // 852->7
+	j:=1   
 elseif cWinKonv=="4"
+        // 852->A
 	i:=2
-	j:=4  // 852->A
+	j:=4 
 elseif cWinKonv=="5"
+        // 852->win1250
 	i:=2
-	j:=3  // 852->win1250
+	j:=3  
 elseif cWinKonv=="6"
+        // 7->win1250
 	i:=1
-	j:=3  // 7->win1250
+	j:=3 
 elseif cWinKonv=="8"
 	i:=3
 	j:=5
@@ -65,7 +69,7 @@ return cTekst
  *  \brief Vrsi zamjenu cInputa
  */
  
-function StrKZN(cInput,cIz,cU)
+function StrKZN(cInput, cIz, cU)
 *{
 local a852:={"Ê","—","¨","è","¶","Á","–","ü","Ü","ß"}
 local a437:={"[","\","^","]","@","{","|","~","}","`"}

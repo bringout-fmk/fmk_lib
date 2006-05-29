@@ -69,7 +69,6 @@ RETURN
 
 
 function USTipke()
-*{  
 SET KEY ASC('{') TO
   SET KEY ASC('|') TO
   SET KEY ASC('`') TO
@@ -81,11 +80,10 @@ SET KEY ASC('{') TO
   SET KEY ASC('–') TO
   SET KEY ASC('ß') TO
 RETURN
-*}
 
-Function KSTo852(cStr)
-*{
-
+// ------------------------------
+// ------------------------------
+function KSTo852(cStr)
   cStr:=strtran(cStr,"{","Á")
   cStr:=strtran(cStr,"|","–")
   cStr:=strtran(cStr,"`","ß")
@@ -97,10 +95,8 @@ Function KSTo852(cStr)
   cStr:=strtran(cStr,"^","¨")
   cStr:=strtran(cStr,"]","è")
 return cStr
-*}
 
 function BH7u8()
-*{
 SETKEY( ASC('}') , {|| __KEYBOARD('Á') }  )
   SETKEY( ASC('{') , {|| __KEYBOARD('Ü') }  )
   SETKEY( ASC('~') , {|| __KEYBOARD('ü') }  )
@@ -112,7 +108,6 @@ SETKEY( ASC('}') , {|| __KEYBOARD('Á') }  )
   SETKEY( ASC('\') , {|| __KEYBOARD('—') }  )
   SETKEY( ASC('@') , {|| __KEYBOARD('¶') }  )
 RETURN
-*}
 
 function Sleep(nSleep)
 *{
