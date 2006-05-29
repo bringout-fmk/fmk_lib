@@ -23,7 +23,7 @@
 require 'optparse'
 require 'rdoc/usage'
 
-VER="00.15"
+VER="00.16"
 
 
 class SendFax
@@ -56,18 +56,26 @@ class SendFax
 
 	def send_fax(file, fax_num)
 		cmd = "send_fax.sh #{fax_num} '#{@directory+'/'+file}'"
-		system(cmd)
-
+		return system(cmd)
 	end
+
 	def send
 		puts "sending faxes ..."
 		dirs = ps_files
 		dirs.each do | file |
-		  puts "#" + file + "#"
   		  fax_num = extract_fax_num(file)
-		  puts fax_num
 		  if fax_num != "NOFAX"
-		  	send_fax(file, fax_num)
+		  	result = send_fax(file, fax_num)
+			if result
+				cmd = "mv #{directory+'/'+file} #{directory}/sent"
+				system(cmd)
+			else
+				puts "result = #{result} , move nije napravljen "
+
+			end
+
+		  else
+			puts "ERROR: Dokument #{file} nema ispravan broj fax-a !!!"
 		  end
 		end
 	end

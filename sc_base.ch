@@ -160,10 +160,24 @@
                                   ;close all             ;
                                   ;return <x>            ;
                                   ;endif
+
+				
 #command START PRINT CRET     =>  if !StartPrint()       ;
                                   ;close all             ;
                                   ;return                ;
                                   ;endif
+
+#command START PRINT CRET DOCNAME <y>    =>  if !StartPrint(nil, nil, <y>)    ;
+                                             ;close all             ;
+                                             ;return                ;
+                                             ;endif
+
+#command START PRINT CRET <x> DOCNAME  <y> =>  if !StartPrint(nil, nil, <y>  )  ;
+                                  ;close all             ;
+                                  ;return <x>            ;
+                                  ;endif
+
+
 
 #command START PRINT RET <x>  =>  if !StartPrint()       ;
                                   ;return <x>            ;
