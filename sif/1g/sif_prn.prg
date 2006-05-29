@@ -513,29 +513,29 @@ return lVrati
  */
 
 function StampaTabele(aKol, bZaRed, nOdvoji, nCrtice, bUslov, lA4papir,cNaslov, bFor,nStr,lOstr,lLinija,bSubTot,nSlogova,cTabBr,lCTab,bZagl)
-*{
-local cOk,nKol:=0,i:=0,xPom,cTek1:="Prenos sa str.",lMozeL:=.f.
+
+local cOk, nKol:=0, i:=0, xPom, cTek1:="Prenos sa str.", lMozeL:=.f.
 local cTek2:="U K U P N O:"
 local nDReda:=0
 local cTek3:="Ukupno na str."
 local cPom
- local lPrenos:=.f.,cLM,cLM2,nMDReda,aPom:={},nSuma,nRed:=0,j:=0,xPom1,xPom2
- local aPrZag:={},aPrSum:={},aPrStav:={},nSubTot,xTot:={.f.,""},lPRed:=.f.
- local nPRed:=0,aPRed:={},l:=0,nBrojacSlogova:=0
- local xPodvuci:="", cPodvuci:=" "
- local lFor:=.f., k:=0
- private glNeSkipuj:=.f.
- if "U" $ TYPE("gaDodStavke"); gaDodStavke:={}; endif
- if "U" $ TYPE("gaSubTotal"); gaSubTotal:={}; endif
- if "U" $ TYPE("gnRedova"); gnRedova:=64; endif
- if "U" $ TYPE("gbFIznos"); gbFIznos:=nil; endif
- if !("U" $ TYPE("gPStranica")); gnRedova:=64+gPStranica; endif
- if bSubTot==nil; bSubTot:={|| {.f.,}}; xTot:={.f.,}; endif
- if lLinija==nil; lLinija:=.f.; endif
- if lOstr==nil; lOstr:=.t.; endif
- if nStr==nil; nStr:=1; endif
- if nCrtice==nil; nCrtice:=1; endif
- if nOdvoji==nil; nOdvoji:=0; endif
+local lPrenos:=.f.,cLM,cLM2,nMDReda,aPom:={},nSuma,nRed:=0,j:=0,xPom1,xPom2
+local aPrZag:={},aPrSum:={},aPrStav:={},nSubTot,xTot:={.f.,""},lPRed:=.f.
+local nPRed:=0,aPRed:={},l:=0,nBrojacSlogova:=0
+local xPodvuci:="", cPodvuci:=" "
+local lFor:=.f., k:=0
+private glNeSkipuj:=.f.
+if "U" $ TYPE("gaDodStavke"); gaDodStavke:={}; endif
+if "U" $ TYPE("gaSubTotal"); gaSubTotal:={}; endif
+if "U" $ TYPE("gnRedova"); gnRedova:=64; endif
+if "U" $ TYPE("gbFIznos"); gbFIznos:=nil; endif
+if !("U" $ TYPE("gPStranica")); gnRedova:=64+gPStranica; endif
+if bSubTot==nil; bSubTot:={|| {.f.,}}; xTot:={.f.,}; endif
+if lLinija==nil; lLinija:=.f.; endif
+if lOstr==nil; lOstr:=.t.; endif
+if nStr==nil; nStr:=1; endif
+if nCrtice==nil; nCrtice:=1; endif
+if nOdvoji==nil; nOdvoji:=0; endif
  
  if bUslov==nil
  	bUslov:={|| INKEY(),IF(LASTKEY()==27,PrekSaEsc(),.t.)}
