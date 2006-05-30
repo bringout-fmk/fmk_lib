@@ -174,7 +174,6 @@ set printer on
 nSekundi:=seconds()
 
 SET(_SET_DEFAULT,cDDir)
-altd()
 GpIni(cDocumentName)
 
 return .t.
@@ -799,7 +798,7 @@ return cPom
 function GpIni(cDocumentName)
 local lKonvTable:=nil
 
-if cDocumentName == nil
+if cDocumentName == nil .or. gPrinter<>"R"
  cDocumentName := ""
 endif
 

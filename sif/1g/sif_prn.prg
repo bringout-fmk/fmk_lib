@@ -946,9 +946,10 @@ return
 
 
 function StZaglavlje(cImeFajla,cPutanja,cTxt1,cTxt2,cTxt3,cTxt4,cTxt5,ctxt6)
-*{
+
 local cZag:="",i:=0,cLin:="",cNLin:=""
- if "U" $ TYPE("gnTMarg"); gnTMarg:=0; endif
+
+if "U" $ TYPE("gnTMarg"); gnTMarg:=0; endif
  if ctxt1==nil
     cTxt1:=""
  endif
@@ -966,13 +967,13 @@ local cZag:="",i:=0,cLin:="",cNLin:=""
  endif
  if ctxt6==nil
     cTxt6:=""
- endif
+endif
 
- if empty(cImeFajla)
+if empty(cImeFajla)
    for i:=1 to gnTMarg
    	QOUT()
    next
- else
+else
   private nHZ:=fopen(cPutanja+cImeFajla)
   private cBuf:="",nRead:=0
   do while .t.
@@ -997,13 +998,12 @@ local cZag:="",i:=0,cLin:="",cNLin:=""
       if cBuf==""
       	exit
       endif
-  enddo
-  setprc(prow()+nPodStr(NRED,cZag),pcol())
+enddo
+setprc(prow()+nPodStr(NRED,cZag),pcol())
   ?
   fclose(nHZ)
  endif
 return
-*}
 
 
 function nPodStr(cPod,cStr)
