@@ -1159,19 +1159,6 @@
 
 #command SET RELATION TO        => dbClearRel()
 
-
-#command SET FILTER TO          => dbClearFilter(NIL)
-#command SET FILTER TO <xpr>    => dbSetFilter( <{xpr}>, <"xpr"> )
-
-#command SET FILTER TO <x:&>                                            ;
-      => if ( Empty(<(x)>) )                                            ;
-       ;    dbClearFilter()                                             ;
-       ; else                                                           ;
-       ;    dbSetFilter( <{x}>, <(x)> )                                 ;
-       ; end								;
-       ; OL_Yield()
-
-
 #command CREATE <(file1)>                                               ;
             [FROM <(file2)>]                                            ;
             [VIA <rdd>]                                                 ;
