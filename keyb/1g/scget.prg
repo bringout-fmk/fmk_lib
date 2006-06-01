@@ -973,7 +973,7 @@ return .t.
 // -----------------------------
 // -----------------------------
 function InkeySc(nSec)
-if (nSec==0) .or. (nSec == nil)
+if (nSec==0) 
 	do while NEXTKEY()==0
 	 	ol_yield()
 	enddo
