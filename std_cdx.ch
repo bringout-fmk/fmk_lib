@@ -1134,8 +1134,8 @@
 #command GOTO BOTTOM            => dbGoBottom()
 #command GO BOTTOM              => dbGoBottom()
 
-#command SKIP                   => dbSkip(1); OL_Yield()
-#command SKIP <n>               => dbSkip( <n> ); OL_Yield()
+#command SKIP                   => dbSkip(1)
+#command SKIP <n>               => dbSkip( <n> )
 #command SKIP ALIAS <a>         => <a> -> ( dbSkip(1) )
 #command SKIP <n> ALIAS <a>     => <a> -> ( dbSkip(<n>) )
 
@@ -1160,8 +1160,8 @@
 #command SET RELATION TO        => dbClearRel()
 
 
-#command SET FILTER TO          => dbClearFilter(NIL); OL_Yield()
-#command SET FILTER TO <xpr>    => dbSetFilter( <{xpr}>, <"xpr"> ); OL_Yield()
+#command SET FILTER TO          => dbClearFilter(NIL)
+#command SET FILTER TO <xpr>    => dbSetFilter( <{xpr}>, <"xpr"> )
 
 #command SET FILTER TO <x:&>                                            ;
       => if ( Empty(<(x)>) )                                            ;
