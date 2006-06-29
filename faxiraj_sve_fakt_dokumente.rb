@@ -45,7 +45,7 @@ class SendFax
 		# evo kako izgleda ime fajla
 		#                1              2             3                        4
 		# FAKT_DOK_10-10-00246-1PF01_29.05.06_PLANIKA-FLEX-d.o.o-SARAJEVO_FAX-033768915.ps
-		re = Regexp.new('FAKT_DOK_.+_.+_.+_FAX\-(\d+).ps')
+		re = Regexp.new('.+_.+_.+_.+_.+_FAX\-(\d+).ps')
 		#re = Regexp.new('FAKT_DOK_.*_FAX\-(\d+).ps')
 		md = filename.match(re)
 		if md != nil

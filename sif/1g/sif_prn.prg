@@ -54,7 +54,6 @@
  */
 
 function Izlaz(Zaglavlje, ImeDat, bFor, fIndex, lBezUpita)
-*{
 local i,k
 local bErrorHandler
 local bLastHandler
@@ -130,18 +129,21 @@ endif
  if LEN(ImeKol[1])>2 .and. !lImaSifK
   private aStruct:=DBSTRUCT(), anDuz[FCOUNT(),2], ctxt2
   for i:=1 to len(aStruct)
-    k:=ASCAN(ImeKol,{|x| FIELD(i)==UPPER(x[3])})
-                         // treci element jednog reda u matrici imekol
-    j:=IF(k<>0,Kol[k],0)
+    
+    // treci element jednog reda u matrici imekol
+    k:= ASCAN(ImeKol, {|x| FIELD(i)==UPPER(x[3])})
+
+    j:=IF(k<>0, Kol[k], 0)
+    
     if j<>0
       xPom:=EVAL(ImeKol[k,2])
       anDuz[j,1]:=MAX( LEN(ImeKol[k,1]) , LEN(IF(VALTYPE(xPom)=="D",;
                   DTOC(xPom),IF(VALTYPE(xPom)=="N",STR(xPom),xPom))) )
       if anDuz[j,1]>100
         anDuz[j,1]:=100
-        anDuz[j,2]:={ ImeKol[k,1],ImeKol[k,2],.f.,;
+        anDuz[j,2]:={ ImeKol[k,1], ImeKol[k,2],.f.,;
                       "P",;
-                      anDuz[j,1],IF(aStruct[i,2]=="N",aStruct[i,4],0) }
+                      anDuz[j,1], IIF(aStruct[i,2]=="N", aStruct[i,4],0) }
       else
         anDuz[j,2]:={ ImeKol[k,1],ImeKol[k,2],.f., VALTYPE(EVAL(ImeKol[k,2])), anDuz[j,1],IF(aStruct[i,2]=="N",aStruct[i,4],0) }
       endif
@@ -155,7 +157,8 @@ endif
      endif
     endif
   next
-  AADD(aKol,{"R.br.",{|| STR(RedBr,4)+"."},.f.,"C",5,0,1,1})
+
+  AADD(aKol, {"R.br.", {|| STR(RedBr,4)+"."}, .f., "C", 5, 0, 1, 1})
   j:=1
   for i:=1 to len(aStruct)
     if anDuz[i,1]!=nil
@@ -164,6 +167,7 @@ endif
       AADD(aKol,anDuz[i,2])
     endif
   next
+
   if !EMPTY(cNazMemo)
     AADD(aKol,{cNazMemo,{|| ctxt2},.f.,"P",30,0,1,++j})
   endif
@@ -268,14 +272,10 @@ endif
  endif
 
 
-//if gPostotak=="D"
-	StampaTabele(aKol,{|| ZaRedBlok()},gnLMarg,;
+StampaTabele(aKol,{|| ZaRedBlok()},gnLMarg,;
           IF(UPPER(RIGHT(ALLTRIM(SET(_SET_PRINTFILE)),3))=="RTF",9,gTabela),;
           ,IF(gPrinter=="L","L4",gA43=="4"),;
           ,,IF(gOstr=="N",-1,),,gOdvTab=="D",,nSlogova,"Kreiranje tabele")
-//else
-//	StampaTabele(aKol,{|| ZaRedBlok()}, gnLMarg, IF(UPPER(RIGHT(ALLTRIM(SET(_SET_PRINTFILE)),3))=="RTF",9,gTabela), ,IF(gPrinter=="L","L4",gA43=="4"),,,IF(gOstr=="N",-1,),,gOdvTab=="D")
-//endif
 
 if (gPrinter=="L" .or. gA43=="4" .and. nSirIzvj>165)
 	gPO_Port()
@@ -286,7 +286,7 @@ if !lBezUpita
 endif
 
 return nil
-*}
+
 
 function ZaRedBlok()
 *{

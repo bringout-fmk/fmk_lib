@@ -11,7 +11,7 @@ static __PSIF_NIVO__:=0
 static __A_SIFV__:= { {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}}
 #endif
 
-function PostojiSifra(nDbf,nNtx,nVisina,nSirina,cNaslov,cID,dx,dy,;
+function PostojiSif(nDbf, nNtx, nVisina, nSirina, cNaslov, cID, dx, dy, ;
                       bBlok,aPoredak,bPodvuci,aZabrane, fInvert, aZabIsp)
 
 local cRet, cIdBK
@@ -219,12 +219,16 @@ if (fPonaz .and. (cNazSrch=="" .or. !trim(cNazSrch)==trim(naz))) .or.;
    go top
   endif
 
-   ObjDbedit(,nVisina,nSirina,{|| EdSif(nDbf,cNaslov,bBlok,aZabrane,aZabIsp)},cNaslov,"",finvert,;
-                  {"<c-N> Novi","<F2>  Ispravka","<ENT> Odabir","<c-T> Brisi",;
-                   "<c-P> Print","<F4>  Dupliciraj","<c-F9> Brisi SVE",;
-                   "<c-F> Trazi","<a-S> Popuni kol.","<a-R> Zamjena vrij.",;
-                   "<c-A> Cirk.ispravka"},1,bPodvuci,,,aPoredak)
-   IF TYPE("id")$"U#UE"               // (nDbf)->
+   ObjDbedit(, nVisina,nSirina, ;
+       {|| EdSif(nDbf, cNaslov, bBlok, aZabrane, aZabIsp)}, ;
+       cNaslov, "", finvert,;
+       {"<c-N> Novi","<F2>  Ispravka","<ENT> Odabir","<c-T> Brisi",;
+        "<c-P> Print","<F4>  Dupliciraj","<c-F9> Brisi SVE",;
+        "<c-F> Trazi","<a-S> Popuni kol.","<a-R> Zamjena vrij.",;
+        "<c-A> Cirk.ispravka"}, ;
+	1, bPodvuci, , , aPoredak)
+
+   IF TYPE("id") $ "U#UE"       
      cID:=(nDbf)->(FIELDGET(1))
    ELSE
      cID:=(nDbf)->id
@@ -251,14 +255,16 @@ endif
 
 select (nDbf)
 
-ordsetfocus(nOrderSif)     //vrati order sifranika !!
+//vrati order sifranika !!
+ordsetfocus(nOrderSif)    
 
 set filter to
 PopSifV()
 PopWa()
 return .t.
 
-
+// --------------------------
+// --------------------------
 function ID_J(nOffSet)
 
 if nOffset=NIL
@@ -1969,7 +1975,7 @@ ImeKol:={ { padr("Id",15), {|| id}, "id"  }           ,;
 
 FOR i:=1 TO LEN(ImeKol); AADD(Kol,i); NEXT
 Private gTBDir:="N"
-return PostojiSifra(F_SIFK,1,10,65,"sifk - Karakteristike",@cId,dx,dy)
+return PostojiSif(F_SIFK,1,10,65,"sifk - Karakteristike",@cId,dx,dy)
 
 
 /*!
@@ -2052,7 +2058,8 @@ else
  return  str( 10 - n4 , 1)   // n5
 endif
 
-
+// -------------------------
+// -------------------------
 function Barkod(cId)
 
 // postoje barcodovi!!!!!!!!!!!!!
