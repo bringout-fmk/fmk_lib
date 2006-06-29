@@ -122,6 +122,7 @@ nSet:=0
 for i:=1 to len(aStruct)
   cImeP:=aStruct[i,1]
   cVar:=cZnak+cImeP
+  
   if  !("#"+cImeP+"#" $ "#BRISANO#_OID_#_COMMIT_#")
     if cImeP=="_SITE_"
       cSQL:=cSQL+iif(nSet=0," SET ",",")+cImeP+"="+SQLValue(gSQLSite)
@@ -207,7 +208,7 @@ if valtype(xVAR)="C"
      nStat:=0
      for ilok:=1 to len(xVar)
         cChar:=substr(xVar,ilok,1)
-        cChar2:="CHAR("+alltrim(str(asc(cChar)))+")"
+	cChar2:="CHAR("+alltrim(str(asc(cChar)))+")"
         if ASC(cChar)=39 .or. ASC(cChar)>127 // "'"
            if nStat=0
              cPom:=cChar2
@@ -218,14 +219,21 @@ if valtype(xVAR)="C"
            endif
            nStat:=2
         else
-           if nStat=0
+	   // debug NULNULNUL
+           if ASC(cChar) == 0
+	   	cChar := " "
+	   endif
+	   
+	   if nStat=0
              cPom:="'"+cChar
            elseif nStat=1
-             cPom:=cPom+cChar
+	     cPom:=cPom+cChar
            else
              cPom:=cPom+"+'"+cChar
            endif
-           nstat:=1
+           
+	   nStat:=1
+	   
         endif
      next
      if nStat=0

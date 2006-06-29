@@ -61,7 +61,8 @@ do while !EOF()
    // dodaj ovaj slog
    nCnt++
    @ 24,60 SAY str(nCnt,4)
-
+  
+  
    sql_append(@GW_HANDLE, cAkcija)
    // procitaj vrijednosti
    scatter()
@@ -95,7 +96,6 @@ if !goModul:lSqlDirektno .and. cAkcija<>"Z"
 endif
 
 return
-*}
 
 
 /*! fn Log_Record(cTn)
