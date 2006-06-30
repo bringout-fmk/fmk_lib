@@ -101,7 +101,6 @@ endif
 ? "Uporedjujem elemente matrica: "
 
 nCnt:=0
-altd()
 for i:=1 to LEN(aResColl)
 	if aResColl[i] <> aGenColl[i]
 	 	nCnt ++

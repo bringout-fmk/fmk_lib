@@ -597,7 +597,6 @@ return aColl
 function FlushMemo(aMemo)
 *{
 local i, cPom
-altd()
 cPom:=""
 cPom += Chr(16)
 for i:=1 to LEN(aMemo)
@@ -617,8 +616,6 @@ local nDec
 local nLen
 local nExp
 local i
-
-altd()
 
 if nExtra <> NIL
 	nLen := ABS(nExtra)

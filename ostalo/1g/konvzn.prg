@@ -129,7 +129,6 @@ next
 
 
 if (cU=="B" .and. LEN(ALLTRIM(cInput)) > 6)
-	altd()
 	// provjeri da li ovaj par postoji u nizu
 	nPos:=ASCAN(aKonvZN, {|aVal| aVal[1] == cPocStanjeSif})
 	if nPos > 0

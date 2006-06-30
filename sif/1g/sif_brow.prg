@@ -703,7 +703,6 @@ do while .t.
 		 @ m_x+nTekRed , m_y+nKolona SAY if(nKolona>1,"  "+alltrim(ImeKol[i,1]) , PADL( alltrim(ImeKol[i,1]) ,15))  GET &cPom VALID eval(bValid) PICTURE cPic
 		 // stampaj grupu za stavku "GRUP"
 		 if lShowPGroup
-		 	altd()
 		 	p_gr(&cPom, nXP+1, nYP+1)
 		 endif
 		
@@ -2108,7 +2107,6 @@ private cNumDio:=""
 if ALIAS()<>"ROBA" .or. IzFMKINI("ROBA","Planika","N",SIFPATH)<>"D" .or. FIELDPOS("K1")==0 .or. !((cImeVar:=READVAR())=="WID") .or. !EMPTY(cK1:=SPACE(LEN(K1))) .or. !VarEdit({ {"Unesite K1","cK1",,"@!",} },10,23,14,56,"Odredjivanje nove sifre artikla","B5")
 	return (NIL)
 endif
-altd()
 cNumDio := IzFMKINI("ROBA","NumDio","SUBSTR(ID,7,3)",SIFPATH)
 cPom2   := &(cImeVar)
 nDuz    := LEN(cPom2)

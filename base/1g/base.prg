@@ -115,7 +115,6 @@ if lSezone
 
 else
         if gAppSrv
-	        altd()
 		cPars:=mparstring(oApp)
 		cKom:="{|| RunAppSrv("+cPars+")}"
 		? "Pokrecem App Serv ..."

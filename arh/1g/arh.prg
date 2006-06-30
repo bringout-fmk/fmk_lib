@@ -265,7 +265,6 @@ if cImearh==NIL
   	cImeArh:="ARHSIG"
 endif
 
-altd()
 if !l7zip
 	cKom:="ARJ A " + cDest + cImeArh + " -jf  -x*.bak !list.cmd"
 else

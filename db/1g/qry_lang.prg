@@ -60,8 +60,6 @@ if !fr
  cStartSifra:=cSifra
 endif
 
-altd()
-
 if  nSifWA<>NIL .and. right(trim(csifra),1)<>";" .and. !fr
  if !empty(cSifra) 
   nPos:=ATToken(cSifra,";")  //  12121;21212;1A -> 1A
