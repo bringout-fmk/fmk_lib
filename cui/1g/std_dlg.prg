@@ -155,9 +155,7 @@ Box(,8,nWidth)
 
 	@ m_x+2,m_y+2 SAY "----------------------------------" 
 	@ m_x+3,m_y+2 SAY "D - direktno na printer"
-	@ m_x+4,m_y+2 SAY "N - prikaz na ekranu u LL-u"
 	@ m_x+5,m_y+2 SAY "V - prikaz na ekranu iz programa"
-	@ m_x+6,m_y+2 SAY "E - prikaz na ekranu u Q-editoru"
 	@ m_x+7,m_y+2 SAY "R - Windows printer"
 	@ m_x+8,m_y+2 SAY "---------- O P C I J E -----------"
 	read
@@ -170,7 +168,7 @@ else
  Box (, 3, 60)
   @ m_x+1, m_y+2 SAY "Batch printer rezim ..."
   // moram sacekati da se predhona faktura odstampa
-  SLEEP(10)
+  SLEEP(14)
  BoxC()
  // batch rezim
  return "D"
