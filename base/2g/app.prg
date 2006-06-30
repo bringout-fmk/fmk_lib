@@ -438,7 +438,7 @@ Box(, 20, 70)
  	@ m_x+ 6,m_y+2 SAY "Unos podataka u sifrarnike velika/mala slova/konv.u 852 (V/M/8)"  GET gPicSif valid gpicsif $ "VM8" pict "@!"
  	@ m_x+ 7,m_y+2 SAY "Stroga kontrola ispravki/brisanja sifara     (D/N)"  GET gSKSif valid gSKSif $ "DN" pict "@!"
  	@ m_x+ 8,m_y+2 SAY "Direktorij pomocne kopije podataka" GET gArhDir pict "@!"
- 	@ m_x+ 9,m_y+2 SAY "Default odgovor na pitanje 'Izlaz direktno na printer?' (D/N/V/E)" GET gcDirekt valid gcDirekt$"DNVER" pict "@!"
+ 	@ m_x+ 9,m_y+2 SAY "Default odgovor na pitanje 'Izlaz direktno na printer?' (D/N/V/E)" GET gcDirekt valid gcDirekt $ "DNVER" pict "@!"
  	@ m_x+10,m_y+2 SAY "Shema boja za prikaz na ekranu 'V' (B1/B2/.../B7):" GET gShemaVF
  	@ m_x+11,m_y+2 SAY "Windows font:" GET gPFont
  	@ m_x+12,m_y+2 SAY "Kodna strana:" GET gKodnaS valid gKodnaS $ "78" pict "9"

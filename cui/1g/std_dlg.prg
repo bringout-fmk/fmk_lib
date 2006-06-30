@@ -1,33 +1,11 @@
-#include "SC.CH"
+#include "sc.ch"
+
+STATIC cLDirekt := "0"
 
 /*
  * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
+ *                          Copyright Sigma-com software 1996-2006 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/cui/1g/std_dlg.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.8 $
- * $Log: std_dlg.prg,v $
- * Revision 1.8  2003/01/18 12:33:18  ernad
- * -
- *
- * Revision 1.6  2002/07/01 10:46:40  ernad
- *
- *
- * oApp:lTerminate - kada je true, napusta se run metod oApp objekta
- *
- * Revision 1.5  2002/06/24 17:04:15  ernad
- *
- *
- * omoguceno da se "restartuje" program .... nakon podesenja sistemskog sata -> oApp:run() ....
- *
- * Revision 1.4  2002/06/15 09:19:34  sasa
- * no message
- *
- * Revision 1.3  2002/06/15 09:03:44  sasa
- * no message
- *
- *
  */
  
 
@@ -39,7 +17,7 @@
  *  \cMogOdg              - Moguci odgovori  
  */
  
-function Pitanje(cId,cPitanje,cOdgDefault,cMogOdg)
+function Pitanje(cId, cPitanje, cOdgDefault, cMogOdg)
 *{
 local cPom
 local cOdgovor
@@ -73,7 +51,8 @@ Box(,3,LEN(cPitanje)+6,.f.)
  	VALID ValidSamo(cOdgovor,cMogOdg)
  READ
 BoxC()
-set escape on; set confirm on
+set escape on
+set confirm on
 
 SET(_SET_DEVICE,cPom)
 return cOdgovor
@@ -139,7 +118,6 @@ return cOdg
  */
  
 function IzlazPrn(cDirekt)
-*{
 if gAppSrv
 	return cDirekt
 endif
@@ -160,7 +138,6 @@ return cDirekt
  */
  
 function UpitPrinter(cDirekt)
-*{
 
 local nWidth
 
@@ -171,6 +148,8 @@ Tone(400,2)
 m_x:=8
 m_y:=38-ROUND(nWidth/2,0)
 @ m_x, m_y SAY ""
+
+if gcDirekt <> "B"
 Box(,8,nWidth)
 	@ m_x+1,m_y+2 SAY "   Izlaz direktno na printer:" GET cDirekt pict "@!" valid cDirekt $ "DNERV"
 
@@ -183,9 +162,21 @@ Box(,8,nWidth)
 	@ m_x+8,m_y+2 SAY "---------- O P C I J E -----------"
 	read
 BoxC()
-   
-return cDirekt
-*}
+
+ return cDirekt
+
+else
+
+ Box (, 3, 60)
+  @ m_x+1, m_y+2 SAY "Batch printer rezim ..."
+  // moram sacekati da se predhona faktura odstampa
+  SLEEP(10)
+ BoxC()
+ // batch rezim
+ return "D"
+
+endif
+
 
 
 /*! \fn GetLozinka(nSiflen)

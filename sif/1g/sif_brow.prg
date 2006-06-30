@@ -1492,18 +1492,17 @@ return xRet
 
 
 
-/*!
- @function   Fill_IDJ
- @abstract   Koristi se za punjenje sifre ID_J sa zadatim stringom
- @discussion fja koja punjeni polje ID_J tako sto ce se uglavnom definisati
-             kao validacioni string u sifrarniku Sifk
-             Primjer:
-             - Zelim da napunim sifru po prinicpu ( GR1 + GR2 + GR3 + sekvencijalni dio)
-             - Zadajem sljedeci kWhenBlok:
-               When: FILL_IDJ( WSIFK_GR1 + WSIFK_GR2 + WSIFK_GR3)
- @param      cStr  zadati string
-
-*/
+// -------------------------------------------------------------------
+// @function   Fill_IDJ
+// @abstract   Koristi se za punjenje sifre ID_J sa zadatim stringom
+// @discussion fja koja punjeni polje ID_J tako sto ce se uglavnom definisati
+//             kao validacioni string u sifrarniku Sifk
+//             Primjer:
+//             - Zelim da napunim sifru po prinicpu ( GR1 + GR2 + GR3 + sekvencijalni dio)
+//             - Zadajem sljedeci kWhenBlok:
+//               When: FILL_IDJ( WSIFK_GR1 + WSIFK_GR2 + WSIFK_GR3)
+// @param      cStr  zadati string
+// --------------------------------------------------------------------
 function Fill_IDJ(cSTR)
 
 local nTrec , cPoz
