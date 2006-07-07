@@ -419,6 +419,14 @@ do case
      return DE_ABORT
     endif
 
+  case UPPER(CHR(Ch)) == "F"
+    // pretraga po MATCH_CODE
+    if m_code_src() == 0
+    	return DE_CONT
+    else
+    	return DE_REFRESH
+    endif
+
   case Ch==ASC("/")
 
     cUslovSrch:=""
@@ -531,6 +539,75 @@ do case
 
 endcase
 return
+
+// -----------------------------------
+// pretraga po match_code polju
+// -----------------------------------
+static function m_code_src()
+local cSrch
+local cFilter
+
+cSrch:=SPACE(20)
+
+Box(, 1, 60)
+@ m_x+1, m_y+2 SAY "Match code:" GET cSrch VALID !EMPTY(cSrch)
+read
+BoxC()
+
+// na esc 0
+if LastKey() == K_ESC
+	return 0
+endif
+
+cSrch := TRIM(cSrch)
+// sredi filter
+g_mc_filter(@cFilter, cSrch)
+
+if !EMPTY(cFilter)
+	// set matchcode filter
+     	s_mc_filter(cFilter)  
+else
+	set filter to
+endif
+   
+return 1
+
+// ---------------------------------
+// setuj match code filter
+// ---------------------------------
+static function s_mc_filter(cFilter)
+set filter to &cFilter
+return
+
+
+
+// ----------------------------
+// sredi filter za tabelu
+// ----------------------------
+static function g_mc_filter(cFilt, cSrch)
+local cPom
+cFilt:="TRIM(match_code)"
+cSrch := TRIM(cSrch)
+
+do case
+	case LEFT(cSrch, 1) == "/"
+		// match code pocinje
+		cPom := STRTRAN(cSrch, "/", "")
+		cFilt += "=" + Cm2Str(cPom)
+	case LEFT(cSrch, 1) == "#"
+		// kompletan match code
+		cPom := STRTRAN(cSrch, "#", "")
+		cFilt += "==" + Cm2Str(cPom)
+	case RIGHT(cSrch, 1) == "/"
+		// match code zavrsava
+		cPom := STRTRAN(cSrch, "/", "")
+		cFilt += "$" + Cm2Str(cPom)
+	otherwise
+		cFilt += "==" + Cm2Str(cSrch)
+endcase
+
+return
+
 
 // ------------------------------------------
 // ------------------------------------------
