@@ -247,7 +247,7 @@ endif
 __A_SIFV__[__PSIF_NIVO__,2]:= recno()
 
 if dx<>NIL .and. dy<>nil
- @ m_x+dx,m_y+dy SAY (nDbf)->naz
+ @ m_x+dx,m_y+dy SAY TRIM((nDbf)->naz)
 elseif dx<>NIL .and. dx>0 .and. dx<25
   CentrTxt(trim((nDbf)->naz),dx)
 endif
