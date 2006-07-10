@@ -540,12 +540,18 @@ do case
 endcase
 return
 
+
 // -----------------------------------
 // pretraga po match_code polju
 // -----------------------------------
 static function m_code_src()
 local cSrch
 local cFilter
+
+if !is_m_code()
+	// ne postoji polje match_code
+	return 0
+endif
 
 cSrch:=SPACE(20)
 
@@ -568,22 +574,34 @@ if !EMPTY(cFilter)
      	s_mc_filter(cFilter)  
 else
 	set filter to
+	go top
 endif
    
 return 1
+
+
+// ------------------------------------------
+// provjerava da li postoji polje match_code
+// ------------------------------------------
+function is_m_code()
+if fieldpos("MATCH_CODE")<>0
+	return .t.
+endif
+return .f.
+
 
 // ---------------------------------
 // setuj match code filter
 // ---------------------------------
 static function s_mc_filter(cFilter)
 set filter to &cFilter
+go top
 return
 
 
-
-// ----------------------------
-// sredi filter za tabelu
-// ----------------------------
+// -------------------------------------
+// sredi filter po match_code za tabelu
+// -------------------------------------
 static function g_mc_filter(cFilt, cSrch)
 local cPom
 cFilt:="TRIM(match_code)"
