@@ -553,11 +553,12 @@ if !is_m_code()
 	return 0
 endif
 
-cSrch:=SPACE(20)
-
 Box(, 1, 60)
-@ m_x+1, m_y+2 SAY "Match code:" GET cSrch VALID !EMPTY(cSrch)
-read
+	private GetList:={}
+	cSrch:=SPACE(20)
+	set cursor on
+	@ m_x+1, m_y+2 SAY "Match code:" GET cSrch VALID !EMPTY(cSrch)
+	read
 BoxC()
 
 // na esc 0
