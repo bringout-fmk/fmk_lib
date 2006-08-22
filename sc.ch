@@ -5,7 +5,7 @@
  */
  
 #define SC_DEFINED
-#define SC_LIB_VER  "02.25c"
+#define SC_LIB_VER  "02.25f"
 
 #DEFINE SLASH "\"
 #DEFINE INDEXEXTENS "CDX"

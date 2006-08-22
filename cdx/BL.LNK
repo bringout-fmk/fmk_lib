@@ -13,7 +13,7 @@ search H:\clipper\blinker\lib\blxclp52.lib
 #Comix
 
 #VFP obj
-#FILE h:\clipper\comix\cmxfox52.obj
+FILE h:\clipper\comix\cmxfox52.obj
 FILE H:\CLIPPER\COMIX\CM52.OBJ
 FILE H:\CLIPPER\COMIX\CMX52.OBJ
 
