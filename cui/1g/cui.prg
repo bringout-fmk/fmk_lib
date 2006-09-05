@@ -1793,12 +1793,6 @@ if TYPE("gFKolor")<>"C"
 endif
 
 
-#ifdef CLIP
-	Invert:="B/W,R/N+,,,R/B+"
-	Normal:="W/B,R/N+,,,N/W"
-	Blink:="R"+REPLICATE("*",4)+"/W,W/B,,,W/RB"
-	Nevid:="W/W,N/N"
-#else
 if (gFKolor=="D" .and. ISCOLOR())
 	Invert:="N/W,R/N+,,,R/B+"
 	Normal:="GR+/N,R/N+,,,N/W"
@@ -1810,7 +1804,6 @@ else
 	Blink:="N"+REPLICATE("*",4)+"/W,W/N,,,W/N"
 	Nevid:="W/W,N/N"
 endif
-#endif
 
 return nil
 *}
