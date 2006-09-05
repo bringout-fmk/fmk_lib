@@ -16,43 +16,7 @@ function TAppModNew(oParent, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
 
 local oObj
 
-#ifdef CLIP
-
-oObj:=map()
-oObj:cName:=nil
-oObj:oParent:=nil
-oObj:oDatabase:=nil
-oObj:oDesktop:=nil
-oObj:cVerzija:=nil
-oObj:cPeriod:=nil
-oObj:cKorisn:=nil
-oObj:cSifra:=nil
-oObj:nKLicenca:=nil
-oObj:cP3:=nil
-oObj:cP4:=nil
-oObj:cP5:=nil
-oObj:cP6:=nil
-oObj:cP7:=nil
-oObj:cSqlLogBase:=nil
-oObj:lSqlDirektno:=nil
-oObj:lStarted:=nil
-oObj:lTerminate:=nil
-
-oObj:hasParent:=@hasParent()
-oObj:setParent:=@setParent()
-oObj:getParent:=@getParent()
-oObj:setName:=@setName()
-oObj:run:=@run()
-oObj:quit:=@quit()
-oObj:gProc:=@gProc()
-oObj:init:=@init()
-oObj:gParams:=@gParams()
-oObj:base_setTGVars:=@setTGVars()
-oObj:setTGVars:=@setTGVars()
-oObj:limitKLicenca:=@limitKLicenca()
-#else
 oObj:=TAppMod():new()
-#endif
 
 oObj:self:=oObj
 
@@ -154,10 +118,6 @@ END CLASS
 
 method init(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
 
-#ifdef CLIP
-	? "start init"
-#endif
-
 ::cName:=cModul
 ::oParent:=oParent
 ::oDatabase:=nil
@@ -172,11 +132,6 @@ method init(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
 ::cP7:=p7
 ::lTerminate:=.f.
 
-#ifdef CLIP
-	? "end init"
-#endif
-
-
 return
 *}
 
@@ -187,10 +142,6 @@ return
 *bool TAppMod::hasParent()
 *{
 method hasParent()
-
-#ifdef CLIP
-	? "start has parent"
-#endif
 
 return !(::oParent==nil)
 *}

@@ -519,7 +519,6 @@ fFirst:=.t.
 
 do while .t.
 SetColor(Invert)
-//CentrTxt(h[nItemNo],24)
 SetColor(cOldColor)
 if !fFirst
 setcolor(cOldColor)
@@ -553,7 +552,8 @@ do case
         exit
       case IsAlpha(Chr(nChar)) .or. IsDigit(Chr(nChar))
         for ii:=1 to nLen
-          if IsDigit(chr(nChar)) // cifra
+          // cifra
+          if IsDigit(chr(nChar)) 
             if Chr(nChar) $ left(Items[ii],3) // provjera postojanja
              nItemNo:=ii          // broja u stavki samo u prva 3 karaktera
              fexit:=.t.
@@ -565,6 +565,8 @@ do case
             endif
           endif
         next
+      case nChar == K_CTRL_N
+      	   MsgBeep("c-N Achoice 2")
       otherwise
          goModul:GProc(nChar)
    endcase
