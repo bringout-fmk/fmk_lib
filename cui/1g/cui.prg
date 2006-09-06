@@ -113,16 +113,17 @@ ELSE
 END IF
 SetColor(LocalC)
 IF LEN(Items)>nMaxVR
- ItemNo:=AChoice3(m_x+1, m_y+2, m_x+N+1, m_y+Length+1, Items, .t., "MenuFunc", ItemNo, ItemNo-1)
+ ItemNo:=AChoice3(m_x+1, m_y+2, m_x+N+1, m_y+Length+1, Items, .t., "MenuFunc", RetItem(ItemNo), RetItem(ItemNo)-1)
 ELSE
- ItemNo:=AChoice2(m_x+1, m_y+2, m_x+N+1, m_y+Length+1, Items, .t., "MenuFunc", ItemNo, ItemNo-1)
+ ItemNo:=AChoice2(m_x+1, m_y+2, m_x+N+1, m_y+Length+1, Items, .t., "MenuFunc", RetItem(ItemNo), RetItem(ItemNo)-1)
 ENDIF
 
+nTItemNo := RetItem(ItemNo)
 
 aMenu:=StackTop(aMenuStack)
 m_x:=aMenu[2]
 m_y:=aMenu[3]
-aMenu[5]:=ItemNo
+aMenu[5]:=nTItemNo
 
 @ m_x,m_y TO m_x+N+1,m_y+Length+3
 //StackPop(aWhereStack)
@@ -130,10 +131,10 @@ aMenu[5]:=ItemNo
 //
 //  Ako nije pritisnuto ESC, <-, ->, oznaci izabranu opciju
 //
-IF ItemNo<>0
+IF nTItemNo<>0
   SetColor(LocalIC)
-  @ m_x+MIN(ItemNo,nMaxVR),m_y+1 SAY " "+Items[ItemNo]+" "
-  @ m_x+MIN(ItemNo,nMaxVR),m_y+2 SAY ""
+  @ m_x+MIN(nTItemNo,nMaxVR),m_y+1 SAY " "+Items[nTItemNo]+" "
+  @ m_x+MIN(nTItemNo,nMaxVR),m_y+2 SAY ""
 END IF
 
 Ch:=LastKey()
@@ -141,7 +142,7 @@ Ch:=LastKey()
 //  Ako je ESC meni treba odmah izbrisati (ItemNo=0),
 //  skini meni sa steka
 
-IF Ch==K_ESC .or. ItemNo==0 .or. ItemNo==nPovratak
+IF Ch==K_ESC .or. nTItemNo==0 .or. nTItemNo==nPovratak
   @ m_x,m_y CLEAR TO m_x+N+2-IF(lFK,1,0),m_y+Length+4-IF(lFK,1,0)
   aMenu:=StackPop(aMenuStack)
   RestScreen(m_x,m_y,m_x+N+2-IF(lFK,1,0),m_y+Length+4-IF(lFK,1,0),aMenu[4])
@@ -182,6 +183,56 @@ ELSE
 END IF
 return
 *}
+
+
+// vrati pravu vrijednost itema...
+function retitem(nItemNo)
+local nRetItem 
+local cAction 
+
+cAction := what_action(nItemNo)
+
+do case
+	case cAction == "K_CTRL_N"
+		nRetItem := nItemNo - 10000
+	case cAction == "K_F2"
+		nRetItem := nItemNo - 20000
+	case cAction == "K_CTRL_T"
+		nRetItem := nItemNo - 30000
+	otherwise
+		nRetItem := nItemNo
+endcase
+
+return nRetItem
+
+
+
+function range(nVal, nMin, nMax)
+local lRet
+if (nVal <= nMax) .and. (nVal >= nMin)
+	lRet := .t.
+else
+	lRet := .f.
+endif
+return lRet
+
+
+function what_action(nItemNo)
+local cAction
+
+do case
+	case RANGE(nItemNo, 10000, 10999)
+		cAction := "K_CTRL_N"
+	case RANGE(nItemNo, 20000, 20999)
+		cAction := "K_F2"
+	case RANGE(nItemNo, 30000, 30999)
+		cAction := "K_CTRL_T"
+	otherwise
+		cAction := ""
+endcase
+
+return cAction
+
 
 /*! \fn Msg(Text,Sec, xPos)
 *   \brief Ispisuje tekst i ceka <Sec> sekundi
@@ -482,13 +533,20 @@ return
 // --------------------------------------------------------
 function Achoice2(x1, y1, x2, y2, Items, f1, cFunc, nItemNo)
 
-local i,ii
-local nWidth,nLen
-local fExit,fFirst
-local nOldCurs,cOldColor,nOldItemNo,cSavC
+local i
+local ii
+local nWidth
+local nLen
+local fExit
+local fFirst
+local nOldCurs
+local cOldColor
+local nOldItemNo
+local cSavC
+local nCtrlKeyVal := 0
 
 if nItemNo==0
-   return nItemNo
+	return nItemNo
 endif
 
 fExit:=.f.
@@ -503,84 +561,103 @@ nLen:=LEN(Items)
 @ x1,y1 CLEAR TO x2-1,y2
 
 for i:=1 to nLen
- if i==nItemNo
-   if left(cOldColor,3)==left(Normal,3)
-        setcolor(Invert)
-   else
-   	setcolor(Normal)
-   endif
- else
-   setcolor(cOldColor)
- endif
- @ x1+i-1,y1 SAY PADR(Items[i],nWidth)
+	if i==nItemNo
+   		if left(cOldColor,3)==left(Normal,3)
+        		setcolor(Invert)
+   		else
+   			setcolor(Normal)
+   		endif
+ 	else
+   		setcolor(cOldColor)
+ 	endif
+ 	@ x1+i-1,y1 SAY PADR(Items[i],nWidth)
 next
 
 fFirst:=.t.
 
 do while .t.
-SetColor(Invert)
-SetColor(cOldColor)
-if !fFirst
-setcolor(cOldColor)
-@ x1+nOldItemNo-1,y1 SAY PADR(Items[nOldItemNo],nWidth)
-if left(cOldColor,3)==left(Normal,3);  setcolor(Invert); else; setcolor(Normal); endif
-@ x1+nItemNo-1,y1 SAY PADR(Items[nItemNo],nWidth)
-endif
-fFirst:=.f.
+	SetColor(Invert)
+	SetColor(cOldColor)
+	if !fFirst
+		setcolor(cOldColor)
+		@ x1+nOldItemNo-1,y1 SAY PADR(Items[nOldItemNo],nWidth)
+		if left(cOldColor,3)==left(Normal,3)
+			setcolor(Invert)
+		else
+			setcolor(Normal)
+		endif
+		@ x1+nItemNo-1,y1 SAY PADR(Items[nItemNo],nWidth)
+	endif
+	fFirst:=.f.
 
-if fExit
-   	exit
-endif
+	if fExit
+   		exit
+	endif
 
-nChar:=WaitScrSav()
+	nChar:=WaitScrSav()
+	nOldItemNo:=nItemNo
 
-nOldItemNo:=nItemNo
-
-do case
-      case nChar==K_ESC
-        nItemNo:=0
-        exit
-      case nChar==K_HOME
-        nItemNo:=1
-      case nChar==K_END
-        nItemNo:=nLen
-      case nChar==K_DOWN
-        nItemNo++
-      case nChar==K_UP
-        nItemNo--
-      case nChar==K_ENTER
-        exit
-      case IsAlpha(Chr(nChar)) .or. IsDigit(Chr(nChar))
-        for ii:=1 to nLen
-          // cifra
-          if IsDigit(chr(nChar)) 
-            if Chr(nChar) $ left(Items[ii],3) // provjera postojanja
-             nItemNo:=ii          // broja u stavki samo u prva 3 karaktera
-             fexit:=.t.
-            endif             
-          else // veliko slovo se trazi po citavom stringu
-            if UPPER(Chr(nChar)) $ Items[ii]
-              nItemNo:=ii
-              fexit:=.t.
-            endif
-          endif
-        next
-      case nChar == K_CTRL_N
-      	   MsgBeep("c-N Achoice 2")
-      otherwise
-         goModul:GProc(nChar)
-   endcase
-   if nItemNo>nLen
-         nItemNo--
-   endif
-   if nItemNo<1; nItemNo++; endif
-
+	do case
+      		case nChar==K_ESC
+        		nItemNo:=0
+        		exit
+      		case nChar==K_HOME
+        		nItemNo:=1
+      		case nChar==K_END
+        		nItemNo:=nLen
+      		case nChar==K_DOWN
+        		nItemNo++
+      		case nChar==K_UP
+        		nItemNo--
+      		case nChar==K_ENTER
+        		exit
+      		case IsAlpha(Chr(nChar)) .or. IsDigit(Chr(nChar))
+        		for ii:=1 to nLen
+          			// cifra
+          			if IsDigit(chr(nChar)) 
+            				if Chr(nChar) $ left(Items[ii],3) 
+						// provjera postojanja
+             					nItemNo:=ii          
+	     					// broja u stavki samo 
+						// u prva 3 karaktera
+             					fexit:=.t.
+            				endif             
+          			else 
+					// veliko slovo se trazi 
+					// po citavom stringu
+            				if UPPER(Chr(nChar)) $ Items[ii]
+              					nItemNo:=ii
+              					fexit:=.t.
+            				endif
+          			endif
+        		next
+      		
+		case nChar == K_CTRL_N
+			nCtrlKeyVal := 10000
+			exit
+		case nChar == K_F2
+			nCtrlKeyVal := 20000
+			exit
+		case nChar == K_CTRL_T
+			nCtrlKeyVal := 30000
+			exit
+		otherwise
+         		goModul:GProc(nChar)
+   	endcase
+   	
+	if nItemNo > nLen
+        	nItemNo--
+   	endif
+   	
+	if nItemNo < 1
+		nItemNo++
+	endif
 enddo
 
 setcursor(iif(nOldCurs==0,0,iif(readinsert(),2,1)))
-
 setcolor(cOldColor)
-return nItemNo
+
+return nItemNo + nCtrlKeyVal
 
 /*! \fn AChoice3(x1,y1,x2,y2,Items,f1,cFunc,nItemNo)
  *  \brief AChoice za broj stavki > 16
@@ -591,7 +668,9 @@ function AChoice3(x1,y1,x2,y2,Items,f1,cFunc,nItemNo)
 *{
 
 local i,ii,nWidth,nLen,fExit,fFirst,nOldCurs,cOldColor,nOldItemNo,cSavC
-LOCAL nGornja,nVisina
+local nGornja
+local nVisina
+local nCtrlKeyVal := 0
 
 if nItemNo==0
    return nItemNo
@@ -662,6 +741,16 @@ SetColor(cOldColor)
             endif
           endif
         next
+       
+       case nChar == K_CTRL_N
+       	   nCtrlKeyVal := 10000
+	   exit
+       case nChar == K_F2
+           nCtrlKeyVal := 20000
+	   exit
+       case nChar == K_CTRL_T
+           nCtrlKeyVal := 30000
+	   exit
       otherwise
         goModul:GProc(nChar)
    endcase
@@ -671,7 +760,7 @@ SetColor(cOldColor)
 enddo
 setcursor(iif(nOldCurs==0,0,iif(readinsert(),2,1)))
 setcolor(cOldColor)
-return nItemNo
+return nItemNo + nCtrlKeyVal
 *}
 
 // ------------------------------------
@@ -1673,6 +1762,7 @@ function Menu_SC(cIzp, fMain, lBug)
 *{
 
 local cOdgovor
+local nIzbor
 
 if fMain==NIL
   fMain:=.f.
@@ -1687,6 +1777,7 @@ endif
 
 do while .t.
    Izbor:=menu(cIzp, opc, Izbor, .f.)
+   nIzbor := retitem(Izbor)
    do case
      case Izbor==0
        if fMain
@@ -1710,8 +1801,8 @@ do while .t.
         LOOP
 	
      otherwise
-      	 if opcexe[izbor] <> nil
-          private xPom:=opcexe[izbor]
+      	 if opcexe[nIzbor] <> nil
+          private xPom:=opcexe[nIzbor]
 	  if VALTYPE(xPom)="C"
 	     xDummy:=&(xPom)
 	  else
