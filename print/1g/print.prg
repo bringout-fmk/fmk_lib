@@ -502,7 +502,8 @@ return lPrn
 // Podesenja parametara stampaca
 // ------------------------------------------
 function PPrint()
-local fused:=.f., ch
+local fused:=.f.
+local ch
 local cSekvence:="N"
 
 PushWa()
@@ -563,11 +564,13 @@ Box(,23,65)
   select params
   cSection:="1"
  endif
- WPar("px",gPrinter)
+ WPar("px", gPrinter)
 
  select gparams
 
- private cSection:="P",cHistory:=gPrinter; aHistory:={}
+ private cSection:="P"
+ private cHistory:=gPrinter
+ private aHistory:={}
  Rpar_Printer()
  All_GetPstr()
 
@@ -629,12 +632,15 @@ WPar("PP",gPPort)
 WPar("r-",gPStranica)
 Wpar("pt",gPPTK)
 
-select gparams; use
+select gparams
+use
 
 select params
 if !fUsed
- select params; use
+ select params
+ use
 endif
+
 IF gPicSif=="8"
   SETKEY(K_CTRL_F2,{|| PPrint()})
 ELSE
@@ -642,8 +648,9 @@ ELSE
 ENDIF
 SETKEY(K_ALT_R,NIL)
 PopWa()
+
 IF !EMPTY(gPPTK)
-  SetGParams("1"," ","pt","gPTKonv",gPPTK)
+  SetGParams("1", " ", "pt", "gPTKonv", gPPTK)
 ENDIF
 return
 
