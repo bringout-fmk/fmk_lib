@@ -57,7 +57,7 @@ nZagrada:=0
 cTekPrinter:=gPrinter
 
 
-cOutfTXT:=IzFMKIni('Printeri','DirektnoOUTFTXT','N')
+cOutfTXT:=IzFMKIni('Printeri', 'DirektnoOUTFTXT','N')
 
 if !(lUFajl)
 
