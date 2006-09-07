@@ -9,6 +9,7 @@ liball:
 	make -C os/1g 
 	make -C ut/1g
 	make -C print/1g
+	make -C print/epl2
 	make -C cui/1g
 	make -C cui/2g
 	make -C params/1g
@@ -28,6 +29,7 @@ cleanall:
 	cd os/1g; make clean
 	cd ut/1g; make clean
 	cd print/1g; make clean
+	cd print/epl2; make clean
 	cd cui/1g; make clean
 	cd cui/2g; make clean
 	cd params/1g; make clean
