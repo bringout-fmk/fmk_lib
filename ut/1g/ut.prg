@@ -190,14 +190,36 @@ endif
 MsgBeep(cPom)
 return
 
-*}
-
 function NotImp()
-*{
 MsgBeep("Not implemented ?")
 return
-*}
 
+
+// upisi text u fajl
+function write_2_file(nH, cText, lNoviRed)
+local cNRed := CHR(13)+CHR(10)
+if lNoviRed
+	FWrite(nH, cText + cNRed)
+else
+	FWrite(nH, cText)
+endif
+return
+
+
+// kreiranje fajla
+function create_file(cFilePath, nH)
+nH:=FCreate(cFilePath)
+if nH == -1
+	MsgBeep("Greska pri kreiranju fajla !!!")
+	return
+endif
+return
+
+
+// zatvaranje fajla
+function close_file(nH)
+FClose(nH)
+return
 
 
 
