@@ -6,6 +6,9 @@ static par_2
 
 static last_nX
 static last_nY
+#DEFINE EPL2_DOT 7.8
+
+
 
 // --------------------------------------------------
 // print string
@@ -13,7 +16,7 @@ static last_nY
 // nInvert - 0 - ne invertuj background, 1 - invert
 // nFontSize - 1 - najmanji, 5 - najveci
 // --------------------------------------------------
-function epl2_string(  nX, nY, cString, lAbsolute, nFontSize, nRotate, nInvert)
+function epl2_string( nX, nY, cString, lAbsolute, nFontSize, nRotate, nInvert)
 local cStr
 
 if nRotate == nil
@@ -64,20 +67,46 @@ cStr += '"' + cString + '"'
 // -----------------------------------
 // label width
 // -----------------------------------
-function epl2_width(nMM)
+function epl2_f_width(nMM)
 ? 'q'+ ALLTRIM(STR( mm2dot(nMM), 0))
+return
+
+// ---------------------------
+// setuj gornju i lijevu marginu
+// ---------------------------
+function epl2_f_init(nX, nY)
+last_nX := nX
+last_nY := nY
+return
+
+
+// -----------------------------------
+// start novu formu
+// -----------------------------------
+function epl2_f_start(nKolicina)
+? 'N'
+return
+
+// -----------------------------------
+// print formu
+// -----------------------------------
+function epl2_f_print(nKolicina)
+if nKolicina == nil
+	nKolicina:=1
+endif
+? 'P'+ ALLTRIM(STR( ROUND(nKolicina, 0), 0))
 return
 
 
 // --------------------------------
 // --------------------------------
 function dot2mm(nDots)
-return ROUND(nDots / 8.00, 0)
+return ROUND(nDots / EPL2_DOT, 0)
 
 // --------------------------------
 // --------------------------------
 function mm2dot(nMM)
-return ROUND(nMM * 8.00, 0)
+return ROUND(nMM * EPL2_DOT, 0)
 
 
 // --------------------------------
@@ -104,7 +133,7 @@ if !used()
         O_GPARAMS
 endif
 
-gcDirekt := "D"
+//gcDirekt := "D"
 gPrinter := "L"
 
 private cSection:="P"
@@ -123,6 +152,7 @@ return
 // -------------------------------
 function epl2_end()
 
+?
 // zavrsi stampu
 END PRINT
 
