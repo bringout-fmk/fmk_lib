@@ -111,11 +111,10 @@ SET(_SET_DEVICE,cPom)
 return cOdg
 *}
 
-
-/*! \fn IzlazPrn(cDirekt)
- *  \brief 
- *  \param cDirekt
- */
+// ----------------------------
+//  IzlazPrn(cDirekt)
+//  \param cDirekt
+// ----------------------------
  
 function IzlazPrn(cDirekt)
 if gAppSrv
@@ -155,9 +154,9 @@ Box(,8,nWidth)
 
 	@ m_x+2,m_y+2 SAY "----------------------------------" 
 	@ m_x+3,m_y+2 SAY "D - direktno na printer"
-	@ m_x+5,m_y+2 SAY "V - prikaz na ekranu iz programa"
-	@ m_x+7,m_y+2 SAY "R - Windows printer"
-	@ m_x+8,m_y+2 SAY "---------- O P C I J E -----------"
+	@ m_x+4,m_y+2 SAY "V - prikaz na ekranu iz programa"
+	@ m_x+5,m_y+2 SAY "R - Windows printer"
+	@ m_x+6,m_y+2 SAY "---------- O P C I J E -----------"
 	read
 BoxC()
 

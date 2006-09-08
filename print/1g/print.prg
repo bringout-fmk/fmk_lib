@@ -86,8 +86,10 @@ lPrn:=cDirekt
 
 if cDirekt=="D" .and. gPrinter<>"R" .and. cOutfTxt<>"D"
 	do while .t.
-		//if isprinter().or.cKom!="LPT1"
-		if InRange(VAL(gPPort),5,7)  .or. (val(gPPort)=8 ) .or. (val(gPPort)=9 ) .or. (val(gPPort)<4 .and. printready(val(gPPort)) )
+		if InRange(VAL(gPPort),5,7)  .or. ;
+		   (val(gPPort)=8 ) .or. ;
+		   (val(gPPort)=9 ) .or. ;
+		   (val(gPPort)<4 .and. printready(val(gPPort)) )
 
 		  // 8 - copy lpt1
 		  exit           
@@ -353,12 +355,14 @@ do while .t.
      else
         Beep(2)
         MsgO("Printer nije ukljucen ili je blokiran! PROVJERITE GA!")
-        DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
+        DO WHILE NEXTKEY()==0
+	    OL_YIELD()
+	ENDDO
         INKEY()
-        // inkey(0)
         MsgC()
-        if lastkey()==K_ESC; return .f.; endif
-        //
+        if lastkey()==K_ESC
+		return .f.
+	endif
      endif
    enddo
 
