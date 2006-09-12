@@ -18,6 +18,9 @@ static last_nY
 // --------------------------------------------------
 function epl2_string( nX, nY, cString, lAbsolute, nFontSize, nRotate, nInvert)
 local cStr
+local cVelicina
+// povecanje u procentima  proreda
+local nRowDelta
 
 if nRotate == nil
 	nRotate := 0
@@ -35,9 +38,30 @@ if nFontSize == nil
 	nFontSize := 2
 endif
 
+// F+1Ernad Husremovic idev fontom vecim za 1 u odnosu na tekuci
+if LEFT(cString, 2) == "F+"
+	cVelicina := SUBSTR(cString, 3, 1)
+	nFontSize += VAL(cVelicina)
+	// prored mora biti 30% veci
+	nRowDelta := 30
+	cString := SUBSTR(cString, 4)
+endif
+
+// F-1Ernad Husremovic idev fontom manjim za 1 u odnosu na tekuci
+if LEFT(cString, 2) == "F+"
+	cVelicina := SUBSTR(cString, 3, 1)
+	nFontSize -= VAL(cVelicina)
+	// prored mora biti 40% manji
+	nRowDelta := -30
+	cString := SUBSTR(cString, 4)
+endif
+
+
 if !lAbsolute
 	nX := last_nX + nX
-	nY := last_nY + nY
+	nY := ROUND(last_nY + nY * (100 + nRowDelta)/100, 0)
+else
+	// ako je apsolutno zadano onda ne mogu napraviti povecanje
 endif
 
 last_nX:=nX
