@@ -20,7 +20,7 @@ function epl2_string( nX, nY, cString, lAbsolute, nFontSize, nRotate, nInvert)
 local cStr
 local cVelicina
 // povecanje u procentima  proreda
-local nRowDelta
+local nRowDelta := 0
 
 if nRotate == nil
 	nRotate := 0
@@ -48,14 +48,13 @@ if LEFT(cString, 2) == "F+"
 endif
 
 // F-1Ernad Husremovic idev fontom manjim za 1 u odnosu na tekuci
-if LEFT(cString, 2) == "F+"
+if LEFT(cString, 2) == "F-"
 	cVelicina := SUBSTR(cString, 3, 1)
 	nFontSize -= VAL(cVelicina)
-	// prored mora biti 40% manji
+	// prored mora biti 30% manji
 	nRowDelta := -30
 	cString := SUBSTR(cString, 4)
 endif
-
 
 if !lAbsolute
 	nX := last_nX + nX
