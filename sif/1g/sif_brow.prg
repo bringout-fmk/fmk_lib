@@ -247,9 +247,19 @@ endif
 __A_SIFV__[__PSIF_NIVO__,2]:= recno()
 
 if dx<>NIL .and. dy<>nil
- @ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naz), 25)
+	if (nDbf)->(fieldpos("naz")) <> 0
+		@ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naz), 25)
+	endif
+	if (nDbf)->(fieldpos("naziv")) <> 0
+		@ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naziv), 25)
+	endif
 elseif dx<>NIL .and. dx>0 .and. dx<25
-  CentrTxt(trim((nDbf)->naz),dx)
+	if (nDbf)->(fieldpos("naz")) <> 0
+  		CentrTxt(trim((nDbf)->naz),dx)
+	endif
+	if (nDbf)->(fieldpos("naziv")) <> 0
+  		CentrTxt(trim((nDbf)->naziv),dx)
+	endif
 endif
 
 
