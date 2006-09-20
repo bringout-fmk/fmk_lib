@@ -63,7 +63,7 @@ local nSelection := -99
 if EMPTY( xField )
 	// ako je prazno polje napuni matricu 
 	// inicijalnim vrijednostima
-	AADD(aRet, { 0 , "-" })
+	AADD(aValArr, { 0 , "-" })
 else
 	// iz polja uzmi vrijednosti
 	// te uzmi opise iz aStdVals
