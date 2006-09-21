@@ -52,13 +52,19 @@ return
 // params:
 // xField - hash polje iz tabele
 // aStdArr - matrica sa dopustenim vrijednostima
+// lChange - bilo promjena na matrici
 // ----------------------------------------------
-function get_hash_field(xField, aStdArr)
+function get_hash_field(xField, aStdArr, lChange)
 local nSvX
 local nSvY
 local aValArr := {}
 local aTmp := {}
 local nSelection := -99
+local aOrigVal := {}
+
+if ( lChange == nil )
+	lChange := .f.
+endif
 
 if EMPTY( xField )
 	// ako je prazno polje napuni matricu 
@@ -78,6 +84,9 @@ else
 	aValArr := ga_stdarr(aTmp, aStdArr)
 endif
 
+// kopiraj matricu ...
+aOrigVal := ACLONE( aValArr )
+
 do while nSelection == -99
 	
 	// snimi poziciju koordinata
@@ -92,7 +101,41 @@ do while nSelection == -99
 	m_y := nSvY
 enddo
 
+// provjeri integritet - da li je bilo promjena
+lChange := arr_changed(aOrigVal, aValArr)
+
 return aValArr
+
+
+
+// -----------------------------------------------
+// Uporedjivanje matrica
+// params:
+// aArrOrig - originalna matrica
+// aArr - matrica na kojoj su bile promjene
+// -----------------------------------------------
+static function arr_changed(aArrOrig, aArr)
+local i
+
+altd()
+
+// uporedi velicine matrica
+if LEN(aArrOrig) <> LEN(aArr)
+	return .t.
+endif
+
+// uporedi clanove matrica
+for i:=1 to LEN(aArrOrig)
+	if aArrOrig[i, 1] <> aArr[i, 1]
+		return .t.
+	endif
+	if aArrOrig[i, 2] <> aArr[i, 2]
+		return .t.
+	endif
+next
+
+return .f.
+
 
 
 // ----------------------------------------------------
