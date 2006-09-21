@@ -1,5 +1,25 @@
 #include "sc.ch"
 
+// HASH FIELD funkcije
+//
+// primjer:
+// ---------
+// aStdVal := {}
+// setovanje standardnih dozvoljenih opcija...
+// AADD(aStdVal, {1, "opcija 1"})
+// AADD(aStdVal, {2, "opcija 2"})
+// AADD(aStdVal, {3, "opcija 3"})
+//
+// lBiloPromjena := .f.
+// aVal := {}
+//
+// aVal := get_hash_field( table->field, aStdVal, @lBiloPromjena )
+// if lBiloPromjena == .t.
+//     scatter()
+//     set_hash_field( table->_field, aVal )
+//     gather()
+// endif
+
 
 // ----------------------------------------------------
 // setovanje polja xField na osnovu matrice aHStrings
