@@ -606,11 +606,15 @@ if !is_m_code()
 	return 0
 endif
 
-Box(, 1, 60)
+Box(, 6, 60)
 	private GetList:={}
 	cSrch:=SPACE(20)
 	set cursor on
 	@ m_x+1, m_y+2 SAY "Match code:" GET cSrch VALID !EMPTY(cSrch)
+	@ m_x+3, m_y+2 SAY "Uslovi pretrage:" COLOR "I"
+	@ m_x+4, m_y+2 SAY " /ABC = trazi sve sto pocinje sa 'ABC'"
+	@ m_x+5, m_y+2 SAY " ABC/ = trazi sve sto zavrsava sa 'ABC'"
+	@ m_x+6, m_y+2 SAY " ABC ili #ABC = trazi striktno 'ABC'"
 	read
 BoxC()
 
