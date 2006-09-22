@@ -296,7 +296,6 @@ return
 // -------------------------------------------
 function set_mc_imekol(nDBF)
 local nSeek
-local cPom
 local bPom
 
 cFldId := "ID"
@@ -312,7 +311,15 @@ nSeek := ASCAN(ImeKol, {|xEditFieldNaz| UPPER(xEditFieldNaz[3]) == "ID" })
 // setuj prikaz polja
 if nSeek > 0
 
-	bPom := {|| PADR( ALLTRIM(&cFldID) + IF(!EMPTY(&cFldMatchCode), "/" + ALLTRIM(&cFldMatchCode), ""), LEN(&cFldID) + 11 ) }
+	bPom := { || ;
+		PADR( ALLTRIM(&cFldID) + ;
+		IF( !EMPTY(&cFldMatchCode), ;
+			IF( LEN(ALLTRIM(&cFldMatchCode)) > 4 , ;
+			   "/" + LEFT(ALLTRIM(&cFldMatchCode), 2) + "..", ;
+			   "/" + LEFT(ALLTRIM(&cFldMatchCode), 4)), ;
+		""), ;
+		LEN(&cFldID) + 5 ) ;
+		}
 	
 	ImeKol[nSeek, 1] := "ID/MC"
 	ImeKol[nSeek, 2] := bPom
