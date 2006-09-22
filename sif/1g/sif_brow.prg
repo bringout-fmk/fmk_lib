@@ -312,7 +312,7 @@ nSeek := ASCAN(ImeKol, {|xEditFieldNaz| UPPER(xEditFieldNaz[3]) == "ID" })
 // setuj prikaz polja
 if nSeek > 0
 
-	bPom := {|| PADR( ALLTRIM(&cFldID) + IF(!EMPTY(&cFldMatchCode), "/" + ALLTRIM(&cFldMatchCode), ""), LEN(&cFldID) + 10 ) }
+	bPom := {|| PADR( ALLTRIM(&cFldID) + IF(!EMPTY(&cFldMatchCode), "/" + ALLTRIM(&cFldMatchCode), ""), LEN(&cFldID) + 11 ) }
 	
 	ImeKol[nSeek, 1] := "ID/MC"
 	ImeKol[nSeek, 2] := bPom
