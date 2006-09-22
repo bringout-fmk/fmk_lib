@@ -606,15 +606,16 @@ if !is_m_code()
 	return 0
 endif
 
-Box(, 6, 60)
+Box(, 7, 60)
 	private GetList:={}
 	cSrch:=SPACE(20)
 	set cursor on
 	@ m_x+1, m_y+2 SAY "Match code:" GET cSrch VALID !EMPTY(cSrch)
-	@ m_x+3, m_y+2 SAY "Uslovi pretrage:" COLOR "I"
-	@ m_x+4, m_y+2 SAY " /ABC = trazi sve sto pocinje sa 'ABC'"
-	@ m_x+5, m_y+2 SAY " ABC/ = trazi sve sto zavrsava sa 'ABC'"
-	@ m_x+6, m_y+2 SAY " ABC ili #ABC = trazi striktno 'ABC'"
+	@ m_x+3, m_y+2 SAY "Uslovi za pretragu:" COLOR "I"
+	@ m_x+4, m_y+2 SAY " /ABC = m.code pocinje sa 'ABC'  ('ABC001')"
+	@ m_x+5, m_y+2 SAY " ABC/ = m.code zavrsava sa 'ABC' ('001ABC')"
+	@ m_x+6, m_y+2 SAY " #ABC = 'ABC' je unutar m.code  ('01ABC11')"
+	@ m_x+7, m_y+2 SAY " ABC  = m.code je striktno 'ABC'    ('ABC')"
 	read
 BoxC()
 
@@ -662,23 +663,38 @@ return
 // -------------------------------------
 static function g_mc_filter(cFilt, cSrch)
 local cPom
+local nLeft
+
 cFilt:="TRIM(match_code)"
 cSrch := TRIM(cSrch)
 
 do case
 	case LEFT(cSrch, 1) == "/"
+	
 		// match code pocinje
 		cPom := STRTRAN(cSrch, "/", "")
 		cFilt += "=" + Cm2Str(cPom)
+		
 	case LEFT(cSrch, 1) == "#"
-		// kompletan match code
+		
+		// pretraga unutar match codea
 		cPom := STRTRAN(cSrch, "#", "")
-		cFilt += "==" + Cm2Str(cPom)
+		
+		cFilt := Cm2Str(ALLTRIM(cPom))
+		cFilt += "$ match_code"
+
 	case RIGHT(cSrch, 1) == "/"
-		// match code zavrsava
+		
+		// match code zavrsava sa...
 		cPom := STRTRAN(cSrch, "/", "")
-		cFilt += "$" + Cm2Str(cPom)
+		nLeft := LEN(ALLTRIM(cPom))
+		
+		cFilt := "RIGHT(ALLTRIM(match_code),"+ALLTRIM(STR(nLeft))+")"
+		cFilt += "==" + Cm2Str(ALLTRIM(cPom))
+		
 	otherwise
+		
+		// striktna pretraga
 		cFilt += "==" + Cm2Str(cSrch)
 endcase
 
