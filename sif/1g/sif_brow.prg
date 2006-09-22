@@ -31,6 +31,10 @@ NEXT
 private nOrdId
 private fBosanski:=.f.
 
+altd()
+// setuj match_code polje...
+set_mc_imekol(nDbf)
+
 PushWa()
 PushSifV()
 
@@ -286,6 +290,38 @@ else
   return __A_SIFV__[1,1]
 endif
 return
+
+// -------------------------------------------
+// setuje match_code imekol {}
+// -------------------------------------------
+function set_mc_imekol(nDBF)
+local nSeek
+local cPom
+local bPom
+
+cFldId := "ID"
+cFldMatchCode := "MATCH_CODE"
+
+// ako nema polja match code ... nista...
+if (nDBF)->(fieldpos(cFldMatchCode)) == 0
+	return
+endif
+
+nSeek := ASCAN(ImeKol, {|xEditFieldNaz| UPPER(xEditFieldNaz[3]) == "ID" })
+
+// setuj prikaz polja
+if nSeek > 0
+
+	bPom := {|| PADR( ALLTRIM(&cFldID) + IF(!EMPTY(&cFldMatchCode), "/" + ALLTRIM(&cFldMatchCode), ""), LEN(&cFldID) + 10 ) }
+	
+	ImeKol[nSeek, 1] := "ID/MC"
+	ImeKol[nSeek, 2] := bPom
+	
+	
+endif
+
+return
+
 
 
 function SIF_TEKREC(cDBF, nOffset)
@@ -655,6 +691,8 @@ local nTekRed
 local nTrebaRedova
 local oTable
 local nPrevRecNo
+local cMCField
+local nMCScan
 private nXP
 private nYP
 private cPom
@@ -664,6 +702,21 @@ private aStruct
 
 nPrevRecNo:=RECNO()
 lNovi:=.f.
+
+// dodaj u matricu match_code ako ne postoji
+cMCField := ALIAS()
+if &cMCField->(fieldpos("MATCH_CODE")) <> 0
+	nMCScan := ASCAN(ImeKol, {|xImeKol| UPPER(xImeKol[3]) == "MATCH_CODE"})
+	
+	// ako ne postoji dodaj ga...
+	if nMCScan == 0
+		// dodaj polje u ImeKol
+		AADD(ImeKol, {"MATCH_CODE", {|| match_code}, "match_code" })
+		// dodaj novu stavku u kol
+		AADD( Kol, LEN(ImeKol) )
+	endif
+endif
+
 
 __A_SIFV__[__PSIF_NIVO__,3]:=  Ch
 
