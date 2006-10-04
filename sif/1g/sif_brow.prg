@@ -2061,45 +2061,52 @@ return .f.
 // ------------------------------
 function UslovSif()
 local aStruct:=DBSTRUCT()
+
 SkratiAZaD(@aStruct)
 
-Box("",IF(len(aStruct)>22,22,len(aStruct)),67,.f.,"","Postavi kriterije za pretrazivanje")
-Private Getlist:={}
+Box("", IF(len(aStruct)>22, 22, LEN(aStruct)), 67, .f. ,"","Postavi kriterije za pretrazivanje")
+
+private Getlist:={}
+
 *
 * postavljanje uslova
 *
 aQQ:={}
 aUsl:={}
-IF "U" $ TYPE("aDefSpremBaz"); aDefSpremBaz:=NIL; ENDIF
-IF aDefSpremBaz!=NIL .and. !EMPTY(aDefSpremBaz)
-  FOR i:=1 TO LEN(aDefSpremBaz)
-    aDefSpremBaz[i,4]:=""
-  NEXT
+
+IF "U" $ TYPE("aDefSpremBaz")
+	aDefSpremBaz := NIL
+ENDIF
+
+IF aDefSpremBaz != NIL .and. !EMPTY(aDefSpremBaz)
+	FOR i:=1 TO LEN(aDefSpremBaz)
+    		aDefSpremBaz[i,4]:=""
+  	NEXT
 ENDIF
 
 set cursor on
 
 for i:=1 to len(aStruct)
- if i==23
-   @ m_x+1,m_y+1 CLEAR TO m_x+22,m_y+67
- endif
- AADD(aQQ,space(100))
- AADD(aUsl,NIL)
- @ m_x+IF(i>22,i-22,i),m_y+67 SAY Chr(16)
- @ m_x+IF(i>22,i-22,i),m_y+1 SAY PADL( alltrim(aStruct[i,1]),15) GET aQQ[i] PICTURE "@S50" ;
-    valid {|| aUsl[i]:=Parsiraj(aQQ[i],aStruct[i,1],iif(aStruct[i,2]=="M","C",aStruct[i,2]))  ,aUsl[i]<>NIL  }
+	if i==23
+   		@ m_x+1,m_y+1 CLEAR TO m_x+22,m_y+67
+ 	endif
+ 	AADD(aQQ, SPACE(100))
+ 	AADD(aUsl, NIL)
+ 	@ m_x+IF(i>22, i-22, i), m_y+67 SAY Chr(16)
+ 	@ m_x+IF(i>22,i-22,i),m_y+1 SAY PADL( alltrim(aStruct[i,1]),15) GET aQQ[i] PICTURE "@S50" ;
+    		valid {|| aUsl[i]:=Parsiraj(aQQ[i]:=_fix_usl(aQQ[i]),aStruct[i,1],iif(aStruct[i,2]=="M","C",aStruct[i,2])) , aUsl[i] <> NIL  }
  read
  IF LASTKEY()==K_ESC
    EXIT
  ELSE
-   IF aDefSpremBaz!=NIL .and. !EMPTY(aDefSpremBaz) .and. ausl[i]<>NIL .and.;
+   IF aDefSpremBaz!=NIL .and. !EMPTY(aDefSpremBaz) .and. aUsl[i]<>NIL .and.;
    aUsl[i]<>".t."
      FOR j:=1 TO LEN(aDefSpremBaz)
        IF UPPER(aDefSpremBaz[j,2]) == UPPER(aStruct[i,1])
          aDefSpremBaz[j,4] := aDefSpremBaz[j,4] +;
                               IF( !EMPTY(aDefSpremBaz[j,4]), ".and.", "") +;
                               IF( UPPER(aDefSpremBaz[j,2]) == UPPER(aDefSpremBaz[j,3]), aUsl[i],;
-                                   Parsiraj(aQQ[i],aDefSpremBaz[j,3],iif(aStruct[i,2]=="M","C",aStruct[i,2])) )
+                                   Parsiraj(aQQ[i]:=_fix_usl(aQQ[i]),aDefSpremBaz[j,3],iif(aStruct[i,2]=="M","C",aStruct[i,2])) )
        ENDIF
      NEXT
    ENDIF
@@ -2126,6 +2133,25 @@ else
 endif
 go top
 return NIL
+
+// -------------------------------------------
+// sredi uslov ako nije postavljeno ; na kraj
+// -------------------------------------------
+static function _fix_usl(xUsl)
+local nLenUsl := LEN(xUsl)
+local xRet := SPACE(nLenUsl)
+
+if EMPTY(xUsl)
+	return xUsl
+endif
+
+if RIGHT(ALLTRIM(xUsl), 1) <> ";"
+	xRet := PADR( ALLTRIM(xUsl) + ";", nLENUSL )
+else
+	xRet := xUsl
+endif
+
+return xRet
 
 
 //---------------------------------
