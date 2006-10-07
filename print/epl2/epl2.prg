@@ -3,6 +3,8 @@
 // parametri
 static par_1 
 static par_2
+static par_3
+static par_4
 
 static last_nX
 static last_nY
@@ -148,7 +150,8 @@ last_nY := 0
 
 par_1 := gPrinter
 par_2 := gcDirekt
-
+par_3 := gPTKonv
+par_4 := gKodnaS
 
 // uzmi parametre iz printera "L"
 SELECT F_GPARAMS
@@ -158,6 +161,8 @@ endif
 
 //gcDirekt := "D"
 gPrinter := "L"
+gPTKonv := "0 "
+gKodnaS := "8"
 
 private cSection:="P"
 private cHistory:=gPrinter
@@ -182,6 +187,8 @@ END PRINT
 // vrati tekuce parametre
 gPrinter := par_1
 gcDirekt := par_2
+gPTKonv := par_3
+gKodnaS := par_4
 
 SELECT F_GPARAMS
 if !used()
