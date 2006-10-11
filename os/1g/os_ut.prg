@@ -183,13 +183,18 @@ return fPostoji
   * \endcode
   */
 
-function BrisiSFajlove(cDir)
+function BrisiSFajlove(cDir, nDana)
 *{
 local cFile
+
+if nDana == nil
+	nDana := D_STAROST_DANA
+endif
+
 cDir:=ToUnix(trim(cdir))
 cFile:=fileseek(trim(cDir)+"*.*")
 do while !empty(cFile)
-    if date() - filedate() > D_STAROST_DANA  
+    if date() - filedate() > nDana  
        filedelete(cdir+cfile)
     endif
     cfile:=fileseek()
