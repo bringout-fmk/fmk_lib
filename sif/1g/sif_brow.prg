@@ -31,7 +31,6 @@ NEXT
 private nOrdId
 private fBosanski:=.f.
 
-altd()
 // setuj match_code polje...
 set_mc_imekol(nDbf)
 
@@ -252,10 +251,10 @@ __A_SIFV__[__PSIF_NIVO__,2]:= recno()
 
 if dx<>NIL .and. dy<>nil
 	if (nDbf)->(fieldpos("naz")) <> 0
-		@ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naz), 25)
+		@ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naz), 70-dy)
 	endif
 	if (nDbf)->(fieldpos("naziv")) <> 0
-		@ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naziv), 25)
+		@ m_x+dx,m_y+dy SAY PADR(TRIM((nDbf)->naziv), 70-dy)
 	endif
 elseif dx<>NIL .and. dx>0 .and. dx<25
 	if (nDbf)->(fieldpos("naz")) <> 0
