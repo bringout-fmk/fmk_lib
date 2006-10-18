@@ -314,6 +314,7 @@ function Reindex(ff)
 *  REINDEXiranje DBF-ova
 
 local nDbf
+local lZakljucana
 
 IF (ff<>nil .and. ff==.t.) .or. if( !gAppSrv,  Pitanje("","Reindeksirati DB (D/N)","N")=="D", .t.)
 
@@ -390,7 +391,7 @@ for nDbf:=1 to 250
    endif	
 endif
 
-if lZakljucana
+if lZakljucana == .t.
 	SetROnly(.t.)
 endif
 

@@ -1899,4 +1899,129 @@ endif
 return nil
 *}
 
+// -----------------------------------------------------------------
+// browsanje forme
+// -----------------------------------------------------------------
+function FormBrowse(nT,nL,nB,nR,aImeKol,aKol,aHFCS,nFreeze,bIstakni)
+local oBrowse     // browse object
+local oColumn     // column object
+local k
+local i
+
+oBrowse:=TBrowseDB(nT,nL,nB,nR)
+
+for k:=1 to LEN(aKol)
+	i:=ASCAN(aKol,k)
+  	if i<>0
+     		oColumn:=TBColumnNew(aImeKol[i,1], aImeKol[i,2])
+		if bIstakni<>nil
+        		oColumn:colorBlock := {|| IIF (EVAL (bIstakni), {5,2}, {1,2})}
+     		endif
+		if aHFCS[1]<>nil
+        		oColumn:headSep := aHFCS [1]
+     		endif
+     		if aHFCS[2]<>nil
+        		oColumn:footSep := aHFCS [2]
+     		endif
+     		if aHFCS[3]<>nil
+        		oColumn:colSep := aHFCS [3]
+     		endif
+     		oBrowse:addColumn (oColumn)
+  	endif
+next
+
+if nFreeze==nil
+	oBrowse:Freeze := 1
+else
+   	oBrowse:Freeze := nFreeze
+endif
+
+return (oBrowse)
+
+// ---------------------------------------------------------
+// prikaz forme
+// ---------------------------------------------------------
+function ShowBrowse(oBrowse, aConds, aProcs)
+local nCnt
+local lFlag
+local nArrLen
+local nRez:=DE_CONT
+private cCH
+
+nArrLen := LEN (aConds)
+DO WHILE nRez <> DE_ABORT
+
+   if nRez==DE_REFRESH     // obnovi
+      oBrowse:Refreshall()
+   endif
+
+   IF oBrowse:colPos <= oBrowse:freeze
+      oBrowse:colPos := oBrowse:freeze + 1
+   ENDIF
+
+   cCH := 0
+   DO WHILE ! oBrowse:stable .AND. (cCH = 0)
+      oBrowse:Stabilize()
+      cCH := INKEY ()
+   ENDDO
+
+   IF oBrowse:stable
+      IF oBrowse:hitTop .OR. oBrowse:hitBottom
+         Beep (1)
+      ENDIF
+      cCH := INKEY (0)
+   ENDIF
+
+   lFlag := .T.
+   FOR nCnt := 1 TO nArrLen
+       IF EVAL (aConds [nCnt], cCH)
+          nRez := EVAL (aProcs [nCnt])
+          lFlag := .F.
+          EXIT
+       ENDIF
+   NEXT
+
+   IF ! lFlag;  LOOP; ENDIF
+
+   DO CASE
+     CASE cCH = K_ESC
+          EXIT
+     CASE cCH == K_DOWN
+          oBrowse:down()
+     CASE cCH == K_PGDN
+          oBrowse:pageDown()
+     CASE cCH == K_CTRL_PGDN
+          oBrowse:goBottom()
+     CASE cCH == K_UP
+          oBrowse:up()
+     CASE cCH == K_PGUP
+          oBrowse:pageUp()
+     CASE cCH == K_CTRL_PGUP
+          oBrowse:goTop()
+     CASE cCH == K_RIGHT
+          oBrowse:right()
+     CASE cCH == K_LEFT
+          oBrowse:left()
+     CASE cCH == K_HOME
+          oBrowse:home()
+     CASE cCH == K_END
+          oBrowse:end()
+     CASE cCH == K_CTRL_LEFT
+          oBrowse:panLeft()
+     CASE cCH == K_CTRL_RIGHT
+          oBrowse:panRight()
+     CASE cCH == K_CTRL_HOME
+          oBrowse:panHome()
+     CASE cCH == K_CTRL_END
+          oBrowse:panEnd()
+   ENDCASE
+ENDDO
+return
+
+
+// -----------------------------------
+// dummy funkcija
+// -----------------------------------
+function dummy_func()
+return
 
