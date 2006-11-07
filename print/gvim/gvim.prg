@@ -9,24 +9,90 @@ static last_nX
 static last_nY
 
 
+
+// ------------------------------------------
+// dodaje opciju u matricu opcija...
+// ------------------------------------------
+function add_gvim_options(aOpt, cOption)
+AADD(aOpt, { '"' + cOption + '"' })
+return
+
 // -----------------------------------------
 // pokrece gvim sa zadanim parametrima...
 // -----------------------------------------
 function gvim_cmd(cFile)
-local cCmd
-local cSpace := SPACE(1)
+local aOpt := {}
+local cPom
+
+// setovanje opcija gvim gui-ja
+
+// font + font size...
+cPom := 'set gfn=Lucida_Console:h7:cDEFAULT'
+add_gvim_options(@aOpt, cPom)
+
+// text wrap
+cPom := 'set wrap!'
+add_gvim_options(@aOpt, cPom)
+
+// add bottom scrollbar
+cPom := 'set guioptions+=b'
+add_gvim_options(@aOpt, cPom)
+
 
 cFile := ALLTRIM(cFile)
 
-cCmd := 'start gvim'
-cCmd += cSpace
-cCmd += '-c'
-cCmd += cSpace
-cCmd += '"set gfn=Lucida_Console:h7:cDEFAULT"'
-cCmd += cSpace
-cCmd += cFile
+altd()
 
-Run(cCmd)
+// pokreni gvim sa opcijama
+r_gvim_cmd(cFile, aOpt)
+
+return
+
+// -------------------------------------------------
+// pokrece gvim iz cmd line-a
+// -------------------------------------------------
+static function r_gvim_cmd(cFilename, aOpt)
+local cCmd := ""
+local cBatFile := ""
+local cSpace := SPACE(1)
+local i
+
+cCmd += 'gvim'
+
+// opcije....
+if LEN(aOpt) > 0
+	for i:=1 to LEN(aOpt)
+		// maksimalni broj opcija je 10
+		if i == 11
+			exit
+		endif
+		
+		cCmd += cSpace
+		cCmd += '-c'
+		cCmd += cSpace
+		cCmd += ALLTRIM(aOpt[i, 1])
+	next
+endif
+
+cCmd += cSpace
+cCmd += cFileName
+
+cBatFile := PRIVPATH + "GVIM_RUN.BAT"
+
+// upisi u bat fajl komandu za pokrenuti...
+set printer to (cBatFile)
+set printer on
+set console off
+
+? cCmd
+   
+set printer to
+set printer off
+set console on
+
+cRunCmd := "start " + cBatFile
+
+Run(cRunCmd)
 
 return
 
