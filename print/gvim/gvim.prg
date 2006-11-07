@@ -5,18 +5,20 @@ static par_1
 static par_2
 static par_3
 static par_4
-
 static last_nX
 static last_nY
 
 
-
-// pokrece gvim sa zadanim parametrom...
+// -----------------------------------------
+// pokrece gvim sa zadanim parametrima...
+// -----------------------------------------
 function gvim_cmd(cFile)
 local cCmd
 local cSpace := SPACE(1)
 
-cCmd := 'gvim'
+cFile := ALLTRIM(cFile)
+
+cCmd := 'start gvim'
 cCmd += cSpace
 cCmd += '-c'
 cCmd += cSpace
@@ -48,8 +50,7 @@ if !used()
         O_GPARAMS
 endif
 
-//gcDirekt := "D"
-gPrinter := "V"
+gPrinter := "G"
 gPTKonv := "0 "
 gKodnaS := "8"
 

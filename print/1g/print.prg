@@ -63,10 +63,18 @@ if !(lUFajl)
 	cDirekt:=IzlazPrn(cDirekt)
 	cKom:="LPT"+gPPort
 
-	if cDirekt="R"
-		gPrinter:="R"
+	if cDirekt = "R"
+		gPrinter := "R"
 	endif
 
+	if gPrinter = "G"
+		cDirekt := "G"
+	endif
+	
+	if cDirekt = "G"
+		gPrinter := "G"
+	endif
+	
 	if gPrinter=="R"
 		PtxtSekvence()
 	endif
@@ -74,8 +82,7 @@ if !(lUFajl)
         // transformisi cKom varijablu za portove > 4
         GPPortTransform(@cKom)
 
-        
-set confirm on
+	set confirm on
 
 else
 	cDirekt:="V"
@@ -83,7 +90,7 @@ endif
 
 lPrn:=cDirekt
 
-if cDirekt=="D" .and. gPrinter<>"R" .and. gPrinter<>"V" .and. cOutfTxt<>"D"
+if cDirekt=="D" .and. gPrinter<>"R" .and. gPrinter<>"G" .and. cOutfTxt<>"D"
 	do while .t.
 		if InRange(VAL(gPPort),5,7)  .or. ;
 		   (val(gPPort)=8 ) .or. ;
@@ -237,14 +244,13 @@ Tone(440,2)
 Tone(440,2)
 
 * ako nije direktno na printer
-if lPrn<>"D" .or. (gPPort $ "89" .and. lPrn=="D") .or. gPrinter=="R" .or. gPrinter=="V".or. (cOutftxt=="D" .and. lPrn=="D")  
-
+if lPrn<>"D" .or. (gPPort $ "89" .and. lPrn=="D") .or. gPrinter=="R" .or. gPrinter=="G" .or. (cOutftxt=="D" .and. lPrn=="D")  
 
 if gAppSrv
     return
 endif
 
-if lPrn<>"D"  .or. gPrinter=="R" .or. gPrinter=="V" .or. (cOutftxt=="D" .and. lPrn=="D")
+if lPrn <> "D" .or. gPrinter == "R" .or. gPrinter == "G" .or. (cOutftxt=="D" .and. lPrn=="D")
  MsgC()
 endif
 
@@ -284,6 +290,10 @@ elseif lPrn=="V"
 	VidiFajl(cKom,gaZagFix,gaKolFix)
 	gaZagFix:=NIL
 	gaKolFix:=NIL
+elseif lPrn=="G"
+	// gvim stampa...
+	cKom := PRIVPATH + cFName
+	gvim_cmd(cKom)
 else
 	// R - Windowsi
 	Beep(1)
@@ -301,10 +311,6 @@ else
 
 	if gPrinter == "R"
 		Ptxt(cKom)
-	endif
-	
-	if gPrinter == "V"
-		gvim_cmd(cKom)
 	endif
 	
 endif

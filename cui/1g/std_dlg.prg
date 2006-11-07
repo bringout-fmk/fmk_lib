@@ -149,7 +149,7 @@ m_y:=38-ROUND(nWidth/2,0)
 @ m_x, m_y SAY ""
 
 if gcDirekt <> "B"
-Box(,8,nWidth)
+Box(,6,nWidth)
 	@ m_x+1,m_y+2 SAY "   Izlaz direktno na printer:" GET cDirekt pict "@!" valid cDirekt $ "DNERV"
 
 	@ m_x+2,m_y+2 SAY "----------------------------------" 
