@@ -56,7 +56,6 @@ nZagrada:=0
 
 cTekPrinter:=gPrinter
 
-
 cOutfTXT:=IzFMKIni('Printeri', 'DirektnoOUTFTXT','N')
 
 if !(lUFajl)
@@ -84,7 +83,7 @@ endif
 
 lPrn:=cDirekt
 
-if cDirekt=="D" .and. gPrinter<>"R" .and. cOutfTxt<>"D"
+if cDirekt=="D" .and. gPrinter<>"R" .and. gPrinter<>"V" .and. cOutfTxt<>"D"
 	do while .t.
 		if InRange(VAL(gPPort),5,7)  .or. ;
 		   (val(gPPort)=8 ) .or. ;
@@ -238,18 +237,16 @@ Tone(440,2)
 Tone(440,2)
 
 * ako nije direktno na printer
-if lPrn<>"D" .or. (gPPort $ "89" .and. lPrn=="D") .or. gPrinter=="R" .or. (cOutftxt=="D" .and. lPrn=="D")  
+if lPrn<>"D" .or. (gPPort $ "89" .and. lPrn=="D") .or. gPrinter=="R" .or. gPrinter=="V".or. (cOutftxt=="D" .and. lPrn=="D")  
 
 
 if gAppSrv
     return
 endif
 
-if lPrn<>"D"  .or. gPrinter=="R"  .or. (cOutftxt=="D" .and. lPrn=="D")
+if lPrn<>"D"  .or. gPrinter=="R" .or. gPrinter=="V" .or. (cOutftxt=="D" .and. lPrn=="D")
  MsgC()
 endif
-
-
 
 save screen to cS
 
@@ -302,8 +299,14 @@ else
 		ckom:=PRIVPATH+cFName
 	endif
 
-	Ptxt(cKom)
-
+	if gPrinter == "R"
+		Ptxt(cKom)
+	endif
+	
+	if gPrinter == "V"
+		gvim_cmd(cKom)
+	endif
+	
 endif
 restore screen from cS
 endif 
