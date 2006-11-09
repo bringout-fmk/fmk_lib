@@ -1,87 +1,121 @@
 #include "sc.ch"
 
-// parametri
+// parametri funkcija
 static par_1 
 static par_2
 static par_3
 static par_4
 static last_nX
 static last_nY
+static txt_in_name
+static txt_out_name
+static desktop_path
 
 
 
-// ------------------------------------------
+// ----------------------------------------------------
 // dodaje opciju u matricu opcija...
-// ------------------------------------------
+// aOpt - matrica koja se proslijedjuje po referenci
+// cOption - string opcije npr "set readonly"
+// ----------------------------------------------------
 function add_gvim_options(aOpt, cOption)
 AADD(aOpt, { '"' + cOption + '"' })
 return
 
+
+
 // -----------------------------------------
 // pokrece gvim sa zadanim parametrima...
 // -----------------------------------------
-function gvim_cmd(cFile)
+function gvim_cmd()
 local aOpt := {}
 local cPom
 
 // setovanje opcija gvim gui-ja
 
-// font + font size...
-//cPom := 'set gfn=Lucida_Console:h7:cDEFAULT'
-//add_gvim_options(@aOpt, cPom)
-
-// text wrap
-//cPom := 'set wrap!'
-//add_gvim_options(@aOpt, cPom)
-
-// add bottom scrollbar
-//cPom := 'set guioptions+=b'
-//add_gvim_options(@aOpt, cPom)
-
-cFile := ALLTRIM(cFile)
+// readonly
+cPom := 'set readonly'
+add_gvim_options(@aOpt, cPom)
 
 // pokreni gvim sa opcijama
-r_gvim_cmd(cFile, aOpt)
+r_gvim_cmd(aOpt)
 
 return
 
+
 // -------------------------------------------------
 // pokrece gvim iz cmd line-a
+// aOpt - matrica sa opcijama
 // -------------------------------------------------
-static function r_gvim_cmd(cFilename, aOpt)
-local cCmd := ""
+static function r_gvim_cmd(aOpt)
+// gvim pokretacka komanda
+local cGvimCmd := ""
 local cSpace := SPACE(1)
 local i
 
-cCmd += 'start gvim'
+// putanja i naziv bat fajla za pokretanje gvim-a
+cRunGvim := PRIVPATH + "run_gvim.bat"
 
-// opcije....
+// putanja do desktopa
+desktop_path := '%HOMEDRIVE%%HOMEPATH%\Desktop\'
+
+cGvimCmd += 'gvim'
+
+// prodji kroz matricu opcija i dodaj ih u gvimcmd ....
 if LEN(aOpt) > 0
 	for i:=1 to LEN(aOpt)
-		// maksimalni broj opcija je 10
+		// maksimalni broj opcija je 10, preko toga ne idi...
 		if i == 11
 			exit
 		endif
 		
-		cCmd += cSpace
-		cCmd += '-c'
-		cCmd += cSpace
-		cCmd += ALLTRIM(aOpt[i, 1])
+		cGvimCmd += cSpace
+		cGvimCmd += '-c'
+		cGvimCmd += cSpace
+		cGvimCmd += ALLTRIM(aOpt[i, 1])
+		// generise sljedeci string, npr: ' -c "set readonly"'
 	next
 endif
 
-cCmd += cSpace
-cCmd += cFileName
+cGvimCmd += cSpace
 
-Run(cCmd)
+if UPPER(RIGHT(txt_out_name, 4)) <> ".TXT"
+	txt_out_name += ".TXT"
+endif
+
+cGvimCmd += '"' + desktop_path + txt_out_name + '"'
+
+set printer to (cRunGvim)
+set printer on
+set console off
+
+// definisi komande bat fajla...
+
+// pobrisi swap fajl ako je ostao... ali prvo attribut promjeni
+// posto je swp hidden...
+? 'ATTRIB -H "' + desktop_path + '.' + txt_out_name + '.swp"'
+? 'DEL "' + desktop_path + '.' + txt_out_name + '.swp"'
+
+// komanda kopiranja fajla outf.txt na desktop
+? 'COPY ' + PRIVPATH + txt_in_name + ' "' + desktop_path + txt_out_name + '"'
+
+// komanda za pokretanje gvima
+? cGvimCmd
+
+set printer to
+set printer off
+set console on
+
+Run( 'start ' + cRunGvim )
 
 return
 
 
-// --------------------------
+// ---------------------------------------
 // start print u GVIM
-// --------------------------
-function gvim_print()
+// cOut_name - ime izlaznog txt fajla
+// ---------------------------------------
+function gvim_print(cOut_Name)
 
 last_nX := 0
 last_nY := 0
@@ -91,7 +125,15 @@ par_2 := gcDirekt
 par_3 := gPTKonv
 par_4 := gKodnaS
 
-// uzmi parametre iz printera "L"
+txt_in_name := "OUTF.TXT"
+
+if ( cOut_name == nil )
+	txt_out_name := txt_in_name
+else
+	txt_out_name := cOut_name
+endif
+
+// uzmi parametre iz printera "G"
 SELECT F_GPARAMS
 if !used()
         O_GPARAMS
