@@ -24,34 +24,59 @@ return
 
 
 
+// ----------------------------------------------------
+// dodaje argument u matricu argumenata...
+// aArgs - matrica koja se proslijedjuje po referenci
+// cArg - string argumneta npr "-c"
+// ----------------------------------------------------
+function add_gvim_args(aArgs, cArg)
+AADD(aArgs, { cArg })
+return
+
+
+
 // -----------------------------------------
 // pokrece gvim sa zadanim parametrima...
 // -----------------------------------------
 function gvim_cmd()
-local aOpt := {}
+local aOpts := {}
+local aArgs := {}
 local cPom
 
-// setovanje opcija gvim gui-ja
+// setovanje argumenata gvim-a (aArgs)
+// -----------------------------------
+// -n (no swap file)
+cPom := "-n"
+add_gvim_args(@aArgs, cPom)
 
+// -R (read only)
+cPom := "-R"
+add_gvim_args(@aArgs, cPom)
+
+
+// setovanje opcija gvim gui-ja (aOpts)
+// ------------------------------------
 // readonly
-cPom := 'set readonly'
-add_gvim_options(@aOpt, cPom)
+//cPom := 'set readonly'
+//add_gvim_options(@aOpts, cPom)
 
 // pokreni gvim sa opcijama
-r_gvim_cmd(aOpt)
+r_gvim_cmd(aArgs, aOpts)
 
 return
 
 
 // -------------------------------------------------
 // pokrece gvim iz cmd line-a
-// aOpt - matrica sa opcijama
+// aOpts - matrica sa opcijama
+// aArgs - matrica sa argumnetima 
 // -------------------------------------------------
-static function r_gvim_cmd(aOpt)
+static function r_gvim_cmd(aArgs, aOpts)
 // gvim pokretacka komanda
 local cGvimCmd := ""
 local cSpace := SPACE(1)
-local i
+local nOpts
+local nArgs
 
 // putanja i naziv bat fajla za pokretanje gvim-a
 cRunGvim := PRIVPATH + "run_gvim.bat"
@@ -61,18 +86,26 @@ desktop_path := '%HOMEDRIVE%%HOMEPATH%\Desktop\'
 
 cGvimCmd += 'gvim'
 
+if LEN(aArgs) > 0
+	for nArgs := 1 to LEN(aArgs)
+		cGvimCmd += cSpace
+		cGvimCmd += ALLTRIM(aArgs[nArgs, 1])
+		// generise sljedeci string, npr: ' -n'
+	next
+endif
+
 // prodji kroz matricu opcija i dodaj ih u gvimcmd ....
-if LEN(aOpt) > 0
-	for i:=1 to LEN(aOpt)
+if LEN(aOpts) > 0
+	for nOpts:=1 to LEN(aOpts)
 		// maksimalni broj opcija je 10, preko toga ne idi...
-		if i == 11
+		if nOpts == 11
 			exit
 		endif
 		
 		cGvimCmd += cSpace
 		cGvimCmd += '-c'
 		cGvimCmd += cSpace
-		cGvimCmd += ALLTRIM(aOpt[i, 1])
+		cGvimCmd += ALLTRIM(aOpts[nOpts, 1])
 		// generise sljedeci string, npr: ' -c "set readonly"'
 	next
 endif
