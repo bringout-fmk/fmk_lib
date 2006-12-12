@@ -945,7 +945,7 @@ return
 *}
 
 
-function StZaglavlje(cImeFajla,cPutanja,cTxt1,cTxt2,cTxt3,cTxt4,cTxt5,ctxt6)
+function StZaglavlje(cImeFajla,cPutanja,cTxt1,cTxt2,cTxt3,cTxt4,cTxt5,cTxt6,cTxt7,cTxt8)
 
 local cZag:="",i:=0,cLin:="",cNLin:=""
 
@@ -967,7 +967,13 @@ if "U" $ TYPE("gnTMarg"); gnTMarg:=0; endif
  endif
  if ctxt6==nil
     cTxt6:=""
-endif
+ endif
+ if cTxt7==nil
+    cTxt7:=""
+ endif
+ if cTxt8==nil
+    cTxt8:=""
+ endif
 
 if empty(cImeFajla)
    for i:=1 to gnTMarg
@@ -981,7 +987,7 @@ else
       cBuf = FReadLn( nHZ, 1, 1000 )
       // djokeri #1#, #2#, #3#, #4#, #5# #6#
       if "#1#"$cBuf .and. VALTYPE(cTxt1)=="A"
-        cBuf := strtran(strtran(strtran(strtran(strtran(cBuf,"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6)
+        cBuf := strtran(strtran(strtran(strtran(strtran(strtran(strtran(cBuf,"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6), "#7#", cTxt7), "#8#", ctxt8)
         // koji je to red
         cLin := DajRed(cBuf,"#1#")
         // napravimo string cNLin koji treba ubaciti
@@ -992,7 +998,7 @@ else
         cBuf := strtran(cBuf,cLin,cNLin)
         QQOUT(cBuf)
       else
-        QQOUT(strtran(strtran(strtran(strtran(strtran(strtran(cBuf,"#1#",ctxt1),"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6))
+        QQOUT(strtran(strtran(strtran(strtran(strtran(strtran(strtran(strtran(cBuf,"#1#",ctxt1),"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6),"#7#", ctxt7), "#8#", ctxt8) )
       endif
       cZag+=cBuf
       if cBuf==""

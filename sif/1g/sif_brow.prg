@@ -306,6 +306,7 @@ if (nDBF)->(fieldpos(cFldMatchCode)) == 0
 endif
 
 nSeek := ASCAN(ImeKol, {|xEditFieldNaz| UPPER(xEditFieldNaz[3]) == "ID" })
+//cFldId := ImeKol[nSeek, 3]
 
 // setuj prikaz polja
 if nSeek > 0
