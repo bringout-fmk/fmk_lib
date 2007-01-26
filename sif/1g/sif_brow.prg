@@ -1046,6 +1046,8 @@ AADD(Opc, "3. dupliciraj  ")
 AADD(opcexe, {|| EditSifItem(K_F4, nOrder) } )
 AADD(Opc, "4. <a+R> za sifk polja  ")
 AADD(opcexe, {|| repl_sifk_item() } )
+AADD(Opc, "5. copy polje -> sifk polje  ")
+AADD(opcexe, {|| copy_to_sifk() } )
 
 Izbor:=1
 Menu_Sc("bsif")
@@ -1176,8 +1178,89 @@ endif
      
 return DE_REFRESH
 
+// --------------------------------------------
+// validacija da li polje postoji
+// --------------------------------------------
+static function val_fld(cField)
+local lRet := .t.
+if (ALIAS())->(FieldPOS(cField)) == 0
+	lRet := .f.
+endif
+
+if lRet == .f.
+	msgbeep("Polje ne postoji !!!")
+endif
+
+return lRet
+
+// ----------------------------------------------------------
+// kopiranje vrijednosti nekog polja u neko SIFK polje
+// ----------------------------------------------------------
+function copy_to_sifk()
+
+local cTable := ALIAS()
+local cFldFrom := SPACE(8)
+local cFldTo := SPACE(4)
+local cEraseFld := "D"
+local cRepl := "D"
+local nTekX 
+local nTekY
+
+Box(, 6, 65, .f.)
+	
+	private GetList:={}
+	set cursor on
+	
+	nTekX := m_x
+	nTekY := m_y
+	
+	@ m_x+1,m_y+2 SAY PADL("Polje iz kojeg kopiramo (polje 1)", 40) GET cFldFrom VALID !EMPTY(cFldFrom) .and. val_fld(cFldFrom)
+	@ m_x+2,m_y+2 SAY PADL("SifK polje u koje kopiramo (polje 2)", 40) GET cFldTo VALID g_sk_flist(@cFldTo)
+	
+	@ m_x+4,m_y+2 SAY "Brisati vrijednost (polje 1) nakon kopiranja ?" GET cEraseFld VALID cEraseFld $ "DN" PICT "@!"
+	
+	@ m_x+6,m_y+2 SAY "*** izvrsiti zamjenu ?" GET cRepl VALID cRepl $ "DN" PICT "@!"
+	read
+ 
+BoxC()
+
+if cRepl == "N"
+	return 0
+endif
+
+if LastKey()==K_ESC
+	return 0
+endif
+
+nTRec := RecNo()
+go top
+
+do while !EOF()
+	
+	skip
+	nRec := RECNO()
+	skip -1
+	
+	cCpVal := (ALIAS())->&cFldFrom
+	if !EMPTY( cCpval)
+		USifK( ALIAS(), cFldTo, (ALIAS())->id, cCpVal)
+	endif
+	
+	if cEraseFld == "D"
+		replace (ALIAS())->&cFldFrom with ""
+	endif
+	
+	go (nRec)
+enddo
+
+go (nTRec)
+
+return 0
 
 
+// --------------------------------------------------
+// zamjena vrijednosti sifk polja
+// --------------------------------------------------
 function repl_sifk_item()
 
 local cTable := ALIAS()

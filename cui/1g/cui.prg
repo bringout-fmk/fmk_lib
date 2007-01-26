@@ -1455,6 +1455,7 @@ if strfile(cPom,"list.cmd")=0
 endif
 
 if len(aDirs)=0
+  restore screen from cScr
   return .t.
 endif
 
