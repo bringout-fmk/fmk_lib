@@ -25,7 +25,7 @@ function Main()
                { "Helvetica", .t., .t., .t., .t. }, ;
                { "Courier",   .t., .t., .t., .t. }  }
 
-	oPdf := tPdf():New( 'test.pdf', 200, .t. )
+   oPdf := tPdf():New( 'test.pdf', 200, .t. )
    oPdf:EditOnHeader()
    oPdf:Image( 'color.tif', 0, 0, "M" ) 
    oPdf:EditOffHeader()
@@ -39,6 +39,7 @@ function Main()
    for nI := 0 to 792 step 36
        oPdf:Box( nI, 0, nI, 612, 0.01, , "D" )
    next
+   
    for nI := 0 to 612 step 36
        oPdf:Box( 0, nI, 792, nI, 0.01, , "D" )
    next

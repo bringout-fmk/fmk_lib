@@ -36,6 +36,9 @@ Public aGFP:={}
 Public aUslG:={}
 Public aCalcG:={}
 
+return
+
+
 
 function R2(cImeDef,cOutf,bFor,nDuzSif)
 *

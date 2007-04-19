@@ -151,6 +151,11 @@ gCekaScreenSaver:=VAL(IzFMKINI("SCREENSAVER","CekajMinuta","5"))
 // ne koristi lokale
 public gLokal:="0"
 
+// pdf stampa
+public gPDFPrint := "N"
+public gPDFViewer := SPACE(150)
+
+
 return
 *}
 
@@ -210,6 +215,8 @@ if fsve
 	Rpar("W7",@gWord97)
 	Rpar("5f",@g50f)
 	Rpar("L8",@gLokal)
+	Rpar("pR",@gPDFPrint)
+	Rpar("pV",@gPDFViewer)
 endif
 
 Rpar("FK",@gFKolor)
@@ -274,6 +281,8 @@ if (cPosebno=="D")
 		Rpar("W7",@gWord97)
 		Rpar("5f",@g50f)
 		Rpar("L8",@gLokal)
+		Rpar("pR",@gPDFPrint)
+		Rpar("pV",@gPDFViewer)
 	endif
 	Rpar("kE",@gKesiraj)
 	SELECT (F_GPARAMSP)
@@ -293,11 +302,11 @@ function IniPrinter()
 
 
 if gModul $ "EPDV"
-  public gPrinter:="R"
+	public gPrinter:="R"
 elseif gModul $ "TOPS#HOPS"
- public gPrinter:="0"
+ 	public gPrinter:="0"
 else
- public gPrinter:="1"
+ 	public gPrinter:="1"
 endif
 
 InigEpson()

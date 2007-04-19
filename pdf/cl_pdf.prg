@@ -715,6 +715,8 @@ METHOD Length( cString )
 
 local nWidth := 0.00, nI, nLen, nArr, nAdd := ( ::aReport[ FONTNAME ] - 1 ) % 4
 
+altd()
+
    nLen := len( cString )
    IF right( cString, 1 ) == chr( 255 ) .or. right( cString, 1 ) == chr( 254 )
       --nLen

@@ -393,20 +393,26 @@ Box(, 20, 70)
  	@ m_x+10,m_y+2 SAY "Shema boja za prikaz na ekranu 'V' (B1/B2/.../B7):" GET gShemaVF
  	@ m_x+11,m_y+2 SAY "Windows font:" GET gPFont
  	@ m_x+12,m_y+2 SAY "Kodna strana:" GET gKodnaS valid gKodnaS $ "78" pict "9"
- 	@ m_x+13,m_y+2 SAY "Word 97  D/N:" GET gWord97 valid gWord97 $ "DN" pict "@!"
- 	@ m_x+14,m_y+2 SAY "Zaok 50f (5):" GET g50f    valid g50f    $ " 5" pict "9"
- 	@ m_x+15,m_y+2 SAY "Prenijeti podatke na lokalni disk (NDCX):" GET gKesiraj    valid gKesiraj $ "NDCX" pict "@!"
- 	@ m_x+16,m_y+2 SAY "Omoguciti kolor-prikaz? (D/N)" GET gFKolor valid gFKolor$"DN" pict "@!"
- 	@ m_x+16,col()+2 SAY "SQL log ? (D/N)" GET gSql pict "@!"
+ 	@ m_x+12,col()+2 SAY "Word 97  D/N:" GET gWord97 valid gWord97 $ "DN" pict "@!"
+ 	@ m_x+12,col()+2 SAY "Zaok 50f (5):" GET g50f    valid g50f    $ " 5" pict "9"
+ 	@ m_x+13,m_y+2 SAY "Prenijeti podatke na lokalni disk (NDCX):" GET gKesiraj    valid gKesiraj $ "NDCX" pict "@!"
+ 	@ m_x+14,m_y+2 SAY "Omoguciti kolor-prikaz? (D/N)" GET gFKolor valid gFKolor$"DN" pict "@!"
+ 	@ m_x+15,col()+2 SAY "SQL log ? (D/N)" GET gSql pict "@!"
  
-	@ m_x+17,m_y+2 SAY "PDV rezim rada? (D/N)" GET gPDV pict "@!" VALID gPDV$"DN"
+	@ m_x+16,m_y+2 SAY "PDV rezim rada? (D/N)" GET gPDV pict "@!" VALID gPDV$"DN"
 
- 	@ m_x+18,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
- 	@ m_x+18,m_y+36 SAY "M - FMKMREZ"
- 	@ m_x+19, m_y+2 SAY "Lokalizacija 0/hr/ba/en/sr " GET gLokal ;
+ 	@ m_x+17, m_y+2 SAY "Lokalizacija 0/hr/ba/en/sr " GET gLokal ;
 		VALID gLokal $ "0 #hr#ba#sr#en" ;
+ 	
+ 	@ m_x+18, m_y+2 SAY "PDF stampa (D/N)?" GET gPDFPrint VALID gPDFPrint $ "DN" PICT "@!"
+	
+ 	@ m_x+19, m_y+2 SAY "PDF preglednik, lokacija" GET gPDFViewer VALID _g_pdf_view(@gPDFViewer) WHEN gPDFPrint == "D" PICT "@S44"
+	
+	@ m_x+20,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
+ 	@ m_x+20,m_y+36 SAY "M - FMKMREZ"
 		
- 	READ
+ 	
+	READ
 BoxC()
 
 if cFMKIni $ "DSPKM"
@@ -448,6 +454,8 @@ if lastkey()<>K_ESC
   	Wpar("KS", gKodnaS)
   	Wpar("W7", gWord97)
   	Wpar("5f", g50f)
+	Wpar("pR", gPDFPrint)
+	Wpar("pV", gPDFViewer)
  	if gKesiraj $ "CD"
    		if sigmaSif("SKESH")
     			Wpar("kE",gKesiraj)
@@ -478,6 +486,44 @@ if lPushWa
 endif
 return
 *}
+
+
+// -------------------------------------------
+// vraca lokaciju pdf viewera
+// -------------------------------------------
+static function _g_pdf_view( cViewer )
+local cViewName := "AcroRd32.exe"
+local cViewPath := "c:\progra~1\adobe\"
+local aPath := DIRECTORY( cViewPath + "*.*", "D" )
+local cPom
+
+if !EMPTY(cViewer)
+	return .t.
+endif
+
+// sortiraj direktorij....
+ASORT(aPath, {|x,y| x[1] < y[1] })
+
+nScan := ASCAN( aPath, {|xVal| UPPER(xVal[1]) = "ACRO"  }  )
+
+if nScan > 0
+
+	cPom := ALLTRIM( aPath[ nScan, 1 ] )
+	
+	// slozi naziv preglednika......
+	cViewer := cViewPath + cPom 
+	cViewer += SLASH + "reader" + SLASH
+	cViewer += cViewName
+
+	cViewer := PADR( cViewer, 150 )
+
+endif
+
+if !EMPTY(cViewer) .and. !FILE(cViewer)
+	msgbeep("Ne mogu naci niti jedan PDF preglednik!#Upisite lokaciju rucno...")
+endif
+
+return .t.
 
 
 /*! \fn TAppMod::setTGVars() 
