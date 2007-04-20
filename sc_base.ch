@@ -63,6 +63,9 @@
 #xcommand P_RPL_N            =>  gRPL_Normal()
 #xcommand P_RPL_G            =>  gRPL_Gusto()
 
+#xcommand P_PIC_H            =>  gpPicH()
+#xcommand P_PIC_F            =>  gpPicF()
+
 // stari interfejs
 #xcommand INI             =>  gPB_ON()
 #xcommand B_ON             =>  gPB_ON()

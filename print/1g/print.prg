@@ -309,7 +309,6 @@ else
 		ckom:=PRIVPATH+cFName
 	endif
 
-	altd()
 	if gPrinter == "R"
 		if gPDFprint == "X"
 			if Pitanje(,"Print u PDF/PTXT (D/N)?", "D") == "N"
@@ -847,6 +846,27 @@ endif
 konvtable( lKonvTable ) 
 
 return 
+
+
+// ----------------------------------------
+// pic header
+// ----------------------------------------
+function gpPicH()
+Setpxlat()
+qqout("#%PIC_H#")
+konvtable(.t.)
+return ""
+
+
+// ----------------------------------------
+// pic footer
+// ----------------------------------------
+function gpPicF()
+Setpxlat()
+qqout("#%PIC_F#")
+konvtable(.t.)
+return ""
+
 
 // ----------------------------------------
 // ---------------------------------------
