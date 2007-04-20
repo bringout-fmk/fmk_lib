@@ -25,9 +25,9 @@ return
 
 
 // ------------------------------
+// poziv ptxt-a
 // ------------------------------
 function PTXT(cImeF)
-*{
 local cPtxtSw:=""
 local nFH
 
@@ -48,12 +48,11 @@ if compat50()
 	cKom += " /c50"
 endif
 
-
 Run(cKom)
 
-
 return
-*}
+
+
 
 // -----------------------------------------------
 // ako gPTxtC50 varijabla nije definisana
@@ -71,4 +70,5 @@ do case
 	otherwise
 		return .t.
 endcase
-	
+
+

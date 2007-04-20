@@ -338,7 +338,18 @@ do while .t.
          endif
        enddo
     case gPrinter="R" .and. (nZnak=K_CTRL_P .or. nZnak==K_ALT_P)
-       Ptxt(cImeF)
+       
+       if gPDFPrint == "X"
+       	if Pitanje(,"Print u PDF/PTXT", "D") == "D"
+		PDFView(cImeF)
+	else
+		Ptxt(cImeF)
+	endif
+       elseif gPDFPrint == "D"
+       	PDFView(cImeF)
+       else
+       	Ptxt(cImeF)
+       endif
 
     case nZnak==K_ALT_S
     	SendFile(cImeF)

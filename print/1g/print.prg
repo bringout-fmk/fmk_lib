@@ -309,8 +309,19 @@ else
 		ckom:=PRIVPATH+cFName
 	endif
 
+	altd()
 	if gPrinter == "R"
-		Ptxt(cKom)
+		if gPDFprint == "X"
+			if Pitanje(,"Print u PDF/PTXT (D/N)?", "D") == "N"
+				Ptxt(cKom)
+			else
+				PDFView(cKom)
+			endif
+		elseif gPDFprint == "D"
+			PDFView(cKom)
+		else
+			Ptxt(cKom)
+		endif
 	endif
 	
 endif

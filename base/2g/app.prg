@@ -404,9 +404,7 @@ Box(, 20, 70)
  	@ m_x+17, m_y+2 SAY "Lokalizacija 0/hr/ba/en/sr " GET gLokal ;
 		VALID gLokal $ "0 #hr#ba#sr#en" ;
  	
- 	@ m_x+18, m_y+2 SAY "PDF stampa (D/N)?" GET gPDFPrint VALID gPDFPrint $ "DN" PICT "@!"
-	
- 	@ m_x+19, m_y+2 SAY "PDF preglednik, lokacija" GET gPDFViewer VALID _g_pdf_view(@gPDFViewer) WHEN gPDFPrint == "D" PICT "@S44"
+ 	@ m_x+18, m_y+2 SAY "PDF stampa (N/D/X)?" GET gPDFPrint VALID {|| gPDFPrint $ "DNX" .and. if(gPDFPrint $ "XD", pdf_box(), .t. ) } PICT "@!"
 	
 	@ m_x+20,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
  	@ m_x+20,m_y+36 SAY "M - FMKMREZ"
@@ -455,7 +453,6 @@ if lastkey()<>K_ESC
   	Wpar("W7", gWord97)
   	Wpar("5f", g50f)
 	Wpar("pR", gPDFPrint)
-	Wpar("pV", gPDFViewer)
  	if gKesiraj $ "CD"
    		if sigmaSif("SKESH")
     			Wpar("kE",gKesiraj)
@@ -488,39 +485,111 @@ return
 *}
 
 
+
+// ------------------------------------------------------------
+// prikaz dodatnog box-a za stimanje parametara PDF stampe
+// ------------------------------------------------------------
+static function pdf_box()
+local nX := 1
+private GetList:={}
+
+if Pitanje(,"Podesiti parametre PDF stampe (D/N) ?", "D" ) == "N"
+	return .t.
+endif
+
+Box(, 10, 75 )
+	
+	@ m_x + nX, m_y + 2 SAY "Podesavanje parametara PDF stampe *******"
+	
+	nX += 2
+	
+	@ m_x + nX, m_y + 2 SAY "PDF preglednik:" GET gPDFViewer VALID _g_pdf_viewer(@gPDFViewer) PICT "@S56"
+	
+ 	nX += 1
+	
+	@ m_x + nX, m_y + 2 SAY "Printanje PDF-a bez poziva preglednika (D/N)?" GET gPDFPAuto VALID gPDFPAuto $ "DN" PICT "@!"
+	
+	nX += 2
+	
+	@ m_x + nX, m_y + 2 SAY "Default printer:" GET gDefPrinter PICT "@S55"
+	
+
+	read
+BoxC()
+
+if LastKey() <> K_ESC
+
+	// generisi yml fajl iz parametara
+	wr_to_yml()
+
+	// snimi parametre.....
+	Wpar( "pV", gPDFViewer )
+	Wpar( "dP", gDefPrinter )
+	Wpar( "pA", gPDFPAuto )
+	
+endif
+
+return .t.
+
+
+// ---------------------------------------------
+// upisi u yml fajl podesenja
+// ---------------------------------------------
+static function wr_to_yml( cFName )
+local nH
+local cParams := ""
+local cNewRow := CHR(13) + CHR(10)
+
+if cFName == nil
+	cFName := "fmk_pdf.yml"
+endif
+
+// write params to yml
+cParams += "pdf_viewer: " + gPDFviewer
+cParams += cNewRow
+cParams += "print_to:" + gDefPrinter
+
+// kreiraj fajl
+nH := FCREATE( EXEPATH + cFName )
+// upisi u fajl
+FWRITE( nH, cParams )
+// zatvori fajl
+FCLOSE( EXEPATH + cFName )
+
+return
+
+
+
 // -------------------------------------------
 // vraca lokaciju pdf viewera
 // -------------------------------------------
 static function _g_pdf_view( cViewer )
-local cViewName := "AcroRd32.exe"
+local cViewName := "acrord32.exe"
 local cViewPath := "c:\progra~1\adobe\"
-local aPath := DIRECTORY( cViewPath + "*.*", "D" )
+local aPath := DIRECTORY(cViewPath + "*.*", "D")
 local cPom
 
 if !EMPTY(cViewer)
 	return .t.
 endif
 
-// sortiraj direktorij....
 ASORT(aPath, {|x,y| x[1] < y[1] })
 
-nScan := ASCAN( aPath, {|xVal| UPPER(xVal[1]) = "ACRO"  }  )
+nScan := ASCAN( aPath, {|xVal| UPPER(xVal[1]) = "ACRO" })
 
 if nScan > 0
+	cPom := ALLTRIM( aPath[nScan, 1] )
 
-	cPom := ALLTRIM( aPath[ nScan, 1 ] )
-	
-	// slozi naziv preglednika......
-	cViewer := cViewPath + cPom 
+	cViewer := cViewPath + cPom
 	cViewer += SLASH + "reader" + SLASH
 	cViewer += cViewName
-
+	
 	cViewer := PADR( cViewer, 150 )
-
+	
 endif
 
-if !EMPTY(cViewer) .and. !FILE(cViewer)
-	msgbeep("Ne mogu naci niti jedan PDF preglednik!#Upisite lokaciju rucno...")
+if !EMPTY(cViewer) .and. !FILE( cViewer )
+	msgbeep("Ne mogu naci Acrobat Reader!#Podesite rucno lokaciju preglednika...")
 endif
 
 return .t.

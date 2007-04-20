@@ -62,6 +62,7 @@ public gInstall:=.f.
 public gfKolor:="D"
 public gPrinter:="1"
 public gPtxtSw := nil
+public gPDFSw := nil
 public gMeniSif:=.f.
 public gValIz:="280 "
 public gValU:="000 "
@@ -153,8 +154,9 @@ public gLokal:="0"
 
 // pdf stampa
 public gPDFPrint := "N"
+public gPDFPAuto := "D"
 public gPDFViewer := SPACE(150)
-
+public gDefPrinter := SPACE(150)
 
 return
 *}
@@ -217,6 +219,8 @@ if fsve
 	Rpar("L8",@gLokal)
 	Rpar("pR",@gPDFPrint)
 	Rpar("pV",@gPDFViewer)
+	Rpar("pA",@gPDFPAuto)
+	Rpar("dP",@gDefPrinter)
 endif
 
 Rpar("FK",@gFKolor)
@@ -283,6 +287,8 @@ if (cPosebno=="D")
 		Rpar("L8",@gLokal)
 		Rpar("pR",@gPDFPrint)
 		Rpar("pV",@gPDFViewer)
+		Rpar("pA",@gPDFPAuto)
+		Rpar("dP",@gDefPrinter)
 	endif
 	Rpar("kE",@gKesiraj)
 	SELECT (F_GPARAMSP)

@@ -1,7 +1,7 @@
 VERZIJA=CDX
 MODUL=sc1g_pr
 
-PRGS=print.prg ptxt.prg
+PRGS=print.prg ptxt.prg pdf.prg
 CS=
 ASMS=isprint.asm lptswap.asm
 
