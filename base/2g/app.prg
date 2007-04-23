@@ -545,9 +545,9 @@ if cFName == nil
 endif
 
 // write params to yml
-cParams += "pdf_viewer: " + gPDFviewer
+cParams += "pdf_viewer: " + ALLTRIM(gPDFviewer)
 cParams += cNewRow
-cParams += "print_to:" + gDefPrinter
+cParams += "print_to: " + ALLTRIM(gDefPrinter)
 
 // kreiraj fajl
 nH := FCREATE( EXEPATH + cFName )

@@ -63,7 +63,7 @@
 #xcommand P_RPL_N            =>  gRPL_Normal()
 #xcommand P_RPL_G            =>  gRPL_Gusto()
 
-#xcommand P_PIC_H            =>  gpPicH()
+#xcommand P_PIC_H <xpr>      =>  gpPicH(xpr)
 #xcommand P_PIC_F            =>  gpPicF()
 
 // stari interfejs

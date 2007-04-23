@@ -8,9 +8,7 @@ function PDFView( cImeF )
 local nFH
 local cKom
 
-cKom := "c:\ruby\bin\ruby.exe "
-cKom += EXEPATH
-cKom += "fmk_pdf.rb " 
+cKom := "start /MIN fmkpdf -f"
 cKom += " "
 cKom += cImeF
 

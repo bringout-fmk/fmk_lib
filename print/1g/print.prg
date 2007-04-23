@@ -851,10 +851,20 @@ return
 // ----------------------------------------
 // pic header
 // ----------------------------------------
-function gpPicH()
-Setpxlat()
-qqout("#%PIC_H#")
-konvtable(.t.)
+function gpPicH( nRows )
+local cPom
+
+if nRows == nil
+	nRows := 7
+endif
+
+if nRows > 0
+	cPom := PADL( ALLTRIM(STR(nRows)), 2, "0" )
+	Setpxlat()
+	qqout("#%PH0" + cPom + "#")
+	konvtable(.t.)
+endif
+
 return ""
 
 
