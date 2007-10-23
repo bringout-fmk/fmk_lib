@@ -291,6 +291,8 @@ SET(_SET_DEVICE,cPom)
 return
 *}
 
+
+
 function MsgO(text,sec)
 *{
 local l
@@ -1268,14 +1270,13 @@ return VAL(SUBSTR(cPicture,nPozS+1))
 
 
 function MsgBeep(cxx)
-*{
 if !gAppSrv
 	Beep(2) 
 endif
 Msg(cxx,20)
 
 return
-*}
+
 
 
 function UGlavnomMeniju()

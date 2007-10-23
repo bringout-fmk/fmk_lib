@@ -11,21 +11,23 @@ static __PSIF_NIVO__:=0
 static __A_SIFV__:= { {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}}
 #endif
 
-function PostojiSif(nDbf, nNtx, nVisina, nSirina, cNaslov, cID, dx, dy, ;
-                      bBlok,aPoredak,bPodvuci,aZabrane, fInvert, aZabIsp)
+function PostojiSif( nDbf, nNtx, nVisina, nSirina, cNaslov, cID, dx, dy, ;
+                      bBlok, aPoredak, bPodvuci, aZabrane, fInvert, aZabIsp )
 
 local cRet, cIdBK
 local i
 private cNazSrch
 private cUslovSrch
 private fPoNaz:=.f.  // trazenje je po nazivu
-
 private fID_J := .f.
-if aZabIsp==NIL
-	aZabIsp:={}
+
+if aZabIsp == nil
+	aZabIsp := {}
 endif
+
+
 FOR i:=1 TO LEN(aZabIsp)
-	aZabIsp[i]:=UPPER(aZabIsp[i])
+	aZabIsp[i] := UPPER(aZabIsp[i])
 NEXT
 
 private nOrdId
@@ -45,11 +47,13 @@ select (nDbf)
 nOrderSif:=indexord()  // zapamti order sifranika !!
 
 
-nOrdId:=ORDNUMBER("ID")
+nOrdId := ORDNUMBER("ID")
 
 // POSTAVLJANJE ORDERA...
 if valtype(nNTX)="N"
+  
   if nNTX==1
+    
     if nordid<>0
      set order to tag "ID"
     else
@@ -57,6 +61,7 @@ if valtype(nNTX)="N"
     endif
 
   else
+    
     if nordid<>0
      if OrdNumber("NAZ_B")<>0
         set order to tag "NAZ_B"
@@ -69,6 +74,7 @@ if valtype(nNTX)="N"
      set order to tag "2"
     endif
   endif
+  
 elseif valtype(nNTX)="C" .and. right(upper(trim(nNTX)),2)="_J"
 // postavi order na ID_J
 
@@ -76,6 +82,7 @@ elseif valtype(nNTX)="C" .and. right(upper(trim(nNTX)),2)="_J"
   fID_J:=.t.
 
 else
+
   // IDX varijanta:  TAG_IMEIDXA
   nPos:=AT("_",nNTX)
   if nPos<>0
@@ -90,10 +97,13 @@ else
 endif
 
 private cUslovSrch:=""
-IF cId<>NIL  // IZVRSI SEEK
+IF cId <>NIL  
+ // IZVRSI SEEK
  
  if VALTYPE(cid)=="N"
+	
 	seek STR(cId)
+	
  elseif right(trim(cid),1)=="*"
 
    if  fieldpos("KATBR")<>0 // trazi po kataloskom broju
@@ -178,17 +188,27 @@ IF cId<>NIL  // IZVRSI SEEK
      endif
    endif
 
- elseif len(trim(cId))>10 .and. fieldpos("BARKOD")<>0  // barkod
-   SeekBarKod(@cId,@cIdBk,.f.)
+ elseif len(trim(cId))>10 .and. fieldpos("BARKOD")<>0 
+	
+	SeekBarKod(@cId,@cIdBk,.f.)
 
  else
- // SEEK PO ID , SEEK PO ID_J
+ 
+   // SEEK PO ID , SEEK PO ID_J
    seek cID
+   
+   cId := ID
+   
+   // pretrazi po barkod-u
    if !found() .and. fieldpos("barkod")<>0
-	SeekBarKod(@cId,@cIdBk,.t.)
+	SeekBarKod( @cId, @cIdBk, .t. )
    endif
+   
  endif
+ 
 ENDIF
+
+
 if dx<>NIL .and. dx<0
 // u slucaju negativne vrijednosti vraca se vrijednost polja
 // koje je na poziciji ABS(i)
@@ -2507,5 +2527,6 @@ if lNFGR .and. !FOUND()
 	go (nRec)
 endif
 return
+
 
 
