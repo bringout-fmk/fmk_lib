@@ -197,7 +197,7 @@ IF cId <>NIL
    // SEEK PO ID , SEEK PO ID_J
    seek cID
    
-   cId := ID
+   cId := &(FIELDNAME(1))
    
    // pretrazi po barkod-u
    if !found() .and. fieldpos("barkod")<>0
