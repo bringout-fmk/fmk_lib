@@ -149,8 +149,10 @@ m_y:=38-ROUND(nWidth/2,0)
 @ m_x, m_y SAY ""
 
 if gcDirekt <> "B"
-Box(,6,nWidth)
-	@ m_x+1,m_y+2 SAY "   Izlaz direktno na printer:" GET cDirekt pict "@!" valid cDirekt $ "DNERV"
+
+    Box(,6,nWidth)
+	@ m_x+1,m_y+2 SAY "   Izlaz direktno na printer:" GET cDirekt ;
+			pict "@!" valid cDirekt $ "DNERV"
 
 	@ m_x+2,m_y+2 SAY "----------------------------------" 
 	@ m_x+3,m_y+2 SAY "D - direktno na printer"
@@ -158,19 +160,19 @@ Box(,6,nWidth)
 	@ m_x+5,m_y+2 SAY "R - Windows printer"
 	@ m_x+6,m_y+2 SAY "---------- O P C I J E -----------"
 	read
-BoxC()
+    BoxC()
 
- return cDirekt
+    return cDirekt
 
 else
 
- Box (, 3, 60)
-  @ m_x+1, m_y+2 SAY "Batch printer rezim ..."
-  // moram sacekati da se predhona faktura odstampa
-  SLEEP(14)
- BoxC()
- // batch rezim
- return "D"
+	Box (, 3, 60)
+  		@ m_x+1, m_y+2 SAY "Batch printer rezim ..."
+  		// moram sacekati da se predhona faktura odstampa
+  		SLEEP(14)
+ 	BoxC()
+ 	// batch rezim
+ 	return "D"
 
 endif
 
