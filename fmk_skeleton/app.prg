@@ -2,100 +2,17 @@
 
 
 function TAppModNew(oParent, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
-*{
 
 local oObj
 
-#ifdef CLIP
-
-oObj:=map()
-oObj:cName:=nil
-oObj:oParent:=nil
-oObj:oDatabase:=nil
-oObj:oDesktop:=nil
-oObj:cVerzija:=nil
-oObj:cPeriod:=nil
-oObj:cKorisn:=nil
-oObj:cSifra:=nil
-oObj:nKLicenca:=nil
-oObj:cP3:=nil
-oObj:cP4:=nil
-oObj:cP5:=nil
-oObj:cP6:=nil
-oObj:cP7:=nil
-oObj:cSqlLogBase:=nil
-oObj:lSqlDirektno:=nil
-oObj:lStarted:=nil
-oObj:lTerminate:=nil
-
-oObj:hasParent:=@hasParent()
-oObj:setParent:=@setParent()
-oObj:getParent:=@getParent()
-oObj:setName:=@setName()
-oObj:run:=@run()
-oObj:quit:=@quit()
-oObj:gProc:=@gProc()
-oObj:init:=@init()
-oObj:gParams:=@gParams()
-oObj:base_setTGVars:=@setTGVars()
-oObj:setTGVars:=@setTGVars()
-oObj:limitKLicenca:=@limitKLicenca()
-#else
 oObj:=TAppMod():new()
-#endif
 
 oObj:self:=oObj
 
 return oObj
-*}
 
-#ifdef CPP
 
-/*! \class TAppMod
- *  \brief Bazni Aplikacijski objekt
- */
-
-class TAppMod
-{
-       public:
-	string cName;
-	string oParent;
-	TDB oDatabase;
-	TDesktop oDesktop;
-	string cVerzija;
-	
-	//korisnicka licenca
-	string nKLicenca;
-	string cPeriod;
-	string cKorisn;
-	string cSifra;
-	string cP3;
-	string cP4;
-	string cP5;
-	string cP6;
-	string cP7;
-	string cSqlLogBase;
-	bool lSqlDirektno;
-	bool lStarted;
-	bool lTerminate;
-	TObject self;
-	*bool hasParent();
-	*TObject setParent(TObject oParent);
-	*TObject getParent();
-	*string setName(string cName);
-	*void run();
-	*void quit(bool lVratiseURP);
-	*void gProc();
-	*void init(TObject oParent,string cModul,string cVerzija,string cPeriod,string cKorisn,string cSifra,string p3,string p4,string p5,string p6,string p7);
-	*void gParams();
-	*void setTGVars();
-	*void limitKLicenca(int nLevel);
-}
-#endif
-
-#ifndef CPP
-#ifndef CLIP
-#include "class(y).ch"
+#include "hbclass.ch"
 
 CREATE CLASS TAppMod 
 	EXPORTED:
@@ -132,8 +49,6 @@ CREATE CLASS TAppMod
 	
 END CLASS
 
-#endif
-#endif
 
 /*! \fn *void TAppMod::init(TObject oParent,string cModul,string cVerzija,string cPeriod,string cKorisn,string cSifra,string p3,string p4,string p5,string p6,string p7)
  *  \brief Incijalizacija AppMod objekta
@@ -143,10 +58,6 @@ END CLASS
 *{
 
 method init(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
-
-#ifdef CLIP
-	? "start init"
-#endif
 
 ::cName:=cModul
 ::oParent:=oParent
@@ -161,11 +72,6 @@ method init(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
 ::cP6:=p6
 ::cP7:=p7
 ::lTerminate:=.f.
-
-#ifdef CLIP
-	? "end init"
-#endif
-
 
 return
 *}
