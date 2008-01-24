@@ -3,7 +3,10 @@ ROOT = ../../harbour/
 HB_INC_COMPILE += $(TOP)../../include
 
 PRG_SOURCES= \
-        file_io.prg  os_util.prg
+        file_io.prg  os_util.prg \
+        konvzn.prg \
+        ini.prg \
+        params.prg
 
 
 LIBNAME=fmk_common
