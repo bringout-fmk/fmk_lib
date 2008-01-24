@@ -1,0 +1,1208 @@
+#include "sc.ch"
+
+/*
+ * ----------------------------------------------------------------
+ *                                     Copyright Sigma-com software 
+ * ----------------------------------------------------------------
+ * $Source: c:/cvsroot/cl/sigma/sclib/db/1g/db.prg,v $
+ * $Author: sasavranic $ 
+ * $Revision: 1.19 $
+ * $Log: db.prg,v $
+ * Revision 1.19  2004/04/27 11:02:00  sasavranic
+ * Rad sa sezonama - bugfix
+ *
+ * Revision 1.18  2002/11/22 10:30:42  mirsad
+ * prebacivanje security iz modula u SCLIB
+ *
+ * Revision 1.17  2002/11/18 12:12:58  mirsad
+ * dorade i korekcije-security
+ *
+ * Revision 1.16  2002/11/18 09:01:03  mirsad
+ * korekcija: br.oblasti 200->300, 105->300
+ *
+ * Revision 1.15  2002/08/19 10:01:47  ernad
+ *
+ *
+ * podesenja za CLIP
+ *
+ * Revision 1.14  2002/08/05 11:03:58  ernad
+ *
+ *
+ * Fin/SQLLog funkcije, debug bug RJ/KUMPATH
+ *
+ * Revision 1.13  2002/07/12 10:21:31  ernad
+ *
+ *
+ * debug CDEXT - nisu radili izvjestaji bruto bilans
+ *
+ * Revision 1.12  2002/07/01 10:46:41  ernad
+ *
+ *
+ * oApp:lTerminate - kada je true, napusta se run metod oApp objekta
+ *
+ * Revision 1.11  2002/06/29 16:29:15  ernad
+ *
+ *
+ * doxy-iranje
+ *
+ * Revision 1.10  2002/06/22 19:08:54  ernad
+ *
+ *
+ * modstru debug (PreUseEvent), ciscenja planika
+ *
+ * Revision 1.9  2002/06/21 13:32:42  ernad
+ *
+ *
+ * planika - debug aZabIsp / EditSifIte, razrada gw - import db
+ *
+ * Revision 1.8  2002/06/20 14:30:46  ernad
+ *
+ *
+ * PreUseEvent prebacen u db
+ *
+ * Revision 1.7  2002/06/20 12:53:11  ernad
+ *
+ *
+ * ciscenje rada sezonsko<->radno podrucje ... prebacivanje db/1g -> db/2g
+ *
+ * Revision 1.6  2002/06/19 19:51:00  ernad
+ *
+ *
+ * rad u sezonama, gateway
+ *
+ * Revision 1.5  2002/06/16 14:03:52  ernad
+ * trazenje bug-a u install-u
+ *
+ * Revision 1.4  2002/06/16 09:48:14  ernad
+ * cKorisn, cSifra izbrisani, ipak ostaju u TAppMod
+ *
+ * Revision 1.3  2002/06/14 12:47:14  ernad
+ * ubacivanje header-a
+ *
+ *
+ */
+ 
+*static integer
+static nPos:=0
+*;
+
+*static string
+static cPokPonovo:="Pokusati ponovo (D/N) ?"
+*;
+
+*string
+static nPreuseLevel:=0
+*;
+
+
+/*! \fn Scatter(cZn)
+  * \brief vrijednosti field varijabli tekuceg sloga prebacuje u public varijable
+  * 
+  * \param cZn - Default = "_"; odredjuje prefixs varijabli koje ce generisati
+  *
+  * \code
+  *
+  *  use ROBA
+  *  Scatter("_")
+  *  ? _id, _naz, _jmj
+  *
+  * \endcode
+  *
+  */
+  
+function Scatter(cZn)
+*{
+local i,aStruct
+private cImeP,cVar
+
+if cZn==nil
+  cZn:="_"
+endif
+aStruct:=DBSTRUCT()
+for i:=1 to len(aStruct)
+cImeP:=aStruct[i,1]
+
+if !("#"+cImeP+"#" $ "#BRISANO#_OID_#_COMMIT_#")
+  cVar:=cZn+cImeP
+  PUBLIC &cVar:=&cImeP
+endif
+
+next
+
+return nil
+*}
+
+
+function Gather(cZn)
+*{
+local i,aStruct
+
+if cZn==nil
+  cZn:="_"
+endif
+aStruct:=DBSTRUCT()
+while .t.
+  if rlock()
+     for i:=1 to len(aStruct)
+     cImeP:=aStruct[i,1]
+     if  (cImeP="BRISANO")
+
+              // nista
+
+     elseif gSQL=="D"
+
+          // ako je gSQL=="D" desavace se da datoteka kumulativa
+          //                  ima ova polja, a privatna nema
+          if  !("#"+cImeP+"#" $ "#_SITE_#_OID_#_USER_#_COMMIT_#_DATAZ_#_TIMEAZ_#")
+            cVar:=cZn+cImeP
+            IF "U"$TYPE(cVar)
+              MsgBeep2("Neuskladj.strukt.baza! "+;
+                    "F-ja: GATHER(), Alias: "+ALIAS()+", Polje: "+cImeP)
+            ELSE
+              field->&cImeP:= &cVar
+            ENDIF
+          endif
+
+     else
+
+          cVar:=cZn+cImeP
+          IF "U"$TYPE(cVar)
+              MsgBeep2("Neuskladj.strukt.baza! "+;
+                    "F-ja: GATHER(), Alias: "+ALIAS()+", Polje: "+cImeP)
+          ELSE
+            field->&cImeP:= &cVar
+          ENDIF
+      endif
+    next
+    dbunlock()
+  else
+      inkey(0.4)
+      loop
+  end
+  exit
+end
+
+return nil
+*}
+
+function GatherR(cZn)
+*{
+local i,j,aStruct
+
+if cZn==nil
+  cZn:="_"
+endif
+aStruct:=DBSTRUCT()
+SkratiAZaD(@aStruct)
+while .t.
+  if rlock()
+
+         for j:=1 to len(aRel)
+           if aRel[j,1]==ALIAS()  // {"K_0","ID","K_1","ID",1}
+              // matrica relacija
+              cVar:=cZn+aRel[j,2]
+              xField:=&(aRel[j,2])
+              if &cVar==xField // ako nije promjenjen broj
+                loop
+              endif
+              select (aRel[j,3]); set order to aRel[j,5]
+              do while .t.
+               if flock()
+                  seek xField
+                  do while &(aRel[j,4])==xField .and. !eof()
+                    skip
+                    nRec:=RECNO()
+                    skip -1
+                    field->&(aRel[j,4]):=&cVar
+                    go nRec
+                  enddo
+
+               else
+                    inkey(0.4)
+                    loop
+               endif
+               exit
+              enddo // .t.
+              select (aRel[j,1])
+           endif
+        next    // j
+
+
+        for i:=1 to len(aStruct)
+          cImeP:=aStruct[i,1]
+          cVar:=cZn+cImeP
+          field->&cImeP:= &cVar
+        next
+    dbunlock()
+  else
+      inkey(0.4)
+      loop
+  end
+  exit
+end
+
+return nil
+*}
+
+
+/*! \fn Gather2(cZn)
+*   \brief Gather ne versi rlock-unlock
+*   \note Gather2 pretpostavlja zakljucan zapis !!
+*/
+
+function Gather2(cZn)
+*{
+local i,aStruct
+
+if cZn==nil
+  cZn:="_"
+endif
+aStruct:=DBSTRUCT()
+for i:=1 to len(aStruct)
+  cImeP:=aStruct[i,1]
+  if  !("#"+cImeP+"#"  $ "#BRISANO#_SITE_#_OID_#_USER_#_COMMIT_#_DATAZ_#_TIMEAZ_#")
+   cVar:=cZn+cImeP
+   IF "U"$TYPE(cVar)
+     MsgBeep2("Neuskladj.strukt.baza! "+;
+              "F-ja: GATHER2(), Alias: "+ALIAS()+", Polje: "+cImeP)
+   ELSE
+     field->&cImeP:= &cVar
+   ENDIF
+  endif
+next
+return
+*}
+
+function delete2()
+*{
+local nRec
+
+do while .t.
+
+if rlock()
+  dbdelete2()
+  DBUNLOCK()
+  exit
+else
+    inkey(0.4)
+    loop
+endif
+
+enddo
+return nil
+*}
+
+function dbdelete2()
+*{
+if gReadonly
+	return
+endif
+if !eof() .or. !bof()
+ field->Brisano:="1"
+ Dbdelete()
+endif
+return nil
+*}
+
+/*
+*
+* fcisti =  .t. - pocisti polja
+*           .f. - ostavi stare vrijednosti polja
+* funl    = .t. - otkljucaj zapis, pa zakljucaj zapis
+*           .f. - ne diraj (pretpostavlja se da je zapis vec zakljucan)
+*/
+
+function appblank2(fcisti,funl)
+*{
+local aStruct,i, nPrevOrd, cnew_oid
+
+if fcisti==nil
+  fcisti:=.t.
+endif
+
+if funl==nil; funl:=.t.; endif
+
+if gReadonly; return; endif
+
+
+do while .t.
+set deleted off
+
+if gSQL=="D"  .and. fieldpos("_OID_")<>0
+ // hocu da se uzmu u obzir i brisani slogovi !
+ cNew_oid:=New_Oid()
+endif
+
+nPrevOrd:=indexord()
+
+if ORDNUMBER("BRISAN")<>0
+  set order to tag "BRISAN"
+  seek "1"
+endif
+
+if !(found() .and. deleted())
+     if !funl .or. flock()
+       dbappend(.t.)
+        field->brisano:=" "
+        if gSQL=="D" .and. fieldpos("_OID_")<>0
+         field->_OID_:=cNew_OID // setuj OID koji slijedi !!!
+         sql_azur()
+        endif
+     else // if flock
+       set deleted on
+       inkey(0.4)
+       loop
+     endif // if flock
+     if funl; dbunlockall(); endif
+
+else
+      if !funl .or. rlock()
+          if fcisti // ako zelis pocistiti stare vrijednosti
+                aStruct:=DBSTRUCT()
+                for i:=1 to len(aStruct)
+                 cImeP:=aStruct[i,1]
+                 if !("#"+cImeP+"#"  $ "#BRISANO#_OID_#_COMMIT_#")
+                 do case
+                   case aStruct[i,2]=='C'
+                     field->&cImeP:=""
+                   case aStruct[i,2]=='N'
+                     field->&cImeP:=0
+                   case aStruct[i,2]=='D'
+                     field->&cImeP:=ctod("")
+                   case aStruct[i,2]=='L'
+                     field->&cImeP:=.f.
+                 endcase
+                 endif
+                next
+          endif  // fcisti
+        field->brisano:=" "
+        dbrecall()
+        field->brisano:=" "
+        if gSQL=="D" .and. fieldpos("_OID_")<>0
+         field->_OID_:=cnew_OID // setuj OID koji slijedi !!!
+         sql_azur()
+        endif
+        set deleted on
+        ordsetfocus(nPrevOrd)
+        if funl; dbunlockall(); endif
+
+      else // rlock
+         inkey(0.4)
+         loop
+      endif // rlock
+endif
+
+set deleted on
+ordsetfocus(nPrevOrd)
+exit
+enddo
+
+return nil
+*}
+
+
+/*! \fn AppFrom(cFDbf, fOtvori)
+*  \brief apenduje iz cFDbf-a u tekucu tabelu
+*  \param cFDBF - ime dbf-a
+*  \param fOtvori - .t. - otvori DBF, .f. - vec je otvorena
+*/
+
+function AppFrom(cFDbf,fOtvori)
+*{
+local nArr
+nArr:=SELECT()
+
+cFDBF:=ToUnix(cFDBF)
+
+do while .t.
+ if !flock()
+     inkey(0.4)
+     loop
+ endif
+ exit
+enddo
+
+if fotvori
+ use (cFDbf) new
+else
+ select (cFDbF)
+endif
+
+go top
+
+do while !eof()
+  select (nArr)
+  Scatter("f")
+
+  select (cFDBF)
+  Scatter("f")
+
+  select (nArr)   // prebaci se u tekuci fajl-u koji zelis staviti zapise
+  appblank2(.f.,.f.)
+  Gather2("f") // pretpostavlja zakljucan zapis
+
+  select (cFDBF)
+  skip
+enddo
+if fOtvori
+  use // zatvori from DBF
+endif
+
+
+//dbcommit()
+dbunlock()
+select (nArr)
+
+return
+*}
+
+function PrazanDbf()
+*{
+local fret:=.f.,nRec, nPrevOrd
+
+nPrevOrd:=indexord()
+set order to tag "BRISAN"
+nRec:=recno()
+//set deleted off
+seek " "
+if !found()
+   fRet:=.t.
+endif
+//set deleted on
+dbsetorder(nPrevOrd)
+go nRec
+return fret
+*}
+
+
+#ifdef CAX
+
+/*! \fn reccount2()
+ * \note CAX - Advantage db server verzija
+ */
+ 
+function reccount2()
+*{
+local nC:=0,nRec, nPrevOrd
+
+if ORDNUMBER("BRISAN")<>0
+  nRec:=recno()
+  nPrevOrd:=indexord()
+  set deleted off
+  set order to tag "BRISAN"
+  set scope to "1"  // postavi scope na brisane
+  nC:=AX_KeyCount()
+  set deleted on
+  set scope to
+  dbsetorder(nPrevOrd)
+  go nRec
+endif
+return reccount()-nC
+*}
+
+#else
+
+/*! \fn reccount2()
+ * \note COMIX - CDX verzija
+ */
+function reccount2()
+*{
+local nC:=0,nRec, nPrevOrd
+
+if ORDNUMBER("BRISAN")<>0
+  nPrevOrd:=indexord()
+  set order to tag "BRISAN"
+  set scope to "1"  // postavi scope na brisane
+
+#ifdef CLIP
+  nC:=ordkeycount()
+#else  
+  nC:=cmxKeyCount()
+#endif
+
+  set scope to
+  dbsetorder(nPrevOrd)
+endif
+return reccount()-nC
+*}
+
+#endif
+
+
+function seek2(cArg)
+*{
+dbseek( cArg)
+return nil
+*}
+
+/*
+* markira za brisanje sve zapise u bazi
+*/
+
+function zapp()
+*{
+if gReadonly; return; endif
+
+PushWa()
+
+#ifdef CAX
+if AX_IsShared()
+#else
+if cmxShared()
+#endif
+       do while .t.
+       if flock()
+          set order to 0 // neophodno, posto je index po kriteriju deleted() !!
+          go top
+          do while !eof()
+            sql_delete()
+            dbdelete2()
+            skip
+          enddo
+       else  // flock
+            inkey(0.4)
+            loop
+       endif // flock
+
+       exit
+       enddo
+else
+   __dbzap()
+endif
+
+PopWa()
+return nil
+*}
+
+function nerr(oe)
+*{
+break oe
+*}
+
+/*! \fn EofFndRet(ef, close)
+ *  \brief Daje poruku da ne postoje podaci
+ *  \param ef = .t.   gledaj eof();  ef == .f. gledaj found()
+ *  \return  .t. ako ne postoje podaci
+ */
+ 
+function EofFndRet(ef, close)
+*{
+local fRet:=.f., cStr:="Ne postoje trazeni podaci.."
+if ef // eof()
+  if eof()
+    if !gAppSrv
+     Beep(1)
+     Msg(cStr,6)
+    endif
+    fRet:=.t.
+  endif
+else
+  if !found()
+     if !gAppSrv
+       Beep(1); Msg(cStr,6)
+     endif
+     fRet:=.t.
+  endif
+endif
+
+if close .and. fRet
+  close all
+endif
+return fRet
+*}
+
+
+/*! \fn SigmaSif(cSif)
+ *  \brief zasticene funkcije sistema
+ *
+ * za programske funkcije koje samo serviser
+ * treba da zna, tj koje obicni korisniku
+ * nece biti dokumentovane
+ *
+ * \note Default cSif=SIGMAXXX
+ *
+ * \return .t. kada je lozinka ispravna
+*/
+
+function SigmaSif(cSif)
+*{
+local lGw_Status
+
+lGw_Status:=IF("U"$TYPE("GW_STATUS"),"-",gw_status)
+
+GW_STATUS:="-"
+
+if csif==nil
+  cSif:="SIGMAXXX"
+else
+ cSif:=padr(cSif,8)
+endif
+Box(,2,60)
+  cSifra:=space(8)
+  @ m_x+1,m_y+2 SAY "Sifra za koristenje specijalnih fja:"
+  cSifra:=upper(GETSECRET( cSifra))
+BoxC()
+
+GW_STATUS:=lGW_Status
+if cSifra==csif
+  return .t.
+else
+ return .f.
+endif
+
+return
+*}
+
+/*! \fn O_POMDB(nArea,cImeDBF)
+ *  \brief otvori pomocnu tabelu, koja ako se nalazi na CDU npr se kopira u lokalni
+ *   direktorij pa zapuje
+ */
+
+function O_POMDB(nArea,cImeDBF)
+*{
+
+select (nArea)
+
+if right(upper(cImeDBF),4)<>"."+DBFEXT
+  cImeDBF:=cImeDBf+"."+DBFEXT
+endif
+cImeCDX:=strtran(UPPER(cImeDBF),"."+DBFEXT,"."+INDEXEXT)
+cImeCDX:=ToUnix(cImeCDX)
+
+#xcommand USEXX <(db)>                                                    ;
+             [VIA <rdd>]                                                ;
+             [ALIAS <a>]                                                ;
+             [<new: NEW>]                                               ;
+             [<ro: READONLY>]                                           ;
+             [INDEX <(index1)> [, <(indexn)>]]                          ;
+                                                                        ;
+      => dbUseArea(                                                     ;
+                    <.new.>, <rdd>, <(db)>, <(a)>,                      ;
+                     .f., .f.        ;
+                  )                                                     ;
+
+// podaci na cdu
+if (gReadonly .or. gKesiraj=="X")  
+    cPom:=STRTRAN(PRIVPATH,LEFT(PRIVPATH,3),"C:"+SLASH)
+
+    // dir na c
+    DirMak2(cpom)
+
+    if !file(cPom+cImeDBF) .or. !file(cPom+cImeCDX)
+          COPY FILE (PRIVPATH+cImeDBF)  TO  (cPom+cImeDBF)
+          COPY FILE (PRIVPATH+cImeCDX)  TO  (cPom+cImeCDX)
+          SETFATTR(cPom+cImeDBF, 32)  // normal
+          SETFATTR(cPom+cImeCDX, 32)  // normal
+    endif
+    usexx (cPom+cImeDBF)
+    __dbzap()
+    return
+
+else
+    usex (PRIVPATH+cImeDBF)
+endif
+
+return
+*}
+
+function JelReadOnly()
+*{
+IF !( "U" $ TYPE("gGlBaza") )
+    IF !EMPTY(gGlBaza)
+#ifdef CLIP      
+      gReadOnly := ( FILEATTR(ToUnix(goModul:oDatabase:cDirKum+SLASH+gGlBaza))==1 )
+#else
+      gReadOnly := ( FILEATTR(ToUnix(cDirRad+SLASH+gGlBaza))==1 )
+#endif
+    ENDIF
+ENDIF
+return nil
+*}
+
+function SetROnly()
+*{
+
+IF "U" $ TYPE("gGlBaza")
+   MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza nedefinisana!")
+   RETURN
+ENDIF
+
+IF EMPTY(gGlBaza)
+   MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza prazna!")
+   RETURN
+ENDIF
+
+IF gReadOnly
+   MsgBeep("Zakljucenje podrucja je vec izvrseno!")
+   RETURN
+ENDIF
+
+MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucenje poslovne godine. #"+;
+         "To znaci da nakon ove opcije nikakve ispravke podataka u trenutno #"+;
+         "aktivnom podrucju nece biti moguce. Ukoliko ste sigurni da to zelite #"+;
+         "na sljedece pitanje odgovorite potvrdno!" )
+IF Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
+
+#ifdef CLIP
+   IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
+#else
+   IF SETFATTR(cDirRad+SLASH+gGlBaza,1)==0
+#endif
+     gReadOnly:=.t.
+   ELSE
+     MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
+   ENDIF
+ENDIF
+return
+*}
+
+/*! \fn SkratiAZaD(aStruct)
+ *  \brief skrati matricu za polje D
+ 
+ *  \code
+ *  SkratiAZaD(@aStruct)
+ *  \endcode
+*/
+
+function SkratiAZaD(aStruct)
+*{
+nLen:=len(aStruct)
+for i:=1 to nLen
+    // sistemska polja
+    if ("#"+aStruct[i,1]+"#" $ "#BRISANO#_SITE_#_OID_#_USER_#_COMMIT_#_DATAZ_#_TIMEAZ_#")
+     ADEL (astruct,i)
+     nLen--
+     i:=i-1
+    endif
+next
+ASIZE(aStruct,nLen)
+
+return nil
+*}
+
+ 
+/*! \fn Append2()
+ * \brief Dodavanje novog zapisa u (nArr) -
+ * \note koristi se kod dodavanja zapisa u bazu nakon Izdvajanja zapisa funkcijom Izdvoji()
+ */
+
+function Append2()
+*{
+local nRec
+select(nArr)
+DbAppend()
+nRec:=RECNO()
+select(nTmpArr)
+DbAppend()
+replace recno with nRec
+
+return nil
+*}
+
+/*! \fn DbfName(nArea, lFull)
+ *  \param nArea
+ *  \param lFull True - puno ime cPath + cDbfName; False - samo cDbfName; default=False
+ *
+ */
+ 
+function DbfName(nArea, lFull)
+*{
+local nPos
+local cPrefix
+
+if lFull==nil
+	lFull:=.f.
+endif
+cPrefix:=""
+nPos:=ASCAN(gaDbfs,{|x| x[1]==nArea})
+
+if nPos<1
+ nPos:=ASCAN(gaSDbfs,{|x| x[1]==nArea})
+ if nPos<1
+   //MsgBeep("Ne postoji DBF Arrea "+STR(nArea)+" ?")
+   return ""
+ endif
+ if lFull
+ 	cPrefix:=DbfPath(gaSDbfs[nPos,3])
+ endif
+ return cPrefix + gaSDbfs[nPos,2]
+else
+ if lFull 
+ 	cPrefix:=DbfPath(gaDbfs[nPos,3])
+ endif
+ return cPrefix+gaDbfs[nPos,2]
+endif
+return
+*}
+
+function DbfPath(nPath)
+*{
+do case
+	CASE nPath==P_PRIVPATH
+		return PRIVPATH
+	CASE nPath==P_KUMPATH
+		return KUMPATH
+	CASE nPath==P_SIFPATH
+		return SIFPATH
+	CASE nPath==P_EXEPATH
+		return EXEPATH
+	CASE nPath==P_MODULPATH
+		return DBFBASEPATH+SLASH+gModul+SLASH
+	CASE nPath==P_TEKPATH
+		return "."+SLASH
+	CASE nPath==P_ROOTPATH
+		return SLASH
+	CASE nPath==P_KUMSQLPATH
+		return KUMPATH+"SQL"+SLASH
+	CASE nPath==P_SECPATH
+		return goModul:oDatabase:cSigmaBD+SLASH+"SECURITY"+SLASH
+end case
+return 
+*}
+
+function DbfArea(cImeDBF, nVarijanta)
+*{
+local nPos
+
+cImeDBF:=ToUnix(cImeDBF)
+
+if (nVarijanta==nil)
+  // vrati oznaku Working area-e
+  nVarijanta:=0
+endif
+
+nPos:=ASCAN(gaDBFS,{|x| x[2]==cImeDBF})
+
+if nPos<1
+ nPos:=ASCAN(gaSDBFS,{|x| x[2]==cImeDBF})
+ if nPos<1
+   ? "Ne postoji "+cImeDBF+" u gaDBFs ili gaSDBFs ?"
+   goModul:quit()
+ endif
+ nArray:=2
+ if nVarijanta==0 
+  return gaSDBFS[nPos,1]
+ else
+  return nPos
+ endif 
+else
+ nArray:=1
+ if nVarijanta==0  
+   return gaDBFS[nPos,1]
+ else
+   return nPos
+ endif
+endif
+return
+*}
+
+function nDBF(cBaza)
+*{
+return DbfArea(cBaza)
+*}
+
+function nDBFPos(cBaza)
+// pozicija u agDBFs
+*{
+return DbfArea(cBaza,1)
+*}
+
+function F_Baze(cBaza)
+*{
+local nPos
+nPos:=nDBF(cBaza)
+IF nPos<=0
+	CLOSE ALL
+	QUIT
+ENDIF
+return nPos
+*}
+
+function Sel_Bazu(cBaza)
+*{
+local nPos
+ 
+ nPos:=nDBFPos(cBaza)
+ IF nPos>0
+   SELECT (gaDBFs[nPos,1])
+ ELSE
+   CLOSE ALL; QUIT
+ ENDIF
+return
+*}
+
+function gaDBFDir(nPos)
+*{
+nPom:=gaDBFs[nPos,3]
+do case
+  case nPom=P_KUMPATH
+   return KUMPATH
+  case nPom=P_PRIVPATH
+   return  PRIVPATH
+  case nPom=P_SIFPATH
+   return SIFPATH
+  case nPom=P_MODPATH
+   return "."+SLASH
+  case nPom=P_EXEPATH
+   return EXEPATH
+  otherwise
+   return ""
+endcase
+*}
+
+function O_Bazu(cBaza)
+*{
+
+LOCAL nPos:=nDBFPos(cBaza)
+IF nPos>0
+   SELECT (gaDBFs[nPos,1])
+   USE ( gaDBFDir(nPos) +  gaDBFs[nPos,2])
+ELSE
+   CLOSE ALL
+   QUIT
+ENDIF
+return
+*}
+
+
+/*! \fn ExportBaze(cBaza)
+
+   Vidljive slogove tekuce baze kopira u bazu cBaza. Prije toga izbrise
+   bazu cBaza i pripadajuce indekse ukoliko postoje. cBaza ostaje zatvorena
+   a tekuca baza i dalje ostaje ista
+*/
+
+function ExportBaze(cBaza)
+*{
+LOCAL nArr:=SELECT()
+  FERASE(cBaza+"."+INDEXEXT)
+  FERASE(cBaza+"."+DBFEXT)
+  cBaza+="."+DBFEXT
+  COPY STRUCTURE EXTENDED TO (PRIVPATH+"struct")
+  CREATE (cBaza) FROM (PRIVPATH+"struct") NEW
+  MsgO("apendujem...")
+  APPEND FROM (ALIAS(nArr))
+  MsgC()
+  USE
+  SELECT (nArr)
+return
+*}
+
+
+#ifdef CLIP
+
+function cmxAutoOpen(lYesNo)
+*{
+return
+*}
+
+function cmxKeyCount()
+*{
+return ordKeyCount()
+*}
+
+function cmxShared()
+*{
+return .t.
+*}
+
+function setScope(nTopBottom,xScope)
+*{
+OrdScope(nTopBottom,xScope)
+return
+*}
+
+function clrScope()
+*{
+OrdScope(0,"")
+OrdScope(1,"")
+return
+*}
+
+function cm2str(xValue)
+*{
+local cPom
+
+if VALTYPE(xValue)=="C"
+  return "'"+str(xValue)+"'"
+endif
+
+if VALTYPE(xValue)=="D"
+  return "CTOD('"+DTOC(xValue)+"')"
+endif
+
+if VALTYPE(xValue)=="N"
+  return alltrim(str(xValue))
+endif
+
+cPom:= "Nisam zavrsio cm2str ..."
+Logg(cPom)
+
+inkey(0)
+
+quit
+return nil
+
+*}
+
+#endif
+
+
+function PoljeBrisano(cImeDbf)
+*{
+* select je na bazi koju ispitujes
+
+if fieldpos("BRISANO")=0 // ne postoji polje "brisano"
+  use
+  save screen to cScr
+  cls
+  Modstru(cImeDbf,"C  V C 15 0  FV C 15 0",.t.)
+  Modstru(cImeDbf,"A BRISANO C 1 0",.t.)  // dodaj polje "BRISANO"
+  inkey(10)
+  restore screen from cScr
+
+  use (cImeDBf)
+endif
+return nil
+*}
+
+
+/*! \fn SmReplace(cField, xValue)
+ *  \brief Smart Replace - vrsi replace samo ako je nova vrijednost razlicita od trenutne vrijednosti u tabeli
+ *  \note vrsi se i REPLSQL, kada je gSql=="D"
+ */
+ 
+function SmReplace(cField, xValue)
+*{
+private cPom
+
+cPom:=cField
+
+if &cPom<>xValue
+	REPLACE &cPom WITH xValue
+	if (gSql=="D")
+		REPLSQL &cPom WITH xValue
+	endif
+endif
+
+return
+*}
+
+/*! \fn  PreUseEvent(cImeDbf, fShared)
+ *  \brief Poziva se prije svako otvaranje DBF-a komanom USE
+ *
+ * Za gSQL=="D":
+ * Ako fajl KUMPATH + DOKS.gwu postoji, to znaci da je Gateway izvrsio
+ * update fajla pa zato reindeksiraj i pakuj DBF
+ * Na kraju izbrisi *.gwu fajl
+ *
+ */
+
+function PreUseEvent(cImeDbf, fShared)
+*{
+local cImeCdx
+local cImeGwu
+local nArea
+local cOnlyName
+
+if (goModul:oDatabase<>nil) 
+	if (goModul:oDatabase:lAdmin)
+		return 0
+	endif
+else
+	//sistem jos nije inicijaliziran, samo vrati isto ime tabele
+	return cImeDbf
+endif
+
+if nPreuseLevel>0
+	return 0
+endif
+// ne dozvoli rekurziju funkcije
+nPreuseLevel:=1
+
+cOnlyName:=ChangeEXT(ExFileName(cImeDbf),"DBF","")
+/*
+nArea:=DbfArea(UPPER(cOnlyName))
+if ((UPPER(cOnlyName)<>"GPARAM") .and. USED())
+	// ne otvaraj 2 x, a kod GPARAM je problem sto imamo u root-u i PRIVPATH-u
+	nPreuseEvent:=0
+	return
+endif
+*/
+
+cImeGwu:=ChangeEXT(cImeDbf, DBFEXT, "gwu")
+cImeCdx:=ChangeEXT(cImeDbf, DBFEXT, INDEXEXT)
+
+cImeDbf:=LOWER(cImeDbf)
+cImeDbf:=STRTRAN(cImeDbf, ".korisn","korisn")
+cImeGw:=ChangeEXT(cImeDbf, DBFEXT, "gwu")
+
+if gReadOnly 
+	nPreuseLevel:=0
+	return cImeDbf
+endif
+
+
+if (GW_STATUS="-" .and. FILE(cImeGwu))
+
+	nArea:=DbfArea(UPPER(cOnlyName))
+	FERASE(cImeCdx)
+	goModul:oDatabase:kreiraj(nArea)
+	FERASE(cImeGwu)
+		
+	/*
+	     MsgO("Reindeksiram + pakujem (gwu) "+cImeDbf)
+	     Beep(1)
+	     //REINDEKSIRAJ i Pakuj DBF
+	     nArea:=DBFArea(UPPER(cOnlyName))
+	     select(nArea)
+	     dbCloseArea()
+	     // ? "SC: prije dbusearea", cImeDbf
+	     dbUseArea( .f., nil , cImeDbf , nil , .f., .f. )  
+	     dbReindex()
+	     __dbPack()
+	     dbCloseArea()
+	     FErase(cPom)
+	     MsgC()
+     */
+     
+endif
+
+nPreuseLevel:=0
+return cImeDbf
+*}
+
+/*! \fn ScanDb()
+ *  \brief Prodji kroz sve tabele i pokreni PreuseEvent
+ *  \note sve tabele koje je gateway azurirao bice indeksirane
+ */
+function ScanDb()
+*{
+local i
+local cDbfName
+
+CLOSE ALL
+
+for i:=1 to 250
+	MsgO("ScanDb "+STR(i))
+	cDbfName:=DbfName(i,.t.)
+	if !EMPTY(cDbfName)
+		if FILE(cDbfName+"."+DBFEXT)
+			altd()
+			USEX (cDbfName)
+			if (RECCOUNT()<>RecCount2())
+				MsgO("Pakujem "+cDbfName)
+					__DBPACK()
+				MsgC()
+			endif
+			USE
+		endif
+		PreUseEvent(cDbfName, .f.)
+	endif
+	MsgC()
+		
+next
+CLOSE ALL
+return
+*}
+
