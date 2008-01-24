@@ -1,3 +1,5 @@
+#include "o_fmk.ch"
+
 #define EXEPATH   FilePath(Arg0())
 #define SIFPATH   trim(cDirSif)+SLASH
 #define PRIVPATH  trim(cDirPriv)+SLASH
