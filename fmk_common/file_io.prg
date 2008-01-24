@@ -1,23 +1,5 @@
-#include "sc.ch"
+#include "fmk_std_ext.ch"
 #include "fileio.ch"
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/os/1g/file_io.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.3 $
- * $Log: file_io.prg,v $
- * Revision 1.3  2002/08/19 10:01:47  ernad
- *
- *
- * podesenja za CLIP
- *
- * Revision 1.2  2002/06/21 02:28:36  ernad
- * interni sql parser - init, testiranje pos-sql
- *
- *
- */
  
 /***
 *  FilePos( <nHandle> ) --> nPos
