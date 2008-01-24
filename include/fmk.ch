@@ -266,7 +266,6 @@
 
 #define P_NRED QOUT()
 
-#include "\dev\af\cl-sclib\sclib\base\1g\sc_std.ch"
 #include "inkey.ch"
 #include "box.ch"
 #include "dbedit.ch"
