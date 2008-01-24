@@ -3,11 +3,10 @@ ROOT = ../../harbour/
 HB_INC_COMPILE += $(TOP)../../include
 
 PRG_SOURCES= \
-        app.prg  skeleton.prg  db.prg  err.prg  gvars.prg  gw.prg
+        db_adm.prg  db_cre.prg  db.prg  db_sez.prg  kompat.prg qry_lang.prg
 
 
-
-LIBNAME=fmk_skeleton
+LIBNAME=fmk_db
 
 include $(TOP)$(ROOT)config/lib.cf
 

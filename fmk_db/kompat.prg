@@ -1,4 +1,4 @@
-#include "SC.CH"
+#include "sc.ch"
 
 /* \fn DBT2FPT(cImeDBF)
  * \brief Konvertuje memo polja iz DBT u FTP format (Clipper NTX -> FOX CDX)

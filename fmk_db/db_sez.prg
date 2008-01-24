@@ -1,56 +1,6 @@
 #include "sc.ch"
 #include "error.ch"
-
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/db/1g/db_sez.prg,v $
- * $Author: sasavranic $ 
- * $Revision: 1.13 $
- * $Log: db_sez.prg,v $
- * Revision 1.13  2004/04/27 11:02:01  sasavranic
- * Rad sa sezonama - bugfix
- *
- * Revision 1.12  2003/01/15 12:39:10  ernad
- * bug 2003
- *
- * Revision 1.11  2003/01/07 15:13:31  mirsad
- * ispravke rada u sezonama
- *
- * Revision 1.10  2003/01/07 01:15:21  mirsad
- * ispravke za rad sa sezonama
- *
- * Revision 1.9  2002/10/15 13:21:14  sasa
- * rjesena dilema prenosa sezona
- *
- * Revision 1.8  2002/10/15 09:58:13  sasa
- * no message
- *
- * Revision 1.7  2002/10/02 17:38:08  sasa
- * ispravka sezona
- *
- * Revision 1.6  2002/09/28 15:50:20  mirsad
- * korekcije u radu sa sezon.podrucjem
- *
- * Revision 1.5  2002/08/19 10:01:47  ernad
- *
- *
- * podesenja za CLIP
- *
- * Revision 1.4  2002/06/25 23:46:15  ernad
- *
- *
- * pos, prenos pocetnog stanja
- *
- * Revision 1.3  2002/06/20 12:53:11  ernad
- *
- *
- * ciscenje rada sezonsko<->radno podrucje ... prebacivanje db/1g -> db/2g
- *
- *
- */
- 
+#include "fmk_std_ext.ch"
 
 function PocSkSez()
 *{
