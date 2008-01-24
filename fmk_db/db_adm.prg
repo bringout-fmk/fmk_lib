@@ -1,6 +1,5 @@
-#include "sc.ch"
-#include "fileio.ch"
 #include "fmk_std_ext.ch"
+#include "fileio.ch"
  
 *static string
 static OID_ASK:="0"

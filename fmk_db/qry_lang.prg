@@ -1,4 +1,3 @@
-#include "sc.ch"
 #include "fmk_std_ext.ch"
 
 /****h SC_CLIB/SC_QL ***
