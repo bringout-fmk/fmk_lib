@@ -8,7 +8,7 @@ PRG_SOURCES= \
 
 
 
-LIBNAME=fmk_security
+LIBNAME=fmk_codes
 
 include $(TOP)$(ROOT)config/lib.cf
 

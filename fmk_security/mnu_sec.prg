@@ -1,4 +1,4 @@
-#include "o_fmk.ch"
+#include "fmk.ch"
 
 function MnuSecMain()
 *{
