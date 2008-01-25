@@ -3,8 +3,9 @@ ROOT = ../../harbour/
 HB_INC_COMPILE += $(TOP)../../include
 
 PRG_SOURCES= \
-        app.prg  skeleton.prg  db.prg  err.prg  gvars.prg  gw.prg \
-        install.prg
+        skeleton.prg err.prg  gvars.prg  gw.prg \
+        install.prg \
+        app.prg db.prg
 
 
 

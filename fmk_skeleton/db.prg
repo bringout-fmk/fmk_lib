@@ -1,159 +1,36 @@
-#include "sc.ch"
-#include "fmk_std_ext.ch"
-
-/*! \file sc2g/db/db.prg
- *  \brief Bazni Database objekat
- *
- * Bazni Database objekat 
- */
-
-function TDBNew(oDesktop, cDirPriv, cDirKum, cDirSif)
-*{
-local oObj
-
-#ifdef CLIP
-
-oObj:=map()
-
-oObj:oDesktop:=nil
-oObj:oApp:=nil
-oObj:cName:=nil
-
-oObj:cSezona:=nil
-oObj:cRadimUSezona:=nil
-
-oObj:cSezonDir:=""
-
-oObj:cBase:=nil
-oObj:cSigmaBD:=nil
-
-oObj:cUser:=nil
-oObj:nPassword:=nil
-oObj:nGroup1:=nil
-oObj:nGroup2:=nil
-oObj:nGroup3:=nil
-
-oObj:cDirPriv:=nil
-oObj:cDirKum:=nil
-oObj:cDirSif:=nil
-oObj:lAdmin:=nil
-oObj:radiUSezonskomPodrucju:=@radiUSezonskomPodrucju()
-oObj:loadSezonaRadimUSezona:=@loadSezonaRadimUSezona()
-oObj:saveSezona:=@saveSezona()
-oObj:saveRadimUSezona:=@saveRadimUSezona()
-oObj:logAgain:=@logAgain()
-oObj:modstruAll:=@modstruAll()
-oObj:setDirPriv:=@setDirPriv()
-oObj:setDirSif:=@setDirSif()
-oObj:setDirKum:=@setDirKum()
-oObj:setSigmaBD:=@setSigmaBD()
-oObj:setUser:=@setUser()
-oObj:setPassword:=@setPassword()
-oObj:setGroup1:=@setGroup1()
-oObj:setGroup2:=@setGroup2()
-oObj:setGroup3:=@setGroup3()
-oObj:mInstall:=@mInstall()
-oObj:vratiSez:=@vratiSez()
-oObj:setIfNil:=@setIfNil()
-oObj:scan:=@scan()
-oObj:self:=oObj
-#else
-  oObj:=TDB():new()
-#endif
-
-oObj:oDesktop:=oDesktop
-oObj:cDirPriv:=cDirPriv
-oObj:cDirKum:=cDirKum
-oObj:cDirSif:=cDirSif
-oObj:lAdmin:=.f.
-return oObj
-*}
-
-#ifdef CPP
-
-/*! \class TDB
- *  \brief Bazni Database objekat
- */
-
-class TDB 
-{
-	public:
-	TDesktop oDesktop;
-	TApp oApp;
-	string cName;
-	
-	string cSezona;
-	string cRadimUSezona;
-	
-	string cSezonDir;
-	string cBase;
-	
-	string cDirPriv;
-	string cDirKum;
-	string cDirSif;
-	string cSigmaBD;
-	
-	string cUser;
-	integer nPassword;
-	integer nGroup1;
-	integer nGroup2;
-	integer nGroup3;
-	
-	bool lAdmin;
-	*void radiUSezonskomPodrucju(bool lForceRadno);
-	*void logAgain(string cSezona, bool lSilent, bool lWriteKParam);
-	*void vratiSez();
-	*void loadSezonaRadimUSezona();
-	*void saveSezona(string cValue);
-	*void saveRadimUSezona(string cValue);
-	*void modstruAll();
-	*string setDirKum(string cDir);
-	*string setSigmaBD(string cDir);
-	*string setUser(string cUser);
-	*integer setPassword(integer nPassword);
-	*integer setGroup1(integer nGroup);
-	*integer setGroup2(integer nGroup);
-	*integer setGroup3(integer nGroup);
-	*string setDirSif(string cDir);
-	*string setDirPriv(string cDir);
-	*void mInstall();
-	*void setIfNil();
-	*void scan();
-}
-
-#endif
-       
-     
-#ifndef CPP
-#ifndef CLIP
+#include "fmk.ch"
 
 #include "hbclass.ch"
-CREATE CLASS TDB
-	EXPORTED:
-	VAR oDesktop
-	VAR oApp
-	VAR cName
+
+CLASS TDB
+	DATA oDesktop
+	DATA oApp
+	DATA cName
 	
-	VAR cSezona
-	VAR cRadimUSezona
+	DATA cSezona
+	DATA cRadimUSezona
 	
-	VAR cSezonDir
-	VAR cBase
-	VAR cDirPriv
-	VAR cDirKum
-	VAR cDirSif
-	VAR cSigmaBD
-	VAR cUser
-	VAR nPassword
-	VAR nGroup1
-	VAR nGroup2
-	VAR nGroup3
-	VAR lAdmin
-	method radiUSezonskomPodrucju
+	DATA cSezonDir
+	DATA cBase
+	DATA cDirPriv
+	DATA cDirKum
+	DATA cDirSif
+	DATA cSigmaBD
+	DATA cUser
+	DATA nPassword
+	DATA nGroup1
+	DATA nGroup2
+	DATA nGroup3
+	DATA lAdmin
+
+	METHOD New() 
+	METHOD logAgain (cSezona, lSilent, lWriteKParam) 
+	
+        METHOD radiUSezonskomPodrucju (lForceRadno)
+ 
 	method loadSezonaRadimUSezona
 	method saveSezona
 	method saveRadimUSezona
-	method logAgain
 	method modstruAll
 	method setDirPriv
 	method setDirSif
@@ -169,10 +46,20 @@ CREATE CLASS TDB
 	method setIfNil
 	method scan
 	
-END CLASS
+ENDCLASS
 
-#endif
-#endif
+
+method New(oDesktop, cDirPriv, cDirKum, cDirSif)  CLASS TDB
+
+::oDesktop:=oDesktop
+::cDirPriv:=cDirPriv
+::cDirKum:=cDirKum
+::cDirSif:=cDirSif
+::lAdmin:=.f.
+
+return self
+
+
 
 /*! \var TDB:lAdmin
  *  \brief True - admin rezim, False - normalni pristup podacima 
@@ -185,10 +72,7 @@ END CLASS
  *  \param lSilent
  */
  
-*void TDB::logAgain(string cSezona, bool lSilent, bool lWriteKParam)
-*{
-
-method logAgain(cSezona, lSilent, lWriteKParam)
+METHOD logAgain(cSezona, lSilent, lWriteKParam) CLASS TDB
 
 local cPom
 local fURp:=.f.
@@ -203,14 +87,6 @@ if ::lAdmin
 endif
 
 CLOSE ALL
-//#ifdef CAX
-//	close all
-//#else
-//
-//if !UGlavnomMeniju()
-//		return
-//	endif
-//#endif
 
 ::setIfNil()
 
@@ -325,7 +201,7 @@ return
 *void TDB::modstruAll()
 *{
 
-method modstruAll()
+METHOD modstruAll() CLASS TDB
 local i
 
 ::lAdmin:=.t.
@@ -359,7 +235,7 @@ return
 
 *string TDB::setDirPriv(string cDir)
 *{
-method setDirPriv(cDir)
+METHOD setDirPriv(cDir) CLASS TDB
 local cPom
 
 // dosadasnja vrijednost varijable
@@ -381,7 +257,7 @@ return cPom
 
 *string TDB::setDirSif(string cDir)
 *{
-method setDirSif(cDir)
+METHOD setDirSif(cDir) CLASS TDB
 local cPom
 
 // dosadasnja vrijednost varijable
@@ -402,7 +278,7 @@ return cPom
 
 *string TDB::setDirKum(string cDir)
 *{
-method setDirKum(cDir)
+METHOD setDirKum(cDir) CLASS TDB
 local cPom
 
 // dosadasnja vrijednost varijable
@@ -431,7 +307,7 @@ return cPom
 
 *string TDB::setSigmaBD(string cDir)
 *{
-method setSigmaBD(cDir)
+METHOD setSigmaBD(cDir) CLASS TDB
 local cPom
 // dosadasnja vrijednost varijable
 cPom:=::cSigmaBD
@@ -446,7 +322,7 @@ return cPom
 
 *string TDB::setUser(string cUser)
 *{
-method setUser(cUser)
+METHOD setUser(cUser) CLASS TDB
 local cPom
 // dosadasnja vrijednost varijable
 cPom:=::cUser
@@ -457,7 +333,7 @@ return cPom
 
 *string TDB::setPassword(integer nPassword)
 *{
-method setPassword(nPassword)
+METHOD setPassword(nPassword) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nPassword
@@ -468,7 +344,7 @@ return nPom
 
 *string TDB::setGroup1(integer nGroup)
 *{
-method setGroup1(nGroup)
+METHOD setGroup1(nGroup) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nGroup1
@@ -479,7 +355,7 @@ return nPom
 
 *string TDB::setGroup2(integer nGroup)
 *{
-method setGroup2(nGroup)
+METHOD setGroup2(nGroup) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nGroup2
@@ -490,7 +366,7 @@ return nPom
 
 *string TDB::setGroup3(integer nGroup)
 *{
-method setGroup3(nGroup)
+METHOD setGroup3(nGroup) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nGroup3
@@ -508,7 +384,7 @@ return nPom
  
 *void TDB::mInstall()
 *{
-method mInstall()
+METHOD mInstall() CLASS TDB
 local i, cPom, aLst
 private nOldIzbor
 private opc:={}
@@ -586,7 +462,7 @@ return
  */
  
 *void TDB::vratiSez()
-method vratiSez(oDatabase)
+METHOD vratiSez(oDatabase) CLASS TDB
 *{
 
 if ::oApp:limitKLicence(AL_GOLD)
@@ -709,7 +585,7 @@ return
  */
  
 *void TDB::loadSezonaRadimUSezona()
-method loadSezonaRadimUSezona()
+METHOD loadSezonaRadimUSezona() CLASS TDB
 local cPom
 
 
@@ -758,7 +634,7 @@ return
 
 *void TDB:saveSezona(string cValue)
 *{
-method saveSezona(cValue)
+METHOD saveSezona(cValue) CLASS TDB
 
 #ifdef CLIP
 	? "save sezona ..."
@@ -775,7 +651,7 @@ return
 
 *void TDB:saveRadimUSezona(string cValue)
 *{
-method saveRadimUSezona(cValue)
+METHOD saveRadimUSezona(cValue) CLASS TDB
 O_KPARAMS
 private cSection:="1"
 private cHistory:=" "
@@ -803,7 +679,7 @@ return
 
 *void TDB::radiUSezonskomPodrucju(bool lForceRadno)
 *{
-method radiUSezonskomPodrucju(lForceRadno)
+METHOD radiUSezonskomPodrucju (lForceRadno) CLASS TDB
 
 ::setIfNil()
 if (lForceRadno==nil)
@@ -830,7 +706,7 @@ endif
 
 *void TDB:setIfNil()
 *{
-method setIfNil()
+METHOD setIfNil() CLASS TDB
 if (::oDesktop==nil)
 	::oDesktop:=goModul:oDesktop
 endif
@@ -840,11 +716,8 @@ endif
 return
 *}
 
-*void TDB:scan()
-*{
-method scan()
+METHOD scan() CLASS TDB
 
 return
-*}
 
 

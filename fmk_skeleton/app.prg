@@ -1,4 +1,4 @@
-#include "sc.ch"
+#include "fmk.ch"
 
 
 function TAppModNew(oParent, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
@@ -84,9 +84,6 @@ return
 *{
 method hasParent()
 
-#ifdef CLIP
-	? "start has parent"
-#endif
 
 return !(::oParent==nil)
 *}

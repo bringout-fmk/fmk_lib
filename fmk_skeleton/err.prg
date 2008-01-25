@@ -1,8 +1,7 @@
-#include "sc.ch"
+#include "fmk.ch"
 #include "error.ch"
 #include "dbstruct.ch"
 #include "set.ch"
-#include "fmk_std_ext.ch"
 
 
 function MyErrorHandler(objErr,lLocalHandler)

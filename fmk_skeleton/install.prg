@@ -1,4 +1,4 @@
-#include "fmk_std_ext.ch"
+#include "fmk.ch"
 
 /* \fn KorPreg()
  * \brief Pregled korisnika programa
