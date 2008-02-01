@@ -7,7 +7,9 @@ PRG_SOURCES= \
         konvzn.prg \
         ini.prg \
         params.prg \
-        print.prg
+        print.prg \
+        ut.prg
+        dummy.prg
 
 
 LIBNAME=fmk_common
