@@ -7,3 +7,6 @@ functio ol_yield()
 return
 
 
+function arg0(c)
+
+return c

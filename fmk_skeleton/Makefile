@@ -6,8 +6,8 @@ PRG_SOURCES= \
         skeleton.prg err.prg  gvars.prg  gw.prg \
         install.prg \
         app.prg db.prg \
-        arhiviraj.prg
-
+        arhiviraj.prg \
+        specif_vars.prg
 
 
 LIBNAME=fmk_skeleton

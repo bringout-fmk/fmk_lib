@@ -3,9 +3,17 @@ ROOT = ../../harbour/
 HB_INC_COMPILE += $(TOP)../../include
 
 PRG_SOURCES= \
-        browse.prg \
-        print.prg 
-
+   browse.prg \
+   print.prg \
+   codes_common.prg \
+   konta.prg \
+   opstine.prg \
+   partneri.prg \
+   poredi_firme.prg \
+   rnal.prg \
+   valute.prg \
+   vrste_naloga_dokumenata.prg \
+   fakt_doks_txt.prg
 
 
 LIBNAME=fmk_codes

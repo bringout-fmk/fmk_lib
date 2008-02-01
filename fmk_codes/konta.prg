@@ -1,27 +1,5 @@
-#include "sc.ch"
+#include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/fmk/svi/konto.prg,v $
- * $Author: sasavranic $ 
- * $Revision: 1.6 $
- * $Log: konto.prg,v $
- * Revision 1.6  2004/03/16 15:15:50  sasavranic
- * no message
- *
- * Revision 1.5  2004/03/15 16:17:09  sasavranic
- * Uvedena funkcija GetNameFromKonto(cIdKonto) koja vraca naziv konta po zadatom id-u
- *
- * Revision 1.4  2004/03/02 18:37:28  sasavranic
- * no message
- *
- * Revision 1.3  2002/06/16 11:44:53  ernad
- * unos header-a
- *
- *
- */
  
 
 /*! \fn P_Konto(cId,dx,dy)
