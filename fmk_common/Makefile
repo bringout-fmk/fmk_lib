@@ -10,7 +10,8 @@ PRG_SOURCES= \
         print.prg \
         util.prg \
         dummy.prg \
-        array_utils.prg
+        array_util.prg \
+        string_util.prg
 
 
 LIBNAME=fmk_common
