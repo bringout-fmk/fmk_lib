@@ -1,9 +1,5 @@
 #include "fmk.ch"
 
-/*
- *
- */
- 
 function ToStr(xVal)
 *{
 

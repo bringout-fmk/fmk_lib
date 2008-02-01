@@ -15,7 +15,8 @@ PRG_SOURCES= \
    vrste_naloga_dokumenata.prg \
    fakt_doks_txt.prg \
    barkod.prg roba.prg tarifa.prg sifk.prg trfp.prg rpt_cjenovnik.prg \
-   codes_util_2.prg
+   codes_util_2.prg \
+   ugov.prg gen_ugov.prg \
 
 
 LIBNAME=fmk_codes
