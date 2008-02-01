@@ -1,31 +1,5 @@
-#include "sc.ch"
+#include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/sql/1g/sql.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.5 $
- * $Log: sql.prg,v $
- * Revision 1.5  2002/06/24 16:11:53  ernad
- *
- *
- * planika - uvodjenje izvjestaja 98-reklamacija, izvjestaj planika/promet po vrstama placanja, debug
- *
- * Revision 1.4  2002/06/23 11:57:24  ernad
- * ciscenja sql - planika
- *
- * Revision 1.3  2002/06/19 19:51:00  ernad
- *
- *
- * rad u sezonama, gateway
- *
- * Revision 1.2  2002/06/19 06:33:38  ernad
- * doxy
- *
- *
- */
  
 function sql_repl(cField, xxVar, nHandle, cAkcija )
 *{
