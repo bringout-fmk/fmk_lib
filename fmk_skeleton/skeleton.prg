@@ -2,6 +2,7 @@
 #include "achoice.ch"
 #include "fileio.ch"
 
+REQUEST DBFCDX
 
 /*! \defgroup params
  *  @{
@@ -40,25 +41,19 @@ local cImeDbf
 
 public gAppSrv
 
-#ifdef CLIP
-	? "setujem engine (sc_start)"
-#endif
+	
+? "setujem engine (sc_start)"
 
 if !oApp:lStarted	
-	
-#ifdef CLIP
-	? "setujem default engine ..."
-#endif
-	RDDSETDEFAULT(RDDENGINE)
-#ifdef CLIP
-	? "startujem oApp:db()"
-#endif
+
+
+	? "setujem default engine ..." + RDDENGINE
+	RDDSETDEFAULT( RDDENGINE )
 	oApp:initdb()
+
 endif
 
-#ifdef CLIP
-	? "setujem globalne varijable"
-#endif
+? "setujem globalne varijable"
 
 SetgaSDbfs()
 SetScGVars()
@@ -76,12 +71,8 @@ SetNaslov(oApp)
 
 SET DELETED ON
 
-#IFDEF CAX
-  #define AX
-  #define D_VERZIJA "AX"
-#ELSE
-  #define D_VERZIJA "CDX"
-#ENDIF
+  
+#define D_VERZIJA "CDX"
 
 if mpar37("/INSTALL",oApp)
 	oApp:oDatabase:lAdmin:=.t.
