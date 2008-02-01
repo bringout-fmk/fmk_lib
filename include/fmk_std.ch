@@ -1,11 +1,4 @@
 
-
-//#ifndef _SET_DEFINED
-//#include "Set.ch"
-//#endif
-
-
-
 #command DO WHILE <exp>         =>  while <exp>
 
 #command END <x>                => end
@@ -1412,3 +1405,8 @@
 #define ROunD(x,y)  rOund(rOund(x,8),y)
 #define ROUnD(x,y)  rOund(rOund(x,8),y)
 #define rounD(x,y)  rOund(rOund(x,8),y)
+
+
+#define HB_COMPAT_C53
+
+#include "std.ch"
