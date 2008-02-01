@@ -1,18 +1,6 @@
-#include "sc.ch"
+#include "fmk.ch"
 
 /*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/ut/1g/str_ut.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.2 $
- * $Log: str_ut.prg,v $
- * Revision 1.2  2002/06/27 17:22:41  ernad
- *
- *
- * ciscenja, prenos fja iz fakt-a
- *
  *
  */
  

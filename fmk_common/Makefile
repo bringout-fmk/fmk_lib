@@ -11,7 +11,8 @@ PRG_SOURCES= \
         util.prg \
         dummy.prg \
         array_util.prg \
-        string_util.prg
+        string_util.prg \
+        report_common.prg
 
 
 LIBNAME=fmk_common
