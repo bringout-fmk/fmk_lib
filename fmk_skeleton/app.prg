@@ -7,47 +7,44 @@ local oObj
 
 oObj:=TAppMod():new()
 
-oObj:self:=oObj
-
 return oObj
 
 
 #include "hbclass.ch"
 
-CREATE CLASS TAppMod 
-	EXPORTED:
-	VAR cName
-	VAR oParent
-	VAR oDatabase
-	VAR oDesktop
-	VAR cVerzija
-	VAR cPeriod
-	VAR cKorisn
-	VAR cSifra
-	VAR nKLicenca
-	VAR cP3
-	VAR cP4
-	VAR cP5
-	VAR cP6
-	VAR cP7
-	VAR cSqlLogBase
-	VAR lSqlDirektno
-	VAR lStarted
-	VAR lTerminate
-	VAR self
-	method hasParent
+CLASS TAppMod 
+	DATA cName
+	DATA oParent
+	DATA oDatabase
+	DATA oDesktop
+	DATA cVerzija
+	DATA cPeriod
+	DATA cKorisn
+	DATA cSifra
+	DATA nKLicenca
+	DATA cP3
+	DATA cP4
+	DATA cP5
+	DATA cP6
+	DATA cP7
+	DATA cSqlLogBase
+	DATA lSqlDirektno
+	DATA lStarted
+	DATA lTerminate
+	
+	method new
+        method hasParent
 	method setParent
 	method getParent
 	method setName
 	method run
 	method quit
 	method gProc
-	method init
 	method gParams
 	method setTGVars
 	method limitKLicenca
 	
-END CLASS
+ENDCLASS
 
 
 /*! \fn *void TAppMod::init(TObject oParent,string cModul,string cVerzija,string cPeriod,string cKorisn,string cSifra,string p3,string p4,string p5,string p6,string p7)
@@ -57,8 +54,9 @@ END CLASS
 *void TAppMod::init(TObject oParent,string cModul,string cVerzija,string cPeriod,string cKorisn,string cSifra,string p3,string p4,string p5,string p6,string p7)
 *{
 
-method init(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
+method new(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7)
 
+::lStarted:=nil
 ::cName:=cModul
 ::oParent:=oParent
 ::oDatabase:=nil
@@ -135,7 +133,7 @@ if ::lStarted==nil
 	::lStarted:=.f.
 endif
 
-SC_START(::self, .t.)
+SC_START(self, .t.)
 if !::lStarted
 	PID("START")
 endif
