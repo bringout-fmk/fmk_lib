@@ -3,8 +3,8 @@ ROOT = ../../harbour/
 HB_INC_COMPILE += $(TOP)../../include
 
 PRG_SOURCES= \
-        db_adm.prg  db_cre.prg  db.prg  db_sez.prg  kompat.prg qry_lang.prg \
-        sql.prg sql_db.prg
+        db_adm.prg  db_cre.prg db_cre_2.prg  db.prg  db_sez.prg  kompat.prg qry_lang.prg \
+        sql.prg sql_db.prg db_cre_roba.prg
 
 
 LIBNAME=fmk_db
