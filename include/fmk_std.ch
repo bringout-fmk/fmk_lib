@@ -1353,101 +1353,6 @@
        ; SET ALTERNATE TO
 
 
-/***
-*  ORD - Ordering commands
-*
-*
-*/
-
-// cmx
-#command INDEX ON <key> [TAG <(cOrder)>] TO <(cBag)>                    ;
-            [FOR <for>]                                                 ;
-            [WHILE <while>]                                             ;
-            [<lUnique: UNIQUE>]                                         ;
-            [<ascend: ASCENDING>]                                       ;
-            [<descend: DESCENDING>]                                     ;
-            [<lUsecurrent: USECURRENT>]                                 ;
-            [<lAdditive: ADDITIVE>]                                     ;
-            [EVAL <eval> [ EVERY <nEvery> ]]                            ;
-            [<lCustom: CUSTOM>]                                         ;
-            [<lNoOpt: NOOPTIMIZE>]                                      ;
-    =>  ordCondSet( <"for">, <{for}>,                                   ;
-                     nil,                                               ;
-                     <{while}>,                                         ;
-                     <{eval}>, <nEvery>,                                ;
-                     nil, nil, nil,                                     ;
-                     nil, [<.descend.>],                                ;
-                     nil, <.lAdditive.>, <.lUsecurrent.>, <.lCustom.>,  ;
-                     <.lNoOpt.>)                                        ;
-        ;  ordCreate(<(cBag)>, <(cOrder)>, <"key">, <{key}>, [<.lUnique.>])
-
-#command INDEX ON <key> TAG <(cOrder)> [TO <(cBag)>]                    ;
-            [FOR <for>]                                                 ;
-            [WHILE <while>]                                             ;
-            [<lUnique: UNIQUE>]                                         ;
-            [<ascend: ASCENDING>]                                       ;
-            [<descend: DESCENDING>]                                     ;
-            [<lUsecurrent: USECURRENT>]                                 ;
-            [<lAdditive: ADDITIVE>]                                     ;
-            [EVAL <eval> [ EVERY <nEvery> ]]                            ;
-            [<lCustom: CUSTOM>]                                         ;
-            [<lNoOpt: NOOPTIMIZE>]                                      ;
-    =>  ordCondSet( <"for">, <{for}>,                                   ;
-                     nil,                                               ;
-                     <{while}>,                                         ;
-                     <{eval}>, <nEvery>,                                ;
-                     nil, nil, nil,                                     ;
-                     nil, [<.descend.>],                                ;
-                     nil, <.lAdditive.>, <.lUsecurrent.>, <.lCustom.>,  ;
-                     <.lNoOpt.>)                                        ;
-        ;  ordCreate(<(cBag)>, <(cOrder)>, <"key">, <{key}>, [<.lUnique.>])
-
-
-#command XINDEX ON <key> [TAG <(cOrder)>] TO <(cBag)>                   ;
-            [FOR <for>]                                                 ;
-            [WHILE <while>]                                             ;
-            [<lUnique: UNIQUE>]                                         ;
-            [<ascend: ASCENDING>]                                       ;
-            [<descend: DESCENDING>]                                     ;
-            [<lUsecurrent: USECURRENT>]                                 ;
-            [<lAdditive: ADDITIVE>]                                     ;
-            [EVAL <eval> [ EVERY <nEvery> ]]                            ;
-            [<lCustom: CUSTOM>]                                         ;
-            [<lNoOpt: NOOPTIMIZE>]                                      ;
-    =>  ordCondSet( <(for)>,                                            ;
-                     iif(<.for.>,&("{||" + <(for)> + "}"),NIL),         ;
-                     nil,                                               ;
-                     <{while}>,                                         ;
-                     <{eval}>, <nEvery>,                                ;
-                     nil, nil, nil,                                     ;
-                     nil, [<.descend.>],                                ;
-                     nil, <.lAdditive.>, <.lUsecurrent.>, <.lCustom.>,  ;
-                     <.lNoOpt.>)                                        ;
-        ;  ordCreate(<(cBag)>, <(cOrder)>,                              ;
-                     <(key)>, &("{||" + <(key)> + "}"), [<.lUnique.>])
-
-#command XINDEX ON <key> TAG <(cOrder)> [TO <(cBag)>]                   ;
-            [FOR <for>]                                                 ;
-            [WHILE <while>]                                             ;
-            [<lUnique: UNIQUE>]                                         ;
-            [<ascend: ASCENDING>]                                       ;
-            [<descend: DESCENDING>]                                     ;
-            [<lUsecurrent: USECURRENT>]                                 ;
-            [<lAdditive: ADDITIVE>]                                     ;
-            [EVAL <eval> [ EVERY <nEvery> ]]                            ;
-            [<lCustom: CUSTOM>]                                         ;
-            [<lNoOpt: NOOPTIMIZE>]                                      ;
-    =>  ordCondSet( <(for)>,                                            ;
-                     iif(<.for.>,&("{||" + <(for)> + "}"),NIL),         ;
-                     nil,                                               ;
-                     <{while}>,                                         ;
-                     <{eval}>, <nEvery>,                                ;
-                     nil, nil, nil,                                     ;
-                     nil, [<.descend.>],                                ;
-                     nil, <.lAdditive.>, <.lUsecurrent.>, <.lCustom.>,  ;
-                     <.lNoOpt.>)                                        ;
-        ;  ordCreate(<(cBag)>, <(cOrder)>,                              ;
-                     <(key)>, &("{||" + <(key)> + "}"), [<.lUnique.>])
 
 #command REINDEX                                                        ;
             [EVAL <eval>]                                               ;
@@ -1455,44 +1360,6 @@
             [<lNoOpt: NOOPTIMIZE>]                                      ;
       => ordCondSet(,,,, <{eval}>, <every>,,,,,,,,,, <.lNoOpt.>)        ;
          ; ordListRebuild()
-
-#command SET SCOPE TO                                                   ;
-    =>  cmxClrScope(0)                                                  ;
-        ; cmxClrScope(1)
-        
-#command SET SCOPE TO <xValue>                                          ;
-    =>  cmxSetScope(0, <xValue>)                                        ;
-        ; cmxSetScope(1, <xValue>)
-
-#command SET SCOPE TO <xVal1>, <xVal2>                                  ;
-    =>  cmxSetScope(0, <xVal1>)                                         ;
-        ; cmxSetScope(1, <xVal2>)
-
-#xcommand SET SCOPETOP TO                                               ;
-    =>  cmxClrScope(0)
-
-#xcommand SET SCOPETOP TO <xValue>                                      ;
-    =>  cmxSetScope(0, <xValue>)
-
-#xcommand SET SCOPEBOTTOM TO                                            ;
-    =>  cmxClrScope(1)
-
-#xcommand SET SCOPEBOTTOM TO <xValue>                                   ;
-    =>  cmxSetScope(1, <xValue>)
-
-#xcommand SET DESCENDING ON                                             ;
-    =>  cmxDescend(,, .t.)
-
-#xcommand SET DESCENDING OFF                                            ;
-    =>  cmxDescend(,, .f.)
-
-#xcommand SET MEMOBLOCK TO <nSize>                                      ;
-    =>  cmxMemoBlock(<nSize>)
-
-#command SEEK <xValue>                                                  ;
-         [<lSoft: SOFTSEEK>]                                            ;
-         LAST                                                           ;
-      => cmxSeekLast(<xValue>, if( <.lSoft.>, .T., NIL ))
 
 #command SET RELATION                                                   ;
          [<add:ADDITIVE>]                                               ;
@@ -1505,18 +1372,6 @@
        ; dbSetRelation( <(alias1)>, <{key1}>, <"key1"> )                ;
       [; dbSetRelation( <(aliasn)>, <{keyn}>, <"keyn"> )]
 
-
-#command SET RELATION                                                   ;
-         [<add:ADDITIVE>]                                               ;
-         TO <key1> INTO <(alias1)> [, [TO] <keyn> INTO <(aliasn)>]      ;
-         SCOPED                                                         ;
-                                                                        ;
-      => if ( !<.add.> )                                                ;
-       ;    dbClearRel()                                                ;
-       ; end                                                            ;
-                                                                        ;
-       ; cmxSetRelation( <(alias1)>, <{key1}>, <"key1"> )               ;
-      [; cmxSetRelation( <(aliasn)>, <{keyn}>, <"keyn"> )]
 
 
 #command REQUEST <vars,...>             => EXTERNAL <vars>
