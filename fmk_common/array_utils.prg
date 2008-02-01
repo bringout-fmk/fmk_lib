@@ -1,4 +1,4 @@
-#include "Inkey.ch"
+#include "inkey.ch"
 #include "dbedit.ch"
 
 /****h SC_CLIB/ARRAY ***
