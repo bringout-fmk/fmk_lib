@@ -19,7 +19,8 @@ run c
 return
 
 
-
+function random(n)
+return 100
 
 function cm2str(xValue)
 local cPom
@@ -51,7 +52,7 @@ return
 function blimemmax()
 return
 
-function blimrgrsts()
+function blimgrsts()
 return
 
 function swperrlev()
