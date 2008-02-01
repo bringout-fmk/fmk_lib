@@ -43,9 +43,9 @@ public gAppSrv
 
 	
 ? "setujem engine (sc_start)"
+altd()
 
 if !oApp:lStarted	
-
 
 	? "setujem default engine ..." + RDDENGINE
 	RDDSETDEFAULT( RDDENGINE )
@@ -300,6 +300,8 @@ return
 
 function SetNaslov(oApp)
 *{
+
+altd()
 
 gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
 #ifndef PROBA
