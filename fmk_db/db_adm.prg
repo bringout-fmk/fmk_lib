@@ -579,7 +579,7 @@ set deleted on  // ne kopiraj izbrisane zapise !!!
 close all
 
 
-cmxAutoOpen(.f.)  // ne otvaraj CDX-ove
+SET AUTOPEN OFF
 
 if pcount()==0
   ?
@@ -769,7 +769,7 @@ enddo
 kopi(fProm)
 
 
-cmxAutoOpen(.t.)
+SET AUTOPEN ON 
 return
 *}
 

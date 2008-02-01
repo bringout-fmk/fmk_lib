@@ -433,11 +433,7 @@ if ORDNUMBER("BRISAN")<>0
   set order to tag "BRISAN"
   set scope to "1"  // postavi scope na brisane
 
-#ifdef CLIP
-  nC:=ordkeycount()
-#else  
-  nC:=cmxKeyCount()
-#endif
+nC:=ordkeycount()
 
   set scope to
   dbsetorder(nPrevOrd)
@@ -908,36 +904,6 @@ return
 *}
 
 
-#ifdef CLIP
-
-function cmxAutoOpen(lYesNo)
-*{
-return
-*}
-
-function cmxKeyCount()
-*{
-return ordKeyCount()
-*}
-
-function cmxShared()
-*{
-return .t.
-*}
-
-function setScope(nTopBottom,xScope)
-*{
-OrdScope(nTopBottom,xScope)
-return
-*}
-
-function clrScope()
-*{
-OrdScope(0,"")
-OrdScope(1,"")
-return
-*}
-
 function cm2str(xValue)
 *{
 local cPom
@@ -962,9 +928,7 @@ inkey(0)
 quit
 return nil
 
-*}
 
-#endif
 
 
 function PoljeBrisano(cImeDbf)

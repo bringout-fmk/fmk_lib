@@ -11,9 +11,6 @@ function arg0(c)
 
 return c
 
-function cm2str()
-return
-
 
 function swpruncmd(c)
 
@@ -24,4 +21,26 @@ return
 
 
 
+function cm2str(xValue)
+local cPom
+
+if VALTYPE(xValue)=="C"
+  return "'"+str(xValue)+"'"
+endif
+
+if VALTYPE(xValue)=="D"
+  return "CTOD('"+DTOC(xValue)+"')"
+endif
+
+if VALTYPE(xValue)=="N"
+  return alltrim(str(xValue))
+endif
+
+cPom:= "Nisam zavrsio cm2str ..."
+Logg(cPom)
+
+inkey(0)
+
+quit
+return nil
 

@@ -380,7 +380,7 @@ function IntegDBF(cBaza)
 LOCAL berr, nRec:=RECNO(), nExpr:=0, nExpr2:=0, cStr:="", j:=0
    bErr:=ERRORBLOCK({|o| MyErrH(o)})
    BEGIN SEQUENCE
-    cmxAutoOpen(.f.)
+    SET AUTOPEN OFF
     IF cBaza!=NIL
       USE (cBaza) NEW
     ENDIF
@@ -403,7 +403,7 @@ LOCAL berr, nRec:=RECNO(), nExpr:=0, nExpr2:=0, cStr:="", j:=0
    RECOVER
       bErr:=ERRORBLOCK(bErr)
       MsgBeep("Ponovite prenos, podaci su osteceni !")
-      cmxAutoOpen(.t.)
+      SET AUTOPEN ON
       return { 0 , 0 }
    END SEQUENCE
    bErr:=ERRORBLOCK(bErr)
