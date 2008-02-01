@@ -4,7 +4,7 @@ HB_INC_COMPILE += $(TOP)../../include
 
 PRG_SOURCES= \
         db_adm.prg  db_cre.prg  db.prg  db_sez.prg  kompat.prg qry_lang.prg \
-        sql.prg
+        sql.prg sql_db.prg
 
 
 LIBNAME=fmk_db

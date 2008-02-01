@@ -1,4 +1,4 @@
-#include "fmk_std_ext.ch"
+#include "fmk.ch"
 
 
 /*! \fn Pitanje(cId,cPitanje,cOdgDefault,cMogOdg)
