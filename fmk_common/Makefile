@@ -8,7 +8,7 @@ PRG_SOURCES= \
         ini.prg \
         params.prg \
         print.prg \
-        ut.prg
+        util.prg \
         dummy.prg
 
 
