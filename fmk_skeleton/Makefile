@@ -9,7 +9,8 @@ PRG_SOURCES= \
         arhiviraj.prg \
         specif_vars.prg \
         global_vars.prg \
-        global_vars_roba.prg
+        global_vars_roba.prg \
+        desktop.prg
 
 
 LIBNAME=fmk_skeleton

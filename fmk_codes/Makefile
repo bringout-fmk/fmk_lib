@@ -17,7 +17,8 @@ PRG_SOURCES= \
    barkod.prg roba.prg tarifa.prg sifk.prg trfp.prg rpt_cjenovnik.prg \
    codes_util_2.prg \
    ugov.prg gen_ugov.prg \
-   roba_db_admin.prg
+   roba_db_admin.prg \
+   konta_tipovi_cijena.prg
 
 LIBNAME=fmk_codes
 

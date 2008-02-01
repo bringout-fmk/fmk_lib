@@ -12,33 +12,7 @@ local xRet
 xRet:=FSEEK(nHandle, 0, FS_RELATIVE)
 return xRet
 
-/***
-*  FileSize( <nHandle> ) --> nBytes
-*  Return the size of a binary file
-*
-*/
-function FileSize(nHandle)
-*{
-local nCurrent, nLength
-
-// Get file position
-nCurrent := FilePos(nHandle)
-
-// Get file length
-nLength := FSEEK(nHandle, 0, FS_END)
-
-// Reset file position
-FSEEK(nHandle, nCurrent)
-
-return nLength
-*}
-
-#ifdef CLIP
-function ScFEof(nHandle)
-#else
 function FEof(nHandle)
-#endif
-*{
 local lRet
 
 if (FileSize(nHandle)==FilePos(nHandle))
@@ -48,7 +22,6 @@ else
 endif
 
 return lRet
-*}
 
 
 /***
