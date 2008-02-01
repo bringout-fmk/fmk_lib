@@ -728,15 +728,6 @@ return (name)
 
 
 /***
-*   __SetFormat()
-*	SET FORMAT service
-*/
-func __SetFormat(b)
-	Format := if ( ValType(b) == "B", b, NIL )
-return (NIL)
-
-
-/***
 *	__KillReadSC()
 *   CLEAR GETS service
 */
@@ -747,22 +738,7 @@ function __KillReadSC()
 return
 
 
-/***
-*	GetActive()
-*/
-function GetActive(g)
-local oldActive := ActiveGet
-	if ( PCount() > 0 )
-		ActiveGet := g
-	end
-return ( oldActive )
 
-
-/***
-*	Updated()
-*/
-function Updated()
-return (Updated)
 
 
 /***
@@ -770,13 +746,6 @@ return (Updated)
 */
 function ReadExitSC(lNew)
 return ( Set(_SET_EXIT, lNew) )
-
-
-/***
-*	ReadInsert()
-*/
-function ReadInsert(lNew)
-return ( Set(_SET_INSERT, lNew) )
 
 
 
@@ -842,55 +811,6 @@ return
 
 
 
-/***
-*   RangeCheck()
-*
-*	NOTE: unused second param for 5.00 compatibility.
-*/
-
-func RangeCheck(get, junk, lo, hi)
-
-local cMsg, nRow, nCol
-local xValue
-
-
-	if ( !get:changed )
-		return (.t.)
-	end
-
-	xValue := get:VarGet()
-
-	if ( xValue >= lo .and. xValue <= hi )
-		return (.t.)									// NOTE
-	end
-
-    if ( Set(_SET_SCOREBOARD) )
-		cMsg := "Range: " + Ltrim(Transform(lo, "")) + ;
-				" - " + Ltrim(Transform(hi, ""))
-
-		if ( Len(cMsg) > MaxCol() )
-			cMsg := Substr( cMsg, 1, MaxCol() )
-		end
-
-		nRow := Row()
-		nCol := Col()
-
-		SetPos( SCORE_ROW, Min(60, MaxCol() - Len(cMsg)) )
-		DispOut(cMsg)
-        SetPos(nRow, nCol)
-
-		while ( NextKey() == 0 )
-		end
-
-		SetPos( SCORE_ROW, Min(60, MaxCol() - Len(cMsg)) )
-		DispOut( Space(Len(cMsg)) )
-        SetPos(nRow, nCol)
-
-	end
-
-return (.f.)
-
-/**
  *
  * Time-Out?
  *
