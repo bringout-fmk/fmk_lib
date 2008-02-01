@@ -5,7 +5,8 @@ HB_INC_COMPILE += $(TOP)../../include
 PRG_SOURCES= \
         skeleton.prg err.prg  gvars.prg  gw.prg \
         install.prg \
-        app.prg db.prg
+        app.prg db.prg \
+        arhiviraj.prg
 
 
 
