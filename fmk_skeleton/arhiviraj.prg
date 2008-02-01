@@ -407,7 +407,7 @@ LOCAL berr, nRec:=RECNO(), nExpr:=0, nExpr2:=0, cStr:="", j:=0
       return { 0 , 0 }
    END SEQUENCE
    bErr:=ERRORBLOCK(bErr)
-   cmxAutoOpen(.t.)
+   SET AUTOPEN ON
 RETURN { nExpr , nExpr2 }
 *}
 
