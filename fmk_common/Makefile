@@ -13,6 +13,9 @@ PRG_SOURCES= \
         array_util.prg \
         string_util.prg \
         report_common.prg \
+        report_common_2.prg \
+        rtf.prg \
+        report_fmk_proizvoljni.prg \
         fmk_util.prg
 
 
