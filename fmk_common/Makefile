@@ -16,7 +16,9 @@ PRG_SOURCES= \
         report_common_2.prg \
         rtf.prg \
         report_fmk_proizvoljni.prg \
-        fmk_util.prg
+        time_util.prg \
+        fmk_util.prg \
+        log.prg
 
 
 LIBNAME=fmk_common

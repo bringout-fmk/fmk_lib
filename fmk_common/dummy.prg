@@ -44,3 +44,22 @@ inkey(0)
 quit
 return nil
 
+
+function blimemavl()
+return
+
+function blimemmax()
+return
+
+function blimrgrsts()
+return
+
+function swperrlev()
+return
+
+
+function setpxlat(c)
+return c
+
+function peekbyte(c)
+return c

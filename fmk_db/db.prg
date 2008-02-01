@@ -460,11 +460,9 @@ if gReadonly; return; endif
 
 PushWa()
 
-#ifdef CAX
-if AX_IsShared()
-#else
-if cmxShared()
-#endif
+//if Shared()
+if .t.
+
        do while .t.
        if flock()
           set order to 0 // neophodno, posto je index po kriteriju deleted() !!
