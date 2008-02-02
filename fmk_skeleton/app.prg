@@ -47,13 +47,6 @@ CLASS TAppMod
 ENDCLASS
 
 
-/*! \fn *void TAppMod::init(TObject oParent,string cModul,string cVerzija,string cPeriod,string cKorisn,string cSifra,string p3,string p4,string p5,string p6,string p7)
- *  \brief Incijalizacija AppMod objekta
- */
-
-*void TAppMod::init(TObject oParent,string cModul,string cVerzija,string cPeriod,string cKorisn,string cSifra,string p3,string p4,string p5,string p6,string p7)
-*{
-
 
 METHOD new(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7) CLASS TAppMod
 
