@@ -4,25 +4,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/cui/2g/desk.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.4 $
- * $Log: desk.prg,v $
- * Revision 1.4  2002/08/19 10:01:47  ernad
- *
- *
- * podesenja za CLIP
- *
- * Revision 1.3  2002/06/20 16:52:06  ernad
- *
- *
- * ciscenje planika, uvedeno fmk/svi/specif.prg
- *
- * Revision 1.2  2002/06/19 19:51:00  ernad
- *
- *
- * rad u sezonama, gateway
- *
  *
  */
  

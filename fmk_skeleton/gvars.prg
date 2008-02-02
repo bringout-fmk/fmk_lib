@@ -17,8 +17,6 @@
 
 *BILJESKE
 
-****/
-
 /****v SC_BASE/gVeryBusyInterval ***
 
 *AUTOR
@@ -56,9 +54,6 @@
 function SetScGVars()
 *{
 
-#ifdef CLIP
-	? "start SetScGVars"
-#endif
 public ZGwPoruka:=""
 public GW_STATUS:="-"
 
@@ -77,6 +72,8 @@ public gProcPrenos:="N"
 public gInstall:=.f.
 public gfKolor:="D"
 public gPrinter:="1"
+public gPtxtSw := nil
+public gPDFSw := nil
 public gMeniSif:=.f.
 public gValIz:="280 "
 public gValU:="000 "
@@ -150,7 +147,7 @@ PUBLIC gKonvertPath
 gKonvertPath:=IzFmkIni('FMK','KonvertPath','N', EXEPATH )
 
 PUBLIC gSifk
-gSifk:=IzFmkIni("Svi","Sifk","D")
+gSifk:=.t.
 
 PUBLIC gHostOS
 gHostOS:="Win9X"
@@ -163,10 +160,14 @@ public gCekaScreenSaver
 
 gCekaScreenSaver:=VAL(IzFMKINI("SCREENSAVER","CekajMinuta","5"))
 
-#ifdef CLIP
-	? "end SetScGVars"
-#endif
+// ne koristi lokale
+public gLokal:="0"
 
+// pdf stampa
+public gPDFPrint := "N"
+public gPDFPAuto := "D"
+public gPDFViewer := SPACE(150)
+public gDefPrinter := SPACE(150)
 
 return
 *}
@@ -203,7 +204,7 @@ public gPicSif:="V", gcDirekt:="V", gShemaVF:="B5", gSKSif:="D"
 public gArhDir:=padr(ToUnix("C:\SIGARH"),20)
 public gPFont:="Arial CE"
 public gKodnaS:="8"
-public  gWord97:="N"
+public gWord97:="N"
 public g50f:=" "
 
 endif // fsve
@@ -216,17 +217,23 @@ O_GPARAMS
 private cSection:="1",cHistory:=" "; aHistory:={}
 
 if fsve
-Rpar("pt",@gPTKonv)
-Rpar("pS",@gPicSif)
-Rpar("SK",@gSKSif)
-Rpar("DO",@gcDirekt)
-Rpar("SB",@gShemaVF)
-Rpar("Ad",@gArhDir)
-Rpar("FO",@gPFont)
-Rpar("KS",@gKodnaS)
-Rpar("W7",@gWord97)
-Rpar("5f",@g50f)
+	Rpar("pt",@gPTKonv)
+	Rpar("pS",@gPicSif)
+	Rpar("SK",@gSKSif)
+	Rpar("DO",@gcDirekt)
+	Rpar("SB",@gShemaVF)
+	Rpar("Ad",@gArhDir)
+	Rpar("FO",@gPFont)
+	Rpar("KS",@gKodnaS)
+	Rpar("W7",@gWord97)
+	Rpar("5f",@g50f)
+	Rpar("L8",@gLokal)
+	Rpar("pR",@gPDFPrint)
+	Rpar("pV",@gPDFViewer)
+	Rpar("pA",@gPDFPAuto)
+	Rpar("dP",@gDefPrinter)
 endif
+
 Rpar("FK",@gFKolor)
 Rpar("kE",@gKesiraj)
 
@@ -249,10 +256,6 @@ function IniGParam2(lSamoKesiraj)
 *{
 
 local cPosebno:="N"
-
-#ifdef CLIP
-	? "IniGParam2"
-#endif
 
 if (lSamoKesiraj==nil)
 	lSamoKesiraj:=.f.
@@ -292,6 +295,11 @@ if (cPosebno=="D")
 		Rpar("KS",@gKodnaS)
 		Rpar("W7",@gWord97)
 		Rpar("5f",@g50f)
+		Rpar("L8",@gLokal)
+		Rpar("pR",@gPDFPrint)
+		Rpar("pV",@gPDFViewer)
+		Rpar("pA",@gPDFPAuto)
+		Rpar("dP",@gDefPrinter)
 	endif
 	Rpar("kE",@gKesiraj)
 	SELECT (F_GPARAMSP)
@@ -310,10 +318,12 @@ function IniPrinter()
 * postavi shift F2 kao hotkey
 
 
-if gModul $ "TOPS#HOPS"
- public gPrinter:="0"
+if gModul $ "EPDV"
+	public gPrinter:="R"
+elseif gModul $ "TOPS#HOPS"
+ 	public gPrinter:="0"
 else
- public gPrinter:="1"
+ 	public gPrinter:="1"
 endif
 
 InigEpson()

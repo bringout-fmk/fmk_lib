@@ -17,8 +17,6 @@
 // This static maintains the "current row" for ABrowse()
 static nRow
 
-static aWaStack:={}
-static aBoxStack:={}
 
 
 function ABrowRow()
@@ -639,42 +637,4 @@ RETURN ATAIL( aStack )
 
 ****/
 
-
-function PushWA()
-if used()
- StackPush(aWAStack,{select(),IndexOrd(),DBFilter(),RECNO()})
-else
- StackPush(aWAStack,{NIL,NIL,NIL,NIL})
-endif
-return NIL
-
-
-function PopWA()
-
-local aWa
-local i
-
-aWa:=StackPop(aWaStack)
-if aWa[1]<>NIL
-   SELECT(aWa[1])
-
-   if !empty(aWa[2])
-//    set order to (aWa[2])
-      ordsetfocus(aWa[2])
-   else
-    set order to
-   endif
-
-   if !empty(aWa[3])
-     set filter to &(aWa[3])
-     //DBSETFILTER( &("{|| "+aWa[3]+"}") , aWa[3] )
-   else
-     if !empty(dbfilter())
-       set filter to
-     endif
-     //   DBCLEARFILTER( )
-   endif
-   go aWa[4]
-endif  // wa[1]<>NIL
-return NIL
 

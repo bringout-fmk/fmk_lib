@@ -1,7 +1,6 @@
 #include "fmk.ch"
 #include "fileio.ch"
 
-
 // File cache buffer
 *string
 static cCache

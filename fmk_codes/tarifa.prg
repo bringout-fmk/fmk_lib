@@ -1,79 +1,10 @@
 #include "fmk.ch"
 
 /*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/fmk/roba/tarifa.prg,v $
- * $Author: sasavranic $ 
- * $Revision: 1.18 $
- * $Log: tarifa.prg,v $
- * Revision 1.18  2004/05/14 14:58:42  sasavranic
- * no message
- *
- * Revision 1.17  2004/05/13 10:20:05  sasavranic
- * Uvedena varijanta gUVarPP="I", u sl.n.objavljeno da se iz vrijednosti PRUCMP ne izbija PPP
- *
- * Revision 1.16  2004/01/13 19:07:59  sasavranic
- * appsrv konverzija
- *
- * Revision 1.15  2003/09/29 13:26:32  mirsadsubasic
- * sredjivanje koda za poreze u ugostiteljstvu
- *
- * Revision 1.14  2003/09/20 07:37:27  mirsad
- * sredj.koda za poreze u MP
- *
- * Revision 1.13  2003/09/08 08:41:43  ernad
- * porezi u ugostiteljstvu
- *
- * Revision 1.12  2003/09/04 16:51:17  ernad
- * komentiranje koda da bih skontao algoritam za poreze u ugostiteljstvu
- * (Kumpath/PPUgostKaoPPU=T)
- *
- * Revision 1.11  2003/02/10 02:17:49  mirsad
- * no message
- *
- * Revision 1.10  2002/10/17 14:28:35  mirsad
- * uveden novi parametar f-je MpcBezPor: (,,nRabat)
- *
- * Revision 1.9  2002/10/17 14:25:32  mirsad
- * uveden novi parametar f-je MpcBezPor: (,,nRabat)
- *
- * Revision 1.8  2002/07/18 13:49:00  mirsad
- * ubaèene varijante "M" i "J" za poreze u ugostiteljstvu
- *
- * Revision 1.7  2002/07/04 19:04:08  ernad
- *
- *
- * ciscenje sifrarnik fakt
- *
- * Revision 1.6  2002/07/01 08:05:25  ernad
- *
- *
- * debug kada nema polja tarifa->mpp
- *
- * Revision 1.5  2002/06/30 11:08:53  ernad
- *
- *
- * razrada: kalk/specif/planika/rpt_ppp.prg; pos/prikaz privatnog direktorija na vrhu; doxy
- *
- * Revision 1.4  2002/06/29 17:32:02  ernad
- *
- *
- * planika - pregled prometa prodavnice
- *
- * Revision 1.3  2002/06/20 16:52:06  ernad
- *
- *
- * ciscenje planika, uvedeno fmk/svi/specif.prg
- *
- * Revision 1.2  2002/06/16 14:16:54  ernad
- * no message
- *
- *
- */
-
-
+* ----------------------------------------------------------------
+*                                     Copyright Sigma-com software 
+* ----------------------------------------------------------------
+*/
 
 
 /*! \fn P_Tarifa(cId,dx,dy)
@@ -84,27 +15,57 @@
  */
 
 function P_Tarifa(cid,dx,dy)
-*{
-private ImeKol,Kol:={}
+local nTArea
+private ImeKol
+private Kol
 
-ImeKol:={ { "ID ",  {|| id },       "id"  , {|| .t.}, {|| vpsifra(wId)}      },;
-          { PADC("Naziv",10), {|| left(naz,10)},      "naz"       },;
-          { "PPP ", {|| opp},     "opp"      },;
-          { "PPU ", {|| ppp},     "ppp"      },;
-          { "PP  ", {|| zpp},  "zpp"      },;
-          { "P.na Marzu", {|| vpp},  "vpp"      };
-        }
-IF TARIFA->(FIELDPOS("MPP"))<>0
-  AADD (ImeKol,{ PADC("Por.RUC MP",10) , {|| MPP} , "MPP" })
-ENDIF
-IF TARIFA->(FIELDPOS("DLRUC"))<>0
-  AADD (ImeKol,{ PADC("Min.RUC(%)",10) , {|| DLRUC} , "DLRUC" })
-ENDIF
+ImeKol := {}
+Kol := {}
+
+nTArea := SELECT()
+
+O_TARIFA
+
+AADD(ImeKol, { "ID", {|| id}, "id", {|| .t.}, {|| vpsifra(wId)}  })
+AADD(ImeKol, { PADC("Naziv",35), {|| LEFT(naz, 35)}, "naz" })
+
+if IsPDV()
+	AADD(ImeKol,  { "PDV ", {|| opp} ,  "opp"  } )
+  	if glUgost
+     		AADD(ImeKol,  { "Por.potr", {|| zpp},  "zpp"  } ) 
+  	endif
+endif
+
+if !IsPDV()
+	AADD(ImeKol, { "PPP ", {|| opp},     "opp"   } )
+  	AADD(ImeKol, { "PPU ", {|| ppp},     "ppp"   } )
+  	AADD(ImeKol,  { "PP  ", {|| zpp},  "zpp"      } )
+  	AADD(ImeKol,  { "P.na Marzu", {|| vpp},  "vpp"} )
+	IF TARIFA->(FIELDPOS("MPP"))<>0
+  		AADD (ImeKol,{ PADC("Por.RUC MP",10) , {|| MPP} , "MPP" })
+ 	ENDIF
+ 	IF TARIFA->(FIELDPOS("DLRUC"))<>0
+   		AADD (ImeKol,{ PADC("Min.RUC(%)",10) , {|| DLRUC} , "DLRUC" })
+ 	ENDIF
+endif
+
 FOR i:=1 TO LEN(ImeKol)
 	AADD(Kol,i)
 NEXT
-return PostojiSifra(F_TARIFA,1,10,75,"Tarifne grupe",@cid,dx,dy)
-*}
+
+PushWa()
+select F_TARIFA
+if !USED()
+	O_TARIFA
+endif
+
+cRet := PostojiSifra(F_TARIFA, 1, 10, 65, "Tarifne grupe", @cid, dx, dy)
+
+PopWa()
+
+select (nTArea)
+
+return cRet
 
 
 
@@ -175,6 +136,13 @@ if cIdTar==nil
 	seek cTarifa
 	cIdTarifa:=tarifa->id
 else
+	cTarifa:=cIdTar
+	SELECT(F_TARIFA)
+	if (!USED())
+		lUsedTarifa:=.f.
+		O_TARIFA
+	endif
+	seek cTarifa
 	cIdTarifa:=cIdTar
 endif
 
@@ -249,6 +217,28 @@ return nPom
  *  \param aPoreziIzn Matrica sa izracunatim porezima
  */
 function MpcSaPor(nMPCBp, aPorezi, aPoreziIzn)
+local nPom
+local nMPP
+local nPP
+local nPPP
+
+nPDV:=aPorezi[POR_PPP]/100
+
+if glUgost
+  nPP := aPorezi[POR_PP]/100
+else
+  nPP := 0
+endif
+
+if IsPdv()
+    //  bez poreza * ( 0.17 + 0 + 1)
+    nPom:= nMpcBp * ( nPDV + nPP + 1)
+    return nPom
+else
+    return MpcSaPorO(nMPCBp, aPorezi, aPoreziIzn)
+endif 
+
+function MpcSaPorO(nMPCBp, aPorezi, aPoreziIzn)
 *{
 local nPom
 local nDLRUC
@@ -286,7 +276,6 @@ return nPom
 *}
 
 
-
 /*! \fn MpcBezPor(nMpcSaPP, aPorezi, nRabat, nNC)
  *  \brief Racuna maloprodajnu cijenu bez poreza
  *  \param nMpcSaPP maloprodajna cijena sa porezom
@@ -295,6 +284,48 @@ return nPom
  *  \param nNC Nabavna cijena
  */
 function MpcBezPor(nMpcSaPP, aPorezi, nRabat, nNC)
+
+local nStopa
+local nPor1
+local nPor2
+local nPom
+local nMPP
+local nPP
+local nPDV
+local nBrutoMarza
+local nMpcBezPor
+
+
+if IsPdv()
+
+if nRabat==nil
+	nRabat:=0
+endif
+
+nPDV:=aPorezi[POR_PPP]
+if glUgost
+  nPP := aPorezi[POR_PP]
+else
+  nPP := 0
+endif
+
+return nMpcSaPP / ( (nPDV + nPP)/100 + 1 )
+
+else
+ // stari PPP obracun 
+ // suma nepregledna ...
+ return MpcBezPorO(nMpcSaPP, aPorezi, nRabat, nNc)
+endif
+
+
+/*! \fn MpcBezPor(nMpcSaPP, aPorezi, nRabat, nNC)
+ *  \brief Racuna maloprodajnu cijenu bez poreza
+ *  \param nMpcSaPP maloprodajna cijena sa porezom
+ *  \param aPorezi Matrica poreza
+ *  \param nRabat Rabat
+ *  \param nNC Nabavna cijena
+ */
+function MpcBezPorO(nMpcSaPP, aPorezi, nRabat, nNC)
 *{
 local nPor1
 local nPor2
@@ -317,7 +348,7 @@ nPP:=aPorezi[POR_PP]/100
 nPPP:=aPorezi[POR_PPP]/100
 nPPU:=aPorezi[POR_PPU]/100
 
-if (!IsVindija()).and.nMpcSaPP<>nil
+if (!IsVindija()) .and. nMpcSaPP<>nil
 	nMpcSaPP:=nMpcSaPP-nRabat
 endif
 
@@ -400,10 +431,27 @@ return nPom
  *  \param aPoreziIzn Matrica izracunatih poreza
  *  \param nMpcSaP Maloprodajna cijena sa porezom
  */
-function Izn_P_PPP(nMPCBp, aPorezi, aPoreziIzn, nMpcSaP)
+function Izn_P_PPP(nMpcBp, aPorezi, aPoreziIzn, nMpcSaP)
 *{
 local nPom
-altd()
+local nUkPor
+
+if IsPdv()
+
+
+// zadate je cijena sa porezom, utvrdi cijenu bez poreza
+if nMpcBp == nil
+    // PPP - PDV, 
+    // PP -  porez na potrosnju 
+    nUkPor := aPorezi[POR_PPP] + aPorezi[POR_PP]
+    nMpcBp:=nMpcSaP/(nUkPor/100+1)
+endif
+
+nPom := nMpcBP * aPorezi[POR_PPP]/100
+
+else
+// ovo dole je obracun PPP
+// ostavimo ovu sumu za sada po strani
 if !glPoreziLegacy 
 	if glUgost 
 		if gUgostVarijanta=="MPCSAPOR"
@@ -425,6 +473,8 @@ else
 		nPom:=nMpcBp*(aPorezi[POR_PPP]/100) 
 	endif
 endif
+endif
+
 return nPom
 *}
 
@@ -449,12 +499,24 @@ return nPom
  *  \param aPorezi Matrica poreza
  *  \param aPoreziIzn Matrica izracunatih poreza
  */
-function Izn_P_PP(nMPCBp, aPorezi, aPoreziIzn)
+function Izn_P_PP(nMpcBp, aPorezi, aPoreziIzn)
 *{
 local nOsnovica
 local nMpcSaPor
 local nPom
+local nUkPor
 
+if IsPdv()
+
+   if glUgost 
+        nPom := nMpcBp * aPorezi[POR_PP]/100
+   else
+   	nPom:=0
+   endif
+
+else
+// stari PPP obracun
+// ostavljeno do daljnjeg
 if (gUVarPP=="R" .and. !IsPlanika())
 	nPom:= nMpcBp * aPorezi[POR_PP]/100  
 elseif (gUVarPP=="D" .and. !IsPlanika())
@@ -462,6 +524,7 @@ elseif (gUVarPP=="D" .and. !IsPlanika())
 else
  	// obicno robno poslovanje
  	nPom:= nMpcBp * aPorezi[POR_PP]/100  
+endif
 endif
 return nPom
 *}
@@ -477,7 +540,9 @@ function Izn_P_PPUgost(nMpcSaPP, nIznPRuc, aPorezi)
 local nPom
 local nDLRUC
 local nMPP
-altd()
+
+// ova se funkcija u PDV-u ne koristi
+
 nDLRUC:=aPorezi[POR_DLRUC]/100
 nMPP:=aPorezi[POR_PRUCMP]/100
 
@@ -502,12 +567,14 @@ return nPom
  */
 function Izn_P_PRugost(nMpcSaPP, nMPCBp, nNc, aPorezi, aPoreziIzn)
 *{
+
+// ovo se ne koristi u rezimu PDV-a
+
 local nPom
 local nMarza
 local nDLRUC
 //preracunata stopa poreza na ruc
 local nPStopaMPP
-altd()
 //donji limit stope RUC-a
 nDLRUC:=aPorezi[POR_DLRUC]/100
 
@@ -676,7 +743,23 @@ function RacPorezeMP(aPorezi, nMpc, nMpcSaPP, nNc)
 *{
 local nIznPRuc
 local nP1, nP2, nP3
-altd()
+
+if IsPdV()
+
+ // PDV
+ nP1:=Izn_P_PPP(nMpc, aPorezi, , nMpcSaPP)
+ if glUgost
+        // posebni porez
+	nP2:=0
+	nP3:=Izn_P_PP(nMpc, aPorezi)
+ else
+ 	nP2:=0
+	nP3:=0
+ endif
+
+else
+// stari PPP obracun
+// ne dirati do daljnjeg
 nP1:=Izn_P_PPP(nMpc, aPorezi, , nMpcSaPP)
 if glUgost
 	nIznPRuc:=Izn_P_PRugost( nMpcSaPP, nMpc, nNc, aPorezi)
@@ -686,7 +769,24 @@ else
 	nP2:=Izn_P_PPU( nMpc, aPorezi )
 	nP3:=Izn_P_PP( nMpc, aPorezi )
 endif
-return {nP1,nP2,nP3}
+endif
+return {nP1, nP2, nP3}
 *}			
+
+
+// formatiraj stopa pdv kao string 
+//  " 17 %"
+//  "15.5%"
+function stopa_pdv( nPdv )
+
+if nPdv == nil
+	nPdv := tarifa->opp
+endif
+
+if round(nPdv, 1) == round(nPdv,0)
+   return STR(nPdv, 3, 0) + " %"
+else
+   return STR(nPdv, 3, 1) + "%"
+endif
 
 

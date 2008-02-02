@@ -1,7 +1,3 @@
-#define FMK_DEFINED
-
-#define FMK_VER  "1.w.0.8.3"
-
 #define F_GPARAMS   1
 #define F_GPARAMSP  2
 #define F_PARAMS    3
@@ -22,12 +18,10 @@
 #define F_KOLIZ    16
 #define D_S_TABELE 
 
-
 //OVA ZAGLAVLJA NAPUSTITI!
 #define F_PRIPR     17
 #define F_DOKS      18
 #define F_DOKS2     19
-
 
 // FMK FIN
 #define F_FIPRIPR  20
@@ -49,11 +43,9 @@
 #define F_BUDZET   34
 #define F_PAREK    36
 #define F_FOND     37
-
 #define F_OSTAV    38
 #define F_OSUBAN   39
 #define F_BUIZ     40
-
 #define F__KONTO   41
 #define F__PARTN   42
 #define F_POM2     43
@@ -61,13 +53,11 @@
 #define F_ULIMIT   45
 #define F_FIDOKS   46
 #define F_FIDOKS2  47
-
 #define F_UGOV     50
 #define F_RUGOV    51
-#define F_KUF      53
-#define F_KIF      54
+#define F_GEN_UG   53
+#define F_G_UG_P   54
 #define F_VPRIH    55
-
 
 //FMK ROBA
 #define F_TARIFA    60 
@@ -85,8 +75,7 @@
 #define F__VALUTE   72
 #define F_RJ        73
 #define F_OPS       74
-#define F_RNAL      75
-
+#define F_STRINGS  180
 
 //KALK
 #define F_KPRIPR    85 
@@ -165,8 +154,6 @@
 #define F_ZAKSM     166
 
 // kalk
-
-// kalk
 #define F_PPPROD    167
 
 //kalk, planika
@@ -188,6 +175,9 @@
 #define F_USERS  177
 #define F_GROUPS  178
 #define F_RULES  179
+
+//rules
+#define F_FMKRULES 204
 
 //ld
 #define F_RADN     180
@@ -215,6 +205,8 @@
 #define F_OBRACUNI 203
 #define F_RADSAT   213
 #define F_REKLDP   214
+#define F_IZDANJA  215
+#define F_RNAL	   216
 
 //kam
 #define F_KAMPRIPR 204
@@ -256,6 +248,86 @@
 #define F_TMPMSG 234
 // FAKT
 #define F_POMGN 235
+// vindija - auto import
+#define F_TEMP	236
+#define F_PRIPT	237
+// tops integritet
+#define F_DINTEG1 238
+#define F_DINTEG2 239
+#define F_INTEG1 240
+#define F_INTEG2 241
+#define F_ERRORS 242
+
+#define F_KALKSEZ 243
+#define F_ROBASEZ 248
+
+// PDV stampa racuna
+#define F_DRN 244
+#define F_RN 245
+#define F_DRNTEXT 246
+#define F_DOKSPF 247
+#define F_R_UIO 249
+#define F_R_EXP 250
+
+// pdv kumulativ - podaci za PDV prijavu
+#define F_PDV 204
+// kuf promet
+#define F_KUF 205
+// kif promet
+#define F_KIF 206
+
+// priprema kuf
+#define F_P_KUF 248
+// priprema kif
+#define F_P_KIF 249
+
+// KIF shema za generaciju 
+// kif_s_gen
+#define F_SG_KUF 240
+// KUF shema za generaciju
+#define F_SG_KIF 241
+
+// reporti
+#define F_R_KUF 171
+#define F_R_KIF 172
+#define F_R_PDV 173
+
+#define F_LOKAL 242
+
+// RNAL
+#define F__DOCS		130
+#define F__DOC_IT	131
+#define F__DOC_OPS	132
+#define F_T_DOCIT	133
+#define F_T_DOCOP	134
+#define F_T_PARS	135
+#define F_DOCS		136
+#define F_DOC_IT	137
+#define F_DOC_OPS	138
+#define F_DOC_LOG	139
+#define F_DOC_LIT	140
+#define F_E_GROUPS	141
+#define F_ARTICLES	142
+#define F_ELEMENTS	143
+#define F_E_AOPS	144
+#define F_E_ATT		145
+#define F_E_GR_ATT	146
+#define F_E_GR_VAL	147
+#define F_AOPS		148
+#define F_AOPS_ATT	149
+#define F_CUSTOMS	150
+#define F_CONTACTS	151
+#define F__FND_PAR	152
+#define F__TMP1		153
+#define F__TMP2		154
+#define F_OBJECTS	155
+
+// relation
+#define F_RELATION	171
+
+// DOK_SRC
+#define F_P_DOKSRC 180
+#define F_DOKSRC 181
 
 
 #define POR_PPP		1 

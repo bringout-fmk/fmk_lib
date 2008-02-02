@@ -36,6 +36,9 @@ Public aGFP:={}
 Public aUslG:={}
 Public aCalcG:={}
 
+return
+
+
 
 function R2(cImeDef,cOutf,bFor,nDuzSif)
 *
@@ -315,4 +318,56 @@ cTekRed:=""
 cTipL:=cC
 FCLOSE(nH)
 RETURN
+
+
+/*! \fn SetRptLineAndText(aLineArgs, nVariant)
+ *  \brief vraca liniju po definisanoj matrici
+ *  \param aLineArgs - matrica argumenata
+ *  \param nVariant - varijanta, 0 - linija, 1 - prvi red izvjestaja, 2 - drugi red izvjestaja
+ *  \example: aLineArgs := {2, 5, 5, 3}
+ *            ret: -- ----- ----- --- 
+ */
+ 
+function SetRptLineAndText(aLineArgs, nVariant, cDelimiter)
+*{
+
+local cLine := ""
+
+if nVariant == nil
+	// po def. je linija	
+	nVariant := 0
+endif
+if cDelimiter == nil
+	cDelimiter := " "
+endif
+
+for i:=1 to LEN(aLineArgs)
+	if nVariant == 0
+		cLine += REPLICATE("-", aLineArgs[i, 1])
+	elseif nVariant == 1
+		nEmptyFill:=aLineArgs[i, 1] - LEN(aLineArgs[i, 2])
+		cLine += aLineArgs[i, 2] + SPACE(nEmptyFill)	
+	elseif nVariant == 2
+		nEmptyFill:=aLineArgs[i, 1] - LEN(aLineArgs[i, 3])
+		cLine += aLineArgs[i, 3] + SPACE(nEmptyFill)
+	elseif nVariant == 3
+		nEmptyFill:=aLineArgs[i, 1] - LEN(aLineArgs[i, 4])
+		cLine += aLineArgs[i, 4] + SPACE(nEmptyFill)
+	endif
+		
+	if i <> LEN(aLineArgs)
+		if nVariant == 0
+			cLine += " "
+		else
+			cLine += cDelimiter
+		endif
+	endif
+next
+
+return cLine
+*}
+
+
+
+
 

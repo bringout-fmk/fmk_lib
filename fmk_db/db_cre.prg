@@ -1,5 +1,9 @@
 #include "fmk.ch"
-
+/*
+ * ----------------------------------------------------------------
+ *                                     Copyright Sigma-com software 
+ * ----------------------------------------------------------------
+ */
 
 function CreKorisn(nArea)
 *{
@@ -109,14 +113,6 @@ if (nArea==-1 .or. nArea==F_PARAMS)
 	
 endif
 
-
-#ifndef CLIP
-//......... izbaciti ... ovoga odavno nema
-//KonvParams(PRIVPATH+"gparams.dbf")
-//KonvParams(PRIVPATH+"params.dbf")
-//KonvParams(".\mparams.dbf")
-//KonvParams(KUMPATH+"kparams.dbf")
-#endif
 
 if (nArea==-1 .or. nArea==F_GPARAMS)
 	if !file(ToUnix(PRIVPATH+"gparams.dbf"))

@@ -2,6 +2,10 @@
 
 #include "hbclass.ch"
 
+function TDBNew(oDesktop, cDirPriv, cDirKum, cDirSif)
+*{
+local oObj
+
 CLASS TDB
 	DATA oDesktop
 	DATA oApp
@@ -203,7 +207,6 @@ return
 
 METHOD modstruAll() CLASS TDB
 local i
-
 ::lAdmin:=.t.
 
 aSezone:=ASezona(::cDirKum)

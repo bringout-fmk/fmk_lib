@@ -52,7 +52,6 @@ function SetFmkSGVars()
 *{
 
 SetSpecifVars()
-
 SetValuta()
 
 public gFirma:="10"
@@ -61,6 +60,7 @@ private cSection:="K",cHistory:=" "; aHistory:={}
 public gNFirma:=space(20)  // naziv firme
 public gZaokr:=2
 public gTabela:=0
+public gPDV:=""
 
 if gModul=="FAKT" .or. gModul=="FIN"
 	cSection:="1"
@@ -93,6 +93,24 @@ if (gModul<>"POS" .and. gModul<>"TOPS" .and. gModul<>"HOPS")
 	endif
 endif
 
+// u sekciji 1 je pdv parametar
+cSection := "1"
+
+if gModul <> "TOPS" 
+	RPar("PD",@gPDV)
+	ParPDV()
+	// odjavi gSql
+	//lSql:=.f.
+	//if gModul=="TOPS" .and. gSql=="D"
+	//	lSql:=.t.
+	//	gSql:="N"
+	//endif
+	WPar("PD",gPDV)
+	//if lSql
+	//	gSql:="D"
+	//endif
+endif
+
 select (F_PARAMS)
 use
 
@@ -122,6 +140,26 @@ public cZabrana:="Opcija nedostupna za ovaj nivo !!!"
 public gNovine
 gNovine:=IzFmkIni("STAMPA","Opresa","N",KUMPATH)
 
+if gModul<>"TOPS"
+	if goModul:oDataBase:cRadimUSezona == "RADP"
+		SetPDVBoje()
+	endif
+endif
+
+return
+*}
+
+function SetPDVBoje()
+*{
+if IsPDV()
+	PDVBoje()
+	goModul:oDesktop:showMainScreen()
+	StandardBoje()
+else
+	StandardBoje()
+	goModul:oDesktop:showMainScreen()
+	StandardBoje()
+endif
 return
 *}
 
@@ -138,4 +176,36 @@ endif
 
 return
 *}
+
+
+/*! \fn ParPDV()
+ *  \brief Provjeri parametar pdv
+ */
+function ParPDV()
+*{
+if (gPDV == "") .or. (gPDV $ "ND" .and. gModul=="TOPS")
+	// ako je tekuci datum >= 01.01.2006
+	if DATE() >= CToD("01.01.2006")
+		gPDV := "D"
+	else
+		gPDV := "N"
+	endif
+endif
+return
+*}
+
+
+/*! \fn IsPDV()
+ *  \brief Da li je pdv rezim rada ili ne
+ *  \ret .t. or .f.
+ */
+function IsPDV()
+*{
+if gPDV=="D"
+	return .t.
+endif
+return .f.
+*}
+
+
 

@@ -8,12 +8,8 @@
  */
  
 function FilePath( cFile )
-*{
 LOCAL nPos, cFilePath
 
-#ifdef CLIP
-//	? "file path "
-#endif
 nPos := RAT(SLASH, cFile)
 if (nPos != 0)
 	cFilePath := SUBSTR(cFile, 1, nPos)
@@ -21,10 +17,8 @@ else
 	cFilePath := ""
 endif
 return cFilePath
-*}
 
 function ExFileName( cFile )
-*{
 LOCAL nPos, cFileName
 IF (nPos := RAT(SLASH, cFile)) != 0
    cFileName:= SUBSTR(cFile, nPos + 1 )
@@ -32,14 +26,11 @@ ELSE
    cFileName := cFile 
 ENDIF
 return cFileName
-*}
 
 function AddBS(cPath)
-*{
 if right(cPath,1)<>SLASH     
      cPath:=cPath + SLASH
 endif
-*}
 
 
 function DiskPrazan(cDisk)
@@ -192,13 +183,18 @@ return fPostoji
   * \endcode
   */
 
-function BrisiSFajlove(cDir)
+function BrisiSFajlove(cDir, nDana)
 *{
 local cFile
+
+if nDana == nil
+	nDana := D_STAROST_DANA
+endif
+
 cDir:=ToUnix(trim(cdir))
 cFile:=fileseek(trim(cDir)+"*.*")
 do while !empty(cFile)
-    if date() - filedate() > D_STAROST_DANA  
+    if date() - filedate() > nDana  
        filedelete(cdir+cfile)
     endif
     cfile:=fileseek()
@@ -261,28 +257,12 @@ return UPPER(cFileName)
 *}
 
 
-#ifdef CLIP
 
-function Ol_Yield()
+
+function ShowOsInfo(gsOsInfo)
 *{
+
+@ 24, 2 SAY gsOsInfo
+
 return
-*}
-
-
-function SwpRunCMD(cKom)
-*{
-RUN (cKom)
-return
-*}
-
-#endif
-
-
-//function OL_Yield()
-//*{
-
-//iskljucenja je CPMI.LIB iz /clipper/cdx/bl.lnk
-//izgleda da ova funkcija uzrokuje usporenje sistema
-//return
-
 *}

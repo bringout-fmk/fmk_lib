@@ -9,7 +9,7 @@
  */
  
 function DokNovaStrana(nColumn, nStr, nSlijediRedovaZajedno)
-*{
+
 
 if (nSlijediRedovaZajedno==nil)
 	nSlijediRedovaZajedno:=1
@@ -25,11 +25,11 @@ if (nSlijediRedovaZajedno==-1) .or. (PROW()>(62+gPStranica-nSlijediRedovaZajedno
 endif
 
 return
-*}
+
 
 
 function NovaStrana(bZagl, nOdstampatiStrana)
-*{
+
 
 if (nOdstampatiStrana==nil)
 	nOdstampatiStrana:=1
@@ -43,10 +43,10 @@ if PROW()>(62+gPStranica-nOdstampatiStrana)
 endif
 return
 
-*}
+
 
 function PrnClanoviKomisije()
-*{
+
 
 ?
 P_10CPI
@@ -56,7 +56,7 @@ P_10CPI
 ?
 
 return
-*}
+
 
 
 
@@ -65,9 +65,9 @@ return
  */
  
 function FSvaki2()
-*{
+
 RETURN
-*}
+
 
  
 /*! \fn IspisFirme(cIdRj)
@@ -76,7 +76,6 @@ RETURN
  */
  
 function IspisFirme(cIdRj)
-*{
 local nOArr:=select()
 
 ?? "Firma: "
@@ -91,11 +90,10 @@ if !empty(cidrj)
 endif
 
 return
-*}
 
 function IspisNaDan(nEmptySpace)
-*{
+
 ?? REPLICATE(" ",nEmptySpace) + " Na dan: " + DToC(DATE())
 return
-*}
+
 

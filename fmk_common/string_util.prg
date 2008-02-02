@@ -1,7 +1,14 @@
 #include "fmk.ch"
 
+/*
+ * ----------------------------------------------------------------
+ *                                     Copyright Sigma-com software 
+ * ----------------------------------------------------------------
+ *
+ */
+ 
 function ToStr(xVal)
-*{
+
 
 do case
   case VALTYPE(xVal)  == "C"
@@ -17,12 +24,19 @@ do case
 endcase
 
 return
-*}
 
-function SjeciStr(cStr,nLen)
-*{
 
-aRez:={}
+// --------------------------------
+// --------------------------------
+function SjeciStr(cStr, nLen, aRez)
+
+
+if aRez == nil
+	aRez:={}
+else
+	// prosljedjena je matrica da se dodaju elementi
+	// sa SjeciStr(cStr, nLen, @aRez)
+endif
 
 cStr:=Trim(cStr)
 
@@ -31,31 +45,38 @@ do while  !empty(cStr)
   fProsao:=.f.
   if len(cStr)>nLen
    for i:=nLen to int(nLen/2) step -1
-     if substr(cStr,i,1) $ " ,/-:)"
-        AADD(aRez,PADR(left(cStr,i),nLen))
-        cStr:=substr(cStr,i+1)
+   
+     if substr(cStr, i, 1) $ " ,/-:)"
+        AADD(aRez,PADR(left(cStr,i), nLen))
+        cStr:=substr(cStr, i+1)
         i:=1
         fProsao:=.t.
      endif
+     
    next
+   
   else
-    AADD(aRez,PADR(cStr,nLen))
+  
+    AADD( aRez, PADR(cStr,nLen) )
     fProsao:=.t.
     cStr:=""
+    
   endif
+  
   if !fProsao
-     AADD(aRez,padr(left(cStr,nLen-1)+iif(len(cStr)>nLen,"-",""),nLen))
+     AADD(aRez,padr(left(cStr,nLen-1)+iif(len(cStr)>nLen, "-", ""),nLen))
      cStr:=substr(cStr,nLen)
   endif
 enddo
-if len(aRez)==0; AADD(aRez,space(nLen)); endif
+if len(aRez)==0
+	AADD(aRez,space(nLen))
+endif
 return aRez
-*}
+
 
 function CryptSC(cStr)
-*{
-local nLen,cC,cPom,i
 
+local nLen,cC,cPom,i
 
 cPom:=""
 nLen:=len(cStr)
@@ -86,7 +107,7 @@ for i=int(nLen/2) to 1 step -1
 next
 
 return cPom
-*}
+
 
 /*
 function Crypt(cStr)
@@ -126,7 +147,7 @@ return cPom
 
 
 function ChADD(cC,n)
-*{
+
 
 *
 *
@@ -134,19 +155,19 @@ function ChADD(cC,n)
 
 cC:=Chr(ASC(cC)+n)
 RETURN NIL
-*}
+
 
 
 function ChSub(cC,cC2)
-*{
+
 
 * poziv ChSub("C","A") -> 2
 
 return ASC(cC)-ASC(cC2)
-*}
+
 
 function Crypt2(cStr, cModul)
-*{
+
 *
 *
 local nLen,cC,cPom,i
@@ -175,12 +196,13 @@ for i=int(nLen/2) to 1 step -1
   endif
 next
 return cPom
-*}
 
 
 
+// ---------------------------
+// ---------------------------
 FUNCTION Razrijedi (cStr)
-*{
+
 LOCAL cRazrStr, nLenM1, nCnt
 cStr := ALLTRIM (cStr)
 nLenM1 := LEN (cStr) - 1
@@ -190,27 +212,27 @@ FOR nCnt := 1 TO nLenM1
 NEXT
 cRazrStr += RIGHT (cStr, 1)
 RETURN (cRazrStr)
-*}
+
 
 // f-je chr256() i asc256() rade sa tekstom duzine 2 znaka
 // -------------------------------------------------------
 FUNCTION CHR256(nKod)
-*{
+
 RETURN ( CHR(INT(nKod/256)) + CHR(nKod%256) )
-*}
+
 
 FUNCTION ASC256(cTxt)
-*{
+
 RETURN ( ASC(LEFT(cTxt,1)) * 256 + ASC(RIGHT(cTxt,1)) )
-*}
+
 
 FUNCTION KPAD(n,l)
-*{
+
 RETURN PADL(LTRIM(TRANS(ROUND(n,gZaokr),PicDEM)),l,".")
-*}
+
 
 function OdsjPLK(cTxt)
-*{
+
 local i
 for i:=len(cTxt) to 1 step -1
   if !(substr(cTxt,i,1) $ Chr(13)+Chr(10)+" ")
@@ -218,10 +240,10 @@ for i:=len(cTxt) to 1 step -1
   endif
 next
 return left(cTxt,i)
-*}
+
 
 function ParsMemo(cTxt)
-*{
+
 
 * Struktura cTxt-a je: Chr(16) txt1 Chr(17)  Chr(16) txt2 Chr(17) ...
 local aMemo:={}
@@ -242,10 +264,10 @@ local i,cPom,fPoc
  next
 
 return aMemo
-*}
+
 
 function StrLinija(cTxt2)
-*{
+
 local nTxt2
 
 nLTxt2:=1
@@ -256,29 +278,38 @@ for i:=1 to len(cTxt2)
 next
 
 return nLTxt2
-*}
 
-FUNCTION TokToNiz(cTok,cSE)
-*{
-// -------------------------
-// token pretvori u niz
-// cTok - string tokena
-// cSE - separator elemenata
-// -------------------------
-  LOCAL aNiz:={}, nE:=0, i:=0, cE:=""
-  IF cSE==NIL ; cSE := "." ; ENDIF
-  nE := NUMTOKEN(cTok,cSE)
-  FOR i:=1 TO nE
-    cE := TOKEN(cTok,cSE,i)
-    AADD(aNiz,cE)
-  NEXT
-RETURN (aNiz)
-*}
+
+
+/*! \fn TokToNiz(cTok, cSE)
+ *  \brief Token pretvori u niz
+ *  \param cTok - token
+ *  \param cSE - separator niza
+ */
+function TokToNiz(cTok,cSE)
+
+local aNiz:={}
+local nE:=0
+local i:=0
+local cE:=""
+
+if cSE==NIL 
+	cSE := "." 
+endif
+  
+nE := NUMTOKEN(cTok,cSE)
+
+for i:=1 to nE
+	cE := TOKEN(cTok,cSE,i)
+    	AADD(aNiz,cE)
+next
+return (aNiz)
+
 
 
 
 FUNCTION BrDecimala(cFormat)
-*{
+
  LOCAL i:=0,cPom,nVrati:=0
  i:=AT(".",cFormat)
  IF i!=0
@@ -292,7 +323,7 @@ FUNCTION BrDecimala(cFormat)
    NEXT
  ENDIF
 RETURN nVrati
-*}
+
 
 /*! \fn StrKZN(cInput,cIz,cU)
  *  \brief Konverzija znakova u stringu
@@ -304,7 +335,7 @@ RETURN nVrati
  */
  
 function StrKZN(cInput,cIz,cU)
-*{
+
 LOCAL a852:={"æ","Ñ","¬","","¦","ç","Ð","Ÿ","†","§"}
  LOCAL a437:={"[","\","^","]","@","{","|","~","}","`"}
  LOCAL aEng:={"S","D","C","C","Z","s","d","c","c","z"}
@@ -315,7 +346,7 @@ LOCAL a852:={"æ","Ñ","¬","","¦","ç","Ð","Ÿ","†","§"}
    cInput:=STRTRAN(cInput,aIz[i],aU[i])
  NEXT
 return cInput
-*}
+
 
 
 /*! \fn Slovima(nIzn,cDinDem)
@@ -325,7 +356,7 @@ return cInput
  */
  
 function Slovima(nIzn,cDinDem)
-*{
+
 local npom; cRez:=""
 fI:=.f.
 
@@ -384,7 +415,7 @@ endif
 Stotice(nIzn,@cRez,.t.,.t.,cDINDEM)
 
 return
-*}
+
 
 
 /*! \fn Stotice(nIzn, cRez, fDecimale, fMnozina, cDinDem)
@@ -398,7 +429,7 @@ return
  */
  
 static function Stotice(nIzn, cRez, fDecimale, fMnozina, cDinDem)
-*{
+
 local fDec,fSto:=.f.,i
 
    if (nPom:=int(nIzn/100))>=1
@@ -470,7 +501,7 @@ local fDec,fSto:=.f.,i
        endif
      else
        if empty(cRez)
-          cRez:="nula DEM"
+          cRez:="nula " + cDINDEM
        else
           cRez+=" "+cDINDEM
        endif
@@ -480,6 +511,174 @@ local fDec,fSto:=.f.,i
 
 
 return cRez
-*}
 
+
+
+
+/*! \fn CreateHashString(aColl)
+ *  \brief Kreira hash string na osnovu podataka iz matrice aColl
+ *  \brief primjer: aColl[1] = "podatak1"
+ 	            aColl[2] = "podatak2"
+		    CreateHashString(aColl) => "podatak1#podatak2"
+ *  \param aColl - matrica sa podacima
+ *  \return cHStr - hash string
+ */
+function CreateHashString(aColl)
+
+cHStr:=""
+
+// Ako je duzina matrice 0 izadji
+if LEN(aColl)==0
+	return cHStr
+endif
+
+for i:=1 to LEN(aColl)
+	cHStr += aColl[i]
+	if (i <> LEN(aColl))
+		cHStr += "#"
+	endif
+next
+
+return cHStr
+
+
+/*! \fn ReadHashString(cHashString)
+ *  \brief Iscitava hash string u matricu
+ *  \return aColl - matrica popunjena podacima iz stringa
+ */
+function ReadHashString(cHashString)
+
+if LEN(cHashString)==0
+	cHashString:=""
+endif
+
+aColl:={}
+aColl:=TokToNiz(cHashString, "#")
+
+return aColl
+
+
+
+/*! \fn StrToArray(cStr, nLen)
+ *  \brief Kreiraj array na osnovu stringa
+ *  \param cStr - string
+ *  \param nLen - na svakih nLen upisi novu stavku u array 
+ */
+function StrToArray(cStr, nLen)
+
+aColl:={}
+cTmp:=""
+cStr:=ALLTRIM(cStr)
+
+if (LEN(cStr) < nLen)
+	AADD(aColl, cStr)
+	return aColl
+endif
+
+nCnt:=0
+
+for i:=1 to LEN(cStr)
+	nCnt++
+	cTmp+=SUBSTR(cStr, i, 1)
+	if (nCnt==nLen .or. ((nCnt<nLen) .and. i == LEN(cStr)))
+		AADD(aColl, cTmp)
+		nCnt:=0
+		cTmp:=""
+	endif
+next
+
+return aColl
+
+
+
+/*! \fn FlushMemo(aMemo)
+ *  \brief Vraca vrijednost memo niza u string
+ */
+function FlushMemo(aMemo)
+
+local i, cPom
+cPom:=""
+cPom += Chr(16)
+for i:=1 to LEN(aMemo)
+	cPom += aMemo[i]
+	cPom += Chr(17)
+	cPom += Chr(16)
+next 
+
+return cPom
+
+
+
+// -------------------------------------
+// -------------------------------------
+function show_number(nNumber, cPicture, nExtra)
+local nDec
+local nLen
+local nExp
+local i
+
+if nExtra <> NIL
+	nLen := ABS(nExtra)
+
+else
+	nLen := LEN(cPicture)
+endif
+
+
+if cPicture == nil
+	nDec = kolko_decimala( nNumber )
+else
+	// 99999.999"
+	//     AT(".") = 6
+	// LEN 9
+	 
+	nDec:=AT(".", cPicture)
+
+	if nDec > 0
+        	//  nDec =  9  - 6  = 3
+		nDec := nLen - nDec 
+	endif
+
+endif
+
+// max velicina koja se moze prikazati sa ovim picture
+// 5  =  9 - 3 - 1  => 10 ^ 5
+// 
+nExp := nLen - nDec - 1
+
+//     0  -> 3
+for i:=0 to nDec
+  // nNum 177 000  < 10**5 -1 = 100 000 - 1 = 99 999
+  if nNumber/(10**i) < (10**(nExp)-1)
+  	if i=0
+		if cPicture == nil
+			return STR(nNumber, nLen, nDec)
+		else
+			return TRANSFORM(nNumber, cPicture)
+		endif
+	else
+		return STR(nNumber, nLen, nDec - i)
+	endif
+  endif
+next
+
+return REPLICATE("*", nLen)
+
+// ---------------------------------
+// ---------------------------------
+static function kolko_decimala( nNumber)
+local nDec
+local i
+
+// prepostavka da je maximalno 4
+nDec := 4
+
+// nadji broj potrebnih decimala
+for i:=0 to 4
+	if ROUND(nNumber, i) == ROUND(nNumber, nDec)
+		return i
+ 	endif
+next
+
+return nDec
 

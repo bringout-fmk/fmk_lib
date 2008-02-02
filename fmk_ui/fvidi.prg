@@ -34,6 +34,7 @@ local aZagFix:={}
 local nPrvaKol:=0
 local nUKol:=80
 local aRedovi
+local lPrintReady
 
 private cTrazi:=SPACE(30)
 private cMarkF:="1"
@@ -337,7 +338,18 @@ do while .t.
          endif
        enddo
     case gPrinter="R" .and. (nZnak=K_CTRL_P .or. nZnak==K_ALT_P)
-       Ptxt(cImeF)
+       
+       if gPDFPrint == "X"
+       	if Pitanje(,"Print u PDF/PTXT", "D") == "D"
+		PDFView(cImeF)
+	else
+		Ptxt(cImeF)
+	endif
+       elseif gPDFPrint == "D"
+       	PDFView(cImeF)
+       else
+       	Ptxt(cImeF)
+       endif
 
     case nZnak==K_ALT_S
     	SendFile(cImeF)
@@ -391,21 +403,24 @@ do while .t.
        endif
 
        cKom:="LPT"+gPPort
-       if gpport>"4"
-         if gpport=="5"
+       if gPPort>"4"
+	 lPrintReady:=.t.
+         if gPPort=="5"
            cKom:="LPT1"
-         elseif gpport=="6"
+         elseif gPPort=="6"
            ckom:="LPT2"
-         elseif gpport=="7"
+         elseif gPPort=="7"
            cKom:="LPT3"
          endif
+       else
+          lPrintReady:=.f.
        endif
+
        //cPom:=cFajlPRN+" "+cKom
        do while .t.
-         if PRINTREADY(VAL(gpport))
+         if lPrintReady .or. PRINTREADY(VAL(gpport))
            MsgO("Sacekajte, stampanje u toku...")
-           //!copy &cPom
-           filecopy(cFajlPRN,cKom)
+           filecopy(cFajlPRN, cKom)
            MsgC()
            exit
          endif

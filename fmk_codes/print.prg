@@ -53,7 +53,6 @@
  */
 
 function Izlaz(Zaglavlje, ImeDat, bFor, fIndex, lBezUpita)
-*{
 local i,k
 local bErrorHandler
 local bLastHandler
@@ -129,18 +128,21 @@ endif
  if LEN(ImeKol[1])>2 .and. !lImaSifK
   private aStruct:=DBSTRUCT(), anDuz[FCOUNT(),2], ctxt2
   for i:=1 to len(aStruct)
-    k:=ASCAN(ImeKol,{|x| FIELD(i)==UPPER(x[3])})
-                         // treci element jednog reda u matrici imekol
-    j:=IF(k<>0,Kol[k],0)
+    
+    // treci element jednog reda u matrici imekol
+    k:= ASCAN(ImeKol, {|x| FIELD(i)==UPPER(x[3])})
+
+    j:=IF(k<>0, Kol[k], 0)
+    
     if j<>0
       xPom:=EVAL(ImeKol[k,2])
       anDuz[j,1]:=MAX( LEN(ImeKol[k,1]) , LEN(IF(VALTYPE(xPom)=="D",;
                   DTOC(xPom),IF(VALTYPE(xPom)=="N",STR(xPom),xPom))) )
       if anDuz[j,1]>100
         anDuz[j,1]:=100
-        anDuz[j,2]:={ ImeKol[k,1],ImeKol[k,2],.f.,;
+        anDuz[j,2]:={ ImeKol[k,1], ImeKol[k,2],.f.,;
                       "P",;
-                      anDuz[j,1],IF(aStruct[i,2]=="N",aStruct[i,4],0) }
+                      anDuz[j,1], IIF(aStruct[i,2]=="N", aStruct[i,4],0) }
       else
         anDuz[j,2]:={ ImeKol[k,1],ImeKol[k,2],.f., VALTYPE(EVAL(ImeKol[k,2])), anDuz[j,1],IF(aStruct[i,2]=="N",aStruct[i,4],0) }
       endif
@@ -154,7 +156,8 @@ endif
      endif
     endif
   next
-  AADD(aKol,{"R.br.",{|| STR(RedBr,4)+"."},.f.,"C",5,0,1,1})
+
+  AADD(aKol, {"R.br.", {|| STR(RedBr,4)+"."}, .f., "C", 5, 0, 1, 1})
   j:=1
   for i:=1 to len(aStruct)
     if anDuz[i,1]!=nil
@@ -163,6 +166,7 @@ endif
       AADD(aKol,anDuz[i,2])
     endif
   next
+
   if !EMPTY(cNazMemo)
     AADD(aKol,{cNazMemo,{|| ctxt2},.f.,"P",30,0,1,++j})
   endif
@@ -267,14 +271,10 @@ endif
  endif
 
 
-//if gPostotak=="D"
-	StampaTabele(aKol,{|| ZaRedBlok()},gnLMarg,;
+StampaTabele(aKol,{|| ZaRedBlok()},gnLMarg,;
           IF(UPPER(RIGHT(ALLTRIM(SET(_SET_PRINTFILE)),3))=="RTF",9,gTabela),;
           ,IF(gPrinter=="L","L4",gA43=="4"),;
           ,,IF(gOstr=="N",-1,),,gOdvTab=="D",,nSlogova,"Kreiranje tabele")
-//else
-//	StampaTabele(aKol,{|| ZaRedBlok()}, gnLMarg, IF(UPPER(RIGHT(ALLTRIM(SET(_SET_PRINTFILE)),3))=="RTF",9,gTabela), ,IF(gPrinter=="L","L4",gA43=="4"),,,IF(gOstr=="N",-1,),,gOdvTab=="D")
-//endif
 
 if (gPrinter=="L" .or. gA43=="4" .and. nSirIzvj>165)
 	gPO_Port()
@@ -285,7 +285,7 @@ if !lBezUpita
 endif
 
 return nil
-*}
+
 
 function ZaRedBlok()
 *{
@@ -512,29 +512,29 @@ return lVrati
  */
 
 function StampaTabele(aKol, bZaRed, nOdvoji, nCrtice, bUslov, lA4papir,cNaslov, bFor,nStr,lOstr,lLinija,bSubTot,nSlogova,cTabBr,lCTab,bZagl)
-*{
-local cOk,nKol:=0,i:=0,xPom,cTek1:="Prenos sa str.",lMozeL:=.f.
+
+local cOk, nKol:=0, i:=0, xPom, cTek1:="Prenos sa str.", lMozeL:=.f.
 local cTek2:="U K U P N O:"
 local nDReda:=0
 local cTek3:="Ukupno na str."
 local cPom
- local lPrenos:=.f.,cLM,cLM2,nMDReda,aPom:={},nSuma,nRed:=0,j:=0,xPom1,xPom2
- local aPrZag:={},aPrSum:={},aPrStav:={},nSubTot,xTot:={.f.,""},lPRed:=.f.
- local nPRed:=0,aPRed:={},l:=0,nBrojacSlogova:=0
- local xPodvuci:="", cPodvuci:=" "
- local lFor:=.f., k:=0
- private glNeSkipuj:=.f.
- if "U" $ TYPE("gaDodStavke"); gaDodStavke:={}; endif
- if "U" $ TYPE("gaSubTotal"); gaSubTotal:={}; endif
- if "U" $ TYPE("gnRedova"); gnRedova:=64; endif
- if "U" $ TYPE("gbFIznos"); gbFIznos:=nil; endif
- if !("U" $ TYPE("gPStranica")); gnRedova:=64+gPStranica; endif
- if bSubTot==nil; bSubTot:={|| {.f.,}}; xTot:={.f.,}; endif
- if lLinija==nil; lLinija:=.f.; endif
- if lOstr==nil; lOstr:=.t.; endif
- if nStr==nil; nStr:=1; endif
- if nCrtice==nil; nCrtice:=1; endif
- if nOdvoji==nil; nOdvoji:=0; endif
+local lPrenos:=.f.,cLM,cLM2,nMDReda,aPom:={},nSuma,nRed:=0,j:=0,xPom1,xPom2
+local aPrZag:={},aPrSum:={},aPrStav:={},nSubTot,xTot:={.f.,""},lPRed:=.f.
+local nPRed:=0,aPRed:={},l:=0,nBrojacSlogova:=0
+local xPodvuci:="", cPodvuci:=" "
+local lFor:=.f., k:=0
+private glNeSkipuj:=.f.
+if "U" $ TYPE("gaDodStavke"); gaDodStavke:={}; endif
+if "U" $ TYPE("gaSubTotal"); gaSubTotal:={}; endif
+if "U" $ TYPE("gnRedova"); gnRedova:=64; endif
+if "U" $ TYPE("gbFIznos"); gbFIznos:=nil; endif
+if !("U" $ TYPE("gPStranica")); gnRedova:=64+gPStranica; endif
+if bSubTot==nil; bSubTot:={|| {.f.,}}; xTot:={.f.,}; endif
+if lLinija==nil; lLinija:=.f.; endif
+if lOstr==nil; lOstr:=.t.; endif
+if nStr==nil; nStr:=1; endif
+if nCrtice==nil; nCrtice:=1; endif
+if nOdvoji==nil; nOdvoji:=0; endif
  
  if bUslov==nil
  	bUslov:={|| INKEY(),IF(LASTKEY()==27,PrekSaEsc(),.t.)}
@@ -944,10 +944,11 @@ return
 *}
 
 
-function StZaglavlje(cImeFajla,cPutanja,cTxt1,cTxt2,cTxt3,cTxt4,cTxt5,ctxt6)
-*{
+function StZaglavlje(cImeFajla,cPutanja,cTxt1,cTxt2,cTxt3,cTxt4,cTxt5,cTxt6,cTxt7,cTxt8)
+
 local cZag:="",i:=0,cLin:="",cNLin:=""
- if "U" $ TYPE("gnTMarg"); gnTMarg:=0; endif
+
+if "U" $ TYPE("gnTMarg"); gnTMarg:=0; endif
  if ctxt1==nil
     cTxt1:=""
  endif
@@ -966,12 +967,18 @@ local cZag:="",i:=0,cLin:="",cNLin:=""
  if ctxt6==nil
     cTxt6:=""
  endif
+ if cTxt7==nil
+    cTxt7:=""
+ endif
+ if cTxt8==nil
+    cTxt8:=""
+ endif
 
- if empty(cImeFajla)
+if empty(cImeFajla)
    for i:=1 to gnTMarg
    	QOUT()
    next
- else
+else
   private nHZ:=fopen(cPutanja+cImeFajla)
   private cBuf:="",nRead:=0
   do while .t.
@@ -979,7 +986,7 @@ local cZag:="",i:=0,cLin:="",cNLin:=""
       cBuf = FReadLn( nHZ, 1, 1000 )
       // djokeri #1#, #2#, #3#, #4#, #5# #6#
       if "#1#"$cBuf .and. VALTYPE(cTxt1)=="A"
-        cBuf := strtran(strtran(strtran(strtran(strtran(cBuf,"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6)
+        cBuf := strtran(strtran(strtran(strtran(strtran(strtran(strtran(cBuf,"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6), "#7#", cTxt7), "#8#", ctxt8)
         // koji je to red
         cLin := DajRed(cBuf,"#1#")
         // napravimo string cNLin koji treba ubaciti
@@ -990,18 +997,18 @@ local cZag:="",i:=0,cLin:="",cNLin:=""
         cBuf := strtran(cBuf,cLin,cNLin)
         QQOUT(cBuf)
       else
-        QQOUT(strtran(strtran(strtran(strtran(strtran(strtran(cBuf,"#1#",ctxt1),"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6))
+        QQOUT(strtran(strtran(strtran(strtran(strtran(strtran(strtran(strtran(cBuf,"#1#",ctxt1),"#2#",ctxt2),"#3#",ctxt3),"#4#",ctxt4),"#5#",ctxt5),"#6#",ctxt6),"#7#", ctxt7), "#8#", ctxt8) )
       endif
       cZag+=cBuf
       if cBuf==""
       	exit
       endif
-  enddo
-  setprc(prow()+nPodStr(NRED,cZag),pcol())
+enddo
+setprc(prow()+nPodStr(NRED,cZag),pcol())
+  ?
   fclose(nHZ)
  endif
 return
-*}
 
 
 function nPodStr(cPod,cStr)

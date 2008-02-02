@@ -1,20 +1,102 @@
 #include "fmk.ch"
 
-PROCEDURE GenUg()
-O_FTXT
-O_SIFK; O_SIFV
-O_ROBA
-O_PARTN
-O_UGOV
-O_RUGOV
+
+/*! \ingroup ini
+  * \var *string FmkIni_ExePath_Fakt_Ugovori_Dokumenata_Izgenerisati
+  * \brief Broj ugovora koji se obrade pri jednom pozivu opcije generisanja faktura na osnovu ugovora
+  * \param 1 - default vrijednost
+  */
+*string FmkIni_ExePath_Fakt_Ugovori_Dokumenata_Izgenerisati;
 
 
-// browsaj ugovor
+/*! \ingroup ini
+  * \var *string FmkIni_ExePath_Fakt_Ugovori_N1
+  * \brief Koristi li se za generaciju faktura po ugovorima parametar N1 ?
+  * \param D - da, default vrijednost
+  * \param N - ne
+  */
+*string FmkIni_ExePath_Fakt_Ugovori_N1;
+
+
+/*! \ingroup ini
+  * \var *string FmkIni_ExePath_Fakt_Ugovori_N2
+  * \brief Koristi li se za generaciju faktura po ugovorima parametar N2 ?
+  * \param D - da, default vrijednost
+  * \param N - ne
+  */
+*string FmkIni_ExePath_Fakt_Ugovori_N2;
+
+
+/*! \ingroup ini
+  * \var *string FmkIni_ExePath_Fakt_Ugovori_N3
+  * \brief Koristi li se za generaciju faktura po ugovorima parametar N3 ?
+  * \param D - da, default vrijednost
+  * \param N - ne
+  */
+*string FmkIni_ExePath_Fakt_Ugovori_N3;
+
+
+/*! \ingroup ini
+  * \var *string FmkIni_ExePath_FAKT_Ugovori_SumirajIstuSifru
+  * \brief Da li ce se pri generisanju fakture na osnovu ugovora sabirati kolicine stavki iz ugovora koje sadrze isti artikal u jednu stavku na dokumentu
+  * \param D - da, default vrijednost
+  * \param N - ne
+  */
+*string FmkIni_ExePath_FAKT_Ugovori_SumirajIstuSifru;
+
+
+/*! \ingroup ini
+  * \var *string FmkIni_ExePath_Fakt_Ugovori_UNapomenuSamoBrUgovora
+  * \brief Da li ce se pri generisanju faktura na osnovu ugovora u napomenu dodati iza teksta "VEZA:" samo broj ugovora 
+  * \param D - da, default vrijednost
+  * \param N - ne, ispisace se i tekst "UGOVOR:", te datum ugovora
+  */
+*string FmkIni_ExePath_Fakt_Ugovori_UNapomenuSamoBrUgovora;
+
+
+// ----------------------------------------------
+// funkcija za poziv generacije ugovora
+// ----------------------------------------------
+function m_gen_ug()
+
+private DFTkolicina:=1
+private DFTidroba:=PADR("",10)
+private DFTvrsta:="1"
+private DFTidtipdok:="10"
+private DFTdindem:="KM "
+private DFTidtxt:="10"
+private DFTzaokr:=2
+private DFTiddodtxt:="  "
+private gGenUgV2:="1"
+private gFinKPath:=SPACE(50)
+
+DFTParUg(.t.)
+
+if gGenUgV2 == "1"
+	gen_ug()
+else
+	// nova varijanta generisanja ugovora
+	gen_ug_2()
+endif
+
+return
+
+
+// -----------------------------------------
+// generacija ugovora varijanta 1
+// -----------------------------------------
+function gen_ug()
+
+// otvori tabele
+o_ugov()
+
 nN1:=0
 nN2:=0
 nN3:=0
 O_PARAMS
-private cSection:="U",cHistory:=" "; aHistory:={}
+private cSection:="U"
+private cHistory:=" "
+private aHistory:={}
 private cUPartner:=space(IF(gVFU=="1",16,20))
 private dDatDok:=ctod(""), cFUArtikal:=SPACE(LEN(ROBA->id))
 private cSamoAktivni:="D"
@@ -35,7 +117,9 @@ if nDokgen=0
 endif
 
 Box("#PARAMETRI ZA GENERACIJU FAKTURA PO UGOVORIMA",7,70)
+
   @ m_X+1,m_y+2 SAY "Datum fakture" GET dDAtDok
+
   if IzFMkIni('Fakt_Ugovori',"N1",'D')=="D"
    @ m_X+2,m_y+2 SAY "Parametar N1 " GET nn1 pict "999999.999"
   endif
@@ -46,7 +130,7 @@ Box("#PARAMETRI ZA GENERACIJU FAKTURA PO UGOVORIMA",7,70)
     @ m_X+4,m_y+2 SAY "Parametar N3 " GET nn3 pict "999999.999"
   endif
 
-  if IzFMkIni('FAKT_Specif',"ZIPS",'N')=="D" // specifiŸno zips
+  if lSpecifZips
     // nn3 varijablu koristim kao indikator konverzije 20->10
     @ m_x+5,m_y+2 SAY "Predracun ili racun (0/1) ? " GET nn3  pict "@!"
     @ m_x+6,m_y+2 SAY "Artikal (prazno-svi)" GET cFUArtikal VALID EMPTY(cFUArtikal).or.P_Roba(@cFUArtikal) pict "@!"
@@ -65,7 +149,6 @@ GO TOP
 
 for nTekUg:=1 to nDokGen
 
-altd()
 SELECT UGOV
 
 if nTekug=1
@@ -97,6 +180,7 @@ if reccount2()<>0 .and. nTekug=1
   closeret
 endif
 
+//****** snimi promjene u params.........
 O_PARAMS
 private cSection:="U",cHistory:=" "; aHistory:={}
 WPar("uP",cUPartner)
@@ -109,10 +193,11 @@ WPar("P5",cSamoAktivni)
 use
 
 SELECT PRIPR
+//******** utvrdjivanje broja dokumenta **************
 
     cIdTipdok:=ugov->idtipdok
 
-   if IzFMkIni('FAKT_Specif',"ZIPS",'N')=="D" // specifiŸno zips
+   if lSpecifZips
       if nn3=1 .and. ugov->idtipdok="20" // konverzija 20->10
          cIdTipDok:="10"
       endif
@@ -147,14 +232,17 @@ SELECT PRIPR
                       )
    endif
 
+
 select ugov
 if lSamoAktivni .and. aktivan!="D"
-    altd()
-    IF nTekUg>2; --nTekUg; ENDIF
+    IF nTekUg>2 
+    	--nTekUg
+    ENDIF
     loop
 endif
 
 cIdUgov:=id
+
 
 
 // !!! vrtim kroz rugov
@@ -181,8 +269,7 @@ seek cidugov
 // ---------
 do while !eof() .and. id==cidugov
 
-   IF IzFMKIni('FAKT_Specif',"ZIPS",'N')=="D" .and.;
-      !( EMPTY(cFUArtikal) .or. idroba==cFUArtikal )
+   IF lSpecifZips .and. !( EMPTY(cFUArtikal) .or. idroba==cFUArtikal )
      SKIP 1; LOOP
    ENDIF
 
@@ -202,10 +289,13 @@ do while !eof() .and. id==cidugov
    ENDIF
 
    if nRbr==0
-    select PARTN; hseek ugov->idpartner
-    _txt3b:=_txt3c:=""
-    _txt3a:=ugov->idpartner+"."
-    IzSifre()
+    select PARTN
+    hseek ugov->idpartner
+    _txt3b := _txt3c:=""
+    _txt3a := PADR(ugov->idpartner+".", 30)
+    
+    IzSifre(.t.)
+    
     select ftxt; hseek ugov->iddodtxt; cDodTxt:=TRIM(naz)
     hseek ugov->idtxt
     private _Txt1:=""
@@ -289,11 +379,10 @@ do while !eof() .and. id==cidugov
    _idtipdok:=cidtipdok
    _brdok:=cBrDok
    _datdok:=dDatDok
+   _datpl:=dDatDok
    _kolicina:=nKolicina
    _idroba:=rugov->idroba
    select roba; hseek _idroba
-
-   Odredi_IDROBA()
 
    SELECT PRIPR
    setujcijenu()
@@ -312,7 +401,11 @@ do while !eof() .and. id==cidugov
 enddo
 
 
+//****************** izgenerisati n dokumenata ***********
 next
 
 closeret
+return
+*}
+
 

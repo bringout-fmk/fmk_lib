@@ -1,5 +1,12 @@
 #include "fmk.ch"
 
+STATIC cLDirekt := "0"
+/*
+ * ----------------------------------------------------------------
+ *                          Copyright Sigma-com software 1996-2006 
+ * ----------------------------------------------------------------
+ */
+ 
 
 /*! \fn Pitanje(cId,cPitanje,cOdgDefault,cMogOdg)
  *  \brief Otvara box sa zadatim pitanjem na koje treba odgovoriti sa D,N,..
@@ -9,7 +16,7 @@
  *  \cMogOdg              - Moguci odgovori  
  */
  
-function Pitanje(cId,cPitanje,cOdgDefault,cMogOdg)
+function Pitanje(cId, cPitanje, cOdgDefault, cMogOdg)
 *{
 local cPom
 local cOdgovor
@@ -43,7 +50,8 @@ Box(,3,LEN(cPitanje)+6,.f.)
  	VALID ValidSamo(cOdgovor,cMogOdg)
  READ
 BoxC()
-set escape on; set confirm on
+set escape on
+set confirm on
 
 SET(_SET_DEVICE,cPom)
 return cOdgovor
@@ -102,14 +110,12 @@ SET(_SET_DEVICE,cPom)
 return cOdg
 *}
 
-
-/*! \fn IzlazPrn(cDirekt)
- *  \brief 
- *  \param cDirekt
- */
+// ----------------------------
+//  IzlazPrn(cDirekt)
+//  \param cDirekt
+// ----------------------------
  
 function IzlazPrn(cDirekt)
-*{
 if gAppSrv
 	return cDirekt
 endif
@@ -130,7 +136,6 @@ return cDirekt
  */
  
 function UpitPrinter(cDirekt)
-*{
 
 local nWidth
 
@@ -141,21 +146,35 @@ Tone(400,2)
 m_x:=8
 m_y:=38-ROUND(nWidth/2,0)
 @ m_x, m_y SAY ""
-Box(,8,nWidth)
-	@ m_x+1,m_y+2 SAY "   Izlaz direktno na printer:" GET cDirekt pict "@!" valid cDirekt $ "DNERV"
+
+if gcDirekt <> "B"
+
+    Box(,6,nWidth)
+	@ m_x+1,m_y+2 SAY "   Izlaz direktno na printer:" GET cDirekt ;
+			pict "@!" valid cDirekt $ "DNERV"
 
 	@ m_x+2,m_y+2 SAY "----------------------------------" 
 	@ m_x+3,m_y+2 SAY "D - direktno na printer"
-	@ m_x+4,m_y+2 SAY "N - prikaz na ekranu u LL-u"
-	@ m_x+5,m_y+2 SAY "V - prikaz na ekranu iz programa"
-	@ m_x+6,m_y+2 SAY "E - prikaz na ekranu u Q-editoru"
-	@ m_x+7,m_y+2 SAY "R - Windows printer"
-	@ m_x+8,m_y+2 SAY "---------- O P C I J E -----------"
+	@ m_x+4,m_y+2 SAY "V - prikaz na ekranu iz programa"
+	@ m_x+5,m_y+2 SAY "R - Windows printer"
+	@ m_x+6,m_y+2 SAY "---------- O P C I J E -----------"
 	read
-BoxC()
-   
-return cDirekt
-*}
+    BoxC()
+
+    return cDirekt
+
+else
+
+	Box (, 3, 60)
+  		@ m_x+1, m_y+2 SAY "Batch printer rezim ..."
+  		// moram sacekati da se predhona faktura odstampa
+  		SLEEP(14)
+ 	BoxC()
+ 	// batch rezim
+ 	return "D"
+
+endif
+
 
 
 /*! \fn GetLozinka(nSiflen)
@@ -268,16 +287,18 @@ endif
 lInvert:=.f.
 
 // Pozdravna poruka
-Box("por",9,60, lInvert)      
+Box("por",11, 60, lInvert)      
 Set cursor off
 
      @ m_x+2,m_y+2 SAY PADC(cNaslov,60)
      @ m_x+3,m_y+2 SAY PADC("Ver. "+cVer,60)
      @ m_x+5,m_y+2 SAY PADC("SIGMA-COM",60)
-     @ m_x+7,m_y+2 SAY PADC("Travnicka 64, Zenica, BiH tel/fax. 032/440-170, 061/141-311",60)
-     @ m_x+8,m_y+2 SAY PADC("E-mail: sigma_ze@bih.net.ba",60)
+     @ m_x+7,m_y+2 SAY PADC("Travnicka 64, Zenica, BiH", 60)
+     @ m_x+8,m_y+2 SAY PADC("tel: 032/440-170, fax: 032/440-173", 60)
+     @ m_x+9,m_y+2 SAY PADC("web: http://www.sigma-com.net",60)
+     @ m_x+10,m_y+2 SAY PADC("email: cs@sigma-com.net",60)
      IF lGreska
-         @ m_x+9,m_y+4 SAY "Prosli put program nije regularno zavrsen"
+         @ m_x+11,m_y+4 SAY "Prosli put program nije regularno zavrsen"
          Beep(2)
      ENDIF
 

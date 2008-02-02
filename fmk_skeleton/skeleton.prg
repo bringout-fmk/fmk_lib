@@ -4,6 +4,13 @@
 
 REQUEST DBFCDX
 
+/*
+ * ----------------------------------------------------------------
+ *                                     Copyright Sigma-com software 
+ * ----------------------------------------------------------------
+ */
+
+
 /*! \defgroup params
  *  @{
  *  @}
@@ -49,6 +56,7 @@ if !oApp:lStarted
 
 	? "setujem default engine ..." + RDDENGINE
 	RDDSETDEFAULT( RDDENGINE )
+	? "startujem oApp:db()"
 	oApp:initdb()
 
 endif
@@ -62,6 +70,7 @@ gModul:=oApp:cName
 gVerzija:=oApp:cVerzija
 
 gAppSrv:=.f.
+
 if mpar37("/APPSRV", oApp)
   ? "Pokrecem App Serv ..."
   gAppSrv:=.t.
@@ -71,7 +80,6 @@ SetNaslov(oApp)
 
 SET DELETED ON
 
-  
 #define D_VERZIJA "CDX"
 
 if mpar37("/INSTALL",oApp)
@@ -115,7 +123,6 @@ if lSezone
 
 else
         if gAppSrv
-	        altd()
 		cPars:=mparstring(oApp)
 		cKom:="{|| RunAppSrv("+cPars+")}"
 		? "Pokrecem App Serv ..."
@@ -178,7 +185,6 @@ RDDSETDEFAULT(RDDENGINE)
 
 set exclusive on
 oApp:oDatabase:lAdmin:=.t.
-altd()
 CreKorisn()
 @ 10,30 SAY ""
 
@@ -197,7 +203,7 @@ if Pitanje(,"Izvrsiti instalaciju fajlova (D/N) ?","N")=="D"
     oApp:oDatabase:kreiraj()
 endif
 
-gPrinter:="1"
+gPrinter:="R"
 InigEpson()
 
 O_GPARAMS
@@ -207,7 +213,9 @@ gValIz:="280 "
 gValU:="000 "
 gKurs:="1"
   
-private cSection:="1",cHistory:=" "; aHistory:={}
+private cSection:="1"
+private cHistory:=" "
+private aHistory:={}
 RPar("px",@gPrinter)
 RPar("vi",@gValIz)
 RPar("vu",@gValU)
@@ -216,7 +224,9 @@ select params
 use
 
 select gparams
-private cSection:="P",cHistory:=gPrinter; aHistory:={}
+private cSection:="P"
+private cHistory:=gPrinter
+private aHistory:={}
 RPar_Printer()
 
 gPTKONV:="0"
@@ -226,7 +236,7 @@ gSKSif:="D"
 gArhDir:=ToUnix("C:"+SLASH+"SIGARH")
 gPFont:="Arial"
 
-private cSection:="1",cHistory:=" "; aHistory:={}
+private cSection:="1", cHistory:=" "; aHistory:={}
 Rpar("pt",@gPTKonv)
 Rpar("pS",@gPicSif)
 Rpar("SK",@gSKSif)
@@ -305,6 +315,7 @@ altd()
 
 gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
 #ifndef PROBA
+
 	SETCANCEL(.f.)
 
 	#ifndef TRIAL
@@ -332,7 +343,6 @@ gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
  	
 	PUBLIC EVar:="#Erky#12345678901234567890#0000"
  	gNaslov+=" , Reg: "+SUBSTR(EVar,7,20)
- 	EXTERNAL _CLD
 
 #endif
 return
@@ -556,12 +566,16 @@ return cPars
 function PID(cStart)
 *{
 local cPom, cDefault, cPidFile
+local lKoristitiPid
 
 #ifdef CLIP
 	? "pid ", cStart
 #endif
 
-if ((cStart=="START") .and. (goModul:lStarted) .or. IzFmkIni("FMK","KoristiSePID","N",EXEPATH)=="N")
+cPidDefault := IIF (goModul:cName =="TOPS", "D", "N")
+lKoristitiPid := IzFmkIni("FMK","KoristiSePID", cPidDefault , EXEPATH)=="N" 
+
+if ((cStart=="START") .and. (goModul:lStarted) .or. lKoristitiPid )
 	// glavni aplikacijski objekat je vec startovan
 	return
 endif
@@ -962,7 +976,7 @@ local cDN:="N"
 local cPom
 
 if lScreen==nil
- lScreen:=.t.
+	lScreen:=.t.
 endif
 
 select (F_KORISN)
@@ -985,8 +999,11 @@ if lScreen
 	READ
 	ESC_BCR
 	BoxC()
+	
+	if !gReadOnly
+		Gather()
+	endif
 
-	Gather()
 	@ 0,24 SAY PADR(trim(ImeKorisn)+":"+cDirPriv,25) COLOR INVERT
 endif
 
@@ -996,32 +1013,27 @@ oApp:oDatabase:setDirPriv(_DirPriv)
 oApp:oDatabase:setDirSif(_DirSif)
 oApp:oDatabase:setDirKum(_DirRad)
 
-if gReadOnly
-  cCD:=""
-  if file(EXEPATH+'scshell.ini')
-        cCD:=""
-        cCD:=R_IniRead ( 'TekucaLokacija', 'CD', "",EXEPATH+'scshell.INI' )
-  endif
-
-  if empty(cCD) .and. Pitanje(,"Citati podatke sa CD-a ?","D")=="D"
-   cCd:="E"
-   Box(,1,60)
-     @ m_x+1,m_y+2 SAY "CD UREDJAJ:" GET cCD pict "@!"
-     read
-  BoxC()
-  endif
-
-  if !empty(cCD)
-	cPom:=cCD+SUBSTR(oApp:oDatabase:cDirPriv,2)
-	oApp:oDatabase:setDirPriv(cPom)
-	
-	cPom:=cCD+SUBSTR(oApp:oDatabase:cDirSif,2)
-	oApp:oDatabase:setDirSif(cPom)
-
-	cPom:=cCD+SUBSTR(oApp:oDatabase:cDirKum,2)
-	oApp:oDatabase:setDirKum(cPom)
-  endif
-
+if gReadOnly .and. (IzFmkIni('Svi','CitatiCD','N',EXEPATH) == "D")
+	cCD:=""
+  	if file(EXEPATH+'scshell.ini')
+        	cCD:=""
+        	cCD:=R_IniRead ( 'TekucaLokacija', 'CD', "",EXEPATH+'scshell.INI' )
+  	endif
+	if empty(cCD) .and. Pitanje(,"Citati podatke sa CD-a ?","N")=="D"
+   		cCd:="E"
+   		Box(,1,60)
+     			@ m_x+1,m_y+2 SAY "CD UREDJAJ:" GET cCD pict "@!"
+     			read
+  		BoxC()
+  	endif
+	if !empty(cCD)
+		cPom:=cCD+SUBSTR(oApp:oDatabase:cDirPriv,2)
+		oApp:oDatabase:setDirPriv(cPom)
+		cPom:=cCD+SUBSTR(oApp:oDatabase:cDirSif,2)
+		oApp:oDatabase:setDirSif(cPom)
+		cPom:=cCD+SUBSTR(oApp:oDatabase:cDirKum,2)
+		oApp:oDatabase:setDirKum(cPom)
+  	endif
 endif
 *}
 
@@ -1157,10 +1169,4 @@ endif
 return .t.
 *}
 
-#ifdef CLIP
-function Arg0()
-*{
-return "/dev/fmk/pos/1g/e.exe"
-*}
-#endif
 

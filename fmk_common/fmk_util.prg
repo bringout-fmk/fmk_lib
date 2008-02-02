@@ -6,30 +6,6 @@
  * ----------------------------------------------------------------
  *                                     Copyright Sigma-com software 
  * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/fmk/svi/fmk_ut.prg,v $
- * $Author: sasavranic $ 
- * $Revision: 1.6 $
- * $Log: fmk_ut.prg,v $
- * Revision 1.6  2004/05/21 13:06:52  sasavranic
- * Na kalulatoru omoguceno kucanje "," umjesto "."
- *
- * Revision 1.5  2003/01/19 23:44:18  ernad
- * test network speed (sa), korekcija bl.lnk
- *
- * Revision 1.4  2002/07/01 17:49:28  ernad
- *
- *
- * formiranje finalnih build-ova (fin, kalk, fakt, pos) pred teren planika
- *
- * Revision 1.3  2002/06/17 14:48:41  ernad
- *
- *
- * ciscenje
- *
- * Revision 1.2  2002/06/16 11:44:53  ernad
- * unos header-a
- *
- *
  */
  
 /*! \fn UBrojDok(nBroj,nNumDio,cOstatak)
@@ -54,25 +30,32 @@ private cIzraz:=SPACE(40)
 
 bKeyOld1:=SETKEY(K_ALT_K,{|| Konv()})
 bKeyOld2:=SETKEY(K_ALT_V,{|| DefKonv()})
+
 Box(,3,60)
+	
 	set cursor on
+	
 	do while .t.
-  		@ m_x,m_y+42 SAY "<a-K> kursiranje"
+  		
+		@ m_x,m_y+42 SAY "<a-K> kursiranje"
   		@ m_x+4,m_y+30 SAY "<a-V> programiranje kursiranja"
   		@ m_x+1,m_y+2 SAY "KALKULATOR: unesite izraz, npr: '(1+33)*1.2' :"
   		@ m_x+2,m_y+2 GET cIzraz
-  		read
+  		
+		read
   		
 		// ako je ukucan "," zamjeni sa tackom "."
 		cIzraz:=STRTRAN(cIzraz, ",",".")
 		
 		@ m_x+3,m_y+2 SAY space(20)
   		if type(cIzraz)<>"N"
-    			if upper(left(cIzraz,1))<>"K"
+    			
+			if upper(left(cIzraz,1))<>"K"
      				@ m_x+3,m_y+2 SAY "ERR"
     			else
      				@ m_x+3,m_y+2 SAY kbroj(substr(cizraz,2))
     			endif
+			
     			//cIzraz:=space(40)
   		else
     			@ m_x+3,m_y+2 SAY &cIzraz pict "99999999.9999"
@@ -82,12 +65,16 @@ Box(,3,60)
   		if lastkey()==27
 			exit
 		endif
-  		//if upper(left(cIzraz,1)==="K"; exit; endif
-  		DO WHILE NEXTKEY()==0
+  		
+		//if upper(left(cIzraz,1)==="K"; exit; endif
+  		
+		DO WHILE NEXTKEY()==0
 			OL_YIELD()
 		ENDDO
-  		INKEY()
-  		// inkey(0)
+  		
+		INKEY()
+  		
+		// inkey(0)
 	enddo
 BoxC()
 
@@ -121,6 +108,32 @@ endif
 
 return
 *}
+
+
+// -----------------------------------
+// auto valute convert
+// -----------------------------------
+function a_val_convert( )
+private cVar := ReadVar()
+private nIzraz := &cVar
+private cIzraz
+
+// samo ako je varijabla numericka....
+if type( cVar ) == "N"
+	
+	//cIzraz := ALLTRIM( STR( nIzraz ) )
+	
+	nIzraz := ROUND(nIzraz * omjerval( ValDomaca(), ValPomocna(), DATE() ), 5)
+	// konvertuj ali bez ENTER-a
+	//konv( .f. )
+	
+	//nIzraz := VAL( cIzraz )
+	
+	&cVar := nIzraz
+	
+endif
+   	
+return
 
 
 function kbroj(cSifra)
@@ -196,17 +209,28 @@ return
 *}
 
 
-static function Konv()
-*{
-  LOCAL nDuz:=LEN(cIzraz), lOtv:=.t., nK1:=0, nK2:=0
-  IF !FILE(SIFPATH+"VALUTE.DBF")
-    RETURN
-  ENDIF
-  PushWA()
-  IF SELECT("VALUTE")==0
+// --------------------------------------
+// kovertuj valutu
+// --------------------------------------
+static function Konv( lEnter )
+local nDuz:=LEN(cIzraz)
+local lOtv:=.t.
+local nK1:=0
+local nK2:=0
+
+if lEnter == nil
+ 	lEnter := .t.
+endif
+  
+IF !FILE(SIFPATH+"VALUTE.DBF")
+	RETURN
+ENDIF
+
+PushWA()
+IF SELECT("VALUTE")==0
     lOtv:=.f.
     use (SIFPATH+"VALUTE") index (SIFPATH+"VALUTEi1"),(SIFPATH+"VALUTEi2"),(SIFPATH+"VALUTEi3") new
-  ELSE
+ELSE
     SELECT VALUTE
     PushWA()
 #ifdef C52
@@ -215,11 +239,15 @@ static function Konv()
     SET ORDER TO 1
 #endif
 
-  ENDIF
-  go top; dbseek( gValIz , .f. ); nK1:=VALUTE->&("kurs"+gKurs)
-  go top; dbseek( gValU  , .f. ); nK2:=VALUTE->&("kurs"+gKurs)
+ENDIF
+go top
+dbseek( gValIz , .f. )
+nK1:=VALUTE->&("kurs"+gKurs)
+go top
+dbseek( gValU  , .f. )
+nK2:=VALUTE->&("kurs"+gKurs)
 
-  IF nK1==0 .or. type(cIzraz)<>"N"
+IF nK1==0 .or. type(cIzraz)<>"N"
     IF !lOtv
       USE
     ELSE
@@ -228,6 +256,7 @@ static function Konv()
     PopWA()
     RETURN
   ENDIF
+  altd()
   cIzraz:=&(cIzraz) * nK2 / nK1
   cIzraz:=PADR(cIzraz,nDuz)
   IF !lOtv
@@ -236,7 +265,9 @@ static function Konv()
     PopWA()
   ENDIF
   PopWA()
-  KEYBOARD CHR(K_ENTER)
+  if lEnter == .t.
+  	KEYBOARD CHR(K_ENTER)
+  endif
 RETURN
 *}
 
@@ -281,27 +312,6 @@ static function DefKonv()
 RETURN
 *}
 
-function PTXT(cImeF)
-*{
-local cPTXTSW:="", nFH
-local cKom
-
-cKom:=EXEPATH+"PTXT "+cImeF+" "
-cPTXTSW:=R_IniRead ( 'DOS','PTXTSW',  "/P", EXEPATH+'FMK.INI' )
-
-if !file(EXEPATH+'FMK.INI')
-  nFH:=FCreate(EXEPATH+'FMK.INI')
-  FWrite(nFh,";------- Ini Fajl FMK-------")
-  Fclose(nFH)
-  cPTXTSW:=R_IniWrite ( 'DOS','PTXTSW',  "/P", EXEPATH+'FMK.INI')
-endif
-
-// switchewi za ptxt
-cKom+=" "+cPTXTSW
-
-Run(cKom)
-return
-*}
 
 function Adresar()
 *{
@@ -366,8 +376,6 @@ endif
 
 FOR i:=1 TO LEN(ImeKol); AADD(Kol,i); NEXT
 
-if IzFmkIni("Svi","Sifk")="D"
-
 
 PushWa()
 
@@ -407,7 +415,6 @@ do while !eof() .and. ID="ADRES   "
  skip
 enddo
 PopWa()
-endif
 
 return PostojiSifra(F_ADRES,1,15,77,"Adresar:",@cId,dx,dy, {|Ch| AdresBlok(Ch)} )
 *}
@@ -446,7 +453,6 @@ MsgO("Priprema koverte.dbf")
 
 cIniName:=EXEPATH+'ProIzvj.ini'
 
-//UzmiIzIni(cIniName,'Varijable','Linija1',IzFmkIni("Zaglavlje","Linija1",gNFirma,KUMPATH),'WRITE')
 
 cWinKonv:=IzFmkIni("DelphiRb","Konverzija","3")
 DO WHILE !EOF()
@@ -775,3 +781,9 @@ function FmkSviVer()
 *{
 return DBUILD
 *}
+
+// ------------------------
+// ------------------------
+function say_fmk_ver()
+@ 24,74 SAY FMK_VER
+return
