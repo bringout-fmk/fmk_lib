@@ -1,4 +1,4 @@
-LINKEREXE=/sclib/blink.sh
+LINKEREXE=$(BASEDIR)/fmk/fmk_lib/blink.sh
 
 #LIBEXE=/sclib/lib.bat
 #LIBEXE=start /w /m h:\\clipper\\c5\\bin\\lib.exe
@@ -10,9 +10,7 @@ WXP=1
 
 ifdef WXP
  LIBSUFFIX=,,
- LIBEXE=/sclib/lib.bat
- #LIBEXE=tlib
- #LIBEXE=start /w /m h:\\clipper\\c5\\bin\\lib.exe
+ LIBEXE=$(BASEDIR)/fmk/fmk_lib/lib.bat
 else
   LIBSUFFIX=,,
   LIBEXE=h:\\clipper\\c5\\bin\\lib.exe
@@ -20,24 +18,23 @@ endif
 
 
 LIBEXT=.lib
-CLIPPERCOMP=/sclib/clip52.sh
+CLIPPERCOMP=$(BASEDIR)/fmk/fmk_lib/clip52.sh
 
 CLIPPERROOT=/clipper
 CLIPPERROOT_DOS=h:\\clipper
 
 
-ASMCOMP=/sclib/asm52.sh
+ASMCOMP=$(BASEDIR)/fmk/fmk_lib/asm52.sh
 ASMFLAGS=
 EXEDEST=/h/SIGMA
 EXEDOSDEST=h:\\sigma
-CCOMP=/sclib/c52.sh 
+CCOMP=$(BASEDIR)/fmk/fmk_lib/c52.sh 
 CFLAGS=/n /w /c /AL /FPa /Gs /Zl
 
 ROBODOC=robodoc
 
 ifndef DEBUG
  DEBUG=0
- #echo "Definisem debug"
 endif  
 
 ifndef VERZIJA

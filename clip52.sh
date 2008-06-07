@@ -2,8 +2,8 @@
 
 echo "                            Copyright Sigma-com Zenica"
 echo "------------------------------------------------------"
-echo "clipper cl-sc build sistem, ver 01.00, 03.2002-06.2002"
-echo "                            autor: ernad@sigma-com.net"
+echo "clipper cl-sc build sistem, ver 01.10, 03.2002-06.2008"
+echo "                            autor: hernad@bring.out.ba"
 echo ""
 echo ""
 

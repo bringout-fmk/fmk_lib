@@ -58,7 +58,7 @@ endif
 ifeq "$(OS_NAME)" "Linux"
   include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper_linux
 else
-  include /sclib/Makefile_clipper_cygwin
+  include $(BASEDIR)/fmk/fmk_lib/Makefile_clipper_cygwin
 endif
 
 	

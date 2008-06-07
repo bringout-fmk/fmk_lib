@@ -66,7 +66,7 @@
 
 
 #ifndef FMK_DEFINED
-	#include "\dev\Fmk\AF\cl-AF\fmk.ch"
+	#include "fmk.ch"
 #endif
 
 #include "sc_db.ch"

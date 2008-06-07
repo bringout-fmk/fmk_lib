@@ -1,12 +1,13 @@
 VERZIJA=CDX
 MODUL=sc1g_cui
 
-SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\cui\\1g\\
+
+SRCDOSROOT=$(BASEDOS)\\fmk\\fmk_lib\\cui\\1g\\
 
 PRGS=cgrid.prg cui.prg std_dlg.prg
 CS=
 ASMS=
 
-include  $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
+include  ../../Makefile_clipper
 
-cui.obj : $(SC_BUILD_HOME_DIR)/sclib/sc.ch $(SC_BUILD_HOME_DIR)/sclib/std_cdx.ch
+cui.obj : sc.ch std_cdx.ch
