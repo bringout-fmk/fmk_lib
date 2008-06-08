@@ -5,7 +5,6 @@ PRGS=print.prg ptxt.prg pdf.prg
 CS=
 ASMS=isprint.asm lptswap.asm
 
+SRCDOSROOT=$(BASEDOS)\\fmk\\fmk_lib\\print\\1g\\
 
-SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\print\\1g\\
-
-include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
+include ../../Makefile_clipper

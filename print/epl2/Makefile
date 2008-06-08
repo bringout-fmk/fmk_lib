@@ -6,6 +6,6 @@ CS=
 ASMS=
 
 
-SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\print\\epl2\\
+SRCDOSROOT=$(BASEDOS)\\fmk\\fmk_lib\\print\\epl2\\
 
-include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
+include ../../Makefile_clipper

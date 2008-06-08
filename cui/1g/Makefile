@@ -10,4 +10,4 @@ ASMS=
 
 include  ../../Makefile_clipper
 
-cui.obj : sc.ch std_cdx.ch
+#cui.obj : sc.ch std_cdx.ch

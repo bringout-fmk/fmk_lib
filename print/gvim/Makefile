@@ -6,6 +6,6 @@ CS=
 ASMS=
 
 
-SRCDOSROOT=c:\\dev\\af\\cl-sclib\\sclib\\print\\gvim\\
+SRCDOSROOT=$(BASEDOS)\\fmk\\fmk_lib\\print\\gvim\\
 
-include $(SC_BUILD_HOME_DIR)/sclib/Makefile_clipper
+include ../../Makefile_clipper
