@@ -72,20 +72,20 @@ exe: $(OBJS)
 	#echo Prilikom kompilacije obj se napravi u tekucem direktoriju
 	#echo a blinker opet trazi obj fajl u orig direktoriju
 	#$(EOBJCOPY)
-	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk.sh $(LINKCMD)
-	$(SC_BUILD_HOME_DIR)/sclib/form_blinker_lnk_2.sh $(FMKLIBCMD)
+	$(BASEDIR)/fmk/fmk_lib/form_blinker_lnk.sh $(LINKCMD)
+	$(BASEDIR)/fmk/fmk_lib/form_blinker_lnk_2.sh $(FMKLIBCMD)
 	$(LINKEREXE) @_bl_.lnk  @_bl_2_.lnk $(DEBUGLINK) @H:\\CLIPPER\\$(VERZIJA)\\BL.LNK output e.exe
 	cp e.exe $(EXEDEST)/$(EXENAME)
 
 zip:
-	$(SC_BUILD_HOME_DIR)/sclib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+	$(BASEDIR)/fmk/fmk_lib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
 
 commit:
-	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
-	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
+	$(BASEDIR)/fmk/fmk_lib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
+	$(BASEDIR)/fmk/fmk_lib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
 
 7exe:
-	$(SC_BUILD_HOME_DIR)/sclib/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+	$(BASEDIR)/fmk/fmk_lib/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
 	
 PREF2=lib $(LIB_DOS_DEST)
 
