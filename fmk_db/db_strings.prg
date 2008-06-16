@@ -277,7 +277,7 @@ if !EMPTY(ALLTRIM(cStrings))
 		cPom := g_naz_byid(nIdAttr)
 		
 		// filuj grupu i dostupne atribute....
-		fill_str_atr(@aRet, nIdAttr, cPom)
+		fill_str_attr(@aRet, nIdAttr, cPom)
 		
 		// sada napuni atribute ...
 		
