@@ -148,3 +148,10 @@
 
 #xcommand O_LOKAL => select (F_LOKAL); usex (SIFPATH+"lokal")
 
+
+// tabele DOK_SRC
+#xcommand O_DOKSRC => SELECT (F_DOKSRC); USE (KUMPATH+"DOKSRC"); set order to tag "1"
+#xcommand O_P_DOKSRC => SELECT (F_P_DOKSRC); USEX (PRIVPATH+"P_DOKSRC"); set order to tag "1"
+
+#xcommand O_RELATION => SELECT (F_RELATION); USE (SIFPATH+"RELATION"); set order to tag "1"
+

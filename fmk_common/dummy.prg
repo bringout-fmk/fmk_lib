@@ -1,3 +1,5 @@
+function cm2str(c)
+return c
 
 
 functio ol_yield()
