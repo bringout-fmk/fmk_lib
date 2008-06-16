@@ -1,12 +1,5 @@
 #include "fmk.ch"
-static aWaStack:={}
-static aBoxStack:={}
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- *
- */
+
  
 *static integer
 static nPos:=0
@@ -250,6 +243,7 @@ if funl==nil; funl:=.t.; endif
 
 if gReadonly; return; endif
 
+
 do while .t.
 set deleted off
 
@@ -466,19 +460,9 @@ if gReadonly; return; endif
 
 PushWa()
 
-<<<<<<< /home/hernad/devel/hg/sigma-com/dev/bring.out.ba/lib/fmk_db/db.prg.orig.
 //if Shared()
 if .t.
 
-||||||| /tmp/db.prg~base.ZYfoVQ
-#ifdef CAX
-if AX_IsShared()
-#else
-if cmxShared()
-#endif
-=======
-if cmxShared()
->>>>>>> /tmp/db.prg~other.qFjiYk
        do while .t.
        if flock()
           set order to 0 // neophodno, posto je index po kriteriju deleted() !!
@@ -554,6 +538,7 @@ return fRet
 */
 
 function SigmaSif(cSif)
+*{
 local lGw_Status
 
 lGw_Status:=IF("U"$TYPE("GW_STATUS"),"-",gw_status)
@@ -579,6 +564,7 @@ else
 endif
 
 return
+*}
 
 /*! \fn O_POMDB(nArea,cImeDBF)
  *  \brief otvori pomocnu tabelu, koja ako se nalazi na CDU npr se kopira u lokalni
@@ -586,6 +572,7 @@ return
  */
 
 function O_POMDB(nArea,cImeDBF)
+*{
 
 select (nArea)
 
@@ -629,155 +616,58 @@ else
 endif
 
 return
+*}
 
 function JelReadOnly()
+*{
 IF !( "U" $ TYPE("gGlBaza") )
-	IF !EMPTY(gGlBaza)
-		#ifdef CLIP      
-      			gReadOnly := ( FILEATTR(ToUnix(goModul:oDatabase:cDirKum+SLASH+gGlBaza))==1 )
-		#else
-      			gReadOnly := ( FILEATTR(ToUnix(cDirRad+SLASH+gGlBaza))==1 )
-		#endif
-    	ENDIF
+    IF !EMPTY(gGlBaza)
+#ifdef CLIP      
+      gReadOnly := ( FILEATTR(ToUnix(goModul:oDatabase:cDirKum+SLASH+gGlBaza))==1 )
+#else
+      gReadOnly := ( FILEATTR(ToUnix(cDirRad+SLASH+gGlBaza))==1 )
+#endif
+    ENDIF
 ENDIF
 return nil
+*}
 
-
-function CheckROnly( cFileName )
-if FILEATTR(cFileName) == 1 
-	gReadOnly := .t.
-	@ 1, 55 SAY "READ ONLY" COLOR "W/R"
-else
-	gReadOnly := .f.
-	@ 1, 55 SAY "         "
-endif
-
-return
-
-
-function SetROnly(lSilent)
-if (lSilent == nil)
-	lSilent := .f.
-endif
-
-if lSilent
-	MsgO("Zakljucavam sezonu...")
-endif
-
-IF !lSilent .and. gReadOnly
-   	MsgBeep("Podrucje je vec zakljucano!")
-   	if Pitanje(,"Zelite otkljucati podrucje ?","N") == "D"
-		SetWOnly()
-		return
-	endif
-	RETURN
-ENDIF
-
-if !lSilent .and. !SigmaSif("ZAKSEZ")
-	return
-endif
+function SetROnly()
+*{
 
 IF "U" $ TYPE("gGlBaza")
-	if !lSilent
-		MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza nedefinisana!")
-   	endif
-	RETURN
+   MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza nedefinisana!")
+   RETURN
 ENDIF
 
 IF EMPTY(gGlBaza)
-  	if !lSilent
-		MsgBeep("Nemoguce izvrsiti zakljucavanje##Varijabla gGlBaza prazna!")
-   	endif
-	RETURN
+   MsgBeep("Nemoguce izvrsiti zakljucenje. Varijabla gGlBaza prazna!")
+   RETURN
 ENDIF
 
-if !lSilent
-	MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucavanje poslovne godine. #"+;
+IF gReadOnly
+   MsgBeep("Zakljucenje podrucja je vec izvrseno!")
+   RETURN
+ENDIF
+
+MsgBeep("Izabrana opcija (Ctrl+F10) sluzi za zakljucenje poslovne godine. #"+;
          "To znaci da nakon ove opcije nikakve ispravke podataka u trenutno #"+;
          "aktivnom podrucju nece biti moguce. Ukoliko ste sigurni da to zelite #"+;
          "na sljedece pitanje odgovorite potvrdno!" )
-endif
+IF Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
 
-IF !lSilent .and. Pitanje(,"Jeste li sigurni da zelite zastititi trenutno podrucje od ispravki? (D/N)","N")=="D"
-
-   		IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
-     			gReadOnly:=.t.
-			CheckROnly(cDirRad + SLASH + gGlBaza)
-		ELSE
- 			MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
-   		ENDIF
-ELSE
-	IF SETFATTR(cDirRad + SLASH + gGlBaza, 1) == 0
-		gReadOnly:=.t.
-	ENDIF	
+#ifdef CLIP
+   IF SETFATTR(goModul:oDatabase:cDirKum+SLASH+gGlBaza,1)==0
+#else
+   IF SETFATTR(cDirRad+SLASH+gGlBaza,1)==0
+#endif
+     gReadOnly:=.t.
+   ELSE
+     MsgBeep("Greska! F-ja zastite trenutno izabranog podrucja onemogucena! (SETFATTR)")
+   ENDIF
 ENDIF
-
-if lSilent
-	Sleep(3)
-	MsgC()
-	CheckROnly(cDirRad + SLASH + gGlBaza)
-endif
-
 return
 *}
-
-/*! \fn SetWOnly()
- *  \brief Set write atributa
- */
-function SetWOnly(lSilent)
-*{
-
-if (lSilent == nil)
-	lSilent := .f.
-endif
-
-if lSilent
-	MsgO("Otkljucavam sezonu...")
-endif
-
-if !lSilent .and. !SigmaSif("OTKSEZ")
-	return
-endif
-
-IF "U" $ TYPE("gGlBaza")
-	if !lSilent
-		MsgBeep("Nemoguce izvrsiti otljucavanje. Varijabla gGlBaza nedefinisana!")
-   	endif
-	RETURN
-ENDIF
-
-IF EMPTY(gGlBaza)
-  	if !lSilent
-		MsgBeep("Nemoguce izvrsiti otkljucavanje. Varijabla gGlBaza prazna!")
-   	endif
-	RETURN
-ENDIF
-
-IF !lSilent .and. Pitanje(,"Jeste li sigurni da zelite ukloniti zastitu? (D/N)","N")=="D"
-	#ifdef CLIP
-   		IF SETFATTR(goModul:oDatabase:cDirKum + SLASH + gGlBaza, 0) == 0
-	#else
-   		IF SETFATTR(cDirRad + SLASH + gGlBaza, 0) == 0
-	#endif
-     			gReadOnly:=.f.
-			CheckROnly(cDirRad + SLASH + gGlBaza)
-   		ELSE
-     			MsgBeep("Greska! F-ja ukidanje zastite onemogucena! (SETFATTR)")
-   		ENDIF
-ELSE
-   		IF SETFATTR(cDirRad + SLASH + gGlBaza, 0) == 0
-			gReadOnly:=.f.
-		ENDIF
-ENDIF
-
-if lSilent
-	Sleep(3)
-	MsgC()
-	CheckROnly(cDirRad + SLASH + gGlBaza)
-endif
-
-return
-
 
 /*! \fn SkratiAZaD(aStruct)
  *  \brief skrati matricu za polje D
@@ -788,6 +678,7 @@ return
 */
 
 function SkratiAZaD(aStruct)
+*{
 nLen:=len(aStruct)
 for i:=1 to nLen
     // sistemska polja
@@ -800,6 +691,7 @@ next
 ASIZE(aStruct,nLen)
 
 return nil
+*}
 
  
 /*! \fn Append2()
@@ -808,6 +700,7 @@ return nil
  */
 
 function Append2()
+*{
 local nRec
 select(nArr)
 DbAppend()
@@ -817,6 +710,7 @@ DbAppend()
 replace recno with nRec
 
 return nil
+*}
 
 /*! \fn DbfName(nArea, lFull)
  *  \param nArea
@@ -825,6 +719,7 @@ return nil
  */
  
 function DbfName(nArea, lFull)
+*{
 local nPos
 local cPrefix
 
@@ -851,8 +746,10 @@ else
  return cPrefix+gaDbfs[nPos,2]
 endif
 return
+*}
 
 function DbfPath(nPath)
+*{
 do case
 	CASE nPath==P_PRIVPATH
 		return PRIVPATH
@@ -874,8 +771,10 @@ do case
 		return goModul:oDatabase:cSigmaBD+SLASH+"SECURITY"+SLASH
 end case
 return 
+*}
 
 function DbfArea(cImeDBF, nVarijanta)
+*{
 local nPos
 
 cImeDBF:=ToUnix(cImeDBF)
@@ -908,15 +807,21 @@ else
  endif
 endif
 return
+*}
 
 function nDBF(cBaza)
+*{
 return DbfArea(cBaza)
+*}
 
 function nDBFPos(cBaza)
 // pozicija u agDBFs
+*{
 return DbfArea(cBaza,1)
+*}
 
 function F_Baze(cBaza)
+*{
 local nPos
 nPos:=nDBF(cBaza)
 IF nPos<=0
@@ -924,8 +829,10 @@ IF nPos<=0
 	QUIT
 ENDIF
 return nPos
+*}
 
 function Sel_Bazu(cBaza)
+*{
 local nPos
  
  nPos:=nDBFPos(cBaza)
@@ -935,8 +842,10 @@ local nPos
    CLOSE ALL; QUIT
  ENDIF
 return
+*}
 
 function gaDBFDir(nPos)
+*{
 nPom:=gaDBFs[nPos,3]
 do case
   case nPom=P_KUMPATH
@@ -952,8 +861,10 @@ do case
   otherwise
    return ""
 endcase
+*}
 
 function O_Bazu(cBaza)
+*{
 
 LOCAL nPos:=nDBFPos(cBaza)
 IF nPos>0
@@ -964,6 +875,7 @@ ELSE
    QUIT
 ENDIF
 return
+*}
 
 
 /*! \fn ExportBaze(cBaza)
@@ -974,6 +886,7 @@ return
 */
 
 function ExportBaze(cBaza)
+*{
 LOCAL nArr:=SELECT()
   FERASE(cBaza+"."+INDEXEXT)
   FERASE(cBaza+"."+DBFEXT)
@@ -986,7 +899,6 @@ LOCAL nArr:=SELECT()
   USE
   SELECT (nArr)
 return
-<<<<<<< /home/hernad/devel/hg/sigma-com/dev/bring.out.ba/lib/fmk_db/db.prg.orig.
 *}
 
 
@@ -1015,69 +927,6 @@ quit
 return nil
 
 
-||||||| /tmp/db.prg~base.ZYfoVQ
-*}
-
-
-#ifdef CLIP
-
-function cmxAutoOpen(lYesNo)
-*{
-return
-*}
-
-function cmxKeyCount()
-*{
-return ordKeyCount()
-*}
-
-function cmxShared()
-*{
-return .t.
-*}
-
-function setScope(nTopBottom,xScope)
-*{
-OrdScope(nTopBottom,xScope)
-return
-*}
-
-function clrScope()
-*{
-OrdScope(0,"")
-OrdScope(1,"")
-return
-*}
-
-function cm2str(xValue)
-*{
-local cPom
-
-if VALTYPE(xValue)=="C"
-  return "'"+str(xValue)+"'"
-endif
-
-if VALTYPE(xValue)=="D"
-  return "CTOD('"+DTOC(xValue)+"')"
-endif
-
-if VALTYPE(xValue)=="N"
-  return alltrim(str(xValue))
-endif
-
-cPom:= "Nisam zavrsio cm2str ..."
-Logg(cPom)
-
-inkey(0)
-
-quit
-return nil
-
-*}
-
-#endif
-=======
->>>>>>> /tmp/db.prg~other.qFjiYk
 
 
 function PoljeBrisano(cImeDbf)
@@ -1099,22 +948,18 @@ return nil
 *}
 
 
-/*! \fn SmReplace(cField, xValue, lReplAlways)
- *  \brief Smart Replace - vrsi replace. Ako je lReplAlways .T. uvijek vrsi, .F. samo ako je vrijdnost polja razlicita 
+/*! \fn SmReplace(cField, xValue)
+ *  \brief Smart Replace - vrsi replace samo ako je nova vrijednost razlicita od trenutne vrijednosti u tabeli
  *  \note vrsi se i REPLSQL, kada je gSql=="D"
  */
  
-function SmReplace(cField, xValue, lReplAlways)
+function SmReplace(cField, xValue)
 *{
 private cPom
 
-if (lReplAlways == nil)
-	lReplAlways := .f.
-endif
-
 cPom:=cField
 
-if ((&cPom<>xValue) .or. (lReplAlways == .t.))
+if &cPom<>xValue
 	REPLACE &cPom WITH xValue
 	if (gSql=="D")
 		REPLSQL &cPom WITH xValue
@@ -1157,6 +1002,14 @@ endif
 nPreuseLevel:=1
 
 cOnlyName:=ChangeEXT(ExFileName(cImeDbf),"DBF","")
+/*
+nArea:=DbfArea(UPPER(cOnlyName))
+if ((UPPER(cOnlyName)<>"GPARAM") .and. USED())
+	// ne otvaraj 2 x, a kod GPARAM je problem sto imamo u root-u i PRIVPATH-u
+	nPreuseEvent:=0
+	return
+endif
+*/
 
 cImeGwu:=ChangeEXT(cImeDbf, DBFEXT, "gwu")
 cImeCdx:=ChangeEXT(cImeDbf, DBFEXT, INDEXEXT)
@@ -1178,6 +1031,22 @@ if (GW_STATUS="-" .and. FILE(cImeGwu))
 	goModul:oDatabase:kreiraj(nArea)
 	FERASE(cImeGwu)
 		
+	/*
+	     MsgO("Reindeksiram + pakujem (gwu) "+cImeDbf)
+	     Beep(1)
+	     //REINDEKSIRAJ i Pakuj DBF
+	     nArea:=DBFArea(UPPER(cOnlyName))
+	     select(nArea)
+	     dbCloseArea()
+	     // ? "SC: prije dbusearea", cImeDbf
+	     dbUseArea( .f., nil , cImeDbf , nil , .f., .f. )  
+	     dbReindex()
+	     __dbPack()
+	     dbCloseArea()
+	     FErase(cPom)
+	     MsgC()
+     */
+     
 endif
 
 nPreuseLevel:=0
@@ -1189,6 +1058,7 @@ return cImeDbf
  *  \note sve tabele koje je gateway azurirao bice indeksirane
  */
 function ScanDb()
+*{
 local i
 local cDbfName
 
@@ -1199,6 +1069,7 @@ for i:=1 to 250
 	cDbfName:=DbfName(i,.t.)
 	if !EMPTY(cDbfName)
 		if FILE(cDbfName+"."+DBFEXT)
+			altd()
 			USEX (cDbfName)
 			if (RECCOUNT()<>RecCount2())
 				MsgO("Pakujem "+cDbfName)
@@ -1214,52 +1085,5 @@ for i:=1 to 250
 next
 CLOSE ALL
 return
-
-// --------------------------------
-// --------------------------------
-function PushWA()
-if used()
- StackPush(aWAStack,{select(),IndexOrd(),DBFilter(),RECNO()})
-else
- StackPush(aWAStack,{NIL,NIL,NIL,NIL})
-endif
-return NIL
-
-
-// ---------------------------
-// ---------------------------
-function PopWA()
-
-local aWa
-local i
-
-aWa:=StackPop(aWaStack)
-if aWa[1]<>nil
-   
-   // select
-   SELECT(aWa[1])
-   
-   // order
-   if used()
-	   if !empty(aWa[2])
-	      ordsetfocus(aWa[2])
-	   else
-	    set order to
-	   endif
-   endif
-
-   // filter
-   if !empty(aWa[3])
-     set filter to &(aWa[3])
-   else
-     if !empty(dbfilter())
-       set filter to
-     endif
-     //   DBCLEARFILTER( )
-   endif
-   
-   go aWa[4]
-   
-endif  // wa[1]<>NIL
-return NIL
+*}
 
