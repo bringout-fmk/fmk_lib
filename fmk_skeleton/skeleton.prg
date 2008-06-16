@@ -4,17 +4,7 @@
 
 REQUEST DBFCDX
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
 
-
-/*! \defgroup params
- *  @{
- *  @}
- */
 
 /*! \file sc1g/base/base.prg
     \brief Inicijalizacija systema, bazne funkcije
@@ -1117,56 +1107,8 @@ clear
 ?
 endif
 
-private cSbr:=SUBSTR(EVar,7,20)
-if file(EXEPATH+"serbr.mem")
- restore from (EXEPATH+"serbr.mem") additive
-endif
+Evar:=substr(Evar,1,6)+padr("0000",20)+substr(Evar,27,5)
 
-Evar:=substr(Evar,1,6)+padr(cSbr,20)+substr(Evar,27,5)
-
-if !fsilent
-? "Registrovano na:", cSbr
-?
-endif
-nCheck:=0
-for i:=1 to 20
- nCheck+=ASC(substr(cSbr,i,1))+i
-next
-
-#ifdef CLIP
- ? "Preskacem BIOS funkcije ..."
-
- return .t.
-#endif
-if !fimodul
-
-  fid:=.f.
-  cBuffer:=space(8)
-  nHBios:=fopen(ToUnix(EXEPATH+"\bx.xv"))
-  do while .t.
-    nBytes:=FREAD(nHBios,@cBuffer,8)
-    if cBuffer==Crypt2(Bios(),cModul)
-       fid:=.t.   // ovaj broj postoji
-       exit
-    endif
-    if nBytes<8
-       exit
-    endif
-
-  enddo
-  FCLOSE(nHBios)
-  if !fid
-    if !fsilent
-     Evar:= substr(Evar,1,6)+padr("PROBNA VERZIJA",20)+substr(Evar,27,5)
-     Evar+="0"
-    else
-       return .f. // vrati .f.
-    endif
-  endif
-  ?
-
-endif
 return .t.
-*}
 
 
