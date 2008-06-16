@@ -325,30 +325,6 @@ FUNCTION BrDecimala(cFormat)
 RETURN nVrati
 
 
-/*! \fn StrKZN(cInput,cIz,cU)
- *  \brief Konverzija znakova u stringu
- *  \todo Prebaciti u /sclib ili ... (ovdje definitivno ne pripada)
- *  \param cInput
- *  \param cIz
- *  \param cU
- *  \return cInput
- */
- 
-function StrKZN(cInput,cIz,cU)
-
-LOCAL a852:={"Ê","—","¨","è","¶","Á","–","ü","Ü","ß"}
- LOCAL a437:={"[","\","^","]","@","{","|","~","}","`"}
- LOCAL aEng:={"S","D","C","C","Z","s","d","c","c","z"}
- LOCAL i:=0, aIz:={}, aU:={}
- aIz := IF( cIz=="7" , a437 , IF( cIz=="8" , a852 , aEng ) )
- aU  := IF(  cU=="7" , a437 , IF(  cU=="8" , a852 , aEng ) )
- FOR i:=1 TO 10
-   cInput:=STRTRAN(cInput,aIz[i],aU[i])
- NEXT
-return cInput
-
-
-
 /*! \fn Slovima(nIzn,cDinDem)
  *  \brief Ispisuje iznos slovima
  *  \param nIzn       - iznos
