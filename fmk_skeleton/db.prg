@@ -415,8 +415,6 @@ AADD(opc,"7. instalacija fajlova")
 #else
 	AADD(opcexe, {|| CreParams(), ::kreiraj()  })
 #endif
-AADD(opc,"8. registracija modula")
-AADD(opcexe, {|| cCurDir:=curdir(), goModul:sregg(), goModul:quit() } )
 AADD(opc,"9. promjena oznake sezone u radnom podrucju")
 AADD(opcexe, {|| PromOzSez() })
 AADD(opc,"A. otpakuj iz tmp arhive")
@@ -428,17 +426,9 @@ AADD(opcexe, nil)
 AADD(opc,"X. arhiviraj na diskete")
 AADD(opcexe, {|| StaviUArj() })
 AADD(opc,"Y. konverzija znakova u bazama")
-#ifdef CLIP
-	AADD(opcexe, {|| self:konvZn() })
-#else	
-	AADD(opcexe, {|| ::konvZn() })
-#endif
+AADD(opcexe, {|| ::konvZn() })
 AADD(opc,"F. ostale funkcije")
-#ifdef CLIP
-	AADD(opcexe, {|| self:ostalef() })
-#else	
-	AADD(opcexe, {|| ::ostalef() })
-#endif
+AADD(opcexe, {|| ::ostalef() })
 AADD(opc,"-------------------")
 AADD(opcexe, nil)
 
