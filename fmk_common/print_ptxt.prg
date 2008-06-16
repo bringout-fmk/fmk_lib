@@ -1,5 +1,4 @@
-#include "sc.ch"
-
+#include "fmk.ch"
 
 /* --------------------- */
 function PtxtSekvence()
