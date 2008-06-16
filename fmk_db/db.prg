@@ -458,11 +458,12 @@ return nil
 
 function zapp()
 *{
+
 if gReadonly; return; endif
 
 PushWa()
 
-if SHARED()
+//if SHARED()
        do while .t.
        if flock()
           // neophodno, posto je index po kriteriju deleted() !!
@@ -480,9 +481,9 @@ if SHARED()
 
        exit
        enddo
-else
-   __dbzap()
-endif
+//else
+//   __dbzap()
+//endif
 
 PopWa()
 return nil
