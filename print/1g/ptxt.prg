@@ -1,7 +1,5 @@
 #include "sc.ch"
 
-// -------------------------------
-// -------------------------------
 function PtxtSekvence()
 
 gpIni:=  "#%INI__#"
@@ -24,10 +22,8 @@ gRPL_Gusto:=""
 return
 
 
-// ------------------------------
-// poziv ptxt-a
-// ------------------------------
-function PTXT(cImeF)
+function Ptxt(cImeF)
+
 local cPtxtSw:=""
 local nFH
 
