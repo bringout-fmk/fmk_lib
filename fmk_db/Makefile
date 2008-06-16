@@ -7,8 +7,9 @@ PRG_SOURCES= \
         sql.prg sql_db.prg db_cre_roba.prg \
         db_cre_proizvoljni_izvjestaji.prg \
 	db_strings.prg \
-        sql_util.prg
-
+        sql_util.prg \
+        db_dok_src.prg \
+        db_relation.prg
 
 LIBNAME=fmk_db
 
