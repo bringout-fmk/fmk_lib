@@ -8,6 +8,7 @@ PRG_SOURCES= \
         ini.prg \
         params.prg \
         print.prg \
+	print_pdf.prg \
         util.prg \
         dummy.prg \
         array_util.prg \
