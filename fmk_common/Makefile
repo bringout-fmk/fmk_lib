@@ -9,6 +9,7 @@ PRG_SOURCES= \
         params.prg \
         print.prg \
 	print_pdf.prg \
+	print_ptxt.prg \
         util.prg \
         dummy.prg \
         array_util.prg \
