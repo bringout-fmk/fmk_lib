@@ -135,3 +135,16 @@
 
 #xcommand O_R_EXP => select (F_R_EXP); usex (PRIVPATH+"r_export")
 
+
+#xcommand O_FMKRULES  => select (F_FMKRULES); use (SIFPATH+"FMKRULES") ; set order to tag "2"
+
+
+#xcommand O_GEN_UG   => select(F_GEN_UG);  use  (KUMPATH+"GEN_UG")  ; set order to tag "DAT_GEN"
+
+#xcommand O_G_UG_P  => select(F_G_UG_P);  use  (KUMPATH+"GEN_UG_P")   ; set order to tag "DAT_GEN"
+
+// grupe i karakteristike
+#xcommand O_STRINGS  => select(F_STRINGS);  use  (SIFPATH + "STRINGS")   ; set order to tag "1"
+
+#xcommand O_LOKAL => select (F_LOKAL); usex (SIFPATH+"lokal")
+
