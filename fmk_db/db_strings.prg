@@ -1,6 +1,5 @@
 #include "fmk.ch"
 
-
 // otvaranje sifrarnika strings
 function p_strings(cId, dx, dy)
 local nTArea := SELECT()
@@ -194,8 +193,6 @@ endif
 return nAtribut
 
 
-
-
 // vraca matricu sa nazivima po uslovu "cOznaka"
 function get_strings(cOznaka, lAktivni)
 local nTRec := RecNo()
@@ -324,7 +321,6 @@ return aRet
 // **********************************************
 // FILL funkcije 
 // **********************************************
-
 
 // filuj prazan aStrings
 static function fill_strings(aStrings)
