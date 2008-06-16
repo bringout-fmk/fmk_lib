@@ -503,7 +503,7 @@ return
 // -------------------------------------------
 // vraca lokaciju pdf viewera
 // -------------------------------------------
-static function _g_pdf_view( cViewer )
+static function _g_pdf_viewer( cViewer )
 local cViewName := "acrord32.exe"
 local cViewPath := "c:\progra~1\adobe\"
 local aPath := DIRECTORY(cViewPath + "*.*", "D")
