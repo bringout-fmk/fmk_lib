@@ -1,7 +1,5 @@
-#include "fmk.ch"
+#include "sc.ch"
 
-// -------------------------------
-// -------------------------------
 function PtxtSekvence()
 
 gpIni:=  "#%INI__#"
@@ -21,13 +19,12 @@ gPO_Land:="#%LANDS#"
 
 gRPL_Normal:=""
 gRPL_Gusto:=""
+
 return
 
 
-// ------------------------------
-// poziv ptxt-a
-// ------------------------------
-function PTXT(cImeF)
+function Ptxt(cImeF)
+
 local cPtxtSw:=""
 local nFH
 
@@ -53,7 +50,6 @@ Run(cKom)
 return
 
 
-
 // -----------------------------------------------
 // ako gPTxtC50 varijabla nije definisana
 // onda se mora ici ka PTXT kompatibilnost
@@ -70,5 +66,4 @@ do case
 	otherwise
 		return .t.
 endcase
-
 
