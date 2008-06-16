@@ -10,6 +10,7 @@ PRG_SOURCES= \
         print.prg \
 	print_pdf.prg \
 	print_ptxt.prg \
+	print_gvim.prg \
         util.prg \
         dummy.prg \
         array_util.prg \
