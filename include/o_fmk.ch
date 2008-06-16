@@ -146,3 +146,5 @@
 // grupe i karakteristike
 #xcommand O_STRINGS  => select(F_STRINGS);  use  (SIFPATH + "STRINGS")   ; set order to tag "1"
 
+#xcommand O_LOKAL => select (F_LOKAL); usex (SIFPATH+"lokal")
+
