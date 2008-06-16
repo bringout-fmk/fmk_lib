@@ -3,12 +3,6 @@
 static aWaStack:={}
 static aBoxStack:={}
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- *
- */
  
 *static integer
 static nPos:=0
@@ -441,11 +435,7 @@ if ORDNUMBER("BRISAN")<>0
   set order to tag "BRISAN"
   set scope to "1"  // postavi scope na brisane
 
-#ifdef CLIP
   nC:=ordkeycount()
-#else  
-  nC:=cmxKeyCount()
-#endif
 
   set scope to
   dbsetorder(nPrevOrd)
@@ -472,10 +462,11 @@ if gReadonly; return; endif
 
 PushWa()
 
-if cmxShared()
+if SHARED()
        do while .t.
        if flock()
-          set order to 0 // neophodno, posto je index po kriteriju deleted() !!
+          // neophodno, posto je index po kriteriju deleted() !!
+          set order to 0 
           go top
           do while !eof()
             sql_delete()
