@@ -133,3 +133,5 @@
 //KALK RVrsta
 #xcommand O_RVRSTA   => select(F_RVRSTA);  use  (SIFPATH+"RVRSTA")  ; set order to tag "ID"
 
+#xcommand O_R_EXP => select (F_R_EXP); usex (PRIVPATH+"r_export")
+

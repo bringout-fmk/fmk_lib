@@ -344,3 +344,5 @@
 #define POR_I_PPP	5
 #define POR_I_MPC4	6
 
+#define F_R_UIO 249
+#define F_R_EXP 250
