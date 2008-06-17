@@ -141,7 +141,7 @@ endif
 
 @ 0,2 SAY '<ESC> Izlaz' COLOR INVERT
 @ 0,COL()+2 SAY DATE()  COLOR INVERT
-@ 24,64  SAY ELIBVER()
+@ 24,64  SAY fmklibver()
 
 DispBox(2,0,4,79,B_DOUBLE+' ',NORMAL)
 if lClear

@@ -51,8 +51,10 @@
  
 ****/
 
+// --------------------------------------------
+// postavi globalne varijable
+// --------------------------------------------
 function SetScGVars()
-
 
 public ZGwPoruka:=""
 public GW_STATUS:="-"
@@ -414,4 +416,11 @@ ELSE
 ENDIF
 
 return
+
+// ---------------------------------
+// FMK_LIB_VER - defined in fmk.ch
+// ---------------------------------
+function fmklibver()
+
+return FMK_LIB_VER
 

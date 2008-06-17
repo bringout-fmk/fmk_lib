@@ -3,7 +3,6 @@
 #include "dbstruct.ch"
 #include "set.ch"
 
-
 function MyErrorHandler(objErr,lLocalHandler)
 
 local cOldDev
@@ -14,15 +13,16 @@ local nErr
  ? "Greska .......... myerrorhandler"
  sleep(5)
  
- if lLocalHandler
+if lLocalHandler
   Break objErr
- endif
+endif
 
- cOldDev:=SET(_SET_DEVICE,"SCREEN")
- cOldCon:=SET(_SET_CONSOLE,"ON")
- cOldPrn:=SET(_SET_PRINTER,"")
- cOldFile:=SET(_SET_PRINTFILE,"")
- BEEP(5)
+cOldDev:=SET(_SET_DEVICE,"SCREEN")
+cOldCon:=SET(_SET_CONSOLE,"ON")
+cOldPrn:=SET(_SET_PRINTER,"")
+cOldFile:=SET(_SET_PRINTFILE,"")
+BEEP(5)
+
  nErr:=objErr:genCode
 
  if objErr:genCode =EG_PRINT
@@ -245,7 +245,7 @@ do while .t.
   endif
 
   ?
-  ? "Verzija programa:", gVerzija ," verzija ELIB-a:",elibver()
+  ? "Verzija programa:", gVerzija ," FMK lib:", fmklibver()
   ?
   ? "Podsistem klipera:",objErr:SubSystem
   ? "GenKod:",str(objErr:GenCode,3),"OpSistKod:",str(objErr:OsCode,3)

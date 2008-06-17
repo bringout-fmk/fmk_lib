@@ -1,9 +1,4 @@
 #include "fmk.ch"
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
  
 /*! \fn nToLongC(nN)
  *  \brief Pretvara broj u LONG (C-ovski prikaz long integera)
@@ -149,74 +144,56 @@ next
      cPom+="cmx "+cmxVersion(2)+" "
 #endif
 
-cPom=cPom+"##Glavni modul:"+gVerzija
-cPom=cPom+ "#       sclib:"+ElibVer()
-cPom+="##"+str(BliMemAvl())
+cPom=cPom+"##Glavni modul:" + gVerzija
+cPom=cPom+ "#       sclib:" + ElibVer()
 
-cPom=cPom+"##     FmkSvi:"+FmkSviVer()
-cPom=cPom+ "#     FmkRoba:"+FmkRobaVer()
-cPom=cPom+ "#    FmkEvent:"+FmkEvVer()
-cPom=cPom+ "# FmkSecurity:"+FmkSecVer()
-cPom=cPom+ "#       sclib:"+ScLibVer()
-
-cPom=cPom+"##"
-if (BLIMGRSTS(BliMachineMode) = BliModeReal) 
-	cPom=cPom+"Running in real mode#" 
-	cacheloc = BLIMGRSTS(BliCacheLoc) 
-	do case 
-		case cacheloc = BliCacheNone 
-			cPom=cPom+"No cache available" 
-		case cacheloc = BliCacheXMS 
-			cPom=cPom+"Cache is in XMS" 
-		case cacheloc = BliCacheEMS 
-			cPom=cPom+"Cache is in EMS" 
-	endcase 
-else 
-	cPom=cPom+"Running in protected mode#"
-	hosttype = BLIMGRSTS(BliHostMode) 
-	cPom=cPom+"DOS extender host is :#" 
-	do case 
-	case hosttype = BliHostDPMI 
-		cPom=cPom+"DPMI" 
-	case hosttype = BliHostVCPI 
-		cPom=cPom+"VCPI" 
-	case hosttype = BliHostXMS 
-		cPom=cPom+"XMS" 
-	endcase 
-endif
+cPom=cPom+"##     FmkSvi:"  + FmkSviVer()
+cPom=cPom+ "#     FmkRoba:" + FmkRobaVer()
+cPom=cPom+ "#    FmkEvent:" + FmkEvVer()
+cPom=cPom+ "# FmkSecurity:" + FmkSecVer()
+cPom=cPom+ "#       sclib:" + ScLibVer()
 
 MsgBeep(cPom)
+
 return
 
 function NotImp()
 MsgBeep("Not implemented ?")
 return
 
-
+// ----------------------------------------
 // upisi text u fajl
+// ----------------------------------------
 function write_2_file(nH, cText, lNoviRed)
+
 local cNRed := CHR(13)+CHR(10)
 if lNoviRed
 	FWrite(nH, cText + cNRed)
 else
 	FWrite(nH, cText)
 endif
+
 return
 
-
+// ----------------------------------------------
 // kreiranje fajla
+// ----------------------------------------------
 function create_file(cFilePath, nH)
+
 nH:=FCreate(cFilePath)
 if nH == -1
 	MsgBeep("Greska pri kreiranju fajla !!!")
 	return
 endif
+
 return
 
-
+// -------------------------------------------------
 // zatvaranje fajla
+// --------------------------------------------------
 function close_file(nH)
 FClose(nH)
+
 return
 
 

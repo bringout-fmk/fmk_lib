@@ -3,7 +3,8 @@
 
 
 #define SC_DEFINED
-#define SC_CLIB_VER  "7.0.dev"
+
+#define FMK_LIB_VER  "7.dev.2"
 
 
 
