@@ -577,14 +577,3 @@ LOCAL aFiles, nCnt, nRes
 
 return
 
-
-function FmkSviVer()
-
-return DBUILD
-
-
-// ------------------------
-// ------------------------
-function say_fmk_ver()
-@ 24,74 SAY FMK_VER
-return
