@@ -1,21 +1,13 @@
 #include "fmk.ch"
 #include "set.ch"
 
-*array
 static aBoxStack:={}
-*;
 
-*array
 static aPrStek:={}
-*;
 
-*array
 static aMenuStack:={}    
-*;
 
-*array
 static aMsgStack:={}
-*;
 
 /*! \fn Menu(MenuId,Items,ItemNo,Inv)
  *
@@ -1372,12 +1364,9 @@ endif
 select(nSelect)
 return cK1
 
-// ----------------------------
-// ----------------------------
-function ElibVer()
-return SC_LIB_VER
-
-function ZaSvakiSlucaj(cDir,fCdx,aDirs,fRecurse)
+// ---------------------------------------------
+// ---------------------------------------------
+function ZaSvakiSlucaj(cDir, fCdx, aDirs, fRecurse)
 
 local fRet:=.t.
 local i
@@ -1483,18 +1472,19 @@ endif
 
 @ 0,2 SAY '<ESC> Izlaz' COLOR INVERT
 @ 0,COL()+2 SAY DATE()  COLOR INVERT
-@ 24,64  SAY ELIBVER()
+@ 24,64  SAY fmklibver()
 
-DISPBox(2,0,4,79,B_DOUBLE+' ',NORMAL)
+DISPBox(2, 0, 4, 79, B_DOUBLE + ' ' , NORMAL)
 
 if fbox
-	DISPBox(5,0,24,79,B_DOUBLE+"±",INVERT)
+	DISPBox(5 ,0, 24, 79, B_DOUBLE + "±", INVERT)
 endif
 
-@ 3,1 SAY PADC(gNaslov+' Ver.'+gVerzija,72) COLOR NORMAL
+@ 3,1 SAY PADC(gNaslov + ' Ver.' + gVerzija, 72) COLOR NORMAL
 return
 
-
+// -------------------------------------------
+// -------------------------------------------
 function StandardBoje()
 
 public  Invert

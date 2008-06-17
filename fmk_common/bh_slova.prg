@@ -275,3 +275,66 @@ FUNCTION BHSORT(cInput)
  ENDIF
 RETURN PADR(cInput,100)
 
+
+// ------------------------------------------
+// ------------------------------------------
+function BosTipke()
+  
+  SETKEY( ASC('{') , {|| __KEYBOARD('[') }  )
+  SETKEY( ASC('|') , {|| __KEYBOARD('\') }  )
+  SETKEY( ASC('`') , {|| __KEYBOARD('@') }  )
+  SETKEY( ASC('~') , {|| __KEYBOARD('^') }  )
+  SETKEY( ASC('}') , {|| __KEYBOARD(']') }  )
+  SETKEY( ASC('Á') , {|| __KEYBOARD('Ê') }  )
+  SETKEY( ASC('Ü') , {|| __KEYBOARD('è') }  )
+  SETKEY( ASC('ü') , {|| __KEYBOARD('¨') }  )
+  SETKEY( ASC('–') , {|| __KEYBOARD('—') }  )
+  SETKEY( ASC('ß') , {|| __KEYBOARD('¶') }  )
+RETURN
+
+
+// -------------------------------------------
+// -------------------------------------------
+function USTipke()
+SET KEY ASC('{') TO
+  SET KEY ASC('|') TO
+  SET KEY ASC('`') TO
+  SET KEY ASC('~') TO
+  SET KEY ASC('}') TO
+  SET KEY ASC('Á') TO
+  SET KEY ASC('Ü') TO
+  SET KEY ASC('ü') TO
+  SET KEY ASC('–') TO
+  SET KEY ASC('ß') TO
+RETURN
+
+// ------------------------------
+// ------------------------------
+function KSTo852(cStr)
+  cStr:=strtran(cStr,"{","Á")
+  cStr:=strtran(cStr,"|","–")
+  cStr:=strtran(cStr,"`","ß")
+  cStr:=strtran(cStr,"~","ü")
+  cStr:=strtran(cStr,"}","Ü")
+  cStr:=strtran(cStr,"[","è")
+  cStr:=strtran(cStr,"\","—")
+  cStr:=strtran(cStr,"@","¶")
+  cStr:=strtran(cStr,"^","¨")
+  cStr:=strtran(cStr,"]","è")
+return cStr
+
+// ------------------------------
+// ------------------------------
+function BH7u8()
+SETKEY( ASC('}') , {|| __KEYBOARD('Á') }  )
+  SETKEY( ASC('{') , {|| __KEYBOARD('Ü') }  )
+  SETKEY( ASC('~') , {|| __KEYBOARD('ü') }  )
+  SETKEY( ASC('|') , {|| __KEYBOARD('–') }  )
+  SETKEY( ASC('`') , {|| __KEYBOARD('ß') }  )
+  SETKEY( ASC(']') , {|| __KEYBOARD('Ê') }  )
+  SETKEY( ASC('[') , {|| __KEYBOARD('è') }  )
+  SETKEY( ASC('^') , {|| __KEYBOARD('¨') }  )
+  SETKEY( ASC('\') , {|| __KEYBOARD('—') }  )
+  SETKEY( ASC('@') , {|| __KEYBOARD('¶') }  )
+RETURN
+

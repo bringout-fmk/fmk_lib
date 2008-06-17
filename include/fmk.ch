@@ -1,6 +1,6 @@
 #include "o_fmk.ch"
 #include "f_fmk.ch"
-
+#include "inkey.ch"
 
 #define SC_DEFINED
 
@@ -201,30 +201,6 @@
 
 #define DE_REF      12      // Force reread/redisplay of all data rows
 
-
-#command AP52 [FROM <(file)>]                                         ;
-         [FIELDS <fields,...>]                                          ;
-         [FOR <for>]                                                    ;
-         [WHILE <while>]                                                ;
-         [NEXT <next>]                                                  ;
-         [RECORD <rec>]                                                 ;
-         [<rest:REST>]                                                  ;
-         [VIA <rdd>]                                                    ;
-         [ALL]                                                          ;
-                                                                        ;
-      => __dbApp(                                                       ;
-                  <(file)>, { <(fields)> },                             ;
-                  <{for}>, <{while}>, <next>, <rec>, <.rest.>, <rdd>    ;
-                )
-
-
-
-//korisnicke licence
-#define AL_INET 1
-#define AL_STANDARD 2
-#define AL_SILVER 3
-#define AL_GOLD 4
-#define AL_PLATINIUM 5
 
 #command DEL2                                                            ;
       => (nArr)->(DbDelete2())                                            ;

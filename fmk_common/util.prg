@@ -1,10 +1,9 @@
 #include "fmk.ch"
  
-/*! \fn nToLongC(nN)
- *  \brief Pretvara broj u LONG (C-ovski prikaz long integera)
- *
- */
- 
+// --------------------------------------------------------------
+//* nToLongC(nN)
+//* Pretvara broj u LONG (C-ovski prikaz long integera)
+// --------------------------------------------------------------
 function nToLongC(nN)
 
 local cStr:="",i
@@ -18,8 +17,9 @@ next
 return cStr
 
 
+// --------------------------------------------------------------
+// --------------------------------------------------------------
 function CLongToN(cLong)
-
 
 local i,nExp
 nRez:=0
@@ -33,74 +33,6 @@ next
 return nRez
 
 
-function Bios()
-
-
-local cStr:="",i
-for i:=1 to 8
-  //cStr+=peekchar("F000",65524+i)
-  cStr+=chr(peekbyte("F000",65524+i))
-next
-return cStr
-
-
-
-function BosTipke()
-  
-  SETKEY( ASC('{') , {|| __KEYBOARD('[') }  )
-  SETKEY( ASC('|') , {|| __KEYBOARD('\') }  )
-  SETKEY( ASC('`') , {|| __KEYBOARD('@') }  )
-  SETKEY( ASC('~') , {|| __KEYBOARD('^') }  )
-  SETKEY( ASC('}') , {|| __KEYBOARD(']') }  )
-  SETKEY( ASC('Á') , {|| __KEYBOARD('Ê') }  )
-  SETKEY( ASC('Ü') , {|| __KEYBOARD('è') }  )
-  SETKEY( ASC('ü') , {|| __KEYBOARD('¨') }  )
-  SETKEY( ASC('–') , {|| __KEYBOARD('—') }  )
-  SETKEY( ASC('ß') , {|| __KEYBOARD('¶') }  )
-RETURN
-
-
-
-function USTipke()
-SET KEY ASC('{') TO
-  SET KEY ASC('|') TO
-  SET KEY ASC('`') TO
-  SET KEY ASC('~') TO
-  SET KEY ASC('}') TO
-  SET KEY ASC('Á') TO
-  SET KEY ASC('Ü') TO
-  SET KEY ASC('ü') TO
-  SET KEY ASC('–') TO
-  SET KEY ASC('ß') TO
-RETURN
-
-// ------------------------------
-// ------------------------------
-function KSTo852(cStr)
-  cStr:=strtran(cStr,"{","Á")
-  cStr:=strtran(cStr,"|","–")
-  cStr:=strtran(cStr,"`","ß")
-  cStr:=strtran(cStr,"~","ü")
-  cStr:=strtran(cStr,"}","Ü")
-  cStr:=strtran(cStr,"[","è")
-  cStr:=strtran(cStr,"\","—")
-  cStr:=strtran(cStr,"@","¶")
-  cStr:=strtran(cStr,"^","¨")
-  cStr:=strtran(cStr,"]","è")
-return cStr
-
-function BH7u8()
-SETKEY( ASC('}') , {|| __KEYBOARD('Á') }  )
-  SETKEY( ASC('{') , {|| __KEYBOARD('Ü') }  )
-  SETKEY( ASC('~') , {|| __KEYBOARD('ü') }  )
-  SETKEY( ASC('|') , {|| __KEYBOARD('–') }  )
-  SETKEY( ASC('`') , {|| __KEYBOARD('ß') }  )
-  SETKEY( ASC(']') , {|| __KEYBOARD('Ê') }  )
-  SETKEY( ASC('[') , {|| __KEYBOARD('è') }  )
-  SETKEY( ASC('^') , {|| __KEYBOARD('¨') }  )
-  SETKEY( ASC('\') , {|| __KEYBOARD('—') }  )
-  SETKEY( ASC('@') , {|| __KEYBOARD('¶') }  )
-RETURN
 
 function Sleep(nSleep)
 
@@ -127,10 +59,8 @@ enddo
 
 return
 
-
-function ScLibVer()
-return DBUILD
-
+// ----------------------------
+// ----------------------------
 function TechInfo()
 
 local cPom
@@ -140,25 +70,24 @@ aLst:=rddlist()
 for i:=1 to len(aLst)
        cPom+=aLst[i]+" "
 next
-#ifdef CDX
-     cPom+="cmx "+cmxVersion(2)+" "
-#endif
 
 cPom=cPom+"##Glavni modul:" + gVerzija
-cPom=cPom+ "#       sclib:" + ElibVer()
+cPom=cPom+ "#     fmk_lib:" + fmklibver()
 
 cPom=cPom+"##     FmkSvi:"  + FmkSviVer()
 cPom=cPom+ "#     FmkRoba:" + FmkRobaVer()
 cPom=cPom+ "#    FmkEvent:" + FmkEvVer()
 cPom=cPom+ "# FmkSecurity:" + FmkSecVer()
-cPom=cPom+ "#       sclib:" + ScLibVer()
 
 MsgBeep(cPom)
 
 return
 
+// ----------------------------------------
+// ----------------------------------------
 function NotImp()
 MsgBeep("Not implemented ?")
+
 return
 
 // ----------------------------------------
