@@ -53,7 +53,6 @@ ENDCLASS
 
 METHOD new(oParent, cModul, cVerzija, cPeriod, cKorisn, cSifra, p3,p4,p5,p6,p7) CLASS TAppMod
 
-altd()
 ::lStarted:=nil
 
 ::cName:=cModul
@@ -118,29 +117,27 @@ method setName()
 return
 
 
-
-
 *void TAppMod::run()
 
 method run()
 
 if ::oDesktop==nil
-	::oDesktop:=TDesktopNew()
+  ::oDesktop:=TDesktopNew()
 endif
 if ::lStarted==nil
-	::lStarted:=.f.
+  ::lStarted:=.f.
 endif
 
 SC_START(self, .t.)
 if !::lStarted
-	PID("START")
+  PID("START")
 endif
 // da se zna da je objekat jednom vec startovan
 ::lStarted:=.t.
 
 if ::lTerminate
-	::quit()	
-	return
+   ::quit()
+   return
 endif
 ::MMenu()
 
@@ -156,50 +153,50 @@ local i
 
 do case
 
-	case (Ch==K_SH_F12)
+  case (Ch==K_SH_F12)
 		InfoPodrucja()
 
-	case (Ch==K_SH_F1  .or. Ch==K_CTRL_F1)
+  case (Ch==K_SH_F1  .or. Ch==K_CTRL_F1)
 		Calc()
 		
-	case (Ch==K_SH_F2 .or. Ch==K_CTRL_F2)
+  case (Ch==K_SH_F2 .or. Ch==K_CTRL_F2)
 		PPrint()
 		
-	case Ch==K_SH_F10
+  case Ch==K_SH_F10
 		::gParams()
 		
-	case Ch==K_SH_F5
+  case Ch==K_SH_F5
 		::oDatabase:vratiSez()
 		
-	case Ch==K_ALT_F6
+  case Ch==K_ALT_F6
 		ProcPrenos()
 		
-	case Ch==K_SH_F6
+  case Ch==K_SH_F6
 		::oDatabase:logAgain()
 		
-	case Ch==K_SH_F7
+  case Ch==K_SH_F7
 		KorLoz()
 			
-	case Ch==K_SH_F8
+  case Ch==K_SH_F8
 		TechInfo()
 		
-	case Ch==K_SH_F9
+  case Ch==K_SH_F9
 		Adresar()
 		
-	case Ch==K_CTRL_F10
+  case Ch==K_CTRL_F10
 		SetROnly()
 		
-	case Ch==K_ALT_F11
+  case Ch==K_ALT_F11
 		ShowMem()
 
-	otherwise
-		if !("U" $ TYPE("gaKeys"))
+  otherwise
+    if !("U" $ TYPE("gaKeys"))
 			for i:=1 to LEN(gaKeys)
 				if (Ch==gaKeys[i,1])
 					EVAL(gaKeys[i,2])
 				endif
 			next
-		endif
+    endif
 endcase
 
 return

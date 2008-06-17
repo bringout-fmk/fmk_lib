@@ -227,42 +227,6 @@ return padr(cKorSif,nSifLen)
 
 
 
-/*! \fn TrebaRegistrovati(nSlogova)
- *  \brief Provjera da li je program registrovan
- *  \param nSlogova
- */
- 
-function TrebaRegistrovati(nSlogova)
-
-if gAppSrv
-	return
-endif
-
-if empty(substr(Evar,32,1))  
-  return
-endif
-
-Beep(4)
-Msg("Probna verzija !!!##Ogranicena obrada - maksimalno 20 raŸuna !!")
-
-if reccount2()>nSlogova
-	Beep(4)
-	PUBLIC  Normal:="GR+/B,R/N+,,,N/W"
-	Box(,6,60)
-	@ m_x+1,m_y+2 SAY "Potrebno je registrovati kopiju od strane"
-	@ m_x+2,m_y+2 SAY "ovlastenog distributera SIGMA-COM software-a"
-	@ m_x+4,m_y+2 SAY "Podaci koje ste unosili NISU izgubljeni !"
-	@ m_x+5,m_y+2 SAY "Nakon instalacije registrovane verzije mozete"
-	@ m_x+6,m_y+2 SAY "nastaviti sa radom."
-	inkey(0)
-	Boxc()
-	PUBLIC  Normal:="W/B,R/N+,,,N/W"
-	goModul:quit()
-
-endif
-return
-
-
 /*! \fn PozdravMsg(cNaslov,cVer,nk)
  *  \brief Ispisuje ekran sa pozdravnom porukom
  *  \param cNaslov
