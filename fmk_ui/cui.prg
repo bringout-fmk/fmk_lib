@@ -499,16 +499,12 @@ aBoxPar:=aBoxStack[len(aBoxStack)]
 return
 
 
-function Beep(Nputa)
+function Beep(nPuta)
 
 local i
 
-#ifdef CLIP
-	? "Beep ..."
-	return
-#endif
-for i:=1 to Nputa
-	Tone(300,1)
+for i:=1 to nPuta
+	Tone(300, 1)
 next
 
 return
