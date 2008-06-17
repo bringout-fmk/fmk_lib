@@ -51,7 +51,7 @@
 */
 
 function ObjDBedit(cImeBoxa, xw, yw, bUserF, cMessTop, cMessBot, lInvert, aMessage, nFreeze, bPodvuci, nPrazno, nGPrazno, aPoredak, skipblock)
-*{
+
 
 local nBroji2
 local cSmj,nRez,i,K,aUF, cPomDB, nTTrec
@@ -280,11 +280,11 @@ DO WHILE .T.
 END DO
 
 RETURN
-*}
+
 
 
 function NeTBDirektni(lIzOBJDB)
-*{
+
 LOCAL i,j,k
 IF lIzOBJDB==NIL; lIzOBJDB:=.f.; ENDIF
 
@@ -329,10 +329,10 @@ ENDIF
      Tb:Freeze:=aParametri[6]
   endif
 RETURN
-*}
+
 
 function DaTBDirektni(lIzOBJDB)
-*{ 
+ 
 LOCAL i,j,k
  IF lIzOBJDB==NIL; lIzOBJDB:=.f.; ENDIF
 
@@ -381,7 +381,7 @@ LOCAL i,j,k
       Tb:Freeze:=aParametri[6]
    endif
 RETURN
-*}
+
 
 
 
@@ -391,7 +391,7 @@ static function DoGet()
  *Izvrsi GET za tekucu kolonu u browse-u
  */
 
-*{
+
 LOCAL bIns, lScore, lExit
 LOCAL col, get, nKey
 LOCAL xOldKey, xNewKey
@@ -455,18 +455,18 @@ IF nKey == K_UP .OR. nKey == K_DOWN .OR. ;
 ENDIF
 
 RETURN
-*}
+
 
 
 static function ForceStable()
-*{
+
 DO WHILE .NOT. TB:stabilize()
     ENDDO
 RETURN
-*}
+
 
 static function InsToggle()
-*{
+
 IF READINSERT()
         READINSERT(.F.)
         SETCURSOR(SC_NORMAL)
@@ -475,10 +475,10 @@ IF READINSERT()
         SETCURSOR(SC_INSERT)
     ENDIF
 RETURN
-*}
+
 
 static function EditPolja(nX,nY,xIni,cNazPolja,bWhen,bValid,cBoje)
-*{  
+  
   local i
   local cStaraVr:=gTBDir
   local cPict
@@ -561,36 +561,36 @@ static function EditPolja(nX,nY,xIni,cNazPolja,bWhen,bValid,cBoje)
 
   //gTBDir:=cStaraVr
 RETURN
-*}
+
 
 function Eval2(bblock,p1,p2,p3,p4,p5)
-*{
+
 if bBlock<>NIL
   Eval(bBlock,p1,p2,p3,p4,p5)
 endif
-*}
+
 
 
 static function GoBottomDB( nTBLine )
-*{
+
 // You are receiving a reference
    DBGOBOTTOM()
    nTBLine := nTBLastLine
    RETURN (NIL)
-*}
+
 
 static function GoTopDB( nTBLine )
-*{
+
 // You are receiving a reference
    DBGOTOP()
    // Since you are pointing to the first record
    // your current line should be 1
    nTBLine := 1
    RETURN (NIL)
-*}
+
 
 function SkipDB( nRequest, nTBLine )
-*{
+
 // nTBLine is a reference
    LOCAL nActually := 0
 
@@ -649,11 +649,11 @@ function SkipDB( nRequest, nTBLine )
 
    ENDIF
    RETURN (nActually)
-*}
+
 
 
 function StandTBKomande(TB, Ch, nRez, nPored, aPoredak)
-*{
+
 local cSmj,i,K,aUF
 local cLoc:=space(40)
 local cStVr, cNovVr, nRec, nOrder, xcpos, ycpos
@@ -818,11 +818,11 @@ DO CASE
 ENDCASE
 
 return
-*}
+
 
 
 function StandTBTipke()
-*{
+
 * ove tipke ne smiju aktivirati edit-mod
 
 
@@ -832,7 +832,7 @@ if Ch==K_ESC .or. Ch==K_CTRL_T .or. Ch=K_CTRL_P .or. Ch=K_CTRL_N .or. ;
    return .t.
 endif
 return .f.
-*}
+
 
 
 /*! \fn function TBPomjeranje(TB, cPomjeranje)
@@ -842,7 +842,7 @@ return .f.
  */
 
 function TBPomjeranje(TB, cPomjeranje)
-*{
+
 local cPomTB
 
 if (cPomjeranje)=">"
@@ -871,11 +871,11 @@ elseif (cPomjeranje)="<"
 elseif (cPomjeranje)="0"
    TB:PanHome()
 endif
-*}
+
 
 
 function EvEr(cExpr,cmes,cT)
-*{ 
+ 
  LOCAL lVrati:=.t.
  IF cmes==nil; cmes:="Greska!"; ENDIF
  IF cT==nil; cT:="L"; ENDIF
@@ -885,13 +885,13 @@ function EvEr(cExpr,cmes,cT)
    msgbeep(cMes)
  ENDIF
 RETURN lVrati
-*}
+
 
 
 function BrowseKey(y1,x1,y2,x2,;
                    ImeKol,bfunk,uslov,traz,brkol,;
                    dx,dy,bPodvuci)
-*{
+
 static poziv:=0
 local lk, REKORD,TCol
 local nCurRec:=1,nRecCnt:=0
@@ -986,10 +986,10 @@ do while .t.
 
 enddo
 return (nil)
-*}
+
 
 static function Korisnik(nRequest,traz,dx,dy,nCurRec,nRecCnt)
-*{
+
 local nCount
 nCount := 0
 if LastRec() != 0
@@ -1034,4 +1034,4 @@ if dx<>NIL .and. dy<>NIL
   @ m_x+dx,m_y+dy say STR(nRecCnt,4)
 endif
 return (nCount)
-*}
+

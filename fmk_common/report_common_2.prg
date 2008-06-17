@@ -329,7 +329,7 @@ RETURN
  */
  
 function SetRptLineAndText(aLineArgs, nVariant, cDelimiter)
-*{
+
 
 local cLine := ""
 
@@ -365,7 +365,7 @@ for i:=1 to LEN(aLineArgs)
 next
 
 return cLine
-*}
+
 
 
 

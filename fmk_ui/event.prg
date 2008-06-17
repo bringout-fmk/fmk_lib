@@ -1,8 +1,7 @@
 #include "fmk.ch"
 
-
 function KeyboardEvent(nZnak)
-*{
+
 local nBroji2
   
 nBroji2:=seconds()
@@ -12,15 +11,15 @@ DO WHILE ( NEXTKEY()==0 )
 ENDDO
 nZnak:=INKEY()
 return 
-*}
+
 
 function SqlKeyboardHandler(nBroji2)
-*{
+
 return  CekaHandler(@nBroji2)
-*}
+
 
 function CekaHandler(nBroji2)
-*{
+
 local cRez:=""
 if gSQL=="N"
   return nil
@@ -33,7 +32,7 @@ do while .t.
   endif
 enddo
 return cRez
-*}
+
 
 
 
@@ -69,7 +68,7 @@ ENDIF
 RETURN nChar
 
 function ScreenSaver()
-*{
+
 
 local nBroji3
 local i, nRow, nCol, x:=0, y:=0, nSek, xs:=0, ys:=0, cTXT
@@ -111,10 +110,10 @@ restore screen from cScr
 // pozicioniraj kursor tamo gdje je i bio !
 @ nRow, nCol SAY ""     
 return
-*}
+
 
 function VuciULin(xs,ys,x,y,cTXT)
-*{
+
 local a,b,i,j,is:=99
 
 if y==ys .or. x==xs
@@ -130,7 +129,7 @@ for j:=ys to y step IF(ys>y,-1,1)
    endif
 next
 return
-*}
+
 
 
 //function OL_Yield()

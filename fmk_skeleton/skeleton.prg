@@ -4,8 +4,6 @@
 
 REQUEST DBFCDX
 
-
-
 /*! \file sc1g/base/base.prg
     \brief Inicijalizacija systema, bazne funkcije
     \note prebaciti u potpunosti na objektni model (ionako se koristi oApp)
@@ -33,14 +31,13 @@ REQUEST DBFCDX
  */
  
 function SC_START(oApp, lSezone)
-*{
+
 local cImeDbf
 
 public gAppSrv
 
 	
 ? "setujem engine (sc_start)"
-altd()
 
 if !oApp:lStarted	
 
@@ -161,7 +158,7 @@ if (gSecurity=="D")
 endif
 
 return
-*}
+
 
 
 /*! \fn ISC_START(oApp, lSezone)
@@ -169,7 +166,7 @@ return
  */
 
 function ISC_START(oApp, lSezone)
-*{
+
 
 RDDSETDEFAULT(RDDENGINE)
 
@@ -250,7 +247,7 @@ oApp:oDatabase:mInstall()
 
 
 return
-*}
+
 
 
 /*! \fn IBatchRun(oApp)
@@ -260,7 +257,7 @@ return
 
 function IBatchRun(oApp)
 
-*{
+
 if mpar37("/XM",oApp)
       oApp:oDatabase:modstruAll()
 endif
@@ -295,11 +292,11 @@ if mpar37("/M",oApp)
 endif
 
 return
-*}
+
 
 
 function SetNaslov(oApp)
-*{
+
 
 altd()
 
@@ -336,10 +333,10 @@ gNaslov:= oApp:cName+" EXT, "+oApp:cPeriod+" "+D_VERZIJA
 
 #endif
 return
-*}
+
 
 function InitE(oApp)
-*{
+
 if (oApp:cKorisn<>nil .and. oApp:cSifra==nil)
 
     ? "Koristenje:  ImePrograma "
@@ -396,11 +393,11 @@ endif
 
 SayPrivDir(cDirPriv)
 return nil
-*}
+
 
 
 function PokreniInstall(oApp)
-*{
+
 local cFile
 local lPitaj
 
@@ -433,11 +430,11 @@ if lPitaj
 endif
 
 return
-*}
+
 
 
 function mpar37(x, oApp)
-*{
+
 
 // proslijedjeni su parametri
 lp3:=oApp:cP3
@@ -450,10 +447,10 @@ return ( (lp3<>NIL .and. upper(lp3)==x) .or. (lp4<>NIL .and. upper(lp4)==x) .or.
          (lp5<>NIL .and. upper(lp5)==x) .or. (lp6<>NIL .and. upper(lp6)==x) .or. ;
          (lp7<>NIL .and. upper(lp7)==x) )
 
-*}
+
 
 function mpar37cnt(oApp)
-*{
+
 local nCnt:=0
 
 if oApp:cP3<>nil
@@ -473,10 +470,10 @@ if oApp:cP7<>nil
 endif
 
 return nCnt
-*}
+
 
 function mparstring(oApp)
-*{
+
 local cPars
 cPars:=""
 
@@ -501,7 +498,7 @@ if oApp:cP7<>NIL
 endif
 
 return cPars
-*}
+
 
 /*! \fn PID(cStart)
  *  \brief funkcije za kreiranje/brisanje PID fajla
@@ -554,7 +551,7 @@ return cPars
  */
 
 function PID(cStart)
-*{
+
 local cPom, cDefault, cPidFile
 local lKoristitiPid
 
@@ -633,7 +630,7 @@ else
 endif
 
 return
-*}
+
 
 
 /*! \fn Prijava(oApp,lScreen)
@@ -644,7 +641,7 @@ return
  
 function Prijava(oApp, lScreen)
 
-*{
+
 local i
 local nRec
 local cKontrDbf
@@ -814,11 +811,11 @@ SetDirs(oApp, .f.)
 
 CLOSERET
 return nil
-*}
+
 
 
 function ScShellIni(oApp)
-*{
+
 local cPPSaMr
 local cBazniDir
 local cMrRs
@@ -883,10 +880,10 @@ endif
 
 
 return
-*}
+
 
 static function GetSifra(oApp, m_ime, m_sif)
-*{
+
 
 @ 10,20 SAY ""
 m_ime:=Space(10)
@@ -911,10 +908,10 @@ BoxC()
 m_ime:=ALLTRIM(UPPER(m_ime))
 
 return
-*}
+
 
 static function PrijRunInstall(m_sif, cKom)
-*{
+
 
 if m_sif=="I"
 	cKom:=cKom:="I"+gModul+" "+ImeKorisn+" "+CryptSC(sifrakorisn)
@@ -937,11 +934,11 @@ endif
 RunInstall(cKom)
 
 return
-*}
+
 
 
 static function ApndKorisn(cKorisn, cDirPriv, cDirSif, cDirKum)
-*{
+
 
 APPEND BLANK
 REPLACE ime WITH cKorisn
@@ -957,11 +954,11 @@ REPLACE dirSif with cDirSif
 REPLACE dirRad with cDirKum
 
 return
-*}
+
 
 
 function SetDirs(oApp, lScreen)
-*{
+
 local cDN:="N"
 local cPom
 
@@ -1025,10 +1022,10 @@ if gReadOnly .and. (IzFmkIni('Svi','CitatiCD','N',EXEPATH) == "D")
 		oApp:oDatabase:setDirKum(cPom)
   	endif
 endif
-*}
+
 
 function RunInstall(cKom)
-*{
+
 local lIB
 
 lIB:=.f.
@@ -1050,11 +1047,11 @@ if (lIB)
 endif
 
 
-*}
+
 
 /*
 function T_Start(nHPid, cPath, cModul, cUser )
-*{
+
 local hH, nCnt
 local cFN
 local cBuf
@@ -1079,21 +1076,21 @@ do while .t.
   endif
 enddo
 return nHPid
-*}
+
 
 function T_Stop(nHPid, cPath, cModul, cUser )
-*{
+
 local cFN
 cFN:=cPath+cmodul+'.pid'
 fclose(nHPid)
 ferase(cFN)
 return
-*}
+
 
 */
 
 function IzvrsenIn(p3,fImodul, cModul, fsilent)
-*{
+
 local i,nCheck,fid,nHBios,cBuffer,nBytes
 
 PUBLIC EVar:="#Erky#____SIGMA-COM_ZE____#0000"

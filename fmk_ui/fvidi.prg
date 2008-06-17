@@ -1,6 +1,5 @@
 #include "fmk.ch"
 
-
 /*! \fn VidiFajl(cImeF, aLinFiks, aKolFiks)
  *  \brief Pregled tekstualnog fajla
  *
@@ -19,7 +18,7 @@
  */
 
 function VidiFajl(cImeF, aLinFiks, aKolFiks)
-*{
+
 
 local nDF:=VelFajla(cImeF,0)
 local nKol:=1
@@ -485,32 +484,36 @@ do while .t.
   ENDCASE
  enddo
 return
-*}
 
 
+// --------------------------------
+// --------------------------------
 function SljedLin(cFajl,nPocetak)
-*{
+
 local cPom,nPom
 cPom:=FILESTR(cFajl,400,nPocetak)
 nPom:=AT(NRED,cPom)
 if nPom==0; nPom:=LEN(cPom)+1; endif
 return {LEFT(cPom,nPom-1),nPocetak+nPom+1}    // {cLinija,nPocetakSljedece}
-*}
+
 
 function PrethLin(cFajl,nKraj)
-*{ 
- local nKor:=400,cPom,nPom
- if nKraj-nKor-2<0; nKor:=nKraj-2; endif
- cPom:=FILESTR(cFajl,nKor,nKraj-nKor-2)
+local nKor:=400,cPom,nPom
+
+if nKraj-nKor-2 < 0 
+	nKor:=nKraj-2
+endif
+
+cPom:=FILESTR(cFajl,nKor,nKraj-nKor-2)
  nPom:=RAT( NRED ,cPom)
 return IF( nPom==0, { cPom, 0}, { SUBSTR(cPom,nPom+2), nKraj-nKor+nPom-1} )
                                // {cLinija,nNjenPocetak}
 
 return
-*}
+
 
 function BrLinFajla(cImeF)
-*{ 
+ 
  local nOfset:=0,nSlobMem:=0,cPom:="",nVrati:=0
  if FILESTR(cImeF,2,VelFajla(cImeF)-2)!= NRED ; nVrati:=1; endif
  do while LEN(cPom)>=nSlobMem
@@ -520,31 +523,37 @@ function BrLinFajla(cImeF)
   nVrati=nVrati+NUMAT( NRED ,cPom)
  enddo
 return nVrati
-*}
 
+// -------------------------------------
+// -------------------------------------
 function VelFajla(cImeF,cAttr)
-*{
- local aPom:=DIRECTORY(cImeF,cAttr)
+local aPom:=DIRECTORY(cImeF,cAttr)
+
 return if (!EMPTY(aPom),aPom[1,2],0)
-*}
+
 
 
 
 
 function PripadaNInt(nBroj,nOd,nDo,lSaKrajnjim)
-*{
+
 local lVrati:=.f.
-  if lSaKrajnjim==nil; lSaKrajnjim:=.t.; endif
-  if lSaKrajnjim .and. nBroj>=nOd .and. nBroj<=ndo .or.;
-                        nBroj>nOd .and. nBroj<nDo
+
+if lSaKrajnjim==nil
+  lSaKrajnjim:=.t.
+endif
+
+if lSaKrajnjim .and. nBroj>=nOd .and. nBroj<=nDo .or. ;
+                nBroj>nOd .and. nBroj<nDo
     lVrati:=.t.
-  endif
+endif
+
 return lVrati
-*}
+
 
 
 function DioFajlaUNiz(cImeF,nPocRed,nUkRedova,nUkRedUF)
-*{  
+  
   local aVrati:={},nTekRed:=0,nOfset:=0,aPom:={}
   if nUkRedUF==nil; nUkRedUF:=BrLinFajla(cImeF); endif
   for nTekRed:=1 to nUkRedUF
@@ -557,11 +566,12 @@ function DioFajlaUNiz(cImeF,nPocRed,nUkRedova,nUkRedUF)
     endif
     nOfset:=aPom[2]
   next
+
 return aVrati
-*}
+
 
 function VratiOfset(cTrazeniTekst,nOdPojavljivanja,nDoPojavljivanja,cUFajlu,nVelicinaFajla)
-*{
+
  local nOfset:=0, aPom:={}, aOfsetOdDo:={0,0}, nPojava:=0
  do while nVelicinaFajla>nOfset            // ?? mozda treba >nOfset+1
    aPom:=SljedLin(cUFajlu,nOfset)
@@ -582,10 +592,10 @@ function VratiOfset(cTrazeniTekst,nOdPojavljivanja,nDoPojavljivanja,cUFajlu,nVel
  enddo
  aOfsetOdDo[2] := nOfset
 return aOfsetOdDo
-*}
+
 
 static function SendFile(cImeF)
-*{
+
 local cSendIme
 local cLokacija
 private cKom
@@ -615,4 +625,4 @@ cKom:="start "+cLokacija
 RUN &cKom
 
 return 1
-*}
+

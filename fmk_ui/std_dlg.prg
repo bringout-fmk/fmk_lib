@@ -17,7 +17,7 @@ STATIC cLDirekt := "0"
  */
  
 function Pitanje(cId, cPitanje, cOdgDefault, cMogOdg)
-*{
+
 local cPom
 local cOdgovor
 
@@ -65,7 +65,7 @@ else
 endif
 
 RETURN .f.
-*}
+
 
 
 /*! \fn Pitanje2(cId,cPitanje,cOdgDefault)
@@ -76,7 +76,7 @@ RETURN .f.
  */
  
 function Pitanje2(cId,cPitanje,cOdgDefault)
-*{
+
 local cOdg
 local nDuz:=LEN(cPitanje)+4
 local cPom:=SET(_SET_DEVICE)
@@ -108,7 +108,7 @@ set escape on; set confirm on
 SET(_SET_DEVICE,cPom)
 
 return cOdg
-*}
+
 
 // ----------------------------
 //  IzlazPrn(cDirekt)
@@ -127,7 +127,7 @@ if !gAppSrv
 endif
 
 return cDirekt
-*}
+
 
 
 /*! \fn UpitPrinter(cDirekt)
@@ -183,7 +183,7 @@ endif
  */
  
 function GetLozinka(nSiflen)
-*{
+
 local cKorsif
 
 cKorsif:=""
@@ -230,7 +230,7 @@ BoxC()
 
 set cursor on
 return padr(cKorSif,nSifLen)
-*}
+
 
 
 /*! \fn TrebaRegistrovati(nSlogova)
@@ -239,7 +239,7 @@ return padr(cKorSif,nSifLen)
  */
  
 function TrebaRegistrovati(nSlogova)
-*{
+
 if gAppSrv
 	return
 endif
@@ -267,7 +267,7 @@ if reccount2()>nSlogova
 
 endif
 return
-*}
+
 
 /*! \fn PozdravMsg(cNaslov,cVer,nk)
  *  \brief Ispisuje ekran sa pozdravnom porukom
@@ -277,7 +277,7 @@ return
  */
  
 function PozdravMsg(cNaslov,cVer, lGreska)
-*{
+
 local lInvert
 
 if gAppSrv
@@ -306,5 +306,5 @@ Set cursor off
 
 BoxC()
 return
-*}
+
 

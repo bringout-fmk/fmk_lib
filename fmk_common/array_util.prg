@@ -1,19 +1,6 @@
 #include "inkey.ch"
 #include "dbedit.ch"
 
-/****h SC_CLIB/ARRAY ***
- 
-*AUTOR
-   CA-clipper - sources
-
-*IME
-   Funkcije za rad sa matricama                                      
-    
-*DATUM
-   00.00.96
-
-***/
-
 // This static maintains the "current row" for ABrowse()
 static nRow
 
@@ -138,9 +125,7 @@ DO WHILE .NOT. TB:Stabilize()
 ENDDO
 
 IF nKey == 0
- DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
  nKey := INKEY()
- // nKey := INKEY(0)
 ENDIF
 
 if bUserF<>NIL
@@ -486,9 +471,7 @@ DO WHILE nKey <> K_ESC .AND. nKey <> K_RETURN
    ENDDO
 
    IF nKey == 0
-      DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
       nKey := INKEY()
-      // nKey := INKEY(0)
    ENDIF
 
    // Process the directional keys

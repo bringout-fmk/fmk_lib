@@ -101,7 +101,6 @@ if cDirekt=="D" .and. gPrinter<>"R" .and. gPrinter<>"G" .and. cOutfTxt<>"D"
 			MsgO("Printer nije ukljucen - ON LINE !")
 			nBroji2:=seconds()
 			DO WHILE NEXTKEY()==0
-				OL_YIELD()
 				CekaHandler(@nBroji2)
 			ENDDO
 			INKEY()
@@ -233,8 +232,6 @@ set console on
 cOutfTxt:= IzFMKIni('Printeri','DirektnoOUTFTXT','N')
 
 nSek2:=seconds()
-
-OL_Yield()
 
 Tone(440,2)
 Tone(440,2)
@@ -370,9 +367,6 @@ do while .t.
      else
         Beep(2)
         MsgO("Printer nije ukljucen ili je blokiran! PROVJERITE GA!")
-        DO WHILE NEXTKEY()==0
-	    OL_YIELD()
-	ENDDO
         INKEY()
         MsgC()
         if lastkey()==K_ESC
@@ -696,9 +690,6 @@ Box(,1,70)
 
 @ m_x+1,m_y+2 SAY Odsj(&cVar)
 
-DO WHILE NEXTKEY()==0
-	OL_YIELD()
-ENDDO
 INKEY()
 
 BoxC()
@@ -1042,7 +1033,7 @@ return ""
 // ----------------------------------------
 // ---------------------------------------
 function CurToExtBase(ccExt)
-*{ 
+ 
 LOCAL nArr:=SELECT()
   PRIVATE cFilter:=DBFILTER()
   copy structure extended to struct

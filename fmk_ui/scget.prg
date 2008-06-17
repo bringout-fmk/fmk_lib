@@ -19,16 +19,16 @@ static ReadProcLine
 
 // format of array used to preserve state variables
 #define GSV_KILLREAD		1
-#define GSV_BUMPTOP			2
-#define GSV_BUMPBOT			3
+#define GSV_BUMPTOP		2
+#define GSV_BUMPBOT		3
 #define GSV_LASTEXIT		4
-#define GSV_LASTPOS			5
+#define GSV_LASTPOS		5
 #define GSV_ACTIVEGET		6
 #define GSV_READVAR 		7
 #define GSV_READPROCNAME	8
 #define GSV_READPROCLINE	9
 
-#define GSV_COUNT			9
+#define GSV_COUNT		9
 
 // Modifications
 #ifndef NOCHANGES
@@ -90,7 +90,6 @@ ENDIF
 
 do while ( pos <> 0 )
 
-	//ol_yield()
 
 	// get next GET from list and post it as the active GET
 	get := GetList[pos]
@@ -140,7 +139,6 @@ if ( GetPreValSC(get) )
 		
 		do while ( get:exitState == GE_NOEXIT )
 			
-			ol_yield()
 
 			// check for initial typeout (no editable positions)
 			if ( get:typeOut )
@@ -149,7 +147,6 @@ if ( GetPreValSC(get) )
 
 			// apply keystrokes until exit
 			do while ( get:exitState == GE_NOEXIT )
-				ol_yield()
 				GetApplyKSC( get, MyInKeySC() )
 			enddo
 
@@ -831,14 +828,10 @@ local nCursor
 nBroji2:=seconds()
 nTimeout:=seconds()
 
-do while NEXTKEY()==0
-	ol_yield()
-enddo
 nKey:=INKEY()
 
 if (gSQL=="D")
 	do while .t.
-		ol_yield()
 		GwStaMai(@nBroji2)
 		if !(GW_STATUS == "NA_CEKI_K_SQL")
 			Exit
@@ -882,9 +875,6 @@ return .t.
 // -----------------------------
 function InkeySc(nSec)
 if (nSec==0) 
-	do while NEXTKEY()==0
-	 	ol_yield()
-	enddo
 	return INKEY()
 else
 	return INKEY(nSec)

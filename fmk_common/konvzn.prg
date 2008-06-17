@@ -61,7 +61,7 @@ if i<>j
 endif
 
 return cTekst
-*}
+
 
 
 
@@ -70,7 +70,7 @@ return cTekst
  */
  
 function StrKZN(cInput, cIz, cU)
-*{
+
 local a852:={"Ê","—","¨","è","¶","Á","–","ü","Ü","ß"}
 local a437:={"[","\","^","]","@","{","|","~","}","`"}
 local aEng:={"S","D","C","C","Z","s","d","c","c","z"}
@@ -151,7 +151,7 @@ endif
 cKrajnjeStanjeSif:=cRet
 
 return cRet
-*}
+
 
 
 function KSto7(cStr)

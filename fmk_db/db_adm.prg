@@ -1,10 +1,5 @@
 #include "fmk.ch"
 #include "fileio.ch"
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
  
 *static string
 static OID_ASK:="0"
@@ -188,7 +183,6 @@ if FERROR()<>0
       else
         cls
         ? "Ne mogu otvoriti",cFulDbf
-        DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
         INKEY()
       endif
       FCLOSE(nH)
@@ -991,10 +985,4 @@ return  cIme
 
 
 static function Every()
-
-//nSlogova=nSlogova+1
-//@ 24, 10 SAY "Slogova: "+STR(nSlogova*100)
-//OL_Yield()
-//return
-
-
+return

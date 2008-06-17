@@ -5,7 +5,7 @@
  */
  
 function KorPreg()
-*{
+
 local nSir
 
 O_KORISN
@@ -35,11 +35,10 @@ ObjDbEdit ('ks',10,nSir,{|| EdKorisn() },"",iif(System .or. (KLevel='0' .and. Ri
 
 closeret
 return
-*}
 
 
 function EdKorisn()
-*{
+
 do case
   case Ch==K_CTRL_N
       if System .or. (KLevel='0' .and. Right(trim(ImeKorisn),1)='1')
@@ -77,11 +76,11 @@ do case
 
 endcase
 return DE_CONT
-*}
+
 
 
 function GetKorisn(fnovi)
-*{
+
 Box("",8,60,.F.,'Unos novog korisnika,sifre')
 SET CURSOR ON
 @ m_x+1,m_y+2 SAY "Ime korisnika......"
@@ -100,7 +99,7 @@ endif
 READ
 BoxC()
 return lastkey()
-*}
+
 
 
 /*
@@ -108,45 +107,32 @@ return lastkey()
 * OPIS  : Provjerava da li postoji zadato ime korisnika
 * povziva je KorKreir()
 */
-
 static function ProvIme(m_ime)
-*{
+
 local nRec:=recno()
 
-*seek m_ime
-*IF Found()
-*  Beep(2)
-*  Msg(" Ime vec postoji ! ",15)
-*  go nRec
-*  RETURN .F.
-*ELSE
-*  go nRec
-*  RETURN .T.
-*END IF
-
 return .t.
-*}
+
 
 
 function Zabrana()
-*{
+
 if !( System  .or. (KLevel='0' .and. Right(trim(ImeKorisn),1)='1') )
   MsgO("Samo korisnik SYSTEM ima pristup ovoj opciji")
   Beep(4)
   DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
   INKEY()
-  // Inkey(0)
   MsgC()
   return .t.
 else
  return .f.
 endif
 return
-*}
+
 
 
 function Secur()
-*{
+
 PRIVATE ImeKol,Kol
 Kol:={1,2,3,4,5,6}
 
@@ -162,11 +148,11 @@ Kol:={1,2,3}
 ObjDbEdit ('ks',10,50,{|| EdSecur() },"","",.f.,"Sistem pristupa opcijama programa")
 closeret
 return
-*}
+
 
 
 function EdSecur()
-*{
+
 do case
   case Ch==K_CTRL_N
        GetSecur(.t.)
@@ -184,11 +170,11 @@ do case
 
 endcase
 return DE_CONT
-*}
+
 
 
 function GetSecur(fnovi)
-*{
+
 Box("",8,60,.F.,'Definicija pristupa')
 SET CURSOR ON
 
@@ -219,10 +205,10 @@ if lastkey()<>K_ESC
 endif
 
 return NIL
-*}
+
 
 function ServisKom
-*{
+
 local cScr
 local izbor
 
@@ -263,5 +249,5 @@ do while .t.
    restore screen from cscr
 enddo
 return
-*}
+
 

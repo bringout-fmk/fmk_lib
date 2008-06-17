@@ -45,7 +45,7 @@ return SC_FReadLn(nHandle, nLines, nLineLength, cDelim)
 
 
 function SC_FReadLn(nHandle, nLines, nLineLength, cDelim)
-*{
+
 LOCAL nCurPos, nFileSize, nChrsToRead, nChrsRead
 LOCAL cBuffer, cLines
 LOCAL nCount
@@ -106,6 +106,6 @@ nCount++
 ENDDO
 
 RETURN cLines
-*}
+
 
 

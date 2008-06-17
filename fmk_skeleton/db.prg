@@ -3,7 +3,7 @@
 #include "hbclass.ch"
 
 function TDBNew(oDesktop, cDirPriv, cDirKum, cDirSif)
-*{
+
 local oObj
 
 CLASS TDB
@@ -199,11 +199,11 @@ lURp:=fURp
 
 JelReadOnly()
 return
-*}
+
 
 
 *void TDB::modstruAll()
-*{
+
 
 METHOD modstruAll() CLASS TDB
 local i
@@ -233,11 +233,11 @@ use
 ::lAdmin:=.f.
 return
 
-*}
+
 
 
 *string TDB::setDirPriv(string cDir)
-*{
+
 METHOD setDirPriv(cDir) CLASS TDB
 local cPom
 
@@ -255,11 +255,11 @@ endif
 cDirPriv:=::cDirPriv
 
 return cPom
-*}
+
 
 
 *string TDB::setDirSif(string cDir)
-*{
+
 METHOD setDirSif(cDir) CLASS TDB
 local cPom
 
@@ -276,11 +276,11 @@ endif
 cDirSif:=::cDirSif
 
 return cPom
-*}
+
 
 
 *string TDB::setDirKum(string cDir)
-*{
+
 METHOD setDirKum(cDir) CLASS TDB
 local cPom
 
@@ -305,11 +305,11 @@ cDirRad:=::cDirKum
 SET(_SET_DEFAULT,trim(cDir))
 
 return cPom
-*}
+
 
 
 *string TDB::setSigmaBD(string cDir)
-*{
+
 METHOD setSigmaBD(cDir) CLASS TDB
 local cPom
 // dosadasnja vrijednost varijable
@@ -320,62 +320,62 @@ if (gKonvertPath=="D")
 endif
 ::cSigmaBD:=ToUnix(cDir)
 return cPom
-*}
+
 
 
 *string TDB::setUser(string cUser)
-*{
+
 METHOD setUser(cUser) CLASS TDB
 local cPom
 // dosadasnja vrijednost varijable
 cPom:=::cUser
 ::cUser:=cUser
 return cPom
-*}
+
 
 
 *string TDB::setPassword(integer nPassword)
-*{
+
 METHOD setPassword(nPassword) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nPassword
 ::nPassword:=nPassword
 return nPom
-*}
+
 
 
 *string TDB::setGroup1(integer nGroup)
-*{
+
 METHOD setGroup1(nGroup) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nGroup1
 ::nGroup1:=nGroup
 return nPom
-*}
+
 
 
 *string TDB::setGroup2(integer nGroup)
-*{
+
 METHOD setGroup2(nGroup) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nGroup2
 ::nGroup2:=nGroup
 return nPom
-*}
+
 
 
 *string TDB::setGroup3(integer nGroup)
-*{
+
 METHOD setGroup3(nGroup) CLASS TDB
 local nPom
 // dosadasnja vrijednost varijable
 nPom:=::nGroup3
 ::nGroup3:=nGroup
 return nPom
-*}
+
 
 
 
@@ -386,7 +386,7 @@ return nPom
  */
  
 *void TDB::mInstall()
-*{
+
 METHOD mInstall() CLASS TDB
 local i, cPom, aLst
 private nOldIzbor
@@ -447,7 +447,7 @@ Menu_SC("imod")
 
 ::lAdmin:=.f.
 return
-*}
+
 
 
 /*! \fn TDB::vratiSez()
@@ -456,7 +456,7 @@ return
  
 *void TDB::vratiSez()
 METHOD vratiSez(oDatabase) CLASS TDB
-*{
+
 
 if ::oApp:limitKLicence(AL_GOLD)
 	return
@@ -554,7 +554,7 @@ KrajskSez(cOldSezona)
 
 ::lAdmin:=.f.
 return
-*}
+
 
 
 *string KParams_se;
@@ -623,10 +623,10 @@ else
 endif
 
 return
-*}
+
 
 *void TDB:saveSezona(string cValue)
-*{
+
 METHOD saveSezona(cValue) CLASS TDB
 
 #ifdef CLIP
@@ -640,10 +640,10 @@ Wpar("se", cValue, gSQL=="D")
 select kparams
 use
 return
-*}
+
 
 *void TDB:saveRadimUSezona(string cValue)
-*{
+
 METHOD saveRadimUSezona(cValue) CLASS TDB
 O_KPARAMS
 private cSection:="1"
@@ -662,7 +662,7 @@ endif
 SELECT kparams
 USE
 return
-*}
+
 
 
 /*! \fn *void TDB::radiUSezonskomPodrucju()
@@ -671,7 +671,7 @@ return
  */
 
 *void TDB::radiUSezonskomPodrucju(bool lForceRadno)
-*{
+
 METHOD radiUSezonskomPodrucju (lForceRadno) CLASS TDB
 
 ::setIfNil()
@@ -695,10 +695,10 @@ else
 		::saveRadimUSezona(::cRadimUSezona)
 endif
 
-*}
+
 
 *void TDB:setIfNil()
-*{
+
 METHOD setIfNil() CLASS TDB
 if (::oDesktop==nil)
 	::oDesktop:=goModul:oDesktop
@@ -707,7 +707,7 @@ if (::oApp==nil)
 	::oApp:=goModul
 endif
 return
-*}
+
 
 METHOD scan() CLASS TDB
 

@@ -1,11 +1,5 @@
 #include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
- 
 /*! \file sclib/base/2g/app.prg
  *  \brief Bazni aplikacijski objekat - TAppMod
  */
@@ -77,18 +71,18 @@ altd()
 ::lTerminate:=.f.
 
 return
-*}
+
 
 /*! \fn *bool TAppMod::hasParent()
  *  \brief ima li objekat "roditelja"
  */
  
 *bool TAppMod::hasParent()
-*{
+
 method hasParent()
 
 return !(::oParent==nil)
-*}
+
 
 
 /*! \fn *TObject TAppMod::setParent(TObject oParent)
@@ -97,13 +91,13 @@ return !(::oParent==nil)
  *  Roditelj je programski modul (objekat) koji je izvrsio kreiranje ovog objekta. To bi znacilo za oPos to parent oFMK - "master" aplikacijski modul koji poziva pojedinacne programske module (oFIN, oKALK, oFAKT)
  */
 *TObject TAppMod::setParent(TObject oParent)
-*{
+
 method setParent(oParent)
 
 ::parent:=oParent
 
 return
-*}
+
 
 
 /*! \fn *TObject TAppMod::getParent()
@@ -111,23 +105,23 @@ return
  */
 
 *TObject TAppMod::getParent()
-*{
+
 method getParent()
 return ::oParent
-*}
+
 
 
 *string TAppMod::setName(string cName)
-*{
+
 method setName()
 ::cName:="SCAPP"
 return
-*}
+
 
 
 
 *void TAppMod::run()
-*{
+
 method run()
 
 if ::oDesktop==nil
@@ -151,11 +145,11 @@ endif
 ::MMenu()
 
 return
-*}
+
 
 
 *void TAppMod::gProc(char Ch)
-*{
+
 method gProc(Ch)
 local lPushWa
 local i
@@ -209,7 +203,7 @@ do case
 endcase
 
 return
-*}
+
 
 
 /*! \fn *void TAppMod::quit(bool lVratiseURP)
@@ -220,7 +214,7 @@ return
  */
  
 *void TAppMod::quit(bool lVratiSeURP)
-*{
+
 method quit(lVratiseURP)
 
 local cKontrDbf
@@ -263,11 +257,11 @@ if !(::hasParent())
 endif
 
 return
-*}
+
 
 
 *void TAppMod::gParams()
-*{
+
 method gParams()
 
 local cFMKINI:="N"
@@ -422,7 +416,7 @@ if lPushWa
 	PopWa()
 endif
 return
-*}
+
 
 
 
@@ -540,7 +534,7 @@ return .t.
  */
 
 *void TAppMod::setTGVars()
-*{
+
 method setTGVars()
 
 ::cSqlLogBase:=IzFmkIni("Sql","SqlLogBase","c:"+SLASH+"sigma")
@@ -559,7 +553,7 @@ endif
 ::oDesktop:=TDesktopNew()
 	
 return
-*}
+
 
 /*! \fn TAppMod::limitKLicenca(nLevel)
  *  \brief Prikazuje poruku o ogranicenosti korisnicke licence
@@ -567,7 +561,7 @@ return
  */
 
 *void TAppMod::limitKLicenca(nLevel)
-*{
+
 method limitKLicenca(nLevel)
 
 if (::nKLicenca==nil)
@@ -579,4 +573,4 @@ if (nLevel>::nKLicenca)
 	return .t.
 endif
 return .f.
-*}
+

@@ -34,14 +34,14 @@ endif
 
 
 function DiskPrazan(cDisk)
-*{
+
  if diskspace(asc(cDisk)-64)<15000
    Beep(4)
    Msg("Nema dovoljno prostora na ovom disku, stavite drugu disketu",6)
    return .f.
  endif
 return .t.
-*}
+
 
 *string FmkIni_ExePath_POS_PitanjeUgasiti;
 
@@ -52,7 +52,7 @@ return .t.
  */
 
 function UgasitiR()
-*{
+
 local cPitanje
 
 if (gSQL=="D")
@@ -78,7 +78,7 @@ else
 endif
 
 return
-*}
+
 
 
 /*! \file ChangeEXT(cImeF,cExt, cExtNew, fBezAdd)
@@ -106,7 +106,7 @@ return
  */
 
 function ChangeEXT(cImeF,cExt, cExtNew, fBezAdd)
-*{
+
 local cTacka
 
 if fBezAdd==NIL
@@ -125,11 +125,11 @@ if !EMPTY(cTacka) .and.  RIGHT(cImeF,4)<>cTacka+cExtNew
   cImeF:=cImeF+cTacka+cExtNew
 endif
 return  cImeF
-*}
+
 
 
 function DirExists(cDir1)
-*{
+
 
 local nH
 
@@ -151,10 +151,10 @@ else
  ferase(ToUnix(cDir1+SLASH+'X'))
  return .t.
 endif
-*}
+
 
 function PostDir(cDir1)
-*{
+
 local cDirTek, fPostoji
 
 cDir1:=ToUnix(cDir1)
@@ -167,7 +167,7 @@ else
 endif
 dirchange(cDirTek)
 return fPostoji
-*}
+
 
 
 /*! \fn BrisiSFajlove(cDir)
@@ -184,7 +184,7 @@ return fPostoji
   */
 
 function BrisiSFajlove(cDir, nDana)
-*{
+
 local cFile
 
 if nDana == nil
@@ -200,10 +200,10 @@ do while !empty(cFile)
     cfile:=fileseek()
 enddo
 return NIL
-*}
+
 
 function ShowMem()
-*{
+
 Box(,3,50)
            @ m_x+1,m_y+2 SAY "(0) :"
 	   ?? memory()
@@ -215,10 +215,10 @@ Box(,3,50)
 BoxC()
 
 RETURN
-*}
+
 
 function ToUnix(cFileName)
-*{
+
 local nPos
 
 #ifdef CLIP
@@ -254,15 +254,15 @@ cFileName:=strtran(cFileName,"/","\")
 return UPPER(cFileName)
 
 #endif
-*}
+
 
 
 
 
 function ShowOsInfo(gsOsInfo)
-*{
+
 
 @ 24, 2 SAY gsOsInfo
 
 return
-*}
+

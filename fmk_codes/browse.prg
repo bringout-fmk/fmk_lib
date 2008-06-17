@@ -1978,7 +1978,6 @@ Msgc()
 #IFDEF PROBA
  CLS
  ? ncount, ncount2, cFilt
- DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
  INKEY()
  // inkey(0)
 #ENDIF

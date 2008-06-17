@@ -1,13 +1,5 @@
 #include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
-
-
-
 /*! \ingroup ini
   * \var *string FmkIni_ExePath_ROBA_BezIstihNaziva
   * \brief Da li ce se zabraniti unos istog naziva robe pod razlicitom sifrom?
@@ -17,9 +9,8 @@
 *string FmkIni_ExePath_ROBA_BezIstihNaziva;
 
 
-
 function SetFmkRGVars()
-*{
+
 public gUVarPP
 public glProvNazRobe
 public gRobaBlock
@@ -71,5 +62,5 @@ gFPicKol:="0"
 
 gDuzSifINI:=IzFmkIni('Sifroba','DuzSifra','10',SIFPATH)
 return
-*}
+
 

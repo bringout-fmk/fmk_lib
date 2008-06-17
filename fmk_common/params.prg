@@ -24,7 +24,7 @@
 ****/
 
 function RPar(cImeVar,xArg)
-*{
+
 local cPom, clTip
 
 SEEK cSection+cHistory+cImeVar+"1"
@@ -57,7 +57,7 @@ if clTip=="C" .and. gKonvertPath=="D" .and. ( ":\" $ xArg )
 endif
 
 RETURN NIL
-*}
+
 
 /****v SC_PAR/sekcija_KonvertPath ***
 
@@ -84,7 +84,7 @@ RETURN NIL
 
 
 function KonvertPath(cPath)
-*{
+
 local cPom, nKNum, cPravilo
 
 
@@ -104,10 +104,10 @@ for i:=1 to nKNum
   endif
 next
 return
-*}
+
 
 function WPar(cImeVar, xArg, fSQL, cAkcija)
-*{
+
 local cPom, nRec
 
 if TYPE("gSql")<>"C"
@@ -237,10 +237,10 @@ do while len(cPom)<>0
 enddo
 
 return nil
-*}
+
 
 static function NextAkcija(cAkcija)
-*{
+
 
 if goModul:lSqlDirektno
 	cAkcija:="L"
@@ -255,10 +255,10 @@ elseif cAkcija=="Z"
 endif
 
 return
-*}
+
 
 function Params1()
-*{
+
 local ncx,ncy,nOldc
 
 if cHistory=="*" 
@@ -281,10 +281,10 @@ if cHistory=="*"
 endif
 
 return NIL
-*}
+
 
 function Params2()
-*{
+
 local ncx,ncy,nOldC
 
 tone(320,1)
@@ -292,7 +292,7 @@ tone(320,1)
 return .t.
 
 function HistUser(Ch)
-*{
+
 local nRec,cHi
 
 do case
@@ -321,4 +321,4 @@ do case
 endcase
 
 return nil
-*}
+

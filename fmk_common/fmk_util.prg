@@ -2,11 +2,6 @@
 #include "achoice.ch"
 #include "fileio.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
  
 /*! \fn UBrojDok(nBroj,nNumDio,cOstatak)
  * \brief Pretvara Broj podbroj u string format "Broj dokumenta"
@@ -16,15 +11,15 @@
  */
  
 function UBrojDok(nBroj,nNumdio,cOstatak)
-*{
+
 return padl( alltrim(str(nBroj)), nNumDio, "0")+cOstatak
-*}
+
 
 /*! \fn Calc()
  *  \brief Kalkulator
  */
 function Calc()
-*{
+
 local GetList:={}
 private cIzraz:=SPACE(40)
 
@@ -66,15 +61,8 @@ Box(,3,60)
 			exit
 		endif
   		
-		//if upper(left(cIzraz,1)==="K"; exit; endif
-  		
-		DO WHILE NEXTKEY()==0
-			OL_YIELD()
-		ENDDO
-  		
 		INKEY()
   		
-		// inkey(0)
 	enddo
 BoxC()
 
@@ -84,9 +72,6 @@ if type(cIzraz)<>"N"
     		return 0
   	else
     		private cVar:=readvar()
-    		DO WHILE NEXTKEY()==0
-			OL_YIELD()
-		ENDDO
     		INKEY()
     		// inkey(0)
     		if type(cVar) == "C" .or. (type("fUmemu")=="L" .and. fUMemu)
@@ -107,7 +92,7 @@ else
 endif
 
 return
-*}
+
 
 
 // -----------------------------------
@@ -137,7 +122,7 @@ return
 
 
 function kbroj(cSifra)
-*{
+
 local i,cPom,nPom,nKontrola, nPom3
 
 cSifra:=alltrim(cSifra)
@@ -172,11 +157,11 @@ if round(nkontrola,2)>=10
    nKontrola:=0
 endif
 return cSifra+alltrim(str(nKontrola,0))
-*}
+
 
 
 function round2(nizraz,niznos)
-*{
+
 
 *
 * pretpostavlja definisanu globalnu varijablu g50F
@@ -206,7 +191,7 @@ else
    return round(nizraz,niznos)
 endif
 return
-*}
+
 
 
 // --------------------------------------
@@ -269,11 +254,11 @@ IF nK1==0 .or. type(cIzraz)<>"N"
   	KEYBOARD CHR(K_ENTER)
   endif
 RETURN
-*}
+
 
 
 static function DefKonv()
-*{
+
  LOCAL GetList:={}, bKeyOld:=SETKEY(K_ALT_V,NIL)
  PushWA()
  select 99
@@ -310,11 +295,11 @@ static function DefKonv()
  PopWA()
  SETKEY(K_ALT_V,bKeyOld)
 RETURN
-*}
+
 
 
 function Adresar()
-*{
+
 
 PushWa()
 select (F_ADRES)
@@ -336,11 +321,11 @@ USE
 
 PopWa()
 return nil
-*}
+
 
 
 function P_Adres(cId,dx,dy)
-*{
+
 
 local fkontakt:=.f.
 
@@ -417,7 +402,7 @@ enddo
 PopWa()
 
 return PostojiSifra(F_ADRES,1,15,77,"Adresar:",@cId,dx,dy, {|Ch| AdresBlok(Ch)} )
-*}
+
 
 function Pkoverte()
 
@@ -574,7 +559,7 @@ RETURN .T.
 
 
 function BrisiIzDir (cDir)
-*{
+
 LOCAL aFiles, nCnt, nRes
   Beep (4)
   Box (,1,60)
@@ -591,12 +576,12 @@ LOCAL aFiles, nCnt, nRes
   BoxC()
 
 return
-*}
+
 
 function FmkSviVer()
-*{
+
 return DBUILD
-*}
+
 
 // ------------------------
 // ------------------------

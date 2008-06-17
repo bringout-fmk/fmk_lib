@@ -1,9 +1,10 @@
 #include "fmk.ch"
 
-/****h SC_CLIB/SC_QL ***
+/****
+
 * 
 *AUTOR
-  Ernad Husremovic, ernad@sigma-com.net
+  Ernad Husremovic, hernad@bring.out.ba
 
 *IME 
  SIGMA-COM Query language (jezik za pretrazivanje  tabela) 
@@ -19,7 +20,6 @@
   04.2002
 
 ****/
-
 
 
 static aOperators:={"#",">=",">","<",">","<>","!=","$","--","*","?"}
@@ -222,9 +222,7 @@ nLen:=LEN(cSifra)
     if cProlaz=="" .or. left(cProlaz,2)="DE"
       MsgO("Greska u sintaksi !!!")
       Beep(4)
-      DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
       INKEY()
-      // Inkey(0)
       MsgC()
       return NIL
     else

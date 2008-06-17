@@ -31,7 +31,7 @@ static aMsgStack:={}
  */
 
 function Menu(MenuId, Items, ItemNo, Inv, cHelpT, nPovratak, aFixKoo, nMaxVR)
-*{
+
 local Length
 local N
 local OldC
@@ -154,11 +154,11 @@ END IF
 SetColor(OldC)
 SET(_SET_DEVICE,cPom)
 return ItemNo
-*}
+
 
 
 function Calc_xy(N,Length)
-*{
+
 // OPIS  : Odredjuje poziciju za ispis sljedeceg menija na
 //        osnovu pozicije kursora M-x i m_y
 
@@ -182,7 +182,7 @@ ELSE
   m_y=INT((80-Length-2)/2)
 END IF
 return
-*}
+
 
 
 // vrati pravu vrijednost itema...
@@ -241,7 +241,7 @@ return cAction
 */
 
 function Msg(text, sec, xPos)
-*{
+
 local l,msg_x1,msg_x2,msg_y1,msg_y2,cPom:=SET(_SET_DEVICE)
 LOCAL nLen, nHashPos, aText := {}, nCnt, nBrRed := 0
 
@@ -289,12 +289,12 @@ Inkey(Sec)
 MsgC(msg_x1,msg_y1,msg_x2,msg_y2)
 SET(_SET_DEVICE,cPom)
 return
-*}
+
 
 
 
 function MsgO(text,sec)
-*{
+
 local l
 local msg_x1
 local msg_x2
@@ -323,10 +323,10 @@ StackPush(aMsgStack,{if(setcursor()==0,0,iif(readinsert(),2,1)),setcolor(Invert)
 set cursor off
 SET(_SET_DEVICE,cPom)
 return
-*}
+
 
 function MsgC(msg_x1,msg_y1,msg_x2,msg_y2)
-*{
+
 local aMsgPar
 local l
 
@@ -345,7 +345,7 @@ if len(aMsgStack)>0
 endif
 
 return
-*}
+
 
 /*! \fn Box(BoxId, N, Length, Inv, chMsg, cHelpT)
  *  \brief Otvara prozor BoxID dimenzija (N x Length), invertovan 
@@ -357,7 +357,7 @@ return
  */
 
 function Box( BoxId, N, Length, Inv, chMsg, cHelpT )
-*{
+
 
 Local x1,y1,x2,y2,LocalC, cPom, cNaslovBoxa
 
@@ -415,10 +415,10 @@ ENDIF
 SET(_SET_DEVICE,cPom)
 
 return
-*}
+
 
 function BoxC()
-*{
+
 
 local aBoxPar[11], cPom
 
@@ -456,7 +456,7 @@ endif
 SET(_SET_DEVICE,cPom)
 
 return
-*}
+
 
 /*! \fn OpcTipke(aNiz)
  *  \brief prikaz opcija u Browse-u
@@ -468,7 +468,7 @@ return
  */
  
 function OpcTipke(aNiz)
-*{
+
 LOCAL i:=0,j:=0,k:=0,nOmax:=0,nBrKol,nOduz,nBrRed,xVrati:=""
 IF VALTYPE(aNiz)=="A"
  AEVAL(aNiz,{|x| IF(LEN(x)>nOmax,nOmax:=LEN(x),)})
@@ -488,19 +488,19 @@ IF VALTYPE(aNiz)=="A"
  xVrati:=nBrRed+1
 ENDIF
 return xVrati
-*}
+
 
 function BoxCLS()
-*{
+
 local aBoxPar[11]
 aBoxPar:=aBoxStack[len(aBoxStack)]
 
 @ aBoxPar[1]+1,aBoxPar[2]+1 clear to aBoxPar[1]+aBoxPar[3],aBoxPar[2]+aBoxPar[4]+1
 return
-*}
+
 
 function Beep(Nputa)
-*{
+
 local i
 
 #ifdef CLIP
@@ -512,10 +512,10 @@ for i:=1 to Nputa
 next
 
 return
-*}
+
 
 function CentrTxt(tekst,lin)
-*{
+
 LOCAL kol
 
 if tekst<>NIL
@@ -529,7 +529,7 @@ if tekst<>NIL
 endif
 
 return
-*}
+
 
 // --------------------------------------------------------
 // --------------------------------------------------------
@@ -667,7 +667,7 @@ return nItemNo + nCtrlKeyVal
  */
  
 function AChoice3(x1,y1,x2,y2,Items,f1,cFunc,nItemNo)
-*{
+
 
 local i,ii,nWidth,nLen,fExit,fFirst,nOldCurs,cOldColor,nOldItemNo,cSavC
 local nGornja
@@ -763,7 +763,7 @@ enddo
 setcursor(iif(nOldCurs==0,0,iif(readinsert(),2,1)))
 setcolor(cOldColor)
 return nItemNo + nCtrlKeyVal
-*}
+
 
 // ------------------------------------
 // ------------------------------------
@@ -776,7 +776,7 @@ LOCAL xM:=0,yM:=0
 return nIzb
 
 function Menu3(x1,y1,aNiz,nIzb,cNasl)
-*{
+
 LOCAL xM:=0,yM:=0
  xM:=LEN(aNiz); AEVAL(aNiz,{|x| x:=" "+x+" ",IF(LEN(x)>yM,yM:=LEN(x),)})
  h:=ARRAY(LEN(aNiz))
@@ -790,10 +790,10 @@ LOCAL xM:=0,yM:=0
  ENDIF
  Prozor0()
 return nIzb
-*}
+
 
 function KorMenu2
-*{ 
+ 
  LOCAL nVrati:=2,nTipka:=LASTKEY()
  DO CASE
    CASE nTipka==K_ESC
@@ -802,10 +802,10 @@ function KorMenu2
      nVrati:=1
  ENDCASE
 return nVrati
-*}
+
 
 function Prozor1(v1,h1,v2,h2,cNaslov,cBojaN,cOkvir,cBojaO,cBojaT,nKursor)
-*{
+
 
 LOCAL cPom:=SET(_SET_DEVICE)
  
@@ -828,10 +828,10 @@ IF cNaslov!=NIL
 ENDIF
 SET(_SET_DEVICE,cPom)
 return
-*}
+
 
 function Prozor0()
-*{
+
 local aSt:=StackPop(aPrStek)
 local cPom:=SET(_SET_DEVICE)
 
@@ -842,7 +842,7 @@ SETCURSOR(aSt[9])
 @ aSt[1],aSt[2] SAY ""
 SET(_SET_DEVICE,cPom)
 return
-*}
+
 
 
 /*! \fn Postotak(nIndik,nUkupno,cTekst,cBNasl,cBOkv,lZvuk)
@@ -871,7 +871,7 @@ return
 */
 
 function Postotak(nIndik,nUkupno,cTekst,cBNasl,cBOkv,lZvuk)
-*{
+
  STATIC nCilj,cKraj,cNas,cOkv
  LOCAL nKara:=0,cPom:=SET(_SET_DEVICE)
  IF lZvuk==NIL; lZvuk:=.t.; ENDIF
@@ -903,7 +903,7 @@ function Postotak(nIndik,nUkupno,cTekst,cBNasl,cBOkv,lZvuk)
   ENDCASE
   SET(_SET_DEVICE,cPom)
 return
-*}
+
 
 
 /*! \fn LomiGa(cTekst,nOrig,nLin,nDuz)
@@ -917,7 +917,7 @@ return
  */
 
 function LomiGa(cTekst,nOrig,nLin,nDuz)
-*{
+
 
   LOCAL nTek:=LEN(cTekst), aPom:={}, i:=0, nDO, cPom:="", cPom2:=""
   IF nLin==NIL; nLin:=0; ENDIF
@@ -954,7 +954,7 @@ function LomiGa(cTekst,nOrig,nLin,nDuz)
   ENDDO
 
 return cTekst
-*}
+
 
 /*! \fn KudaDalje(cTekst, aOpc, cPom)
  *  \brief Meni od maksimalno 15 opcija opisanih u nizu aOpc
@@ -966,7 +966,7 @@ return cTekst
  */
 
 function KudaDalje(cTekst,aOpc,cPom)
-*{
+
 LOCAL nVrati:=1,nTipka,i:=0,nOpc:=LEN(aOpc),nRedova:=1,p:=0
   LOCAL nXp:=0,aTxt:={},cPom1,cPom2
   //IF cPom!=NIL; PushHT(cPom); ENDIF
@@ -1016,10 +1016,10 @@ LOCAL nVrati:=1,nTipka,i:=0,nOpc:=LEN(aOpc),nRedova:=1,p:=0
   ENDDO
   Prozor0()
 return nVrati
-*}
+
 
 function Ocitaj(nObl,xKljuc,nPbr,lInd)
-*{
+
 
 // vraca trazeno polje (nPbr+1) iz
 // sifrarn.za zadanu vrijednost indeksa 'xKljuc'
@@ -1043,17 +1043,17 @@ function Ocitaj(nObl,xKljuc,nPbr,lInd)
   ENDIF
   PopWA()
 return xVrati
-*}
+
 
 function LENx(xVrij)
-*{
+
  LOCAL cTip:=VALTYPE(xVrij)
 return IF(cTip=="D",8,IF(cTip=="N",LEN(STR(xVrij)),LEN(xVrij)))
-*}
+
 
 
 function SrediDat(d_ulazni)
-*{
+
 
   LOCAL pomocni
   IF EMPTY(d_ulazni)==.F.
@@ -1062,10 +1062,10 @@ function SrediDat(d_ulazni)
      pomocni:=SPACE(17)
   ENDIF
 return pomocni
-*}
+
 
 function AutoSifra(nObl,cSifra)
-*{
+
 
 IF cSifra!=NIL.and.LEN(ALLTRIM(cSifra))>1.and.gAutoSif=="D"
    PushWA()
@@ -1077,19 +1077,19 @@ IF cSifra!=NIL.and.LEN(ALLTRIM(cSifra))>1.and.gAutoSif=="D"
    PopWA()
  ENDIF
 return
-*}
+
 
 
 function CistiTipke()
-*{
+
 
  KEYBOARD CHR(0)
  DO WHILE !INKEY()==0; ENDDO
 return
-*}
+
 
 function AMFILL(aNiz,nElem)
-*{
+
 
  LOCAL i:=0,rNiz:={},aPom:={}
  FOR i:=1 TO nElem
@@ -1098,10 +1098,10 @@ function AMFILL(aNiz,nElem)
   aPom:={}
  NEXT
 return rNiz
-*}
+
 
 function KonvZnakova(cTekst)
-*{
+
 
  // jedan par: { 7-bit znak, 852 znak }
  LOCAL aNiz:={  {"[","Ê"}, {"{","Á"}, {"}","Ü"}, {"]","è"}, {"^","¨"},;
@@ -1115,10 +1115,10 @@ function KonvZnakova(cTekst)
  ENDIF
  AEVAL(aNiz,{|x| cTekst:=STRTRAN(cTekst,x[i],x[j])})
 return cTekst
-*}
+
 
 function Zvuk(nTip)
-*{
+
 
  IF nTip==NIL; nTip:=0; ENDIF
  DO CASE
@@ -1132,11 +1132,11 @@ function Zvuk(nTip)
      Tone(700,2)
  ENDCASE
 return
-*}
+
 
 
 function ShemaBoja(cIzbor)
-*{
+
  LOCAL cVrati:=cbshema
  IF ISCOLOR()
    DO CASE
@@ -1177,11 +1177,11 @@ function ShemaBoja(cIzbor)
  ENDIF
  cbshema:=cIzbor
 return cVrati
-*}
+
 
 
 function NForma1(cPic)
-*{
+
 
  LOCAL nPoz:=0,i:=0
  cPic:=ALLTRIM(cPic)
@@ -1191,15 +1191,15 @@ function NForma1(cPic)
    cPic:=STUFF(cPic,nPoz-i*3,0," ")
  NEXT
 return cPic
-*}
+
 
 function NForma2(cPic)
-*{
+
 return ( cPic := STRTRAN(NForma1(cPic)," ",",") )
-*}
+
 
 function FormPicL(cPic,nDuz)
-*{
+
 
  LOCAL nDec,cVrati,i,lZarez:=.f.,lPrazno:=.f.
  cPic:=ALLTRIM(cPic)
@@ -1224,10 +1224,10 @@ function FormPicL(cPic,nDuz)
  NEXT
 return cVrati
 
-*}
+
 
 function VarEdit(aNiz,x1,y1,x2,y2,cNaslov,cBoje)
-*{
+
 LOCAL GetList:={},cbsstara:=ShemaBoja(cBoje),pom1,pom3,pom4,pom5,nP:=0
 LOCAL cPomUI:=SET(_SET_DEVICE)
 
@@ -1253,20 +1253,20 @@ SET DEVICE TO SCREEN
   ShemaBoja(cbsstara)
   SET(_SET_DEVICE,cPomUI)
 return IF(LASTKEY()!=K_ESC,.t.,.f.)
-*}
+
 
 function ValGeta(lUslov,cPoruka)
-*{
+
 IF !lUslov; Msg(cPoruka,3); ENDIF
 return lUslov
-*}
+
 
 
 function DuzMaske(cPicture)
-*{
+
 LOCAL nPozS:=AT("S",cPicture)
 return VAL(SUBSTR(cPicture,nPozS+1))
-*}
+
 
 
 function MsgBeep(cxx)
@@ -1280,7 +1280,7 @@ return
 
 
 function UGlavnomMeniju()
-*{
+
 
 local i
 local fRet:=.t.
@@ -1300,10 +1300,10 @@ for i:=1 to 100
 next
 PopWa()
 return fret
-*}
+
 
 function KorLoz()
-*{
+
 if !system
   cSecur:=SecurR(kLevel,"PromSif")
   if ImaSlovo("X",cSecur)
@@ -1340,13 +1340,13 @@ END IF
 
 closeret
 return
-*}
+
 
 function ispisiSez()
-*{
+
 @ 3,70 SAY "Sez: "+goModul:oDataBase:cSezona COLOR INVERT
 return
-*}
+
 
 
 /*! \fn SecurR(cLevel, cStavka)
@@ -1382,7 +1382,7 @@ function ElibVer()
 return SC_LIB_VER
 
 function ZaSvakiSlucaj(cDir,fCdx,aDirs,fRecurse)
-*{
+
 local fRet:=.t.
 local i
 local cScr
@@ -1477,10 +1477,10 @@ if !fret
   endif
 endif
 return fret
-*}
+
 
 function NaslEkran(fBox)
-*{
+
 if fbox
 	clear
 endif
@@ -1497,10 +1497,10 @@ endif
 
 @ 3,1 SAY PADC(gNaslov+' Ver.'+gVerzija,72) COLOR NORMAL
 return
-*}
+
 
 function StandardBoje()
-*{
+
 public  Invert
 public  Normal
 public  Blink
@@ -1532,10 +1532,10 @@ endif
 #endif
 
 return nil
-*}
+
 
 function PDVBoje()
-*{
+
 public  Invert
 public  Normal
 public  Blink
@@ -1567,12 +1567,12 @@ endif
 #endif
 
 return nil
-*}
+
 
 
 
 function BtoEU(cInput) 
-*{
+
 local i,cpom, cChar, cChar2,nPos, fdupli
 local cBTOETABLE
 local cbMala
@@ -1621,7 +1621,7 @@ for i:=1 to len(cInput)
 next
 
 return cPom
-*}
+
 
 /*! \fn TokUNiz(cTok,cSN,cSE)
  *  \brief Token pretvori u matricu
@@ -1631,7 +1631,7 @@ return cPom
  */
 
 function TokUNiz(cTok,cSN,cSE)
-*{
+
 LOCAL aNiz:={}, nN:=0, nE:=0, aPom:={}, i:=0, j:=0, cTE:="", cE:=""
   IF cSN==NIL ; cSN := ";" ; ENDIF
   IF cSE==NIL ; cSE := "." ; ENDIF
@@ -1647,7 +1647,7 @@ LOCAL aNiz:={}, nN:=0, nE:=0, aPom:={}, i:=0, j:=0, cTE:="", cE:=""
     AADD(aNiz,aPom)
   NEXT
 return (aNiz)
-*}
+
 
 /*! \fn TxtUNiz(cTxt,nKol)
  *  \brief Pretvara TXT u niz
@@ -1656,7 +1656,7 @@ return (aNiz)
  */
  
 function TxtUNiz(cTxt,nKol)
-*{
+
 LOCAL aVrati:={}, nPoz:=0, lNastavi:=.t., cPom:="", aPom:={}, i:=0
   cTxt:=TRIM(cTxt)
   DO WHILE lNastavi
@@ -1688,19 +1688,19 @@ LOCAL aVrati:={}, nPoz:=0, lNastavi:=.t., cPom:="", aPom:={}, i:=0
     ENDIF
   ENDDO
 RETURN aVrati
-*}
+
 
 
 
 function MsgBeep2(cTXT)
-*{
+
 @ 24,0 SAY PADL(cTXT,80) COLOR "R/W"
 Tone(900,0.3)
 return
-*}
+
 
 function Reci(x,y,cT,nP)
-*{
+
 LOCAL px:=ROW(),py:=COL()
  IF nP==40 .and. (x==11 .and. y==23 .or. x==12 .and. y==23 .or. x==12 .and. y==24 .or. x==12 .and. y==25)
    nP+=6
@@ -1710,10 +1710,10 @@ LOCAL px:=ROW(),py:=COL()
  @ m_x+x,m_y+y SAY cT
  SETPOS(px,py)
 return
-*}
+
 
 function ShowKorner(nS, nStep, nDelta)
-*{
+
 static i:=0
 local cpom
 
@@ -1736,7 +1736,7 @@ if i%nstep=0
   SET(_SET_DEVICE,cPom)
 endif
 return .t.
-*}
+
 
 
 
@@ -1761,7 +1761,7 @@ return .t.
  */
 
 function Menu_SC(cIzp, fMain, lBug)
-*{
+
 
 local cOdgovor
 local nIzbor
@@ -1815,20 +1815,20 @@ do while .t.
      
 enddo
 return
-*}
+
 
 function MAXROWS()
-*{
+
 return 25
-*}
+
 
 function MAXCOLS()
-*{
+
 return 80
-*}
+
 
 function ToggleINS()
-*{
+
 local nx
 local ny
 
@@ -1845,7 +1845,7 @@ endif
 setpos(nx,ny)
 
 return .t.
-*}
+
 
 /*! \fn SayPrivDir(cDirPriv)
  *  \brief Prikazi  ime korisnika + ":" + privatni direktorij na vrhu ekrana
@@ -1853,15 +1853,15 @@ return .t.
  */
 
 function SayPrivDir(cDirPriv)
-*{
+
 @ 0,24 SAY PADR(trim(ImeKorisn)+":"+cDirPriv,25) COLOR INVERT
 @ 4,4 SAY ""
 return
-*}
+
 
 
 function IzreziPath(cPath,cTekst)
-*{
+
 local nPom
 if LEFT(cTekst,1)<>SLASH
 	cTekst:=SLASH+cTekst
@@ -1871,11 +1871,11 @@ if nPom>0
 	cPath:=LEFT(cPath,nPom-1)
 endif
 return cPath
-*}
+
 
 
 function SezonskeBoje()
-*{
+
 public  Invert
 public  Normal
 public  Blink
@@ -1899,7 +1899,7 @@ else
 endif
 
 return nil
-*}
+
 
 // -----------------------------------------------------------------
 // browsanje forme

@@ -11,7 +11,7 @@
  */
  
 function nToLongC(nN)
-*{
+
 local cStr:="",i
 
 for i:=1 to 4
@@ -21,10 +21,10 @@ nN:=INT(nN/256)
 next
 
 return cStr
-*}
+
 
 function CLongToN(cLong)
-*{
+
 
 local i,nExp
 nRez:=0
@@ -36,10 +36,10 @@ for i:=1 to 4
  nRez+=ASC(SUBSTR(cLong,i,1))*nExp
 next
 return nRez
-*}
+
 
 function Bios()
-*{
+
 
 local cStr:="",i
 for i:=1 to 8
@@ -47,11 +47,11 @@ for i:=1 to 8
   cStr+=chr(peekbyte("F000",65524+i))
 next
 return cStr
-*}
+
 
 
 function BosTipke()
-*{  
+  
   SETKEY( ASC('{') , {|| __KEYBOARD('[') }  )
   SETKEY( ASC('|') , {|| __KEYBOARD('\') }  )
   SETKEY( ASC('`') , {|| __KEYBOARD('@') }  )
@@ -63,7 +63,7 @@ function BosTipke()
   SETKEY( ASC('Ð') , {|| __KEYBOARD('Ñ') }  )
   SETKEY( ASC('§') , {|| __KEYBOARD('¦') }  )
 RETURN
-*}
+
 
 
 function USTipke()
@@ -108,7 +108,7 @@ SETKEY( ASC('}') , {|| __KEYBOARD('ç') }  )
 RETURN
 
 function Sleep(nSleep)
-*{
+
 local nStart, nCh
 
 nStart:=seconds()
@@ -131,13 +131,13 @@ do while .t.
 enddo
 
 return
-*}
+
 
 function ScLibVer()
 return DBUILD
 
 function TechInfo()
-*{
+
 local cPom
 
 cPom:=""

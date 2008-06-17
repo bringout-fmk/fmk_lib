@@ -5,7 +5,7 @@
 
 
 function MyErrorHandler(objErr,lLocalHandler)
-*{
+
 local cOldDev
 local cOldCon
 local Odg
@@ -42,7 +42,6 @@ local nErr
  endif
 
 
- DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
  INKEY()
  MsgC()
 
@@ -64,10 +63,10 @@ else
 endif
 
 return .t.
-*}
+
 
 function GlobalErrorHandler(objErr,lLocalHandler)
-*{
+
 local cOldDev
 local cOldCon
 local cScr
@@ -200,10 +199,6 @@ do case
      MsgO(objErr:description+' Greska !!!!')
  endcase
 
-
- do while NEXTKEY()==0
-    Ol_Yield()
- enddo
  INKEY()
  MsgC()
 
@@ -276,7 +271,6 @@ do while .t.
   else
    ?
    ? "Odstampati gornje podatke na stampac D/N ?"
-   DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
    INKEY()
    
    cStampaj:=upper(chr(lastkey()))
@@ -294,10 +288,10 @@ close all
 goModul:quit()
 
 RETURN
-*}
+
 
 function ShowFERROR()
-*{
+
 LOCAL aGr:={ {  0, "Successful"},;
               {  2, "File not found"},;
               {  3, "Path not found"},;
@@ -321,11 +315,11 @@ LOCAL aGr:={ {  0, "Successful"},;
     MsgBeep( "FERROR: " + ALLTRIM(STR(k)) )
   ENDIF
 RETURN
-*}
+
 
 
 function MyErrH(o)
-*{
+
 BREAK o
 return
-*}
+

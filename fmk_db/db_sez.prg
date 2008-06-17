@@ -1,10 +1,5 @@
 #include "fmk.ch"
 #include "error.ch"
-/*
- * ----------------------------------------------------------------
- *                          Copyright Sigma-com software 1996-2006 
- * ----------------------------------------------------------------
- */
 
 function PocSkSez()
 *{
@@ -182,9 +177,7 @@ endif
       ++i
       IF LEN(aSezone)<1
         @ m_x+7+i, m_y+2 SAY "Ne postoji nijedna sezona!"
-        DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
         INKEY()
-        // INKEY(0)
         EXIT
       ELSE
         cSezona:=SPACE(4)

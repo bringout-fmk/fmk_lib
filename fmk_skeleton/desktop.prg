@@ -1,44 +1,10 @@
 #include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- *
- */
- 
 function TDesktopNew()
-*{
+
 local oObj
 
-#ifdef CLIP
-
-oObj:=map()
-  
-oObj:cColShema:=nil
-
-oObj:cColTitle:=nil
-oObj:cColBorder:=nil
-oObj:cColFont:=nil
-	
-
-// tekuce koordinate
-oObj:nRow:=nil
-oObj:nCol:=nil
-oObj:nRowLen:=nil
-oObj:nColLen:=nil
-  
-oObj:getRow:=@getRow()
-oObj:getCol:=@getCol()
-oObj:showLine:=@showLine()
-oObj:setColors:=@setColors()
-oObj:showSezona:=@showSezona()
-oObj:showMainScreen:=@showMainScreen()
-
-
-#else
 oObj:=TDesktop():new()
-#endif
 
 oObj:nRowLen:=MAXROWS()
 oObj:nColLen:=MAXCOLS()
@@ -48,37 +14,9 @@ oObj:cColBorder:= "GR+/N"
 oObj:cColFont := "W/N  ,R/BG ,,,B/W"
 	
 return oObj
-*}
 
 
-#ifdef CPP
 
-class TDesktop {
-  
-  public:
-  	string cColShema;
-  	VAR cColTitle;
-  	VAR cColBorder;
-  	VAR cColFont;
-	
-  	// tekuce koordinate
-  	VAR nRow;
-  	VAR nCol;
-  	VAR nRowLen;
-  	VAR nColLen;
-  
-  	method getRow;
-  	method getCol;
-  	method showLine;
-  	method setColors;
-  	method showSezona;
-  	method showMainScreen;
-  
-}
-#endif
-
-#ifndef CPP
-#ifndef CLIP
 #include "hbclass.ch"
 
 CREATE CLASS TDesktop
@@ -105,24 +43,19 @@ CREATE CLASS TDesktop
   method showMainScreen
   
 END CLASS
-#endif
-#endif
 
 *void TDesktop::getRow()
-*{
 method getRow()
 return ::nRow
-*}
+
 
 *void TDesktop::getCol()
-*{
 method getCol()
 return ::nCol
-*}
+
 
 
 *void TDesktop::showLine(string cTekst, string cRow)
-*{
 method showLine(cTekst,cRow)
 LOCAL nCol
 
@@ -137,10 +70,9 @@ if cTekst<>NIL
 endif
 
 RETURN
-*}
+
 
 *void TDesktop::SetColors(string cIzbor)
-*{
 method setColors(cIzbor)
  
 IF ISCOLOR()
@@ -189,15 +121,14 @@ ENDIF
 ::cColShema:=cIzbor
  
 return cIzbor
-*}
+
 
 method showSezona(cSezona)
 @ 3,70 SAY "Sez: "+cSezona COLOR INVERT
 return
-*}
+
 
 *void showMainScreen(bool lClear)
-*{
 method showMainScreen(lClear)
 
 if lClear==NIL
@@ -220,4 +151,3 @@ endif
 @ 3,1 SAY PADC(gNaslov+' Ver.'+gVerzija,72) COLOR NORMAL
 
 return
-*}

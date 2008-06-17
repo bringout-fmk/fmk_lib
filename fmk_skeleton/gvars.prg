@@ -52,7 +52,7 @@
 ****/
 
 function SetScGVars()
-*{
+
 
 public ZGwPoruka:=""
 public GW_STATUS:="-"
@@ -170,22 +170,22 @@ public gPDFViewer := SPACE(150)
 public gDefPrinter := SPACE(150)
 
 return
-*}
+
 
 
 /* \fn SetScGVar2(()
  * \fn postavljanje varijabli koje traze setovane *PATH varijable Db-a
  */
 function SetScGVar2()
-*{
+
 gSql:=IzFmkIni("Svi", "SQLLog", "N", KUMPATH)
 gSqlLogBase:=IzFmkIni("SQL","SQLLogBase","c:\sigma",EXEPATH)
 
-*}
+
 
 
 function IniGparams(fSve)
-*{
+
 local cImeDbf
 
 if fsve==nil
@@ -241,7 +241,7 @@ select (F_GPARAMS)
 use
 
 return nil
-*}
+
 
 
 /*! \fn IniGParam2(lSamoKesiraj)
@@ -253,7 +253,7 @@ return nil
  */
  
 function IniGParam2(lSamoKesiraj)
-*{
+
 
 local cPosebno:="N"
 
@@ -307,11 +307,11 @@ if (cPosebno=="D")
 endif
 
 return
-*}
+
 
 
 function IniPrinter()
-*{
+
 
 *
 * procitaj gprinter, gpini, itd..
@@ -414,4 +414,4 @@ ELSE
 ENDIF
 
 return
-*}
+

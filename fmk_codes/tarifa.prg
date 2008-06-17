@@ -1,11 +1,5 @@
 #include "fmk.ch"
 
-/*
-* ----------------------------------------------------------------
-*                                     Copyright Sigma-com software 
-* ----------------------------------------------------------------
-*/
-
 
 /*! \fn P_Tarifa(cId,dx,dy)
  *  \brief Otvara sifrarnik tarifa
@@ -358,31 +352,15 @@ if !glPoreziLegacy
 		// ovo je zapetljano ali izgleda da radi
 		// racun se sigurno moze pojednostaviti 
 		
-		//porez na promet proizvoda
-		if !IsJerry()
-			nPor1:=Izn_P_PPP(,aPorezi,,nMpcSaPP)
-		endif
-		
 		// porez na razliku u cijeni u maloprodaji
 		// =  bruto_marza * preracunata_stopa_poreza
 		nPor2:=Izn_P_PRugost(nMpcSaPP,,nNC,aPorezi)
-		/*if gUgostVarijanta="MPCSAPOR".or.IsJerry()
-			nBrutoMarza:=nMpcSaPP*nDLRUC
-			nPor2:=nBrutoMarza*nMPP/(1+nMPP)
-		else
-			nBrutoMarza:=nMpcSaPP-nPor1-nNC
-			nPor2:=nBrutoMarza*nMPP/(1+nMPP)
-		endif*/
 		
 		// osnovica porez na potrosnju = 
 		// ( cijena_sa_porezom - porez_na_razliku_u_cijeni )
 		// posebni porez - porez na potrosnju
 		nPor3:=(nMpcSaPP-nPor2)*nPP
 
-		if IsJerry()
-			nPor1:=Izn_P_PPP(,aPorezi,,nMpcSaPP-nPor2-nPor3)
-		endif
-		
 		nPom:=nMpcSaPP-nPor1-nPor2-nPor3
 	else
 		nPom:=nMpcSaPP/(nPP+(nPPP+1)*(1+nPPU))
@@ -455,11 +433,7 @@ else
 if !glPoreziLegacy 
 	if glUgost 
 		if gUgostVarijanta=="MPCSAPOR"
-			if IsJerry() .and. nMpcBp<>nil
-				nPom:=nMpcBp*(aPorezi[POR_PPP]/100) 
-			else
-				nPom:=nMpcSaP*(aPorezi[POR_PPP]/100)/((aPorezi[POR_PPP]/100)+1)
-			endif
+			nPom:=nMpcSaP*(aPorezi[POR_PPP]/100)/((aPorezi[POR_PPP]/100)+1)
 		else
 			nPom:=nMpcSaP*(aPorezi[POR_PPP]/100)/((aPorezi[POR_PPP]/100)+1)
 		endif

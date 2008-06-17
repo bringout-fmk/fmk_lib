@@ -3,7 +3,7 @@ ROOT = ../../harbour/harbour/
 HB_INC_COMPILE += -I$(TOP)../include
 
 PRG_SOURCES= \
-  cgrid.prg  cui.prg std_dlg.prg \
+  cgrid.prg cui.prg std_dlg.prg \
   event.prg scget.prg  fvidi.prg
 
 LIBS=\

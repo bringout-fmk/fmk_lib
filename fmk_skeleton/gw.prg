@@ -12,9 +12,8 @@ static GW_STRING
  *  \param nHandle - ne koristi se, izbaciti !
  *  \param cAkcija = A - azuriraj odmah, default value; P - pocetak; D - dodaj;  Z- zavrsi; L - upisi direktno u log fajl (ne salji gateway-u)
  */
- 
 function Gw(cStr, nHandle, cAkcija)
-*{
+
 local nHgw
 local cBaza
 local cBazaInOut
@@ -122,13 +121,13 @@ else
 
 endif
 return ""
-*}
+
 
 /*! \fn GwOdgovor(cBazaInOut)
  *  \param cBazaInOut  - c:/sigma
  */
 static function GwOdgovor(cBazaInOut)
-*{
+
 local nGwSec
 
 nHgw:=-100
@@ -197,7 +196,7 @@ return LEFT(cBuf,nRead)
  */
  
 static function TimeOutIzaci(nGwSec)
-*{
+
 private cKom
 
 if (SECONDS()-nGwSec)> 60 + iif(gAppSrv, 60, 0)
@@ -226,7 +225,7 @@ if (SECONDS()-nGwSec)> 60 + iif(gAppSrv, 60, 0)
 	endcase
 endif
 return .f.
-*}
+
 
 
 /*! \fn GwStaMai(nBroji2)
@@ -283,7 +282,7 @@ return .f.
  */
 
 function GwStaMai(nBroji2)
-*{
+
 local cRezultat
 local xRez
 local nOldcursor
@@ -370,11 +369,11 @@ do case
 endcase
 
 return cRezultat
-*}
+
 
 
 static function cmdHocuSynchro(cRezultat, GW_STATUS, ZGwPoruka)
-*{
+
 
 Beep(6)
 MsgBeep("Zahtjev:" + cRezultat)
@@ -405,10 +404,10 @@ else
 
 endif
 return
-*}
+
 
 static function cmdHocuShutdown(cRezultat, GW_STATUS, ZGwPoruka)
-*{
+
    
 Beep(6)
 MsgBeep("Udaljena strana "+substr(cRezultat,13)+" ugasiti racunar.")
@@ -427,20 +426,20 @@ else
 endif
 
 return
-*}
+
 
 static function cmdImportStat(cRezultat,GW_STATUS, ZGwPoruka)
-*{
+
 
 // ali GW_STATUS nije NA_CEKI_K_SQL
 Beep(1)
 MsgBeep("U toku import sql:"+cRezultat)
 
 return
-*}
+
 
 static function cmdNaCekiSql(cRezultat, GW_STATUS, ZGwPoruka)
-*{
+
 
 do case
 
@@ -462,10 +461,10 @@ otherwise
 endcase
 
 return
-*}
+
 
 static function cmdZavrsenaSyn(cRezultat, GW_STATUS, ZGwPoruka)
-*{
+
 
 GW_STATUS:="-"
 Beep(5)
@@ -493,11 +492,11 @@ if (ZGwPoruka=="IMPORTSQL_OK")
          GW_STATUS:="-"
 
 return
-*}
+
 
 
 static function cmdImpSqlError(cRezultat, GW_STATUS, ZGwPoruka)
-*{
+
 Beep(5)
 MsgBeep("NEUSPJESNO Zavrsena sinhronizacija  !!!!")
 Beep(5)
@@ -522,20 +521,20 @@ else
 endif
 
 return
-*}
+
 
 function ZGwPoruka()
-*{
+
 // uzmi trenutno stanje ...
 GwStamai(-1)
 return ZGwPoruka
-*}
+
 
 
 function GW_STRING()
-*{
+
 return GW_STRING
-*}
+
 
 
 
@@ -544,7 +543,7 @@ return GW_STRING
  */
 
 function GwDirektno(cSql)
-*{
+
 
 local nHLog
 local cLogName
@@ -575,10 +574,10 @@ FSEEK(nHLog,0,FS_END)
 FWRITE(nHLog,cSql+NRED)
 FCLOSE(nHLog)
 return ""
-*}
+
 
 static function OpenLog(cLogName)
-*{
+
 local nHLog
 
 if !FILE(cLogName)
@@ -607,14 +606,14 @@ else
 	enddo
 endif
 return
-*}
+
 
 function GwDiskFree()
-*{
+
 local cOdgovor
 
 cOdgovor:=Gw('GETINFO DISKFREE')
 //MsgBeep(cOdgovor)
 
 return VAL(cOdgovor)	
-*}
+
