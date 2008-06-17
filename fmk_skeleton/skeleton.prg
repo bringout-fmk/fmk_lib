@@ -139,12 +139,6 @@ oApp:setGVars()
 // nakon verzije 1.5 ovo cemo ukinuti
 cImeDbf:=KUMPATH+"SECUR.DBF"
 if !FILE(cImeDbf)
-  #ifdef CLIP
-    ? "prije oApp:oDatabase:kreiraj"
-    inkey(0)
-    inkey(0)
-    inkey(0)
-  #endif
   oApp:oDatabase:kreiraj(F_SECUR)
 endif
 
@@ -234,10 +228,6 @@ Rpar("FO",@gPFont)
 select gparams
 use
 
-//if (gSql=="D")
-//  O_Log()
-//endif
-
 Beep(1)
 
 IBatchRun(oApp)
@@ -297,12 +287,9 @@ return
 
 function SetNaslov(oApp)
 
-altd()
-
 gNaslov:= oApp:cName+" HB, "+oApp:cPeriod+" "+D_VERZIJA
 
 SETCANCEL(.f.)
-
 
 #IFDEF  READONLY
      gNaslov+="-RO"

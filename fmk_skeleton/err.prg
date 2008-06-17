@@ -3,6 +3,8 @@
 #include "dbstruct.ch"
 #include "set.ch"
 
+// ------------------------------------------
+// ------------------------------------------
 function MyErrorHandler(objErr,lLocalHandler)
 
 local cOldDev
@@ -23,7 +25,7 @@ cOldPrn:=SET(_SET_PRINTER,"")
 cOldFile:=SET(_SET_PRINTFILE,"")
 BEEP(5)
 
- nErr:=objErr:genCode
+nErr:=objErr:genCode
 
  if objErr:genCode =EG_PRINT
      MsgO(objErr:description+':Greska sa stampacem !!!!')
@@ -42,30 +44,31 @@ BEEP(5)
  endif
 
 
- INKEY()
+ INKEY(0)
+
  MsgC()
 
 Odg:=Pitanje(,'Zelite li pokusati ponovo (D/N) ?',' ')=="D"
 
 
 if (Odg=='D')
-	 SET(_SET_DEVICE,cOldDev)
-	 SET(_SET_CONSOLE,cOldCon)
-	 SET(_SET_PRINTER,cOldPrn)
-	 SET(_SET_PRINTFILE,cOldFile)
-	 return .t.
+   SET(_SET_DEVICE,cOldDev)
+   SET(_SET_CONSOLE,cOldCon)
+   SET(_SET_PRINTER,cOldPrn)
+   SET(_SET_PRINTFILE,cOldFile)
+   return .t.
 else
 
-	//goModul:quit()
-	QUIT
-	return .f.
+  QUIT
+  return .f.
 
 endif
 
 return .t.
 
-
-function GlobalErrorHandler(objErr,lLocalHandler)
+// -----------------------------------------------
+// -----------------------------------------------
+function GlobalErrorHandler(objErr, lLocalHandler)
 
 local cOldDev
 local cOldCon
@@ -86,20 +89,6 @@ if lLocalHandler
 endif
 
  
-/* test presretanja variable not found
- if (objErr:genCode=EG_NOVAR)
-     if trim(objErr:operation) ="KK1"  .or.;
-        trim(objErr:operation) ="WKK1" .or.;
-        trim(objErr:operation) ="_KK1"   // izmajmunisi KK1
-
-          private cVarijabla:=objErr:operation
-          PUBLIC &cVarijabla:=NIL
-          return .t.
-
-     endif
- endif
-*/
-
 cOldDev:=SET(_SET_DEVICE,"SCREEN")
 cOldCon:=SET(_SET_CONSOLE,"ON")
 cOldPrn:=SET(_SET_PRINTER,"")
@@ -157,12 +146,6 @@ do case
      MsgO(ObjErr:description+' Ne mogu otvoriti fajl '+ObjErr:filename)
      lInstallDB:=.t.
      
-  //if file(strtran(objerr:filename,gSezonDir,"")) .and. !file(ObjErr:Filename) // ako se radi sa sezonskim podacima
-    //    filecopy(strtran(objerr:filename,gSezonDir,""),ObjErr:fileName)
-        // primjer :\sigma\fin\kum1\params.dbf
-        // primjer :\sigma\fin\kum1\1997\params.dbf
-   //  endif
-
    CASE objErr:genCode=EG_CLOSE
      MsgO(objErr:description+':Ne mogu zatvoriti fajl '+ObjErr:filename)
    CASE objErr:genCode=EG_READ
@@ -199,12 +182,13 @@ do case
      MsgO(objErr:description+' Greska !!!!')
  endcase
 
- INKEY()
+ INKEY(0)
+
  MsgC()
 
  if (lInstallDB .and. !(goModul:oDatabase:lAdmin) .and. Pitanje(,"Install DB procedura ?","D")=="D")
- 	goModul:oDatabase:install()
- 	return .t.
+   goModul:oDatabase:install()
+   return .t.
  endif
 
  cOdg:="N"
@@ -281,7 +265,7 @@ do while .t.
    endif
   endif
 
-enddo //.t.
+enddo
 
 
 close all
@@ -289,7 +273,8 @@ goModul:quit()
 
 RETURN
 
-
+// ---------------------------------------
+// ---------------------------------------
 function ShowFERROR()
 
 LOCAL aGr:={ {  0, "Successful"},;
@@ -317,7 +302,8 @@ LOCAL aGr:={ {  0, "Successful"},;
 RETURN
 
 
-
+// ----------------------------------
+// ----------------------------------
 function MyErrH(o)
 
 BREAK o

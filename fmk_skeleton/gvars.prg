@@ -124,9 +124,9 @@ public gWord97:="N"
 public g50f:=" "
 
 if !goModul:lStarted 
-	public cDirPriv:=""
-	public cDirRad:=""
-	public cDirSif:=""
+  public cDirPriv:=""
+  public cDirRad:=""
+  public cDirSif:=""
 endif
 
 PUBLIC StaraBoja
@@ -219,21 +219,21 @@ O_GPARAMS
 private cSection:="1",cHistory:=" "; aHistory:={}
 
 if fsve
-	Rpar("pt",@gPTKonv)
-	Rpar("pS",@gPicSif)
-	Rpar("SK",@gSKSif)
-	Rpar("DO",@gcDirekt)
-	Rpar("SB",@gShemaVF)
-	Rpar("Ad",@gArhDir)
-	Rpar("FO",@gPFont)
-	Rpar("KS",@gKodnaS)
-	Rpar("W7",@gWord97)
-	Rpar("5f",@g50f)
-	Rpar("L8",@gLokal)
-	Rpar("pR",@gPDFPrint)
-	Rpar("pV",@gPDFViewer)
-	Rpar("pA",@gPDFPAuto)
-	Rpar("dP",@gDefPrinter)
+  Rpar("pt",@gPTKonv)
+  Rpar("pS",@gPicSif)
+  Rpar("SK",@gSKSif)
+  Rpar("DO",@gcDirekt)
+  Rpar("SB",@gShemaVF)
+  Rpar("Ad",@gArhDir)
+  Rpar("FO",@gPFont)
+  Rpar("KS",@gKodnaS)
+  Rpar("W7",@gWord97)
+  Rpar("5f",@g50f)
+  Rpar("L8",@gLokal)
+  Rpar("pR",@gPDFPrint)
+  Rpar("pV",@gPDFViewer)
+  Rpar("pA",@gPDFPAuto)
+  Rpar("dP",@gDefPrinter)
 endif
 
 Rpar("FK",@gFKolor)
@@ -256,64 +256,59 @@ return nil
  
 function IniGParam2(lSamoKesiraj)
 
-
 local cPosebno:="N"
 
 if (lSamoKesiraj==nil)
-	lSamoKesiraj:=.f.
+  lSamoKesiraj:=.f.
 endif
-
-#ifdef CLIP
-? "Privpath =", PRIVPATH, ";", goModul:oDatabase:cDirPriv, ";", cDirPriv
-#endif
 
 O_PARAMS
 public gMeniSif:=.f.
 private cSection:="1"
 private cHistory:=" "
 private aHistory:={}
-RPar("p?",@cPosebno)
+RPar("p?", @cPosebno)
 
 SELECT params
 USE
 
 if (cPosebno=="D")
-	bErr:=ERRORBLOCK({|o| MyErrH(o)})
-	O_GPARAMSP
-	SEEK "1"
-	bErr:=ERRORBLOCK(bErr)
+  bErr := ERRORBLOCK({|o| MyErrH(o)})
+  O_GPARAMSP
+  SEEK "1"
+  bErr := ERRORBLOCK(bErr)
 
-	if !lSamoKesiraj
-		Rpar("pt",@gPTKonv)
-		Rpar("pS",@gPicSif)
-		Rpar("SK",@gSKSif)
-		Rpar("DO",@gcDirekt)
-		Rpar("FK",@gFKolor)
-		Rpar("S9",@gSQL)
-		gSQL:=IzFmkIni("Svi","SQLLog","N",KUMPATH)
-		Rpar("SB",@gShemaVF)
-		Rpar("Ad",@gArhDir)
-		Rpar("FO",@gPFont)
-		Rpar("KS",@gKodnaS)
-		Rpar("W7",@gWord97)
-		Rpar("5f",@g50f)
-		Rpar("L8",@gLokal)
-		Rpar("pR",@gPDFPrint)
-		Rpar("pV",@gPDFViewer)
-		Rpar("pA",@gPDFPAuto)
-		Rpar("dP",@gDefPrinter)
-	endif
-	Rpar("kE",@gKesiraj)
-	SELECT (F_GPARAMSP)
-	USE
+  if !lSamoKesiraj
+    Rpar("pt",@gPTKonv)
+    Rpar("pS",@gPicSif)
+    Rpar("SK",@gSKSif)
+    Rpar("DO",@gcDirekt)
+    Rpar("FK",@gFKolor)
+    Rpar("S9",@gSQL)
+    gSQL:=IzFmkIni("Svi","SQLLog","N",KUMPATH)
+    Rpar("SB",@gShemaVF)
+    Rpar("Ad",@gArhDir)
+    Rpar("FO",@gPFont)
+    Rpar("KS",@gKodnaS)
+    Rpar("W7",@gWord97)
+    Rpar("5f",@g50f)
+    Rpar("L8",@gLokal)
+    Rpar("pR",@gPDFPrint)
+    Rpar("pV",@gPDFViewer)
+    Rpar("pA",@gPDFPAuto)
+    Rpar("dP",@gDefPrinter)
+  endif
+  Rpar("kE",@gKesiraj)
+  SELECT (F_GPARAMSP)
+  USE
 endif
 
 return
 
 
-
+// ------------------------------------
+// ------------------------------------
 function IniPrinter()
-
 
 *
 * procitaj gprinter, gpini, itd..
@@ -321,11 +316,11 @@ function IniPrinter()
 
 
 if gModul $ "EPDV"
-	public gPrinter:="R"
+  public gPrinter:="R"
 elseif gModul $ "TOPS#HOPS"
- 	public gPrinter:="0"
+   public gPrinter:="0"
 else
- 	public gPrinter:="1"
+   public gPrinter:="1"
 endif
 
 InigEpson()
@@ -362,7 +357,7 @@ private cSection:="P",cHistory:="H"; aHistory:={}
 cPom:="xx"
 RPAR("01",@cPom)
 if cPom=="xx"
-    InigHP()	 
+    InigHP()   
     WPar_Printer()
 endif
 
