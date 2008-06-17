@@ -4,7 +4,7 @@ HB_INC_COMPILE += -I$(TOP)../include
 
 PRG_SOURCES= \
         file_io.prg  os_util.prg \
-        konvzn.prg \
+        bh_slova.prg \
         ini.prg \
         params.prg \
         print.prg \
