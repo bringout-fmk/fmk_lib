@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+find -name "*.ch" -exec grep -H -n -i "$1" \{\} \;

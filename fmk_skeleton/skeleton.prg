@@ -67,7 +67,6 @@ SetNaslov(oApp)
 
 SET DELETED ON
 
-#define D_VERZIJA "CDX"
 
 if mpar37("/INSTALL",oApp)
   oApp:oDatabase:lAdmin:=.t.
@@ -284,10 +283,14 @@ endif
 return
 
 
-
+// --------------------------------------------------------
+// --------------------------------------------------------
 function SetNaslov(oApp)
 
-gNaslov:= oApp:cName+" HB, "+oApp:cPeriod+" "+D_VERZIJA
+altd()
+
+gNaslov:= oApp:cName + " HB, " + oApp:cPeriod 
+
 
 SETCANCEL(.f.)
 

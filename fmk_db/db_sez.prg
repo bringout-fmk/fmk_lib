@@ -521,7 +521,7 @@ Box("#PODACI O TRENUTNOM PODRUCJU PODATAKA",20,77)
 	@ m_x+2, m_y+2 SAY "goModul:oDataBase:cSezona      ='"+(goModul:oDataBase:cSezona)+"'"
 	@ m_x+3, m_y+2 SAY "goModul:oDataBase:cSezonDir    ='"+(goModul:oDataBase:cSezonDir)+"'"
 	@ m_x+4, m_y+2 SAY "goModul:oDataBase:cRadimUSezona='"+(goModul:oDataBase:cRadimUSezona)+"'"
-	InkeySC(0)
+	Inkey(0)
 BoxC()
 return nil
 *}
