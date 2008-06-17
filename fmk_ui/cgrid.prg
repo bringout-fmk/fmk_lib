@@ -50,11 +50,12 @@
 
 */
 
-function ObjDBedit(cImeBoxa, xw, yw, bUserF, cMessTop, cMessBot, lInvert, aMessage, nFreeze, bPodvuci, nPrazno, nGPrazno, aPoredak, skipblock)
-
+function ObjDBedit(cImeBoxa, xw, yw, bUserF, cMessTop, cMessBot, ;
+                   lInvert, aMessage, nFreeze, bPodvuci, nPrazno, nGPrazno, ;
+		   aPoredak, skipblock)
 
 local nBroji2
-local cSmj,nRez,i,K,aUF, cPomDB, nTTrec
+local cSmj, nRez, i, K, aUF, cPomDB, nTTrec
 local cLoc:=space(40)
 local cStVr, cNovVr, nRec, nOrder, nPored, xcpos, ycpos
 
@@ -213,7 +214,6 @@ DO WHILE .T.
          endif
        endif
 
-       //ERNAD
        if gTBDir=="D" .and. LEN(ImeKol[TB:colpos])>2 .and. ;
          !StandTBTipke(Ch) .and. ;
          !(reccount2()=0 .and. !fTBNoviRed)
@@ -282,7 +282,9 @@ END DO
 RETURN
 
 
-
+// -------------------------------------------------------
+//
+// -------------------------------------------------------
 function NeTBDirektni(lIzOBJDB)
 
 LOCAL i,j,k
@@ -331,6 +333,8 @@ ENDIF
 RETURN
 
 
+// ---------------------------------------------------------
+// ---------------------------------------------------------
 function DaTBDirektni(lIzOBJDB)
  
 LOCAL i,j,k

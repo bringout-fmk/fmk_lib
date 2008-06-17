@@ -1,22 +1,20 @@
+DIRS = fmk_codes fmk_common fmk_event fmk_security fmk_skeleton fmk_db fmk_ui
+
 all: compile install
 
 compile:
-	make -C fmk_codes
-	make -C fmk_common
-	make -C fmk_event
-	make -C fmk_security
-	make -C fmk_skeleton
-	make -C fmk_db
-	make -C fmk_ui
+	for d in $(DIRS); do \
+	 make -C $$d; \
+	done
 
 install:
 	scripts/cp_fmk_libs_to_hb_lib.sh
 
 clean:
-	make -C fmk_codes clean
-	make -C fmk_common clean
-	make -C fmk_event clean
-	make -C fmk_security clean
-	make -C fmk_skeleton clean
-	make -C fmk_db clean
-	make -C fmk_ui clean
+	for d in $(DIRS); do \
+	 make -C $$d clean; \
+	done
+copy4debug:
+	for d in $(DIRS); do \
+	 cp -v $$d/*.prg /c/sigma; \
+	done

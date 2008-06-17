@@ -1,12 +1,6 @@
 #include "fmk.ch"
 
 STATIC cLDirekt := "0"
-/*
- * ----------------------------------------------------------------
- *                          Copyright Sigma-com software 1996-2006 
- * ----------------------------------------------------------------
- */
- 
 
 /*! \fn Pitanje(cId,cPitanje,cOdgDefault,cMogOdg)
  *  \brief Otvara box sa zadatim pitanjem na koje treba odgovoriti sa D,N,..
