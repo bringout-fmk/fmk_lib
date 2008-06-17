@@ -74,7 +74,6 @@ next
 cPom=cPom+"##Glavni modul:" + gVerzija
 cPom=cPom+ "#     fmk_lib:" + fmklibver()
 
-cPom=cPom+"##     FmkSvi:"  + FmkSviVer()
 cPom=cPom+ "#     FmkRoba:" + FmkRobaVer()
 cPom=cPom+ "#    FmkEvent:" + FmkEvVer()
 cPom=cPom+ "# FmkSecurity:" + FmkSecVer()
