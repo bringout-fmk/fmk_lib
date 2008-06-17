@@ -5,6 +5,7 @@
 // kreiranje tabela DOKSRC i P_DOKSRC
 // ------------------------------------------------------
 function cre_doksrc()
+
 local aDbf := {}
 local cDokSrcName := "DOKSRC"
 local cPDokSrcName := "P_" + cDokSrcName
@@ -24,30 +25,32 @@ AADD(aDBf,{ "idvd"                , "C" ,   2 ,  0 })
 AADD(aDBf,{ "brdok"               , "C" ,  nBrDokLen ,  0 })
 AADD(aDBf,{ "datdok"              , "D" ,   8 ,  0 })
 AADD(aDBf,{ "src_modul"           , "C" ,  10 ,  0 })
-AADD(aDBf,{ "src_idfirma"         , "C" ,   2 ,  0 })
+AADD(aDBf,{ "src_idfirm"         , "C" ,   2 ,  0 })
 AADD(aDBf,{ "src_idvd"            , "C" ,   2 ,  0 })
 AADD(aDBf,{ "src_brdok"           , "C" ,   8 ,  0 })
 AADD(aDBf,{ "src_datdok"          , "D" ,   8 ,  0 })
-AADD(aDBf,{ "src_kto_raz"         , "C" ,   7 ,  0 })
-AADD(aDBf,{ "src_kto_zad"         , "C" ,   7 ,  0 })
-AADD(aDBf,{ "src_partner"         , "C" ,   6 ,  0 })
+AADD(aDBf,{ "src_kto_ra"         , "C" ,   7 ,  0 })
+AADD(aDBf,{ "src_kto_za"         , "C" ,   7 ,  0 })
+AADD(aDBf,{ "src_partne"         , "C" ,   6 ,  0 })
 AADD(aDBf,{ "src_opis"            , "C" ,  30 ,  0 })
 
 // kreiraj u KUMPATH
 if !FILE(KUMPATH + cDokSrcName + ".DBF")
 	DBCREATE2(KUMPATH + cDokSrcName + ".DBF", aDbf)
 endif
+
 // indexi....
-CREATE_INDEX("1","idfirma+idvd+brdok+DTOS(datdok)+src_modul+src_idfirma+src_idvd+src_brdok+DTOS(src_datdok)", KUMPATH + cDokSrcName)
-CREATE_INDEX("2","src_modul+src_idfirma+src_idvd+src_brdok+DTOS(src_datdok)", KUMPATH + cDokSrcName)
+CREATE_INDEX("1","idfirma+idvd+brdok+DTOS(datdok)+src_modul+src_idfirm+src_idvd+src_brdok+DTOS(src_datdok)", KUMPATH + cDokSrcName)
+
+CREATE_INDEX("2","src_modul+src_idfirm+src_idvd+src_brdok+DTOS(src_datdok)", KUMPATH + cDokSrcName)
 
 // kreiraj u PRIVPATH
 if !FILE(PRIVPATH + cPDokSrcName + ".DBF")
 	DBCREATE2(PRIVPATH + cPDokSrcName + ".DBF", aDbf)
 endif
 // indexi....
-CREATE_INDEX("1","idfirma+idvd+brdok+DTOS(datdok)+src_modul+src_idfirma+src_idvd+src_brdok+DTOS(src_datdok)", PRIVPATH + cPDokSrcName)
-CREATE_INDEX("2","src_modul+src_idfirma+src_idvd+src_brdok+DTOS(src_datdok)", PRIVPATH + cPDokSrcName)
+CREATE_INDEX("1","idfirma+idvd+brdok+DTOS(datdok)+src_modul+src_idfirm+src_idvd+src_brdok+DTOS(src_datdok)", PRIVPATH + cPDokSrcName)
+CREATE_INDEX("2","src_modul+src_idfirm+src_idvd+src_brdok+DTOS(src_datdok)", PRIVPATH + cPDokSrcName)
 
 cre_p_update()
 
@@ -82,19 +85,19 @@ o_p_doksrc(cPath)
 select p_doksrc
 append blank
 
-replace field->idfirma with cFirma
-replace field->idvd with cTD
-replace field->brdok with cBrDok
-replace field->datdok with dDatDok
-replace field->src_modul with cSrcModName
-replace field->src_idfirma with cSrcFirma
-replace field->src_idvd with cSrcTD
-replace field->src_brdok with cSrcBrDok
+replace field->idfirma    with cFirma
+replace field->idvd       with cTD
+replace field->brdok      with cBrDok
+replace field->datdok     with dDatDok
+replace field->src_modul  with cSrcModName
+replace field->src_idfirm with cSrcFirma
+replace field->src_idvd   with cSrcTD
+replace field->src_brdok  with cSrcBrDok
 replace field->src_datdok with dSrcDatDok
-replace field->src_kto_raz with cSrcKto1
-replace field->src_kto_zad with cSrcKto2
-replace field->src_partner with cSrcPartn
-replace field->src_opis with cSrcOpis
+replace field->src_kto_ra with cSrcKto1
+replace field->src_kto_za with cSrcKto2
+replace field->src_partne with cSrcPartn
+replace field->src_opis   with cSrcOpis
 
 select p_doksrc
 use
