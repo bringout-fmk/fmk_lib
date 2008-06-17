@@ -4,14 +4,11 @@
 
 // static integer
 static __PSIF_NIVO__:=0
-// ;
 
 // static array __A_SIFV__;
-#ifndef CPP
 static __A_SIFV__:= { {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}}
-#endif
 
-function PostojiSif( nDbf, nNtx, nVisina, nSirina, cNaslov, cID, dx, dy, ;
+function PostojiSifra( nDbf, nNtx, nVisina, nSirina, cNaslov, cID, dx, dy, ;
                       bBlok, aPoredak, bPodvuci, aZabrane, fInvert, aZabIsp )
 
 local cRet, cIdBK
@@ -2287,7 +2284,7 @@ ImeKol:={ { padr("Id",15), {|| id}, "id"  }           ,;
 
 FOR i:=1 TO LEN(ImeKol); AADD(Kol,i); NEXT
 Private gTBDir:="N"
-return PostojiSif(F_SIFK,1,10,65,"sifk - Karakteristike",@cId,dx,dy)
+return PostojiSifra (F_SIFK, 1, 10, 65, "sifk - Karakteristike", @cId, dx, dy)
 
 
 /*!
