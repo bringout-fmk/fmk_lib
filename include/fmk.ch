@@ -1,10 +1,11 @@
 #include "o_fmk.ch"
 #include "f_fmk.ch"
 #include "inkey.ch"
+#include "box.ch"
 
 #define SC_DEFINED
 
-#define FMK_LIB_VER  "7.dev.2"
+#define FMK_LIB_VER  "7.10.dev"
 
 
 
