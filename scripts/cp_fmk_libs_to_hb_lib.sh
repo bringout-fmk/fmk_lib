@@ -1,5 +1,7 @@
 #!/bin/bash
 
-cp -av ../harbour/harbour/lib/w32/mingw32/libfmk* $HB_LIB_INSTALL
+SYS=`uname`
+
+cp -av ../harbour/harbour/lib/${HB_ARCHITECTURE}/${HB_COMPILER}/libfmk* $HB_LIB_INSTALL
 
 
