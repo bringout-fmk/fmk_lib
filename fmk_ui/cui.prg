@@ -133,13 +133,10 @@ Ch:=LastKey()
 
 //  Ako je ESC meni treba odmah izbrisati (ItemNo=0),
 //  skini meni sa steka
-
 IF Ch==K_ESC .or. nTItemNo==0 .or. nTItemNo==nPovratak
   @ m_x,m_y CLEAR TO m_x+N+2-IF(lFK,1,0),m_y+Length+4-IF(lFK,1,0)
   aMenu:=StackPop(aMenuStack)
   RestScreen(m_x,m_y,m_x+N+2-IF(lFK,1,0),m_y+Length+4-IF(lFK,1,0),aMenu[4])
-  //if aMenu[6]<>NIL; PopHT(); endif
-  //AEVAL(h,{|e| e:=""})
 END IF
 
 

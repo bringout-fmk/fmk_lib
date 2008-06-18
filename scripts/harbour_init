@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+PATH=$PATH:/c/Progra~1/Git/bin
+
+BASEDIR=/c/Docume~1/hernad/devel/git/
+
+export BASEDIR 
+
+
+export HB_ARCHITECTURE=w32
+export HB_COMPILER=mingw32
+export HB_GT_LIB=gtwin
+
+export HB_BIN_INSTALL=c:/cygwin/usr/harbour/bin
+export HB_INC_INSTALL=c:/cygwin/usr/harbour/include
+export HB_LIB_INSTALL=c:/cygwin/usr/harbour/lib
+
+
+export HB_INC_COMPILE=c:/cygwin/usr/harbour/include
+export HB_LIB_COMPILE=c:/cygwin/usr/harbour/lib
+
+export HB_WITHOUT_ADS=yes
+
+
+PS1=$'\\[\\033]0;$MSYSTEM:\\w\\007\n\\033[32m\\]\\u@\\h \\[\\033[33m\\w\\033[0m\\]\n$ '
+PS2='> '
+PS4='+ '
+export PS1 PS2 PS4
+
+cd ~/devel/git/fmk
+
+bash

@@ -148,10 +148,11 @@ DO WHILE .T.
          Tb:stabilize()
          CekaHandler(@nBroji2)
     ENDDO
-    Ch := LASTKEY()
+    Ch := INKEY()
 
    IF TB:stable .AND. Ch==0
-         if bUserF<>NIL
+         
+	 if bUserF<>NIL
            xcpos:=ROW()
 	   ycpos:=COL()
 	   Eval(bUserF)
@@ -162,15 +163,21 @@ DO WHILE .T.
          DO WHILE NEXTKEY()==0
            CekaHandler(@nBroji2)
          ENDDO
-         Ch := LASTKEY()
-         
+         Ch := INKEY()
+
    END
 
-   if bUserF<>NIL
-     While !TB:stabilize(); End   // mora se izvrsiti potpuna stabilizacija
+   if bUserF <> NIL
+     
+     // potpuna stabilizacija 
+     DO While !TB:stabilize()
+     END
+   
      nRez:=Eval(bUserF)
+
    else
      nRez:=DE_CONT
+
    endif
 
    DO CASE
@@ -201,6 +208,7 @@ DO WHILE .T.
         Tb:GoBottom()
      CASE Ch==K_PGDN
         TB:PageDown()
+
      otherwise
        StandTBKomande(TB,Ch, @nRez,nPored,aPoredak)
 
@@ -212,11 +220,13 @@ DO WHILE .T.
 
           if bof() // prvi red
             go nTTrec
-            if reccount2()=0; fTBNoviRed:=.t.; endif
+            if reccount2()=0
+	       fTBNoviRed:=.t.
+	    endif
             if bZaglavlje<>NIL
-                if !EVAL(bZaglavlje)
-                   fTBNoviRed:=.f.
-                endif
+               if !EVAL(bZaglavlje)
+                 fTBNoviRed:=.f.
+               endif
             endif
           else
             go nTTrec
@@ -224,8 +234,7 @@ DO WHILE .T.
          endif
        endif
 
-       if gTBDir=="D" .and. LEN(ImeKol[TB:colpos])>2 .and. ;
-         !StandTBTipke(Ch) .and. ;
+       if gTBDir=="D" .and. LEN(ImeKol[TB:colpos])>2 .and.  !StandTBTipke(Ch) .and. ;
          !(reccount2()=0 .and. !fTBNoviRed)
 
          // Getuj polje ............
@@ -278,7 +287,9 @@ DO WHILE .T.
           MsgBeep("Morate zavrsiti unos reda !")
           loop
        endif
-       if nPrazno==0;BoxC();endif
+       if nPrazno==0
+          BoxC()
+       endif
        exit
      CASE nRez==DE_ABORT .or. Ch==K_CTRL_END .or. Ch==K_ESC
        if nPrazno==0
@@ -462,6 +473,7 @@ ENDIF
 
 // Check exit key from get
 nKey := LASTKEY()
+
 IF nKey == K_UP .OR. nKey == K_DOWN .OR. ;
     nKey == K_PGUP .OR. nKey == K_PGDN
 
@@ -688,6 +700,7 @@ DO CASE
         read
        BoxC()
        if lastkey()<>K_ESC
+
         cLoc:=TRIM(cLoc)
         aUf:=nil
         if right(cLoc,1)==";"

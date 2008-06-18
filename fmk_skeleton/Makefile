@@ -1,5 +1,10 @@
 ROOT = ../../harbour/harbour/
 
+#DIR = `pwd` | sed -e "s/^\/c/c:/" | sed -e "s/\//\\\/g" 
+#BDIR = $( `echo "c:/test" | sed -e "s/^\/c/c:/"` ) 
+
+BDIR = $(shell pwd | sed -e "s/^\/c/c:/")
+
 HB_INC_COMPILE += -I$(TOP)../include
 
 PRG_SOURCES= \
@@ -20,3 +25,4 @@ include $(TOP)$(ROOT)config/lib.cf
 
 
 HB_FLAGS = -n -b -ufmk_std.ch -kM -gc0 -I$(TOP) -I$(HB_INC_COMPILE)
+
