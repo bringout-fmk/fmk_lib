@@ -881,10 +881,8 @@ function Postotak(nIndik,nUkupno,cTekst,cBNasl,cBOkv,lZvuk)
       @ 10,(78-LEN(cKraj))/2 SAY " "+cKraj+" " COLOR cNas
       IF lZvuk; TONE(2000,0); ENDIF
       IF nIndik==0
-       DO WHILE INKEY()==0
-         OL_Yield()
          @ 14,28 SAY "<pritisnite neku tipku>" COLOR IF(INT(SECONDS()*1.5)%2==0,"W/","W+/")+RIGHT(cOkv,1)
-       ENDDO
+         inkey(0)
       ENDIF
       Prozor0()
       nCilj:=0; cKraj:=""
@@ -979,8 +977,7 @@ LOCAL nVrati:=1,nTipka,i:=0,nOpc:=LEN(aOpc),nRedova:=1,p:=0
     NEXT
 
     CLEAR TYPEAHEAD
-    DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
-    nTipka:=INKEY()
+    nTipka:=INKEY(0)
 
     DO CASE
      CASE nTipka==K_UP
@@ -1447,12 +1444,10 @@ endif
 
 inkey(5)
 ?
-if !swpruncmd(cKom,0,"","")
+if !run(cKom, 0, "", "")
   fret:=.f.
 endif
-if swperrlev()<>0
- fRet:=.f.
-endif
+
 inkey(10)
 
 restore screen from cScr
@@ -1463,10 +1458,11 @@ if !fret
 endif
 return fret
 
-
+// -------------------------------------------
+// -------------------------------------------
 function NaslEkran(fBox)
 
-if fbox
+if fBox
 	clear
 endif
 
@@ -1482,6 +1478,7 @@ endif
 
 @ 3,1 SAY PADC(gNaslov + ' Ver.' + gVerzija, 72) COLOR NORMAL
 return
+
 
 // -------------------------------------------
 // -------------------------------------------

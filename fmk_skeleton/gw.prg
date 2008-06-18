@@ -134,7 +134,6 @@ nHgw:=-100
 nGwSec:=seconds()
 do while .t.
   	nHgw:=FOPEN(cBazaInOut+"\in\komanda")
-  	OL_Yield()
 	if nHgw>0
     		exit
 	else

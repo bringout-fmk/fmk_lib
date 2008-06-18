@@ -247,11 +247,6 @@ else
 	l7zip := .f.
 endif
 
-#ifdef CLIP
-	MsgBeep("Nije implementirano")
-	return
-#else
-
 if cDest==NIL // zadaj destinaciju
 	Box(,1,50)
  	@ m_x+1,m_y+2 SAY "Arhivirati na disk A/B/C/D/E/F/G ?" get cabc pict "@!" valid cabc $ "ABCDEFG"
@@ -321,13 +316,12 @@ if strfile(cPom,"list.cmd")=0
 endif
 
 ?
-if !swpruncmd(cKom,0,"","")
+if !run(cKom, 0, "", "")
   fret:=.f.
 endif
-if swperrlev()<>0
- fRet:=.f.
-endif
+
 inkey(10)
+
 restore screen from cScr
 if !fret
   MsgBeep("Arhiviranje nije uspjesno zavrseno !")
@@ -336,13 +330,13 @@ endif
 inkey(5)
 restore screen from cscr
 
-#endif
 closeret
 
 return
 
 
-
+// --------------------------------------
+// --------------------------------------
 function UnZipuj(cImeArh,cLokacija,cDest)
 
 
@@ -394,21 +388,21 @@ endif
 ?
 ?
 ?
-if !swpruncmd(cKom,0,"","")
-  fret:=.f.
+if !run(cKom, 0, "", "")
+  fRet:=.f.
 endif
-if swperrlev()<>0
- fRet:=.f.
-endif
-if !fret
+
+if !fRet
   MsgBeep("Dearhiviranje nije uspjesno zavrseno !")
 endif
+
 inkey(5)
 restore screen from cScr
 
 return fret
 
-
+// -------------------------------------------------
+// -------------------------------------------------
 function IscitajCRC(cFajl)
 
 
@@ -533,15 +527,15 @@ do while .t.
    save screen to cS
    cls
    cKom:="ARJ v -jp "+cFileArt
-   swpruncmd(cKom,0,"","")
+   
+   run(cKom,0,"","")
    cls
    ? "Pritisni nesto za nastavak .."
-   DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
-   INKEY()
-   // inkey(0)
+   inkey(0)
+
    if Pitanje(,iif(fBrisi,"Brisati","Otpakovati")+" "+cFileArt," ")=="D"
         cKom:="ARJ x "+cSwitch+cFileArt
-        swpruncmd(cKom,0,"","")
+        Run(cKom)
    endif
    restore screen from cS
  endif
@@ -622,12 +616,11 @@ endif
 
 inkey(2)
 ?
-if !swpruncmd(cKom,0,"","")
+
+if !Run(cKom)
   fret:=.f.
 endif
-if swperrlev()<>0
- fRet:=.f.
-endif
+
 inkey(10)
 restore screen from cScr
 if !fret

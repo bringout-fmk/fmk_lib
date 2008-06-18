@@ -121,6 +121,8 @@ endif
 return
 
 
+// ----------------------------------------
+// ----------------------------------------
 function kbroj(cSifra)
 
 local i,cPom,nPom,nKontrola, nPom3
@@ -161,7 +163,6 @@ return cSifra+alltrim(str(nKontrola,0))
 
 
 function round2(nizraz,niznos)
-
 
 *
 * pretpostavlja definisanu globalnu varijablu g50F
@@ -218,11 +219,7 @@ IF SELECT("VALUTE")==0
 ELSE
     SELECT VALUTE
     PushWA()
-#ifdef C52
     SET ORDER TO TAG "ID"
-#else
-    SET ORDER TO 1
-#endif
 
 ENDIF
 go top
@@ -300,7 +297,6 @@ RETURN
 
 function Adresar()
 
-
 PushWa()
 select (F_ADRES)
 if !used()
@@ -323,9 +319,9 @@ PopWa()
 return nil
 
 
-
+// --------------------------------
+// --------------------------------
 function P_Adres(cId,dx,dy)
-
 
 local fkontakt:=.f.
 
@@ -404,6 +400,8 @@ PopWa()
 return PostojiSifra(F_ADRES,1,15,77,"Adresar:",@cId,dx,dy, {|Ch| AdresBlok(Ch)} )
 
 
+// ----------------------------------------------------
+// ----------------------------------------------------
 function Pkoverte()
 
 if Pitanje(,"Stampati koverte ?","N")=="N"

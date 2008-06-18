@@ -127,7 +127,8 @@ endif
 return  cImeF
 
 
-
+// --------------------------------
+// --------------------------------
 function DirExists(cDir1)
 
 
@@ -207,10 +208,6 @@ function ShowMem()
 Box(,3,50)
            @ m_x+1,m_y+2 SAY "(0) :"
 	   ?? memory()
-           @ m_x+2,m_y+2 SAY "avl :"
-	   ?? blimemavl()
-           @ m_x+3,m_y+2 SAY "max :"
-	   ?? blimemmax()
            inkey(0)
 BoxC()
 
@@ -221,46 +218,36 @@ function ToUnix(cFileName)
 
 local nPos
 
-#ifdef CLIP
-
 cFileName:=LOWER(cFileName)
-// tekuci direktorij
-cFileName:=STRTRAN(cFileName,".\","")
-cFileName:=STRTRAN(cFileName,".korisn","korisn")
-cFileName:=STRTRAN(cFileName,".mparams","mparams")
-cFileName:=STRTRAN(cFileName,".secur","secur")
-cFileName:=STRTRAN(cFileName,"c:","/c")
-cFileName:=STRTRAN(cFileName,"d:","/d")
-cFileName:=STRTRAN(cFileName,"k:","/k")
-cFileName:=STRTRAN(cFileName,"i:","/i")
-cFileName:=STRTRAN(cFileName,"t:","/t")
-cFileName:=STRTRAN(cFileName,"q:","/q")
-cFileName:=STRTRAN(cFileName,"\","/")
 
-if (cFileName=="/params")
-	cFileName:="params"
-endif
-if (cFileName=="/kparams")
-	cFileName:="kparams"
+
+if HB_OSPATHSEPARATOR() == "/"
+  cFileName:=STRTRAN(cFileName,".\","")
+  cFileName:=STRTRAN(cFileName,".korisn","korisn")
+  cFileName:=STRTRAN(cFileName,".mparams","mparams") 
+  cFileName:=STRTRAN(cFileName,".secur","secur")
+  cFileName:=STRTRAN(cFileName,"c:","/c")
+  cFileName:=STRTRAN(cFileName,"d:","/d")
+  cFileName:=STRTRAN(cFileName,"k:","/k")
+  cFileName:=STRTRAN(cFileName,"i:","/i")
+  cFileName:=STRTRAN(cFileName,"t:","/t")
+  cFileName:=STRTRAN(cFileName,"q:","/q")
+  cFileName:=STRTRAN(cFileName,"\","/")
+  if (cFileName=="/params")
+    cFileName:="params"
+  endif
+  if (cFileName=="/kparams")
+    cFileName:="kparams"
+  endif
 endif
 
 return cFileName
 
-#else
-
-//CLIPPER
-cFileName:=strtran(cFileName,"/c/","C:\")
-cFileName:=strtran(cFileName,"/","\")
-return UPPER(cFileName)
-
-#endif
 
 
-
-
-
+// -------------------------------------
+// -------------------------------------
 function ShowOsInfo(gsOsInfo)
-
 
 @ 24, 2 SAY gsOsInfo
 

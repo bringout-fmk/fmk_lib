@@ -149,7 +149,6 @@ DO WHILE .T.
 
          nBroji2:=seconds()
          DO WHILE NEXTKEY()==0
-           OL_YIELD()
            CekaHandler(@nBroji2)
          ENDDO
          Ch := INKEY()
@@ -946,12 +945,13 @@ do while .t.
     endif
    enddo
 
-   DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
-   lk:=INKEY()
-   // inkey(0)
-   // lk:=lastkey()
+   inkey(0)
+   lk:=lastkey()
 
-   if lk==K_ESC; POZIV--; exit
+   if lk==K_ESC
+      POZIV--
+   exit
+
    elseif lk=K_DOWN
           TB:down()
    elseif lk=K_UP

@@ -120,8 +120,7 @@ function Zabrana()
 if !( System  .or. (KLevel='0' .and. Right(trim(ImeKorisn),1)='1') )
   MsgO("Samo korisnik SYSTEM ima pristup ovoj opciji")
   Beep(4)
-  DO WHILE NEXTKEY()==0; OL_YIELD(); ENDDO
-  INKEY()
+  INKEY(0)
   MsgC()
   return .t.
 else
@@ -207,47 +206,5 @@ endif
 return NIL
 
 
-function ServisKom
-
-local cScr
-local izbor
-
-if !sigmasif("SKOM")
-  msgbeep("Ne cackaj !")
-  return
-endif
-
-private opc[4]
-Opc[1]:="1. poziv dos komandna linija "
-Opc[2]:="2. vidi autoexec.bat"
-Opc[3]:="3. vidi config.sys"
-Opc[4]:="4. ncd"
-h[1]:="Vrati se nazad sa EXIT"
-h[2]:=""
-h[3]:=""
-h[4]:=""
-
-Izbor:=1
-do while .t.
-   Izbor:=menu("spo",opc,Izbor,.f.)
-
-   if izbor==0
-      exit
-   endif
-   save screen to cscr
-   do case
-     case izbor==1
-       cls
-       swpruncmd("",0,"","")
-     case izbor==2
-       swpruncmd("q c:\autoexec.bat",0,"","")
-     case izbor==3
-       swpruncmd("q c:\config.sys",0,"","")
-     case izbor==4
-       swpruncmd("ncd",0,"","")
-   endcase
-   restore screen from cscr
-enddo
-return
 
 
