@@ -9,8 +9,6 @@ SYS=`uname`
 hbcmp $1.prg
 
 
-
-
 if [ "$SYS" == "Linux" ]; then
 
 gcc -DHB_OS_LINUX -Wall -W -o$1 $1.o -L${HB_LIB_COMPILE} -L/usr/X11R6/lib  -Wl,--start-group   -lhbvm  -lhbrtl  -lhblang  -lhbrdd  -lhbrtl  -lhbmacro  -lhbpp  -lrddcdx  -lrddfpt  -lrddntx  -lhbcommon  -lhbct  -lfmk_skeleton  -lfmk_security  -lfmk_common  -lfmk_ui  -lfmk_db  -lfmk_codes  -lfmk_event  -lfmk_rules  -lfmk_ugov  -lfmk_exp_dbf  -lfmk_lokalizacija  -lfmk_rabat  -lhbdebug  -lgttrm  -lrddntx  -lrddcdx  -lrddfpt  -lhbsix  -lhbhsx  -lhbusrrdd  -lgtcgi  -lgtpca  -lgtstd  -lgttrm  -lgtcrs  -lgtsln  -lgtxwc -lncurses -lslang -lX11 -lm -ldl -Wl,--end-group
@@ -28,9 +26,3 @@ echo $1.exe buildan ...
 fi
 
 
-
-
-
-
-
-fi
