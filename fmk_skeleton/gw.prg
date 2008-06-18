@@ -382,6 +382,7 @@ endif
 return
 
 
+
 static function cmdHocuShutdown(cRezultat, GW_STATUS, ZGwPoruka)
 
    
@@ -584,12 +585,12 @@ endif
 return
 
 
+
 function GwDiskFree()
 
 local cOdgovor
 
 cOdgovor:=Gw('GETINFO DISKFREE')
-//MsgBeep(cOdgovor)
 
 return VAL(cOdgovor)	
 

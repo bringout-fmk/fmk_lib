@@ -39,39 +39,3 @@ enddo
 return cRez
 
 
-
-function WaitScrSav(lKeyb)
-local cTmp
-LOCAL nBroji, nBroji2, nChar, nCekaj
-
-IF lKeyb==NIL
-	lKeyb:=.f.
-ENDIF
-
-nBroji:=SECONDS()
-nBroji2:=SECONDS()
-
-nCekaj:=gCekaScreenSaver
-
-while nextkey() == 0
-   cTmp:=CekaHandler(@nBroji2)
-
-   if (SECONDS()-nBroji)/60 >= nCekaj
-     screensaver()
-     nBroji:=SECONDS()
-     if !lKeyb
-       CistiTipke()
-     endif
-   endif
-enddo
-nChar:=Inkey()
-IF lKeyb
-  Keyboard Chr(nChar)
-ENDIF
-
-RETURN nChar
-
-
-
-
-

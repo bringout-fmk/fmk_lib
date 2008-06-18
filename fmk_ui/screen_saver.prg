@@ -46,6 +46,8 @@ restore screen from cScr
 return
 
 
+// ---------------------------------------
+// ---------------------------------------
 function VuciULin(xs, ys, x, y, cTXT)
 
 local a,b,i,j,is:=99
@@ -64,4 +66,39 @@ for j:=ys to y step IF(ys>y,-1,1)
 next
 return
 
+// -------------------------------------------------------
+// -------------------------------------------------------
+function WaitScrSav(lKeyb)
+
+local cTmp
+LOCAL nBroji, nBroji2, nChar, nCekaj
+
+return inkey(0)
+
+IF lKeyb==NIL
+	lKeyb:=.f.
+ENDIF
+
+nBroji:=SECONDS()
+nBroji2:=SECONDS()
+
+nCekaj:=gCekaScreenSaver
+
+while (nChar := inkey()) == 0
+   cTmp:=CekaHandler(@nBroji2)
+
+   if (SECONDS()-nBroji)/60 >= nCekaj
+     screensaver()
+     nBroji:=SECONDS()
+     if !lKeyb
+       CistiTipke()
+     endif
+   endif
+enddo
+
+IF lKeyb
+  Keyboard Chr(nChar)
+ENDIF
+
+RETURN nChar
 

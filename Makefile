@@ -14,6 +14,7 @@ clean:
 	for d in $(DIRS); do \
 	 make -C $$d clean; \
 	done
+
 copy4debug:
 	for d in $(DIRS); do \
 	 cp -v $$d/*.prg /c/sigma; \
