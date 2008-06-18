@@ -299,20 +299,6 @@ if nBroji2==-1  .or. nBroji2==-44
 
 elseif (seconds()-nBroji2) < 10
 	return cRezultat
-// citanje poruka
-//elseif (seconds()-nBroji2) < 500
-//	if (IsPlanika() .and. gSamoProdaja=="D" .and. IsNewMsgExists())
-//		MsgBeep("Postoje nove poruke !!!")
-//		if Pitanje(,"Pregledati poruke (D/N)?","D")=="D"
-//			nBroji2:=seconds()
-//			ReadMsg(.f.)
-//			return cRezultat
-//		else
-//			nBroji2:=seconds()
-//			return cRezultat
-//		endif
-//	endif
-
 else
    	// resetujemo brojac
    	nBroji2:=seconds()
@@ -335,15 +321,6 @@ nRow:=row()
 nRol:=col()
 @ 24,50 SAY padr(cRezultat,30)
 @ 24,1 SAY padr(GW_STATUS,30)
-
-#ifdef PROBA
-if IzFmkIni("Gateway","Debug","N",EXEPATH)=="D"
-	@ 23,1 SAY padr(procname(1),10)
-	@ 22,1 SAY padr(procname(2),10)
-	@ 21,1 SAY padr(procname(3),10)
-	@ 20,1 SAY padr("18:41",10)
-endif
-#endif
 
 SETPOS(nRow,nCol)
 
@@ -370,9 +347,9 @@ endcase
 return cRezultat
 
 
-
+// ------------------------------------------------------------
+// ------------------------------------------------------------
 static function cmdHocuSynchro(cRezultat, GW_STATUS, ZGwPoruka)
-
 
 Beep(6)
 MsgBeep("Zahtjev:" + cRezultat)

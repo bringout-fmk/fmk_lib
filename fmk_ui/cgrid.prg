@@ -52,14 +52,16 @@
 
 function ObjDBedit(cImeBoxa, xw, yw, bUserF, cMessTop, cMessBot, ;
                    lInvert, aMessage, nFreeze, bPodvuci, nPrazno, nGPrazno, ;
-		   aPoredak, skipblock)
+       aPoredak, skipblock)
 
 local nBroji2
 local cSmj, nRez, i, K, aUF, cPomDB, nTTrec
 local cLoc:=space(40)
 local cStVr, cNovVr, nRec, nOrder, nPored, xcpos, ycpos
 
-IF "U" $ TYPE("gTBDir"); gTBDir:="N"; ENDIF
+IF "U" $ TYPE("gTBDir")
+  gTBDir:="N"
+ENDIF
 
 
 if ("U" $ TYPE("TBCanClose")) .or. gTBDir=="N"
@@ -99,11 +101,15 @@ private azKol:=Kol
 if nPrazno==NIL; nPrazno:=0; endif
 if nGPrazno==NIL; nGPrazno:=0; endif
 if aPoredak==NIL; aPoredak:={}; endif
-if (nPored:=LEN(aPoredak))>1; AADD(aMessage,"<c+U> - Uredi"); endif
+if (nPored:=LEN(aPoredak))>1
+  AADD(aMessage,"<c+U> - Uredi")
+endif
 
 PRIVATE TB
 
-if lInvert==NIL; lInvert:=.f.; endif
+if lInvert==NIL
+  lInvert:=.f.
+endif
 
 PRIVATE aParametri:={}
 AADD(aParametri,cImeBoxa)            //  1
@@ -126,32 +132,37 @@ ENDIF
 
 DO WHILE .T.
    Ch:=0   
-    if deleted()  // nalazim se na brisanom slogu
+    if deleted() 
+       // nalazim se na brisanom record-u
        skip
        if eof()
          Tb:Down()
        else
          Tb:Up()
-       endif	 
+       endif   
        Tb:RefreshCurrent()
     endif
 
     nBroji2:=seconds()
-    DO WHILE !TB:stable .AND. ((Ch:=Inkey())==0 )
+    DO WHILE !TB:stable .AND. (NEXTKEY() == 0)
          Tb:stabilize()
          CekaHandler(@nBroji2)
     ENDDO
+    Ch := LASTKEY()
 
    IF TB:stable .AND. Ch==0
          if bUserF<>NIL
-           xcpos:=ROW(); ycpos:=COL(); Eval(bUserF); @ xcpos,ycpos SAY ""
+           xcpos:=ROW()
+	   ycpos:=COL()
+	   Eval(bUserF)
+	   @ xcpos,ycpos SAY ""
          endif
 
          nBroji2:=seconds()
          DO WHILE NEXTKEY()==0
            CekaHandler(@nBroji2)
          ENDDO
-         Ch := INKEY()
+         Ch := LASTKEY()
          
    END
 
@@ -270,7 +281,9 @@ DO WHILE .T.
        if nPrazno==0;BoxC();endif
        exit
      CASE nRez==DE_ABORT .or. Ch==K_CTRL_END .or. Ch==K_ESC
-       if nPrazno==0;BoxC();endif
+       if nPrazno==0
+         BoxC()
+       endif
        EXIT
 
 
@@ -712,7 +725,7 @@ DO CASE
      private cKolona
      if len(Imekol[TB:colPos])>2
        if !empty(ImeKol[TB:colPos,3])
-	  cKolona:=ImeKol[TB:ColPos,3]
+          cKolona:=ImeKol[TB:ColPos,3]
           if valtype(&cKolona) $  "CD"
 
             Box(,2,60,.f.)
@@ -759,7 +772,9 @@ DO CASE
        endif
      endif
     ENDIF
+
   CASE Ch==K_ALT_S
+    
     IF (kLevel>"0".or.gReadOnly .or. !ImaPravoPristupa(goModul:oDatabase:cName,"CUI","STANDTBKOMANDE-ALTR_ALTS"))
      Msg("Nemate pravo na koristenje ove opcije",15)
     ELSE
@@ -823,7 +838,8 @@ ENDCASE
 return
 
 
-
+// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 function StandTBTipke()
 
 * ove tipke ne smiju aktivirati edit-mod
@@ -890,7 +906,8 @@ function EvEr(cExpr,cmes,cT)
 RETURN lVrati
 
 
-
+// ------------------------------------------------------
+// ------------------------------------------------------
 function BrowseKey(y1,x1,y2,x2,;
                    ImeKol,bfunk,uslov,traz,brkol,;
                    dx,dy,bPodvuci)
@@ -935,18 +952,15 @@ EVAL(bfunk,0)
 
 do while .t.
    if dx<>NIL .and. dy<>NIL
-    // @ m_x+dx,m_y+dy say STR(nCurRec,4)+"/"+STR(nRecCnt,4)
      @ m_x+dx,m_y+dy say STR(nRecCnt,4)
    endif
-   while !Tb:stabilize() .and. Inkey()==0
-    if dx<>NIL .and. dy<>NIL
-     // @ m_x+dx,m_y+dy say STr(nCurRec,4)+"/"+STR(nRecCnt,4)
-      @ m_x+dx,m_y+dy say STR(nRecCnt,4)
-    endif
-   enddo
 
-   inkey(0)
-   lk:=lastkey()
+   while !Tb:stabilize() .and. NEXTKEY() == 0
+     if dx<>NIL .and. dy<>NIL
+        @ m_x+dx,m_y+dy say STR(nRecCnt,4)
+     endif
+   enddo
+   lk:=LASTKEY()
 
    if lk==K_ESC
       POZIV--

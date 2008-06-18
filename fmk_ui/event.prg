@@ -40,7 +40,6 @@ return cRez
 
 
 
-
 function WaitScrSav(lKeyb)
 local cTmp
 LOCAL nBroji, nBroji2, nChar, nCekaj
