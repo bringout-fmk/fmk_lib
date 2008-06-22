@@ -1,24 +1,27 @@
 #!/bin/bash
 
 
-PATH=$PATH:/c/Progra~1/Git/bin
-
 SYS=`uname`
 
 if [ "$SYS" != "Linux" ] ; then
-    PATH=/c/MinGW/bin:$PATH
-fi
 
-export PATH
 
-BASEDIR=/c/Docume~1/hernad/devel/git/
+PATH=/c/MinGW/bin:/usr/harbour/bin:$PATH
 
-export BASEDIR 
 
+#gtk build
+export PKG_CONFIG_PATH=c:/gtk/lib/pkgconfig
+export GTK_BASEPATH=c:/GTK
 
 export HB_ARCHITECTURE=w32
 export HB_COMPILER=mingw32
 export HB_GT_LIB=gtwin
+
+
+PATH=$PATH:/c/Progra~1/Git/bin
+BASEDIR=/c/Docume~1/hernad/devel/git/
+
+export PATH  BASEDIR 
 
 export HB_BIN_INSTALL=c:/cygwin/usr/harbour/bin
 export HB_INC_INSTALL=c:/cygwin/usr/harbour/include
@@ -37,5 +40,8 @@ PS4='+ '
 export PS1 PS2 PS4
 
 cd ~/devel/git/fmk
+
+
+fi
 
 bash
