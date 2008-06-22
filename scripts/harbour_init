@@ -3,6 +3,14 @@
 
 PATH=$PATH:/c/Progra~1/Git/bin
 
+SYS=`uname`
+
+if [ "$SYS" != "Linux" ] ; then
+    PATH=/c/MinGW/bin:$PATH
+fi
+
+export PATH
+
 BASEDIR=/c/Docume~1/hernad/devel/git/
 
 export BASEDIR 
