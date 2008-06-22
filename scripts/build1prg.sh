@@ -6,7 +6,7 @@ fi
 
 SYS=`uname`
 
-hbcmp $1.prg
+hbcmp -b $1.prg
 
 
 if [ "$SYS" == "Linux" ]; then
@@ -19,7 +19,7 @@ echo $1 buildan ...
 else
 
 
-gcc -Wall -W -o$1.exe $1.o  -mno-cygwin   -L${HB_LIB_COMPILE}  -Wl,--start-group -lhbclipsm   -lhbvm  -lhbrtl  -lhblang  -lhbrdd  -lhbrtl  -lhbmacro  -lhbpp  -lrddcdx  -lrddfpt   -lhbcommon  -lhbct  -lrddntx -lgtwin -lrddcdx  -lrddfpt -lhbsix -lhbhsx -lhbusrrdd  -Wl,--end-group -luser32 -lwinspool -lgdi32 -lcomctl32 -lcomdlg32 -lole32 -loleaut32 -luuid -lmpr -lwsock32 -lws2_32 -lmapi32
+gcc -Wall -W -o$1.exe $1.o  -mno-cygwin   -L${HB_LIB_COMPILE} -Lc:/cygwin/usr/mysql/lib  -Wl,--start-group -lhbclipsm   -lhbvm  -lhbrtl  -lhblang  -lhbrdd  -lhbrtl  -lhbmacro  -lhbpp  -lrddcdx  -lrddfpt   -lhbcommon -lhbdebug  -lhbct  -lrddntx -lgtwin -lrddcdx  -lrddfpt -lhbsix -lhbhsx -lhbusrrdd -lhbmysql -Wl,--end-group -luser32 -lwinspool -lgdi32 -lcomctl32 -lcomdlg32 -lole32 -loleaut32 -luuid -lmpr -lwsock32 -lws2_32 -lmapi32 -lmysql
 
 echo $1.exe buildan ...
 
