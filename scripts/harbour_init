@@ -11,8 +11,12 @@ PATH=/c/MinGW/bin:/usr/harbour/bin:$PATH
 
 #gtk build
 export PKG_CONFIG_PATH=c:/gtk/lib/pkgconfig
+export PKG_CONFIG=/usr/local/bin/mingw-pkg-config
+
 export GTK_BASEPATH=c:/GTK
 
+
+export HB_ROOT=c:/cygwin/usr/harbour
 export HB_ARCHITECTURE=w32
 export HB_COMPILER=mingw32
 export HB_GT_LIB=gtwin
