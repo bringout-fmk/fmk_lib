@@ -155,3 +155,31 @@
 
 #xcommand O_RELATION => SELECT (F_RELATION); USE (SIFPATH+"RELATION"); set order to tag "1"
 
+// POS modul
+
+#xcommand O_KALKSEZ   => select(F_KALKSEZ);  use  (KUMPATH+"2005"+SLASH+"KALK") alias kalksez ; set order to 1
+#xcommand O_ROBASEZ   => select(F_ROBASEZ);  use  (SIFPATH+"2005"+SLASH+"ROBA") alias robasez ; set order to tag "ID"
+
+
+// stampa PDV racuna
+#xcommand O_DRN => select(F_DRN); use (PRIVPATH+"DRN"); set order to tag "1"
+#xcommand O_RN => select(F_RN); use (PRIVPATH+"RN"); set order to tag "1"
+#xcommand O_DRNTEXT => select(F_DRNTEXT); use (PRIVPATH+"DRNTEXT"); set order to tag "1"
+#xcommand O_DOKSPF => select(F_DOKSPF); use (KUMPATH+"DOKSPF"); set order to tag "1"
+
+// tabele provjere integriteta
+#xcommand O_DINTEG1 => SELECT (F_DINTEG1); USEX (KUMPATH+"DINTEG1"); set order to tag "1"
+#xcommand O_DINTEG2 => SELECT (F_DINTEG2); USEX (KUMPATH+"DINTEG2"); set order to tag "1"
+#xcommand O_INTEG1 => SELECT (F_INTEG1); USEX (KUMPATH+"INTEG1"); set order to tag "1"
+#xcommand O_INTEG2 => SELECT (F_INTEG2); USEX (KUMPATH+"INTEG2"); set order to tag "1"
+#xcommand O_ERRORS => SELECT (F_ERRORS); USEX (PRIVPATH+"ERRORS"); set order to tag "1"
+
+
+// sql messages
+
+#define F_MSGNEW 234
+
+#xcommand O_MESSAGE   => select(F_MESSAGE); use (KUMPATH+"MESSAGE"); set order to tag "1"
+#xcommand O_AMESSAGE   => select(F_AMESSAGE); use (EXEPATH+"AMESSAGE"); set order to tag "1"
+#xcommand O_TMPMSG  => select(F_TMPMSG); use (EXEPATH+"TMPMSG"); set order to tag "1"
+
