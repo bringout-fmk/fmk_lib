@@ -1,9 +1,4 @@
 #include "fmk.ch"
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
 
 function CreKorisn(nArea)
 *{
@@ -14,8 +9,9 @@ if nArea==nil
 endif
 
 if (nArea==-1 .or. nArea==F_KORISN)
+	 
 	 cImeDBF:=ToUnix(".\korisn.dbf")
-	 //? "File ",cImeDBF,"ima li ga ?", File(cImeDBF)
+
 	 IF !FILE(cImeDBF)
 	  aDbf:={}
 	  AADD(aDbf,{"ime","C",10,0})
@@ -28,7 +24,8 @@ if (nArea==-1 .or. nArea==F_KORISN)
 	  AADD(aDbf,{"DirRad","C",40,0})
 	  AADD(aDbf,{"DirSif","C",40,0})
 	  AADD(aDbf,{"DirPriv","C",40,0})
-	  DBCREATE2(cImeDBF,aDbf)
+	  
+	  DBCREATE2(cImeDBF, aDbf)
 	  USE (cImeDBF)
 
 	  APPEND BLANK
@@ -47,7 +44,7 @@ if (nArea==-1 .or. nArea==F_KORISN)
 	 ENDIF
 	 //? "Create_Index KORISN/IME"
 	 
-	 CREATE_INDEX("IME","ime",ToUnix(".\korisn.dbf"),.t.)
+	 CREATE_INDEX("IME","ime", cImeDbf, .t.)
 endif
 
 return
@@ -246,12 +243,13 @@ close all
 return
 *}
 
-function DBCREATE2(cIme,aDbf,cDriver)
+function DBCREATE2(cIme, aDbf, cDriver)
 *{
 local nPos
 local cCDX
 
 cIme:=ToUnix(cIme)
+
 nPos:=ASCAN(aDbf,  {|x| x[1]=="BRISANO"} )
 if nPos==0
 	AADD(aDBf,{ 'BRISANO'      , 'C' ,  1 ,  0 })

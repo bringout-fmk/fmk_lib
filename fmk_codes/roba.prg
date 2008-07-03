@@ -157,14 +157,14 @@ if roba->(fieldpos("IDTARIFA2"))<>0
 endif
 
 
-if IsPlanika()
-	AADD (ImeKol,{ padc("Pl.Vr.", 3 ), {|| vrsta },  "vrsta",  {|| .t. }, {|| P_RVrsta(@wVrsta), .t. } })
-	AADD (ImeKol,{ padc("Pl.Sezona", 9 ), {|| sezona }, "sezona", {|| .t.}, {|| P_PlSezona(@wSezona) } })
-	AADD (ImeKol,{ padc("Id partner", 6 ), {|| idpartner }, "idpartner", {|| .t.}, {|| P_IdPartner(@wIdPartner) } })
-	if roba->(fieldpos("TPURCHASE"))<>0
-		AADD (ImeKol,{ padc("Grupa nabavke",13 ), {|| tpurchase}, "tpurchase",  {|| .t. }, {|| P_TPurchase(@wtpurchase), .t. } })
-	endif
-endif
+//if IsPlanika()
+	//AADD (ImeKol,{ padc("Pl.Vr.", 3 ), {|| vrsta },  "vrsta",  {|| .t. }, {|| P_RVrsta(@wVrsta), .t. } })
+	//AADD (ImeKol,{ padc("Pl.Sezona", 9 ), {|| sezona }, "sezona", {|| .t.}, {|| P_PlSezona(@wSezona) } })
+	//AADD (ImeKol,{ padc("Id partner", 6 ), {|| idpartner }, "idpartner", {|| .t.}, {|| P_IdPartner(@wIdPartner) } })
+	//if roba->(fieldpos("TPURCHASE"))<>0
+	//	AADD (ImeKol,{ padc("Grupa nabavke",13 ), {|| tpurchase}, "tpurchase",  {|| .t. }, {|| P_TPurchase(@wtpurchase), .t. } })
+	//endif
+//endif
 
 Kol := {}
 

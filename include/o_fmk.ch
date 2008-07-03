@@ -8,7 +8,7 @@
 #xcommand O_GPARAMSP  => select (F_GPARAMSP);use (PRIVPATH+"gparams")  ; set order to tag  "ID"
 #xcommand O_MPARAMS   => select (F_MPARAMS); use (CURDIR+"mparams")   ; set order  to tag  "ID"
 #xcommand O_KPARAMS   => select (F_KPARAMS); use (KUMPATH+"kparams") ; set order to tag  "ID"
-#xcommand O_SECUR     => select (F_SECUR); use (CURDIR+"secur")  ; set order to tag "ID"
+#xcommand O_SECUR     => select (F_SECUR); use (KUMPATH+"secur")  ; set order to tag "ID"
 #xcommand O_ADRES     => select (F_ADRES); use (SIFPATH+"adres")  ; set order to tag "ID"
 
 #xcommand O_SQLPAR    => select (F_SQLPAR); use (KUMPATH+"SQL"+SLASH+"SQLPAR")

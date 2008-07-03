@@ -1785,11 +1785,14 @@ do while .t.
      otherwise
       	 if opcexe[nIzbor] <> nil
           private xPom:=opcexe[nIzbor]
+	  
 	  if VALTYPE(xPom)="C"
 	     xDummy:=&(xPom)
 	  else
+	     altd()
 	     EVAL(xPom)
 	  endif
+
 	 endif  
      endcase
      

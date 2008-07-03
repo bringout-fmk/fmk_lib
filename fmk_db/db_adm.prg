@@ -10,6 +10,9 @@ static nSlogova:=0
 *;
 
 
+// -----------------------------------------------------
+// -----------------------------------------------------
+
 function CREATE_INDEX(cImeInd, cKljuc, cImeDbf, fSilent)
 
 local bErr
@@ -30,8 +33,8 @@ if fSilent==nil
     fSilent:=.f.
 endif
 
-if AT(SLASH,cImeDbf)==0  // onda se radi o kumulativnoj datoteci
-     cImeCdx :=  alltrim(cDirRad)+SLASH+ImeDBFCDX(cImeDbf)
+if AT(SLASH, cImeDbf)==0  // onda se radi o kumulativnoj datoteci
+     cImeCdx :=  alltrim(cDirRad) + SLASH + ImeDBFCDX(cImeDbf)
 else
      cImeCdx := ImeDbfCdx(cImeDbf)
 endif
