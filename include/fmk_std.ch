@@ -1073,7 +1073,7 @@
 #command PACK            => Msg("PACK nedozvoljen !",15)
 
 
-#command ZAP             => zapp()
+#xcommand ZAP2  => zapp()
 
 
 #command SET LOGLEVEL TO <n>                                            ;
