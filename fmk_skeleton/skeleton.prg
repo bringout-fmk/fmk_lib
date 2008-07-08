@@ -287,7 +287,7 @@ return
 // --------------------------------------------------------
 function SetNaslov(oApp)
 
-altd()
+
 
 gNaslov:= oApp:cName + " HB, " + oApp:cPeriod 
 
