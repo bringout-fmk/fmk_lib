@@ -1789,7 +1789,7 @@ do while .t.
 	  if VALTYPE(xPom)="C"
 	     xDummy:=&(xPom)
 	  else
-	     altd()
+	     
 	     EVAL(xPom)
 	  endif
 
