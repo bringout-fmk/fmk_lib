@@ -457,7 +457,7 @@ return nil
 */
 
 function zapp()
-*{
+local bErr
 
 if gReadonly 
   return
@@ -465,7 +465,11 @@ endif
 
 PushWa()
 
-if SHARED()
+bErr:=ERRORBLOCK({|o| MyErrH(o)})
+begin sequence
+   __dbzap()
+recover
+//if SHARED()
        do while .t.
        if flock()
           // neophodno, posto je index po kriteriju deleted() !!
@@ -483,13 +487,11 @@ if SHARED()
 
        exit
        enddo
-else
-   __dbzap()
-endif
+end sequence
+bErr:=ERRORBLOCK(bErr)
 
 PopWa()
 return nil
-*}
 
 function nerr(oe)
 *{

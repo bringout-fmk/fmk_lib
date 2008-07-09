@@ -132,11 +132,7 @@ if !FILE(cImeCdx)  .or. nOrder==0  .or. UPPER(cOrdKey)<>UPPER(cKljuc)
    return .f.
      endif
     
-#ifdef CLIP
-  Usexi(cImeDbf)
-#else
-  DBUSEAREA (.f., nil, cImeDbf, nil, .t. )
-#endif
+DBUSEAREA (.f., nil, cImeDbf, nil, .t. )
 
    if !fSilent
     MsgO("Baza:"+cImeDbf+", Kreiram index-tag :"+cImeInd+"#"+ExFileName(cImeCdx))
