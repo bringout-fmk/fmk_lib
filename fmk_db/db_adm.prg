@@ -12,7 +12,6 @@ static nSlogova:=0
 
 // -----------------------------------------------------
 // -----------------------------------------------------
-
 function CREATE_INDEX(cImeInd, cKljuc, cImeDbf, fSilent)
 
 local bErr
@@ -44,7 +43,7 @@ nPom:=RAT(SLASH,cImeInd)
 cTag:=""
 cKljucIz:=cKljuc
 if nPom<>0
-   cTag:=substr(cImeInd,nPom+1)
+   cTag:=substr(cImeInd, nPom+1)
 else
    cTag:=cImeInd
 endif
@@ -560,12 +559,9 @@ Reindex(.t.)
 return
 
 
-
-
 /*! \fn RunModS(fDa)
  *  \param fDa - True -> Batch obrada (neinteraktivno)
  */
-
 function RunModS(fDa)
 
 

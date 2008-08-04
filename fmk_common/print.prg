@@ -14,7 +14,7 @@ static nSekundi:=0
 
 static cTekprinter:="" 
 
-static cFName:="OUTF.TXT" 
+static cFName:="outf.txt" 
 
 
 // -------------------------------------------------------------------

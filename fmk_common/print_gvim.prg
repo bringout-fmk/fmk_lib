@@ -158,7 +158,7 @@ par_2 := gcDirekt
 par_3 := gPTKonv
 par_4 := gKodnaS
 
-txt_in_name := "OUTF.TXT"
+txt_in_name := "outf.txt"
 
 if ( cOut_name == nil )
 	txt_out_name := txt_in_name

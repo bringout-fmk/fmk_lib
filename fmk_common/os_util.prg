@@ -227,7 +227,7 @@ function ToUnix(cFileName)
 
 local nPos
 
-cFileName:=LOWER(cFileName)
+cFileName:= LOWER(cFileName)
 
 
 if HB_OSPATHSEPARATOR() == "/"

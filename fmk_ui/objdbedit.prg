@@ -555,16 +555,18 @@ DO CASE
              nRec:=recno()
              nOrder:=indexord()
              set order to 0
-             if Pitanje(,"Promjena ce se izvrsiti u "+IF(EMPTY(cUslov77),"svim ","")+"stavkama"+IF(!EMPTY(cUslov77)," koje obuhvata uslov","")+". Zelite nastaviti ?","N")=="D"
+             if Pitanje(,"Promjena ce se izvrsiti u " + IIF(EMPTY(cUslov77),"svim ","") + "stavkama" + IIF(!EMPTY(cUslov77), " koje obuhvata uslov","") + ". Zelite nastaviti ?","N")=="D"
                go top
                do while !eof()
+
                  IF EMPTY(cUslov77) .or. &cUslov77
                    replace &cKolona with cVrijednost
                    sql_azur(.t.)
                    replsql &cKolona with cVrijednost
                  ENDIF
                  skip
-                enddo
+               enddo
+
              endif
              dbsetorder(nOrder)
              go nRec
@@ -579,9 +581,9 @@ DO CASE
      
      Private GetList:={}
      nRez:=INDEXORD()
-     Prozor1(12,20,17+nPored,59,"UTVRDJIVANJE PORETKA",,,"GR+/N","W/N,B/W,,,B/W",2)
+     Prozor1(12,20,17+nPored, 59, "UTVRDJIVANJE PORETKA", , , "GR+/N", "W/N,B/W, , , B/W", 2)
      FOR i:=1 TO nPored
-      @ 13+i,23 SAY PADR("poredak po "+aPoredak[i],33,"ú")+STR(i,1)
+      @ 13+i,23 SAY PADR("poredak po "+aPoredak[i],33,"ú") + STR(i,1)
      NEXT
      @ 18,27 SAY "UREDITI TABELU PO BROJU:" GET nRez VALID nRez>0 .AND. nRez<nPored+1 PICT "9"
      READ
@@ -611,6 +613,7 @@ if Ch==K_ESC .or. Ch==K_CTRL_T .or. Ch=K_CTRL_P .or. Ch=K_CTRL_N .or. ;
    Ch==K_DEL .or. Ch=K_F2 .or. Ch=K_F4 .or. Ch=K_CTRL_F9 .or. Ch=0
    return .t.
 endif
+
 return .f.
 
 

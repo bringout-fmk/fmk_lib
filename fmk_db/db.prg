@@ -1131,7 +1131,8 @@ function PopWA()
 local aWa
 local i
 
-aWa:=StackPop(aWaStack)
+aWa := StackPop(aWaStack)
+
 if aWa[1]<>nil
    
    // select
@@ -1156,8 +1157,11 @@ if aWa[1]<>nil
      //   DBCLEARFILTER( )
    endif
    
-   go aWa[4]
+   if used()
+    go aWa[4]
+   endif
    
 endif  // wa[1]<>NIL
-return NIL
+
+return nil
 

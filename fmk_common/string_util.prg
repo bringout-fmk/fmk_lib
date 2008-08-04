@@ -1,5 +1,20 @@
 #include "fmk.ch"
 
+
+function cm2str(xValue)
+
+LOCAL cType := ValType( xValue )
+
+DO CASE
+   CASE cType == "D" 
+         RETURN "STOD('" + DTOS( xValue ) + "')"
+   case cType == "C"
+         RETURN "'"+ xValue+"'"
+   OTHERWISE
+         HB_ValToStr(xValue)
+ENDCASE
+
+
 function ToStr(xVal)
 
 

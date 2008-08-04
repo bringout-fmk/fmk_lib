@@ -1,21 +1,5 @@
 #include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/fmk/roba/adm_db.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.3 $
- * $Log: adm_db.prg,v $
- * Revision 1.3  2003/01/19 23:44:18  ernad
- * test network speed (sa), korekcija bl.lnk
- *
- * Revision 1.2  2002/06/16 14:16:54  ernad
- * no message
- *
- *
- */
  
 function PP_Sast()
 *{
@@ -43,14 +27,16 @@ function PP_Sast()
   SELECT PARAMS; USE
 
   IF TRIM(cK2KS)!=TRIM(cDirSif)
-    cPom:=SezRad(TRIM(cK2KS))+"SAST.DBF"
-    cPom2:=SezRad(TRIM(cK2KS))+"ROBA.DBF"
+    cPom:=SezRad(TRIM(cK2KS)) + "sast.dbf"
+    cPom2:=SezRad(TRIM(cK2KS)) + "roba.dbf"
+
     IF SELECT("SAST2")!=0
       SELECT SAST2; USE
     ENDIF
     IF SELECT("ROBA2")!=0
       SELECT ROBA2; USE
     ENDIF
+    
     IF ! ( FILE(cPom) ) .OR. ! ( FILE(cPom2) )
       Msg("Na zadanom direktoriju druge firme ne postoji baza za poredjenje !",6)
       RETURN
