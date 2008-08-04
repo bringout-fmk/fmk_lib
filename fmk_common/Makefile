@@ -8,6 +8,7 @@ PRG_SOURCES= \
         ini.prg \
         params.prg \
         print.prg \
+	print_epl2.prg \
 	print_pdf.prg \
 	print_ptxt.prg \
 	print_gvim.prg \
