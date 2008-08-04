@@ -72,7 +72,7 @@ return .t.
 ***/
 
 
-function Skloni(cPath,cIme,cSezona,fInverse,fDa,fNuliraj)
+function Skloni(cPath, cIme, cSezona, fInverse, fDa, fNuliraj)
 *{
 
 if Empty(cSezona)
@@ -81,13 +81,15 @@ endif
 
 DirMake(cPath+cSezona)
 
-cPath:=Upper(cPath)
-cIme:=Upper(cIme)
+cPath:=lower(cPath)
+cIme:=lower(cIme)
+
+
 
 if fInverse
-	cFull:=cPath+cIme
+	cFull:= cPath + cIme
 else
-	cFull:=cPath+cSezona+SLASH+cIme
+	cFull:= cPath + cSezona + SLASH + cIme
 endif
 //MsgBeep(cFull)
 
@@ -95,8 +97,8 @@ if fDa .or. !fInverse .and. (!File(cFull) .or. Pitanje(,cPath+cIme+" je vec pohr
 	Otkljucaj(cPath+cIme)
    	if fInverse
 		// preimenuj ciljni fajl radi sigurnosti
-     		cBackup:=cPath+STRTRAN(Upper(cIme),"."+DBFEXT,"._BF")
-     		cBackup:=STRTRAN(cBackup,"."+MEMOEXTENS,"._BT")
+     		cBackup:=cPath+STRTRAN(lower(cIme), "." + DBFEXT, "._bf")
+     		cBackup:=STRTRAN(cBackup,"."+MEMOEXTENS,"._bt")
 		FErase(cBackup)
      		if FRename(cPath+cIme,cBackup)=-1   // ne moze preimenovati
           		if File(cPath+cIme)   // a fajl postoji
@@ -111,8 +113,8 @@ if fDa .or. !fInverse .and. (!File(cFull) .or. Pitanje(,cPath+cIme+" je vec pohr
    	else
 
      		// preimenuj ciljni fajl radi sigurnosti
-     		cBackup:=cPath+cSezona+SLASH+STRTRAN(Upper(cIme),"."+DBFEXT,"._BF")
-     		cBackup:=STRTRAN(cBackup,"."+MEMOEXTENS,"._BT")
+     		cBackup:=cPath+cSezona+SLASH+STRTRAN(lower(cIme), "."+ DBFEXT,"._bf")
+     		cBackup:=STRTRAN(cBackup,"."+MEMOEXTENS,"._bt")
 		FErase(cBackup)
      		FRename(cPath+cSezona+DBFEXT+cIme,cBackup)
 
@@ -137,7 +139,7 @@ if fDa .or. !fInverse .and. (!File(cFull) .or. Pitanje(,cPath+cIme+" je vec pohr
 	Zakljucaj(cPath+cIme)
 	//run &cKom
 
-	cKom:=STRTRAN(Upper(cKom),".DBF","*."+INDEXEXTENS)
+	cKom:=STRTRAN(lower(cKom), ".dbf", "*." + INDEXEXTENS)
 	
 	? cKom
 	?

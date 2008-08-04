@@ -87,8 +87,10 @@ return
 // -----------------------------------
 function CreFmkSvi()
 
+
 // RJ
-if !file(KUMPATH+"rj.dbf")
+cIme := "rj"
+if !file(KUMPATH + cIme + ".dbf")
    	aDBf:={}
    	if goModul:oDataBase:cName == "LD"
    		AADD(aDBf,{ 'ID'                  , 'C' ,   2 ,  0 })
@@ -98,13 +100,13 @@ if !file(KUMPATH+"rj.dbf")
 	add_f_mcode(@aDbf)
 	AADD(aDBf,{ 'NAZ'                 , 'C' ,  35 ,  0 })
 
-   	DBCREATE2(KUMPATH+'rj.dbf',aDbf)
+   	DBCREATE2(KUMPATH + cIme, aDbf)
 endif
-CREATE_INDEX("ID","id", KUMPATH+"RJ")
+CREATE_INDEX("ID","id", KUMPATH + cIme)
 
-CREATE_INDEX("NAZ","NAZ", KUMPATH+"RJ")
+CREATE_INDEX("NAZ","NAZ", KUMPATH + cIme)
 
-index_mcode(KUMPATH, "RJ")
+index_mcode(KUMPATH, cIme)
 
 
 // PARTN
@@ -133,7 +135,9 @@ if !file(PRIVPATH+"_partn.dbf")
 endif
 CREATE_INDEX("ID","id",SIFPATH+"partn") // firme
 CREATE_INDEX("NAZ","LEFT(NAZ,25)",SIFPATH+"partn")
+
 CREATE_INDEX("ID","id",PRIVPATH+"_partn")
+
 index_mcode(SIFPATH, "partn")
 
 // KONTO
@@ -150,7 +154,8 @@ CREATE_INDEX("NAZ","naz",SIFPATH+"partn")
 index_mcode(SIFPATH, "KONTO")
 
 // VALUTE
-if !file(SIFPATH+"valute.dbf")
+cIme := "valute"
+if !file(SIFPATH + cIme + ".dbf")
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,   4 ,  0 })
         add_f_mcode(@aDbf)
@@ -161,7 +166,7 @@ if !file(SIFPATH+"valute.dbf")
         AADD(aDBf,{ 'KURS2'               , 'N' ,  10 ,  5 })
         AADD(aDBf,{ 'KURS3'               , 'N' ,  10 ,  5 })
         AADD(aDBf,{ 'TIP'                 , 'C' ,   1 ,  0 })
-        dbcreate2(SIFPATH+'valute.dbf',aDbf)
+        dbcreate2(SIFPATH + cIme, aDbf)
         use (SIFPATH + 'valute')
         append blank
         replace id with "000", naz with "KONVERTIBILNA MARKA", ;
@@ -173,10 +178,10 @@ if !file(SIFPATH+"valute.dbf")
                 KURS1 WITH 0.512, KURS2 WITH 0.512, KURS3 WITH 0.512
         CLOSE ALL
 endif
-CREATE_INDEX("ID","id", SIFPATH+"valute")
-CREATE_INDEX("NAZ","tip+id+dtos(datum)", SIFPATH + "valute")
-CREATE_INDEX("ID2","id+dtos(datum)", SIFPATH+"VALUTE")
-index_mcode(SIFPATH, "valute")
+CREATE_INDEX("ID","id", SIFPATH + cIme)
+CREATE_INDEX("NAZ","tip+id+dtos(datum)", SIFPATH + cIme)
+CREATE_INDEX("ID2","id+dtos(datum)", SIFPATH + cIme)
+index_mcode(SIFPATH, cIme)
 
 // TOKVAL
 if !file(SIFPATH+'tokval.dbf')
@@ -310,7 +315,7 @@ if !file(SIFPATH + cIme + ".dbf" )
 	AADD(aDBf,{ 'NAZ'                 , 'C' ,  45 ,  0 })
         AADD(aDBf,{ 'Mjesto'              , 'C' ,  20 ,  0 })
         AADD(aDBf,{ 'Adresa'              , 'C' ,  30 ,  0 })
-        DBCREATE2(SIFPATH + cImeDbf + ".dbf" , aDbf)
+        DBCREATE2(SIFPATH + cIme + ".dbf" , aDbf)
 endif
 CREATE_INDEX("ID","id", SIFPATH + cIme)
 CREATE_INDEX("NAZ","naz", SIFPATH + cIme)
