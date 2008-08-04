@@ -268,4 +268,10 @@
 
 
 
+#command POCNI STAMPU   => if !lSSIP99 .and. !StartPrint()       ;
+                           ;close all             ;
+                           ;return                ;
+                           ;endif
+
+#command ZAVRSI STAMPU  => if !lSSIP99; EndPrint(); endif
 
