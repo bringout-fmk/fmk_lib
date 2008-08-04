@@ -541,15 +541,15 @@ cEXT:=SLASH+"*."+INDEXEXT
 
 ? "Modifikacija u privatnom direktoriju ..."
 close all
-Modstru(TRIM(cCHSFile),trim(goModul:oDataBase:cDirPriv))
+Modstru(TRIM(cCHSFile), trim(goModul:oDataBase:cDirPriv))
 
 ? "Modifikacija u direktoriju sifrarnika ..."
 close all
-Modstru(TRIM(cCHSFile),trim(goModul:oDataBase:cDirSif))
+Modstru(TRIM(cCHSFile), trim(goModul:oDataBase:cDirSif))
 
 ? "Modifikacija u direktoriju kumulativa ..."
 close all
-Modstru(TRIM(cCHSFile),trim(goModul:oDataBase:cDirKum))
+Modstru(TRIM(cCHSFile), trim(goModul:oDataBase:cDirKum))
 
 
 // kreiraj, reindex
@@ -621,10 +621,11 @@ Box(,3,50)
   if cDN=="D"
     @ m_x+3,m_y+2 SAY "CHS Skript:" GET cImeCHS
     read
-    cImeCHS:=trim(cImeChs)
+    cImeCHS:=ToUnix(trim(cImeChs))
   endif
 BoxC()
-if cdn=="D"
+
+if cDn == "D"
   return .t.
 else
   return .f.
@@ -634,12 +635,13 @@ endif
 
 /*! \fn ModStru(cImeF, cPath, fString)
  *  \brief procedura modifikacija struktura
+ * fString - .t. ako saljem string umjesto imena fajla
  */
-function ModStru
+function ModStru (cImeF, cPath, fString)
+local oFile
+local cNewLine := HB_OSNewLine()
 
-parameters cImeF,cPath, fString
-
-? SPACE(40),"SIGMA-COM, 10.99, ver 02.33 CDX"
+? SPACE(40),"SIGMA-COM, 10.99-07.08, ver 02.5"
 ? SPACE(40),"-------------------------------"
 ?
 set deleted on  // ne kopiraj izbrisane zapise !!!
@@ -648,15 +650,9 @@ close all
 
 SET AUTOPEN OFF
 
-if pcount()==0
-  ?
-    ? "Sintaksa:   MODSTRU  <ImeKomandnog_fajla>  <direktorij_sa_DBF_fajlovima>"
-    ? "     npr:   MODSTRU  ver0155.chs    C:\EM\FIN\1"
-    ?
-    quit
-endif
+? "modstru start:"
 
-if fstring=nil
+if fString == nil
   fString=.f.
 endif
 
@@ -665,16 +661,29 @@ if cPath==nil
 endif
 
 if !fString
+
   if RIGHT(cPath,1)<>SLASH
        cPath:=cPath+SLASH
    endif
+
+   oFile := TFileRead():New( ToUnix(cImeF) )
+   oFile:Open()
+
    nH:=FOPEN(ToUnix(cImeF))
-   if nH==-1
-       nH:=FOPEN(".."+SLASH+cImeF)
+   
+   if oFile:Error()
+
+       oFile:= TFileRead():New ( ToUnix(".." + SLASH + cImeF ))
+       oFile:Open()
+       if oFile:Error()
+         return .f.
+       endif
+   
    endif
+
 else
-  if right(cImeF,4)<>"."+DBFEXT
-         cImeF:=cImeF+"."+DBFEXT
+  if right(cImeF,4) <> "." + DBFEXT
+         cImeF:= cImeF+"." + DBFEXT
     endif
     cKomanda:=cPath
     cPath:=""
@@ -683,49 +692,64 @@ endif
 nLinija:=0
 cDBF:=""
 
-private fBrisiDBF:=.f.
-private fRenameDBF:=.f.
+private fBrisiDBF := .f.
+private fRenameDBF := .f.
 
-fprom:=.f.
+fProm:=.f.
 nProlaza:=0
 
-do while fString .or. !FEOF(nH)
+
+do while fString .or. oFile:MoreToRead()
+  
   ++nLinija
   if fString
-      if nProlaza=0
-           cLin:="*"+cImeF
+      if nProlaza == 0
+           cLin:="*" + cImeF
            nProlaza++
-      elseif nprolaza=1
+
+      elseif nProlaza=1
+
            cLin:=cKomanda
+
            nProlaza++
       else
            exit
       endif
-else
-  cLin:=FReadLN(nH,1,200)
-      cLin:=left(cLin,len(cLin)-2)
-endif
+  else
+     cLin:= oFile:ReadLine()
+  endif
 
-if empty(cLin) .or.  left(cLin,1)==";"
+  ? nLinija, ":", cLin
+
+if empty(cLin) .or.  left(cLin,1) == ";"
   loop
 endif
 
+
 if left(cLin,1)="*"
-  kopi(fProm)
+       
+       kopi(cPath, cDbf, fBrisiDbf, fRenameDbf, fProm)
+       
        cLin:=substr(cLin,2,len(trim(clin))-1)
        cDbf:=alltrim(cLin)
-       ? cPath+cDbf
-  cDbf:=UPPER(cDbf+iif(at(".",cDbf)<>0,"",".DBF"))
-       if file(cPath+cDbf)
+       
+       cDbf:= LOWER( cDbf+iif(at(".", cDbf) <>0, "", ".DBF") )
+
+       ? ToUnix(cPath + cDbf)
+
+       if file( ToUnix(cPath + cDbf) )
            select 1
-           usex (cPath+cDbf) alias olddbf
+           usex ( ToUnix(cPath + cDbf) ) alias olddbf
        else
            cDbf:="*"
            ?? "  Ne nalazi se u direktorijumu"
        endif
+
        fProm:=.f.   // flag za postojanje promjena u strukturi dbf-a
-  aStru:=DBSTRUCT()
+  
+       aStru:=DBSTRUCT()
        aNStru:=aclone(aStru)      // nova struktura
+
 else  // funkcije za promjenu polja
   if empty(cDBF)
           ? "Nije zadat DBF fajl nad kojim se vrsi modifikacija strukture !"
@@ -819,11 +843,15 @@ else  // funkcije za promjenu polja
 endif // fje za promjenu polja
 
 enddo
-kopi(fProm)
+
+oFile:Close()
+
+kopi(cPath, cDbf, fBrisiDbf, fRenameDbf, fProm)
 
 
 SET AUTOPEN ON 
 return
+
 
 
 function Rjec(cLin)
@@ -855,40 +883,6 @@ for i:=1 to len(aNStru)
 next
 aNStru:=aClone(aPom)
 return nil
-
-
-/***
-*  FGets( <nHandle>, [<nLines>], [<nLineLength>], [<cDelim>] ) --> cBuffer
-*  Read one or more lines from a text file
-*
-*/
-
-function FGets(nHandle, nLines, nLineLength, cDelim)
-
-return FReadLn(nHandle, nLines, nLineLength, cDelim)
-
-
-
-/*! \fn FileTop(nHandle) 
- *  \brief Position the file pointer to the first byte in a binary file and return the new file position (i.e., 0).
- *  \return nPos
- *
- */
-
-function FileTop(nHandle)
-*{      
-return FSEEK(nHandle, 0)
-
-
-/*! \fn FileBottom(nHandle) 
- * \brief Position the file pointer to the last byte in a binary file and return the new file position
- * \param nHandle - handle fajla
- * \return nPos - lokacija 
- */
-
-function FileBottom(nHandle)
-*{      
-return FSEEK(nHandle, 0, FS_END)
 
 
 
