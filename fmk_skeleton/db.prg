@@ -176,9 +176,9 @@ else
 	StandardBoje()
 
 	::cSezonDir:=SLASH+::cRadimUSezona
-	::setDirKum(trim(::cDirKum)+SLASH+::cRadimUSezona)
-	::setDirSif(trim(::cDirSif)+SLASH+::cRadimUSezona)
-	::setDirPriv(trim(::cDirPriv)+SLASH+::cRadimUSezona)
+	::setDirKum(trim(::cDirKum) + SLASH + ::cRadimUSezona)
+	::setDirSif(trim(::cDirSif) + SLASH + ::cRadimUSezona)
+	::setDirPriv(trim(::cDirPriv) + SLASH + ::cRadimUSezona)
  
 	::oDesktop:showSezona(::cRadimUSezona) 
 
@@ -186,7 +186,7 @@ else
 endif
 
 
-if !PostDir(::cDirKum) .and. Pitanje(,"Formirati sezonske direktorije","N")=="D"
+if !IsDirectory(::cDirKum) .and. Pitanje(,"Formirati sezonske direktorije","N")=="D"
 	// kreiraj sezonske direktorije
 	dirmake(::cDirKum)      
 	dirmake(::cDirSif)
@@ -249,6 +249,7 @@ cDir:=ALLTRIM(cDir)
 if (gKonvertPath=="D")
 	KonvertPath(@cDir)
 endif
+
 ::cDirPriv:=ToUnix(cDir)
 
 // setuj i globalnu varijablu dok ne eliminisemo sve pozive na tu varijablu
@@ -297,10 +298,8 @@ endif
 /*! \todo Eliminsati ovu nepotrebnu dvojnost cDirRad, cDirKum -> sve prebaciti na cDirKum !
  */
 
-#ifndef CLIP
 cDirKum:=::cDirKum
 cDirRad:=::cDirKum
-#endif
 
 SET(_SET_DEFAULT,trim(cDir))
 

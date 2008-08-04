@@ -1,4 +1,4 @@
-#include "fmk.ch"
+
 
 #define D_STAROST_DANA   25
 
@@ -127,15 +127,45 @@ endif
 return  cImeF
 
 
+// ==============================================
+// ==============================================
+function DirExists( cDir1 )
+return IsDirectory( cDir1) 
+
+
+
+// ------------------------------------------
+// ------------------------------------------
+function IsDirectory(cDir1)
+
+local cDirTek
+local lExists
+
+cDir1 := ToUnix(cDir1)
+
+cDirTek:=DirName()
+
+if DirChange(cDir1) <> 0
+ lExists:=.f.
+else
+ lExists:=.t.
+endif
+
+DirChange(cDirTek)
+
+return lExists
+
+
 // --------------------------------
+// legacy
 // --------------------------------
-function DirExists(cDir1)
+function DirExistsX(cDir1)
 
 
 local nH
 
 cDir1:=trim(cDir1)
-if (nH:=fcreate(ToUnix(cdir1+'\X')))=-1
+if (nH:=fcreate(ToUnix(cdir1+ SLASH + 'X')))=-1
  beep(2)
  Msg("Nepostojeci direktorij ili niste prisutni na mrezi !",0)
  if Pitanje(,"Zelite li kreirati direktorij:"+trim(cDir1)+" ?","N")=="D"
@@ -152,22 +182,6 @@ else
  ferase(ToUnix(cDir1+SLASH+'X'))
  return .t.
 endif
-
-
-function PostDir(cDir1)
-
-local cDirTek, fPostoji
-
-cDir1:=ToUnix(cDir1)
-
-cDirTek:=dirname()
-if dirchange(cDir1) <> 0
- fPostoji:=.f.
-else
- fPostoji:=.t.
-endif
-dirchange(cDirTek)
-return fPostoji
 
 
 
@@ -214,6 +228,9 @@ BoxC()
 RETURN
 
 
+
+// ----------------------------------------------
+// ----------------------------------------------
 function ToUnix(cFileName)
 
 local nPos
@@ -222,23 +239,31 @@ cFileName:=LOWER(cFileName)
 
 
 if HB_OSPATHSEPARATOR() == "/"
-  cFileName:=STRTRAN(cFileName,".\","")
-  cFileName:=STRTRAN(cFileName,".korisn","korisn")
-  cFileName:=STRTRAN(cFileName,".mparams","mparams") 
-  cFileName:=STRTRAN(cFileName,".secur","secur")
-  cFileName:=STRTRAN(cFileName,"c:","/c")
-  cFileName:=STRTRAN(cFileName,"d:","/d")
-  cFileName:=STRTRAN(cFileName,"k:","/k")
-  cFileName:=STRTRAN(cFileName,"i:","/i")
-  cFileName:=STRTRAN(cFileName,"t:","/t")
-  cFileName:=STRTRAN(cFileName,"q:","/q")
-  cFileName:=STRTRAN(cFileName,"\","/")
+  cFileName:=STRTRAN(cFileName, ".\","")
+  cFileName:=STRTRAN(cFileName, ".korisn", "korisn")
+  cFileName:=STRTRAN(cFileName, ".mparams", "mparams") 
+  
+  if (cFileName == "/gparams")
+    cFileName := GetEnv("HOME") + "/gparams"
+  endif
+
+  cFileName:=STRTRAN(cFileName, ".secur", "secur")
+  cFileName:=STRTRAN(cFileName, "c:", "/c")
+  cFileName:=STRTRAN(cFileName, "d:", "/d")
+  cFileName:=STRTRAN(cFileName, "k:", "/k")
+  cFileName:=STRTRAN(cFileName, "i:", "/i")
+  cFileName:=STRTRAN(cFileName, "t:", "/t")
+  cFileName:=STRTRAN(cFileName, "q:", "/q")
+  cFileName:=STRTRAN(cFileName, "\", "/")
+  
   if (cFileName=="/params")
     cFileName:="params"
   endif
+  
   if (cFileName=="/kparams")
     cFileName:="kparams"
   endif
+
 endif
 
 return cFileName

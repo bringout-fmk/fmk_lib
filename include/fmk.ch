@@ -6,7 +6,7 @@
 
 #define SC_DEFINED
 
-#define FMK_LIB_VER  "7.0.14"
+#define FMK_LIB_VER  "7.0.22"
 
 
 

@@ -402,7 +402,7 @@ if !empty(goModul:oDatabase:cSezonDir) // u sezoni sam
      return cDir
   else
     cPom:=cDir+right(goModul:oDatabase:cSezonDir,4) + "\"
-    if PostDir(cPom)
+    if IsDirectory(cPom)
      return cPom
     else
      return cDir

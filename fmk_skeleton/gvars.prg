@@ -185,7 +185,8 @@ gSqlLogBase:=IzFmkIni("SQL","SQLLogBase","c:\sigma",EXEPATH)
 
 
 
-
+// -------------------------------------------------------------
+// -------------------------------------------------------------
 function IniGparams(fSve)
 
 local cImeDbf

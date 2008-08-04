@@ -9,27 +9,33 @@ if nArea==nil
 endif
 
 if (nArea==-1 .or. nArea==F_KORISN)
-	 
-	 cImeDBF:=ToUnix(".\korisn.dbf")
+	
+	 cImeDbf:=  "." + SLASH + "korisn" 
+	 dbf_ext_na_kraju(@cImeDbf)
 
-	 IF !FILE(cImeDBF)
-	  aDbf:={}
-	  AADD(aDbf,{"ime","C",10,0})
-	  AADD(aDbf,{"sif","C",6,0})
-	  AADD(aDbf,{"dat","D",8,0})
-	  AADD(aDbf,{"time","C",8,0})
-	  AADD(aDbf,{"prov","N",4,0})  // brojac neispravnih pokusaja ulaza
-	  AADD(aDbf,{"nk","L",1,0})
-	  AADD(aDbf,{"level","C",1,0})
-	  AADD(aDbf,{"DirRad","C",40,0})
-	  AADD(aDbf,{"DirSif","C",40,0})
-	  AADD(aDbf,{"DirPriv","C",40,0})
+         if !FILE(cImeDbf)
+
+	   aDbf:={}
+	   AADD(aDbf,{"ime","C",10,0})
+	   AADD(aDbf,{"sif","C",6,0})
+	   AADD(aDbf,{"dat","D",8,0})
+	   AADD(aDbf,{"time","C",8,0})
+	   AADD(aDbf,{"prov","N",4,0})  // brojac neispravnih pokusaja ulaza
+	   AADD(aDbf,{"nk","L",1,0})
+	   AADD(aDbf,{"level","C",1,0})
+	   AADD(aDbf,{"DirRad","C",40,0})
+	   AADD(aDbf,{"DirSif","C",40,0})
+	   AADD(aDbf,{"DirPriv","C",40,0})
 	  
-	  DBCREATE2(cImeDBF, aDbf)
-	  USE (cImeDBF)
+	   DBCREATE2(cImeDBF, aDbf)
+	  
+	  
+	   USE (cImeDBF)
 
-	  APPEND BLANK
-	  REPLACE ime WITH "SYSTEM"        ,  ;               && SYSTEM
+
+
+	   APPEND BLANK
+	   REPLACE ime WITH "SYSTEM"        ,  ;               && SYSTEM
 		  sif WITH CryptSC("SYSTEM") ,  ;
 		  dat WITH  Date()         ,  ;
 		  time WITH Time()         ,  ;
@@ -41,8 +47,7 @@ if (nArea==-1 .or. nArea==F_KORISN)
 		  DirSif  with             '*'  ,;
 		  DirPriv with             '*'
 	   USE
-	 ENDIF
-	 //? "Create_Index KORISN/IME"
+	 endif
 	 
 	 CREATE_INDEX("IME","ime", cImeDbf, .t.)
 endif
@@ -115,7 +120,7 @@ if (nArea==-1 .or. nArea==F_GPARAMS)
 	if !file(ToUnix(PRIVPATH+"gparams.dbf"))
 	 DBCREATE2(PRIVPATH+"gparams.dbf",aDbf)
 	endif
-	CREATE_INDEX("ID","fsec+fh+fvar+rbr",PRIVPATH+"gparams.dbf",.t.)
+	CREATE_INDEX("ID","fsec+fh+fvar+rbr", PRIVPATH + "gparams.dbf",.t.)
 endif
 
 if (nArea==-1 .or. nArea==F_MPARAMS)
@@ -210,10 +215,13 @@ AADD(aDbf, {"Tip","C",1,0} ) // tip varijable
 AADD(aDbf, {"Fv","C",15,0}  ) // sadrzaj
 
 if (nArea==-1 .or. nArea==F_GPARAMS)
-	cImeDBf:=ToUnix("\GPARAMS.DBF")
+
+	cImeDBf:= ToUnix( SLASH + "GPARAMS") 
+
 	if !file(cImeDbf)
-		DBCREATE2(cImeDbf,aDbf)
+		DBCREATE2(cImeDbf, aDbf)
 	endif
+
 	CREATE_INDEX("ID","fsec+fh+fvar+rbr", cImeDBF )
 endif
 
@@ -243,30 +251,43 @@ close all
 return
 *}
 
+
+// -------------------------------
+// -------------------------------
+function dbf_ext_na_kraju(cIme)
+
+cIme:=ToUnix(cIme)
+if right(cIme,4)<>"." + DBFEXT
+   cIme:=cIme+"." + DBFEXT
+endif
+
+
+
+// ------------------------------------------
+// ------------------------------------------
 function DBCREATE2(cIme, aDbf, cDriver)
-*{
+
 local nPos
 local cCDX
 
-cIme:=ToUnix(cIme)
+
+dbf_ext_na_kraju(@cIme)
 
 nPos:=ASCAN(aDbf,  {|x| x[1]=="BRISANO"} )
 if nPos==0
 	AADD(aDBf,{ 'BRISANO'      , 'C' ,  1 ,  0 })
 endif
 
-if right(cIme,4)<>"."+DBFEXT
-   cIme:=cIme+"."+DBFEXT
-endif
 
-cCDX:=strtran(cIme,"."+DBFEXT,"."+INDEXEXT)
-if right(cCDX,4)="."+INDEXEXT
+cCDX:= strtran(cIme,"." + DBFEXT, "." + INDEXEXT)
+
+if right(cCDX, 4) == "." + INDEXEXT
   ferase(cCDX)
 endif
 
-DBCREATE(cIme,aDbf,cDriver)
-return
-*}
+DBCREATE(cIme, aDbf, cDriver)
+return .t.
+
 
 function AddOidFields(aDbf)
 *{
