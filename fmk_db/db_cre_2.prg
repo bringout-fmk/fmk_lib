@@ -88,7 +88,7 @@ return
 function CreFmkSvi()
 
 // RJ
-if !file(KUMPATH+"RJ.DBF")
+if !file(KUMPATH+"rj.dbf")
    	aDBf:={}
    	if goModul:oDataBase:cName == "LD"
    		AADD(aDBf,{ 'ID'                  , 'C' ,   2 ,  0 })
@@ -97,10 +97,13 @@ if !file(KUMPATH+"RJ.DBF")
    	endif
 	add_f_mcode(@aDbf)
 	AADD(aDBf,{ 'NAZ'                 , 'C' ,  35 ,  0 })
-   	DBCREATE2(KUMPATH+'RJ.DBF',aDbf)
+
+   	DBCREATE2(KUMPATH+'rj.dbf',aDbf)
 endif
-CREATE_INDEX("ID","id",KUMPATH+"RJ")
-CREATE_INDEX("NAZ","NAZ",KUMPATH+"RJ")
+CREATE_INDEX("ID","id", KUMPATH+"RJ")
+
+CREATE_INDEX("NAZ","NAZ", KUMPATH+"RJ")
+
 index_mcode(KUMPATH, "RJ")
 
 
@@ -122,32 +125,32 @@ AADD(aDBf,{ 'DZIROR'              , 'C' ,  22 ,  0 })
 AADD(aDBf,{ 'TELEFON'             , 'C' ,  12 ,  0 })
 AADD(aDBf,{ 'FAX'                 , 'C' ,  12 ,  0 })
 AADD(aDBf,{ 'MOBTEL'              , 'C' ,  20 ,  0 })
-if !file(SIFPATH+"PARTN.dbf")
-        dbcreate2(SIFPATH+'PARTN.DBF',aDbf)
+if !file(SIFPATH+"partn.dbf")
+        dbcreate2(SIFPATH+'partn.dbf',aDbf)
 endif
-if !file(PRIVPATH+"_PARTN.dbf")
-        dbcreate2(PRIVPATH+'_PARTN.DBF',aDbf)
+if !file(PRIVPATH+"_partn.dbf")
+        dbcreate2(PRIVPATH+'_partn.dbf',aDbf)
 endif
-CREATE_INDEX("ID","id",SIFPATH+"PARTN") // firme
-CREATE_INDEX("NAZ","LEFT(NAZ,25)",SIFPATH+"PARTN")
-CREATE_INDEX("ID","id",PRIVPATH+"_PARTN")
-index_mcode(SIFPATH, "PARTN")
+CREATE_INDEX("ID","id",SIFPATH+"partn") // firme
+CREATE_INDEX("NAZ","LEFT(NAZ,25)",SIFPATH+"partn")
+CREATE_INDEX("ID","id",PRIVPATH+"_partn")
+index_mcode(SIFPATH, "partn")
 
 // KONTO
-if !file(SIFPATH+"KONTO.dbf")
+if !file(SIFPATH+"partn.dbf")
    aDbf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   7 ,  0 })
    add_f_mcode(@aDbf)
    AADD(aDBf,{ 'NAZ'                 , 'C' ,  57 ,  0 })
-   dbcreate2(SIFPATH+'KONTO.DBF',aDbf)
+   dbcreate2(SIFPATH+'partn.DBF',aDbf)
 endif
 
-CREATE_INDEX("ID","id",SIFPATH+"KONTO") // konta
-CREATE_INDEX("NAZ","naz",SIFPATH+"KONTO")
+CREATE_INDEX("ID","id",SIFPATH+"partn") // konta
+CREATE_INDEX("NAZ","naz",SIFPATH+"partn")
 index_mcode(SIFPATH, "KONTO")
 
 // VALUTE
-if !file(SIFPATH+"VALUTE.DBF")
+if !file(SIFPATH+"valute.dbf")
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,   4 ,  0 })
         add_f_mcode(@aDbf)
@@ -158,8 +161,8 @@ if !file(SIFPATH+"VALUTE.DBF")
         AADD(aDBf,{ 'KURS2'               , 'N' ,  10 ,  5 })
         AADD(aDBf,{ 'KURS3'               , 'N' ,  10 ,  5 })
         AADD(aDBf,{ 'TIP'                 , 'C' ,   1 ,  0 })
-        dbcreate2(SIFPATH+'VALUTE.DBF',aDbf)
-        use (SIFPATH+'VALUTE.DBF')
+        dbcreate2(SIFPATH+'valute.dbf',aDbf)
+        use (SIFPATH + 'valute')
         append blank
         replace id with "000", naz with "KONVERTIBILNA MARKA", ;
                 NAZ2 WITH "KM", DATUM WITH CTOD("01.01.04"), TIP WITH "D",;
@@ -170,23 +173,23 @@ if !file(SIFPATH+"VALUTE.DBF")
                 KURS1 WITH 0.512, KURS2 WITH 0.512, KURS3 WITH 0.512
         CLOSE ALL
 endif
-CREATE_INDEX("ID","id", SIFPATH+"VALUTE")
-CREATE_INDEX("NAZ","tip+id+dtos(datum)", SIFPATH+"VALUTE")
+CREATE_INDEX("ID","id", SIFPATH+"valute")
+CREATE_INDEX("NAZ","tip+id+dtos(datum)", SIFPATH + "valute")
 CREATE_INDEX("ID2","id+dtos(datum)", SIFPATH+"VALUTE")
-index_mcode(SIFPATH, "VALUTE")
+index_mcode(SIFPATH, "valute")
 
 // TOKVAL
-if !file(SIFPATH+'TOKVAL.dbf')
+if !file(SIFPATH+'tokval.dbf')
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,  8  ,  2 })
 	AADD(aDBf,{ 'NAZ'                 , 'N' ,  8 ,   2 })
         AADD(aDBf,{ 'NAZ2'                , 'N' ,  8 ,   2 })
-        dbcreate2(SIFPATH+'TOKVAL.DBF',aDbf)
+        dbcreate2(SIFPATH+'tokval.dbf',aDbf)
 endif
 CREATE_INDEX("ID","id",SIFPATH+"tokval")
 
 // SIFK
-if !file(SIFPATH+"SIFK.dbf")
+if !file(SIFPATH+"sifk.dbf")
    aDbf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   8 ,  0 })
    AADD(aDBf,{ 'SORT'                , 'C' ,   2 ,  0 })
@@ -223,12 +226,12 @@ if !file(SIFPATH+"SIFK.dbf")
    //             aktiviraj funkciju ImeFje()
    dbcreate2(SIFPATH+'SIFK.DBF',aDbf)
 endif
-CREATE_INDEX("ID","id+SORT+naz",SIFPATH+"SIFK")
-CREATE_INDEX("ID2","id+oznaka",SIFPATH+"SIFK")
-CREATE_INDEX("NAZ","naz",SIFPATH+"SIFK")
+CREATE_INDEX("ID","id+SORT+naz", SIFPATH+"sifk")
+CREATE_INDEX("ID2","id+oznaka", SIFPATH+"sifk")
+CREATE_INDEX("NAZ","naz", SIFPATH+"sifk")
 
 // SIFV
-if !file(SIFPATH+"SIFV.dbf")  // sifrarnici - vrijednosti karakteristika
+if !file(SIFPATH+"sifv.dbf")  // sifrarnici - vrijednosti karakteristika
    aDbf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   8 ,  0 })
    AADD(aDBf,{ 'Oznaka'              , 'C' ,   4 ,  0 })
@@ -240,39 +243,39 @@ if !file(SIFPATH+"SIFV.dbf")  // sifrarnici - vrijednosti karakteristika
    // IDSIF  = 2MON0005
    // NAZ = 02030303030303
 
-   dbcreate2(SIFPATH+'SIFV.DBF',aDbf)
+   dbcreate2(SIFPATH+'sifv.dbf',aDbf)
 endif
-CREATE_INDEX("ID","id+oznaka+IdSif+Naz",SIFPATH+"SIFV")
-CREATE_INDEX("IDIDSIF","id+IdSif",SIFPATH+"SIFV")
-CREATE_INDEX("NAZ","id+oznaka+naz",SIFPATH+"SIFV")
+CREATE_INDEX("ID","id+oznaka+IdSif+Naz", SIFPATH + "sifv")
+CREATE_INDEX("IDIDSIF","id+IdSif",SIFPATH + "sifv")
+CREATE_INDEX("NAZ","id+oznaka+naz",SIFPATH + "sifv")
 
 
 // TNAL
-if !file(SIFPATH+"TNAL.dbf")
+if !file(SIFPATH+"tnal.dbf")
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,   2 ,  0 })
         add_f_mcode(@aDbf)
 	AADD(aDBf,{ 'NAZ'                 , 'C' ,  29 ,  0 })
-        dbcreate2(SIFPATH+'TNAL.DBF',aDbf)
+        dbcreate2(SIFPATH+'tnal.dbf',aDbf)
 endif
-CREATE_INDEX("ID","id",SIFPATH+"TNAL")  // vrste naloga
-CREATE_INDEX("NAZ","naz",SIFPATH+"TNAL")
+CREATE_INDEX("ID","id",SIFPATH+"tnal")  // vrste naloga
+CREATE_INDEX("NAZ","naz",SIFPATH+"tnal")
 index_mcode(SIFPATH, "TNAL")
 
 // TDOK
-if !file(SIFPATH+"TDOK.dbf")
+if !file(SIFPATH+"tdok.dbf")
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,   2 ,  0 })
         add_f_mcode(@aDbf)
 	AADD(aDBf,{ 'NAZ'                 , 'C' ,  13 ,  0 })
-        dbcreate2(SIFPATH+'TDOK.DBF',aDbf)
+        dbcreate2(SIFPATH+'tdok.dbf', aDbf)
 endif
 CREATE_INDEX("ID","id",SIFPATH+"TDOK")  // Tip dokumenta
 CREATE_INDEX("NAZ","naz",SIFPATH+"TDOK")
 index_mcode(SIFPATH, "TDOK")
 
 // OPS
-if !file(SIFPATH+"OPS.DBF")
+if !file(SIFPATH+"ops.dbf")
    aDBf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   4 ,  0 })
    AADD(aDBf,{ 'IDJ'                 , 'C' ,   3 ,  0 })
@@ -283,46 +286,48 @@ if !file(SIFPATH+"OPS.DBF")
    AADD(aDBf,{ 'ZIPCODE'             , 'C' ,   5 ,  0 })
    AADD(aDBf,{ 'PUCCANTON'           , 'C' ,   2 ,  0 })
    AADD(aDBf,{ 'PUCCITY'             , 'C' ,   5 ,  0 })
-   DBCREATE2(SIFPATH+'OPS.DBF',aDbf)
+   DBCREATE2(SIFPATH+'ops.dbf',aDbf)
 endif
-CREATE_INDEX("ID","id",SIFPATH+"OPS")
+CREATE_INDEX("ID","id",SIFPATH+"ops")
 if PoljeExist("IDJ")
-	CREATE_INDEX("IDJ","idj",SIFPATH+"OPS")
+	CREATE_INDEX("IDJ","idj",SIFPATH+"ops")
 endif
 if PoljeExist("IDKAN")
-	CREATE_INDEX("IDKAN","idKAN",SIFPATH+"OPS")
+	CREATE_INDEX("IDKAN","idKAN",SIFPATH+"ops")
 endif
 if PoljeExist("IDN0")
-	CREATE_INDEX("IDN0","IDN0",SIFPATH+"OPS")
+	CREATE_INDEX("IDN0","IDN0",SIFPATH+"ops")
 endif
-CREATE_INDEX("NAZ","naz",SIFPATH+"OPS")
-index_mcode(SIFPATH, "OPS")
+CREATE_INDEX("NAZ","naz",SIFPATH+"ops")
+index_mcode(SIFPATH, "ops")
 
 // BANKE
-if !file(SIFPATH+"BANKE.DBF")
+cIme:="banke"
+if !file(SIFPATH + cIme + ".dbf" )
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,   3 ,  0 })
         add_f_mcode(@aDbf)
 	AADD(aDBf,{ 'NAZ'                 , 'C' ,  45 ,  0 })
         AADD(aDBf,{ 'Mjesto'              , 'C' ,  20 ,  0 })
         AADD(aDBf,{ 'Adresa'              , 'C' ,  30 ,  0 })
-        DBCREATE2(SIFPATH+'BANKE.DBF',aDbf)
+        DBCREATE2(SIFPATH + cImeDbf + ".dbf" , aDbf)
 endif
-CREATE_INDEX("ID","id", SIFPATH+"BANKE")
-CREATE_INDEX("NAZ","naz", SIFPATH+"BANKE")
-index_mcode(SIFPATH, "BANKE")
+CREATE_INDEX("ID","id", SIFPATH + cIme)
+CREATE_INDEX("NAZ","naz", SIFPATH + cIme)
+index_mcode(SIFPATH, cIme)
 
 // RNAL
-if !file(SIFPATH+"RNAL.DBF")
+cIme:="rnal"
+if !file( SIFPATH+ cIme + ".dbf")
    aDBf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,  10 ,  0 })
    add_f_mcode(@aDbf)
    AADD(aDBf,{ 'NAZ'                 , 'C' ,  60 ,  0 })
-   DBCREATE2(SIFPATH+'RNAL.DBF',aDbf)
+   DBCREATE2(SIFPATH+'RNAL.DBF', aDbf)
 endif
-CREATE_INDEX("ID","id",SIFPATH+"RNAL")  // vrste naloga
-CREATE_INDEX("NAZ","naz",SIFPATH+"RNAL")
-index_mcode(SIFPATH, "RNAL")
+CREATE_INDEX("ID","id", SIFPATH + cIme)  // vrste naloga
+CREATE_INDEX("NAZ","naz", SIFPATH + cIme)
+index_mcode(SIFPATH, cIme)
 
 nArea:=nil
 

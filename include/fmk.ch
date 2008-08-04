@@ -178,8 +178,8 @@
              [INDEX <(index1)> [, <(indexn)>]]                          ;
                                                                         ;
       =>  PreUseEvent(<(db)>,.f.,gReadOnly)				;
-        ;  dbUseArea(                                                    ;
-                    <.new.>, <rdd>, <(db)>, <(a)>,                      ;
+        ;  dbUseArea(                                                   ;
+                    <.new.>, <rdd>, ToUnix(<(db)>), <(a)>,              ;
                      .f., gReadOnly       ;
                   )                                                     ;
                                                                         ;
@@ -226,7 +226,7 @@
 #define DE_ADD  5
 #define DE_DEL  6
 
-#define DBFBASEPATH "C:\SIGMA"
+#define DBFBASEPATH "C:" + SLASH +  "SIGMA"
 
 #define P_KUMPATH  1
 #define P_SIFPATH  2

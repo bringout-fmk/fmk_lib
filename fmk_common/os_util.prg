@@ -1,4 +1,4 @@
-
+#include "fmk.ch"
 
 #define D_STAROST_DANA   25
 
@@ -127,13 +127,6 @@ endif
 return  cImeF
 
 
-// ==============================================
-// ==============================================
-function DirExists( cDir1 )
-return IsDirectory( cDir1) 
-
-
-
 // ------------------------------------------
 // ------------------------------------------
 function IsDirectory(cDir1)
@@ -159,17 +152,18 @@ return lExists
 // --------------------------------
 // legacy
 // --------------------------------
-function DirExistsX(cDir1)
+function DirExists(cDir1)
 
 
 local nH
 
 cDir1:=trim(cDir1)
-if (nH:=fcreate(ToUnix(cdir1+ SLASH + 'X')))=-1
+
+if !IsDirectory(cDir1)
  beep(2)
  Msg("Nepostojeci direktorij ili niste prisutni na mrezi !",0)
  if Pitanje(,"Zelite li kreirati direktorij:"+trim(cDir1)+" ?","N")=="D"
-    if dirmak2(cDir1)
+    if DirMak2(cDir1)
        return .t.
     else
        Msg("Ne mogu kreirati direktorij ?",0)
@@ -178,8 +172,6 @@ if (nH:=fcreate(ToUnix(cdir1+ SLASH + 'X')))=-1
   endif
   return .f.
 else
- fclose(nH)
- ferase(ToUnix(cDir1+SLASH+'X'))
  return .t.
 endif
 

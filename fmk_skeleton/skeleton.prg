@@ -939,14 +939,17 @@ Scatter()
 if lScreen
   Box("radD",5,65,.f.,"Lokacije podataka")
   SET CURSOR ON
-  @ m_x+1,m_y+2 SAY "Podesiti direktorije  "  GET cDN  valid cDN$"DN"
+  @ m_x+1,m_y+2 SAY "Podesiti direktorije  "  GET cDN  picture "@!" valid cDN $ "DN"
   @ m_x+3,m_y+2 SAY "Radni direktorij      "  GET _DirRad ;
         VALID(DirExists(_DirRad)) when cDN=="D"
+
   @ m_x+4,m_y+2 SAY "Direktorij sifrarnika "  GET _DirSif ;
         VALID(DirExists(_DirSif)) when cDN=="D"
+
   @ m_x+5,m_y+2 SAY "Privatni direktorij   "  GET _DirPriv ;
         VALID(DirExists(_DirPriv))  when cDN=="D"
   READ
+
   ESC_BCR
   BoxC()
   

@@ -77,42 +77,40 @@
 #xcommand O__PARTN   => select(F__PARTN);  use  (PRIVPATH+"_partn")
 
 
-#xcommand O_KONTO   => select(F_KONTO);  use  (SIFPATH+"KONTO") ; set order to tag "ID"
+#xcommand O_KONTO   => select(F_KONTO);  use  (SIFPATH+"konto") ; set order to tag "ID"
 #xcommand O_TRFP    => select(F_TRFP);   use  (SIFPATH+"trfp")       ; set order to tag "ID"
 #xcommand O_TRMP    => select(F_TRMP);   use  (SIFPATH+"trmp")       ; set order to tag "ID"
-#xcommand O_PARTN   => select(F_PARTN);  use  (SIFPATH+"PARTN")  ; set order to tag "ID"
-#xcommand O_TNAL   => select(F_TNAL);  use  (SIFPATH+"TNAL")         ; set order to tag "ID"
-#xcommand O_TDOK   => select(F_TDOK);  use  (SIFPATH+"TDOK")         ; set order to tag "ID"
-#xcommand O_KONCIJ => select(F_KONCIJ);  use  (SIFPATH+"KONCIJ")     ; set order to tag "ID"
-#xcommand O_VALUTE => select(F_VALUTE);  use  (SIFPATH+"VALUTE")     ; set order to tag "ID"
-#xcommand O_SAST   => select (F_SAST); use  (SIFPATH+"SAST")         ; set order to tag "ID"
-#xcommand O_BANKE   => select (F_BANKE) ; use (SIFPATH+"BANKE")  ; set order to tag "ID"
+#xcommand O_PARTN   => select(F_PARTN);  use  (SIFPATH+"partn")  ; set order to tag "ID"
+#xcommand O_TNAL   => select(F_TNAL);  use  (SIFPATH+"tnal")         ; set order to tag "ID"
+#xcommand O_TDOK   => select(F_TDOK);  use  (SIFPATH+"tdok")         ; set order to tag "ID"
+#xcommand O_KONCIJ => select(F_KONCIJ);  use  (SIFPATH+"koncij")     ; set order to tag "ID"
+#xcommand O_VALUTE => select(F_VALUTE);  use  (SIFPATH+"valute")     ; set order to tag "ID"
+#xcommand O_SAST   => select (F_SAST); use  (SIFPATH+"sast")         ; set order to tag "ID"
+#xcommand O_BANKE   => select (F_BANKE) ; use (SIFPATH+"banke")  ; set order to tag "ID"
 
-#xcommand O_LOGK   => select (F_LOGK) ; use  (KUMPATH+"LOGK")         ; set order to tag "NO"
-#xcommand O_LOGKD  => select (F_LOGKD); use  (KUMPATH+"LOGKD")        ; set order to tag "NO"
+#xcommand O_LOGK   => select (F_LOGK) ; use  (KUMPATH+"logk")         ; set order to tag "NO"
+#xcommand O_LOGKD  => select (F_LOGKD); use  (KUMPATH+"logd")        ; set order to tag "NO"
 
-#xcommand O_BARKOD  => select(F_BARKOD);  use (PRIVPATH+"BARKOD"); set order to tag "1"
+#xcommand O_BARKOD  => select(F_BARKOD);  use (PRIVPATH+"barkod"); set order to tag "1"
 
 
-#xcommand O_FAKT      => select (F_FAKT) ;   use  (KUMPATH+"FAKT") ; set order to tag  "1"
-#xcommand O__FAKT     => select(F__FAKT)  ; usex (PRIVPATH+"_FAKT") 
-#xcommand O__ROBA   => select(F__ROBA);  use  (PRIVPATH+"_ROBA")
-#xcommand O_PFAKT     => select (F_FAKT);  use  (KUMPATH+"FAKT") alias PRIPR; set order to tag   "1"
-#xcommand O_DOKS      => select(F_DOKS);    use  (KUMPATH+"DOKS")  ; set order to tag "1"
-#xcommand O_DOKS2     => select(F_DOKS2);    use  (KUMPATH+"DOKS2")  ; set order to tag "1"
+#xcommand O_FAKT      => select (F_FAKT) ;   use  (KUMPATH+"fakt") ; set order to tag  "1"
+#xcommand O__FAKT     => select(F__FAKT)  ; usex (PRIVPATH+"_fakt") 
+#xcommand O__ROBA   => select(F__ROBA);  use  (PRIVPATH+"_roba")
+#xcommand O_PFAKT     => select (F_FAKT);  use  (KUMPATH+"fakt") alias PRIPR; set order to tag   "1"
+#xcommand O_DOKS      => select(F_DOKS);    use  (KUMPATH+"doks")  ; set order to tag "1"
+#xcommand O_DOKS2     => select(F_DOKS2);    use  (KUMPATH+"doks2")  ; set order to tag "1"
 
 #xcommand O_FTXT    => select (F_FTXT);    use (SIFPATH+"ftxt")    ; set order to tag "ID"
-#xcommand O_UPL      => select (F_UPL); use  (KUMPATH+"UPL")         ; set order to tag "1"
-#xcommand O_DEST     => select(F_DEST);  use  (KUMPATH+"DEST")     ; set order to tag "1"
+#xcommand O_DEST     => select(F_DEST);  use  (KUMPATH+"dest")     ; set order to tag "1"
 #xcommand O_POR      => select 95; usex (PRIVPATH+"por") 
 
-#xcommand O_VRSTEP => SELECT (F_VRSTEP); USE (SIFPATH+"VRSTEP"); set order to tag "ID"
-#xcommand O_OPS    => SELECT (F_OPS)   ; USE (SIFPATH+"OPS"); set order to tag "ID"
+#xcommand O_VRSTEP => SELECT (F_VRSTEP); USE (SIFPATH+"vrstep"); set order to tag "ID"
+#xcommand O_OPS    => SELECT (F_OPS)   ; USE (SIFPATH+"ops"); set order to tag "ID"
 
-#xcommand O_RELAC  => SELECT (F_RELAC) ; USE (SIFPATH+"RELAC"); set order to tag "ID"
-#xcommand O_VOZILA => SELECT (F_VOZILA); USE (SIFPATH+"VOZILA"); set order to tag "ID"
-#xcommand O_KALPOS => SELECT (F_KALPOS); USE (KUMPATH+"KALPOS"); set order to tag "1"
-#xcommand O_CROBA  => SELECT (F_CROBA) ; USE (gCENTPATH+"CROBA"); set order to tag "IDROBA"
+#xcommand O_RELAC  => SELECT (F_RELAC) ; USE (SIFPATH+"relac"); set order to tag "ID"
+#xcommand O_VOZILA => SELECT (F_VOZILA); USE (SIFPATH+"vozila"); set order to tag "ID"
+#xcommand O_KALPOS => SELECT (F_KALPOS); USE (KUMPATH+"kalpos"); set order to tag "1"
 
 #xcommand O_ADRES     => select (F_ADRES); use (ToUnix(SIFPATH+"adres")) ; set order to tag "ID"
 
@@ -129,58 +127,58 @@
 #xcommand O_RULES  => select (F_RULES); use (ToUnix(goModul:oDatabase:cSigmaBD+SLASH+"security"+SLASH+"rules")) ; set order to tag "ID"
 
 //KALK ProdNC
-#xcommand O_PRODNC   => select(F_PRODNC);  use  (KUMPATH+"PRODNC")  ; set order to tag "PRODROBA"
+#xcommand O_PRODNC   => select(F_PRODNC);  use  (KUMPATH+"prodnc")  ; set order to tag "PRODROBA"
 
 //KALK RVrsta
-#xcommand O_RVRSTA   => select(F_RVRSTA);  use  (SIFPATH+"RVRSTA")  ; set order to tag "ID"
+#xcommand O_RVRSTA   => select(F_RVRSTA);  use  (SIFPATH+"rvrsta")  ; set order to tag "ID"
 
 #xcommand O_R_EXP => select (F_R_EXP); usex (PRIVPATH+"r_export")
 
 
-#xcommand O_FMKRULES  => select (F_FMKRULES); use (SIFPATH+"FMKRULES") ; set order to tag "2"
+#xcommand O_FMKRULES  => select (F_FMKRULES); use (SIFPATH+"fmkrules") ; set order to tag "2"
 
 
-#xcommand O_GEN_UG   => select(F_GEN_UG);  use  (KUMPATH+"GEN_UG")  ; set order to tag "DAT_GEN"
+#xcommand O_GEN_UG   => select(F_GEN_UG);  use  (KUMPATH+"gen_ug")  ; set order to tag "DAT_GEN"
 
-#xcommand O_G_UG_P  => select(F_G_UG_P);  use  (KUMPATH+"GEN_UG_P")   ; set order to tag "DAT_GEN"
+#xcommand O_G_UG_P  => select(F_G_UG_P);  use  (KUMPATH+"gen_ug_p")   ; set order to tag "DAT_GEN"
 
 // grupe i karakteristike
-#xcommand O_STRINGS  => select(F_STRINGS);  use  (SIFPATH + "STRINGS")   ; set order to tag "1"
+#xcommand O_STRINGS  => select(F_STRINGS);  use  (SIFPATH + "strings")   ; set order to tag "1"
 
 #xcommand O_LOKAL => select (F_LOKAL); usex (SIFPATH+"lokal")
 
 
 // tabele DOK_SRC
-#xcommand O_DOKSRC => SELECT (F_DOKSRC); USE (KUMPATH+"DOKSRC"); set order to tag "1"
-#xcommand O_P_DOKSRC => SELECT (F_P_DOKSRC); USEX (PRIVPATH+"P_DOKSRC"); set order to tag "1"
+#xcommand O_DOKSRC => SELECT (F_DOKSRC); USE (KUMPATH+"doksrc"); set order to tag "1"
+#xcommand O_P_DOKSRC => SELECT (F_P_DOKSRC); USEX (PRIVPATH+"p_doksrc"); set order to tag "1"
 
-#xcommand O_RELATION => SELECT (F_RELATION); USE (SIFPATH+"RELATION"); set order to tag "1"
+#xcommand O_RELATION => SELECT (F_RELATION); USE (SIFPATH+"relation"); set order to tag "1"
 
 // POS modul
 
-#xcommand O_KALKSEZ   => select(F_KALKSEZ);  use  (KUMPATH+"2005"+SLASH+"KALK") alias kalksez ; set order to tag "1"
-#xcommand O_ROBASEZ   => select(F_ROBASEZ);  use  (SIFPATH+"2005"+SLASH+"ROBA") alias robasez ; set order to tag "ID"
+#xcommand O_KALKSEZ   => select(F_KALKSEZ);  use  (KUMPATH+"2005"+SLASH+"kalk") alias kalksez ; set order to tag "1"
+#xcommand O_ROBASEZ   => select(F_ROBASEZ);  use  (SIFPATH+"2005"+SLASH+"kalk") alias robasez ; set order to tag "ID"
 
 
 // stampa PDV racuna
-#xcommand O_DRN => select(F_DRN); use (PRIVPATH+"DRN"); set order to tag "1"
-#xcommand O_RN => select(F_RN); use (PRIVPATH+"RN"); set order to tag "1"
-#xcommand O_DRNTEXT => select(F_DRNTEXT); use (PRIVPATH+"DRNTEXT"); set order to tag "1"
-#xcommand O_DOKSPF => select(F_DOKSPF); use (KUMPATH+"DOKSPF"); set order to tag "1"
+#xcommand O_DRN => select(F_DRN); use (PRIVPATH+"drn"); set order to tag "1"
+#xcommand O_RN => select(F_RN); use (PRIVPATH+"rn"); set order to tag "1"
+#xcommand O_DRNTEXT => select(F_DRNTEXT); use (PRIVPATH+"drntext"); set order to tag "1"
+#xcommand O_DOKSPF => select(F_DOKSPF); use (KUMPATH+"dokspf"); set order to tag "1"
 
 // tabele provjere integriteta
-#xcommand O_DINTEG1 => SELECT (F_DINTEG1); USEX (KUMPATH+"DINTEG1"); set order to tag "1"
-#xcommand O_DINTEG2 => SELECT (F_DINTEG2); USEX (KUMPATH+"DINTEG2"); set order to tag "1"
-#xcommand O_INTEG1 => SELECT (F_INTEG1); USEX (KUMPATH+"INTEG1"); set order to tag "1"
-#xcommand O_INTEG2 => SELECT (F_INTEG2); USEX (KUMPATH+"INTEG2"); set order to tag "1"
-#xcommand O_ERRORS => SELECT (F_ERRORS); USEX (PRIVPATH+"ERRORS"); set order to tag "1"
+#xcommand O_DINTEG1 => SELECT (F_DINTEG1); USEX (KUMPATH+"dinteg1"); set order to tag "1"
+#xcommand O_DINTEG2 => SELECT (F_DINTEG2); USEX (KUMPATH+"dinteg2"); set order to tag "1"
+#xcommand O_INTEG1 => SELECT (F_INTEG1); USEX (KUMPATH+"integ1"); set order to tag "1"
+#xcommand O_INTEG2 => SELECT (F_INTEG2); USEX (KUMPATH+"integ2"); set order to tag "1"
+#xcommand O_ERRORS => SELECT (F_ERRORS); USEX (PRIVPATH+"errors"); set order to tag "1"
 
 
 // sql messages
 
 #define F_MSGNEW 234
 
-#xcommand O_MESSAGE   => select(F_MESSAGE); use (KUMPATH+"MESSAGE"); set order to tag "1"
-#xcommand O_AMESSAGE   => select(F_AMESSAGE); use (EXEPATH+"AMESSAGE"); set order to tag "1"
-#xcommand O_TMPMSG  => select(F_TMPMSG); use (EXEPATH+"TMPMSG"); set order to tag "1"
+#xcommand O_MESSAGE   => select(F_MESSAGE); use (KUMPATH+"message"); set order to tag "1"
+#xcommand O_AMESSAGE   => select(F_AMESSAGE); use (EXEPATH+"amessage"); set order to tag "1"
+#xcommand O_TMPMSG  => select(F_TMPMSG); use (EXEPATH+"tmpmsg"); set order to tag "1"
 
