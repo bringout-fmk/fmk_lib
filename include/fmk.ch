@@ -123,6 +123,19 @@
                                      ;return                ;
                                      ;endif
 
+
+
+#command START PRINT CRET DOCNAME <y>    =>  if !StartPrint(nil, nil, <y>)    ;
+                                             ;close all             ;
+                                             ;return                ;
+                                             ;endif
+
+#command START PRINT CRET <x> DOCNAME  <y> =>  if !StartPrint(nil, nil, <y>  )  ;
+                                  ;close all             ;
+                                  ;return <x>            ;
+                                  ;endif
+
+
 #command END PRN2 <x> => Eprint2(<x>)
 
 #command END PRN2     => Eprint2()
@@ -172,6 +185,8 @@
                                                                         ;
       [; dbSetIndex( <(index1)> )]                                      ;
       [; dbSetIndex( <(indexn)> )]
+
+
 
 
 
