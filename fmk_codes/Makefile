@@ -19,7 +19,8 @@ PRG_SOURCES= \
    ugov.prg gen_ugov.prg \
    roba_db_admin.prg \
    konta_tipovi_cijena.prg \
-   sastavnice.prg
+   sastavnice.prg \
+   rpt_sastavnice.prg
 
 LIBNAME=fmk_codes
 
