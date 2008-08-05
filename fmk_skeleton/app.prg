@@ -211,6 +211,9 @@ method quit(lVratiseURP)
 
 local cKontrDbf
 close all
+
+altd()
+
 if (lVratiseURP==nil)
   lVratiseURP:=.t.
 endif

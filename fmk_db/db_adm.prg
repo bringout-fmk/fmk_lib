@@ -25,6 +25,9 @@ local nPos
 private cTag
 private cKljuciz
 
+
+altd()
+
 close all
   
 cImeDbf:=ToUnix(cImeDbf)
@@ -33,7 +36,6 @@ if fSilent==nil
     fSilent:=.f.
 endif
 
-altd()
 if AT(SLASH, cImeDbf) == 0  
      // onda se radi o kumulativnoj datoteci
      cImeCdx :=  alltrim(cDirRad) + SLASH + ImeDBFCDX(cImeDbf)

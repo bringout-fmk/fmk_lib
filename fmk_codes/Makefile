@@ -14,7 +14,7 @@ PRG_SOURCES= \
    valute.prg \
    vrste_naloga_dokumenata.prg \
    fakt_doks_txt.prg \
-   roba.prg tarifa.prg sifk.prg trfp.prg rpt_cjenovnik.prg \
+   roba.prg tarifa.prg sifk.prg trfp.prg \
    codes_util_2.prg \
    ugov.prg gen_ugov.prg \
    roba_db_admin.prg \

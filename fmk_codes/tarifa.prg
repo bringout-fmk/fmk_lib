@@ -246,9 +246,7 @@ nPP:=aPorezi[POR_PP]/100
 nPPP:=aPorezi[POR_PPP]/100
 nPPU:=aPorezi[POR_PPU]/100
 
-if !glPoreziLegacy
-	nPom:=nMpcBp*(nPP+(nPPP+1)*(1+nPPU))
-else
+nPom:=nMpcBp*(nPP+(nPPP+1)*(1+nPPU))
 
 return nPom
 *}
@@ -331,8 +329,7 @@ if (!IsVindija()) .and. nMpcSaPP<>nil
 endif
 
 
-if !glPoreziLegacy
-	if glUgost
+if glUgost
 		// ovo je zapetljano ali izgleda da radi
 		// racun se sigurno moze pojednostaviti 
 		
@@ -346,11 +343,10 @@ if !glPoreziLegacy
 		nPor3:=(nMpcSaPP-nPor2)*nPP
 
 		nPom:=nMpcSaPP-nPor1-nPor2-nPor3
-	else
-		nPom:=nMpcSaPP/(nPP+(nPPP+1)*(1+nPPU))
-	endif
-
 else
+		nPom:=nMpcSaPP/(nPP+(nPPP+1)*(1+nPPU))
+endif
+
 
 return nPom
 *}

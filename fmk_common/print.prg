@@ -52,7 +52,6 @@ nZagrada:=0
 
 cTekPrinter:=gPrinter
 
-altd()
 cOutfTXT:=IzFMKIni('Printeri', 'DirektnoOUTFTXT','N')
 
 if !(lUFajl)
@@ -325,7 +324,6 @@ else
 	
 endif
 restore screen from cS
-altd()
 
 endif 
 // cPrinter
