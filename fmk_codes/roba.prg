@@ -157,14 +157,6 @@ if roba->(fieldpos("IDTARIFA2"))<>0
 endif
 
 
-//if IsPlanika()
-	//AADD (ImeKol,{ padc("Pl.Vr.", 3 ), {|| vrsta },  "vrsta",  {|| .t. }, {|| P_RVrsta(@wVrsta), .t. } })
-	//AADD (ImeKol,{ padc("Pl.Sezona", 9 ), {|| sezona }, "sezona", {|| .t.}, {|| P_PlSezona(@wSezona) } })
-	//AADD (ImeKol,{ padc("Id partner", 6 ), {|| idpartner }, "idpartner", {|| .t.}, {|| P_IdPartner(@wIdPartner) } })
-	//if roba->(fieldpos("TPURCHASE"))<>0
-	//	AADD (ImeKol,{ padc("Grupa nabavke",13 ), {|| tpurchase}, "tpurchase",  {|| .t. }, {|| P_TPurchase(@wtpurchase), .t. } })
-	//endif
-//endif
 
 Kol := {}
 
@@ -202,13 +194,6 @@ do while !eof() .and. ID="ROBA"
 	AADD  (Kol, iif( sifk->UBrowsu='1',++i, 0) )
 	skip
 enddo
-
-if IsPlanika()
-	select (F_RVRSTA)
-	if !used()
-		O_RVRSTA
-	endif
-endif
 
 select (nTArea)
 

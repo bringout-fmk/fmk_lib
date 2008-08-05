@@ -250,22 +250,6 @@ if !glPoreziLegacy
 	nPom:=nMpcBp*(nPP+(nPPP+1)*(1+nPPU))
 else
 
-//legacy
-if (gUVarPP=="J" .and. !IsPlanika())
-	nPom:=nMpcBp/(1+nDLRUC*(1-nPP)*(nPPP/(1+nPPP)-1)*nMPP/(1+nMPP)+(nPP-1)*nPPP/(1+nPPP)-nPP)
-elseif (gUVarPP=="M" .and. !IsPlanika())
-	nPom:=nMpcBp/(1-(nPP+nPPP/(1+nPPP)+nDLRUC*(1-nPP)*nMPP/(1+nMPP)))
-elseif (gUVarPP=="R" .and. !IsPlanika())
-	nPom:=nMpcBp*(1+nPPP+nPP) 
-elseif gUVarPP=="D"
-	nPom:=nMpcBp*((1+nPP+nPPU)*(1+nPPP))
-else
-	// obicno robno poslovanje
-	nPom:=nMpcBp*(nPP+(nPPP+1)*(1+nPPU))
-endif
-
-endif
-
 return nPom
 *}
 
@@ -368,35 +352,6 @@ if !glPoreziLegacy
 
 else
 
-// legacy
-if (gUVarPP=="T" .and. !IsPlanika())
-	if nNC==NIL
-		// ako nije data NC preuzecu za sad varijantu gUVarPP=="M"
-		nPom:=nMpcSaPP*(1-(nPP+nPPP/(1+nPPP)+nDLRUC*(1-nPP)*nMPP/(1+nMPP)))
-	else
-		//porez na promet proizvoda
-		nPor1:=nMpcSaPP*nPPP/(1+nPPP)
-		// porez na razliku u cijeni u maloprodaji
-		nPor2:=(nMpcSaPP-nPor1-nNC)*nMPP/(1+nMPP)
-		// osnovica porez na potrosnju = 
-		// ( cijena_sa_porezom - porez_na_razliku_u_cijeni )
-		nPor3:=(nMpcSaPP-nPor2)*nPP
-		nPom:=nMpcSaPP-nPor1-nPor2-nPor3
-	endif
-elseif (gUVarPP=="J" .and. !IsPlanika())
-	nPom:=nMpcSaPP*(1+nDLRUC*(1-nPP)*(nPPP/(1+nPPP)-1)*nMPP/(1+nMPP)+(nPP-1)*nPPP/(1+nPPP)-nPP)
-elseif (gUVarPP=="M" .and. !IsPlanika())
-	nPom:=nMpcSaPP*(1-(nPP+nPPP/(1+nPPP)+nDLRUC*(1-nPP)*nMPP/(1+nMPP)))
-elseif (gUVarPP=="R" .and. !IsPlanika())
-	nPom:=nMpcSaPP/(1+nPPP+nPP)
-elseif (gUVarPP=="D" .and. !IsPlanika())
-	nPom:=nMpcSaPP/((1+nPP+nPPU)*(1+nPPP))
-else
-	nPom:=nMpcSaPP/(nPP+(nPPP+1)*(1+nPPU))
-endif
-
-endif
-
 return nPom
 *}
 
@@ -480,26 +435,13 @@ local nMpcSaPor
 local nPom
 local nUkPor
 
-if IsPdv()
 
-   if glUgost 
+if glUgost 
         nPom := nMpcBp * aPorezi[POR_PP]/100
-   else
+else
    	nPom:=0
-   endif
+endif
 
-else
-// stari PPP obracun
-// ostavljeno do daljnjeg
-if (gUVarPP=="R" .and. !IsPlanika())
-	nPom:= nMpcBp * aPorezi[POR_PP]/100  
-elseif (gUVarPP=="D" .and. !IsPlanika())
- 	nPom:= nMpcBp * (1+ aPorezi[POR_PPP]/100 ) * aPorezi[POR_PP]/100
-else
- 	// obicno robno poslovanje
- 	nPom:= nMpcBp * aPorezi[POR_PP]/100  
-endif
-endif
 return nPom
 *}
 

@@ -2,14 +2,6 @@
 
 
 
-/*! \var lPlanika
- *  \ingroup Planika
- *  \sa IsPlanika
- */
-*bool
-static lPlanika
-*;
-
 /*! \var lSigmaCom
  *  \ingroup SigmaCom
  *  \sa IsSigmaCom
@@ -208,11 +200,6 @@ lDomZdr:=lValue
 function SetSpecifVars()
 *{
 
-if IzFmkIni("FMK","Planika","N",KUMPATH)=="D"
-	SetPlanika(.t.)
-else
-	SetPlanika(.f.)
-endif
 
 if IzFmkIni("FMK","DomZdr","N",KUMPATH)=="D"
 	SetDomZdr(.t.)
