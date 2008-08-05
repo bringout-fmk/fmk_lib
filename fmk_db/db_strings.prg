@@ -812,6 +812,7 @@ static function add_atr_doz(cVal, nVeza_1)
 local nRet := 0
 local nNewId := 0
 local nTArea := SELECT()
+local cIme
 
 O_STRINGS
 select strings
@@ -951,16 +952,17 @@ function cre_strings()
 local aDbf
 
 // STRINGS.DBF
-if !File( SIFPATH + "STRINGS.DBF" )
+cIme := "strings.dbf"
+if !File( SIFPATH + cIme + ".dbf")
 	aDBf := g_str_fields()
-   	DbCreate2( SIFPATH + "STRINGS.DBF", aDbf)
+   	DbCreate2( SIFPATH + cIme, aDbf)
 endif
 
-CREATE_INDEX("1", "STR(ID,10,0)", SIFPATH + "STRINGS" )
-CREATE_INDEX("2", "OZNAKA+STR(ID,10,0)", SIFPATH + "STRINGS" )
-CREATE_INDEX("3", "OZNAKA+STR(VEZA_1,10,0)+STR(ID,10,0)", SIFPATH + "STRINGS" )
-CREATE_INDEX("4", "OZNAKA+STR(VEZA_1,10,0)+NAZ", SIFPATH + "STRINGS" )
-CREATE_INDEX("5", "OZNAKA+STR(VEZA_1,10,0)+STR(VEZA_2,10,0)", SIFPATH + "STRINGS" )
+CREATE_INDEX("1", "STR(ID,10,0)", SIFPATH + cIme )
+CREATE_INDEX("2", "OZNAKA+STR(ID,10,0)", SIFPATH + cIme )
+CREATE_INDEX("3", "OZNAKA+STR(VEZA_1,10,0)+STR(ID,10,0)", SIFPATH + cIme )
+CREATE_INDEX("4", "OZNAKA+STR(VEZA_1,10,0)+NAZ", SIFPATH + cIme )
+CREATE_INDEX("5", "OZNAKA+STR(VEZA_1,10,0)+STR(VEZA_2,10,0)", SIFPATH + cIme )
 
 return
 

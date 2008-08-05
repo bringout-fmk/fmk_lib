@@ -4,6 +4,14 @@
 
 REQUEST DBFCDX
 
+#ifdef __WINDOWS__
+REQUEST HB_GT_WIN
+REQUEST HB_GT_GTXWT_DEFAULT
+#else
+//REQUEST HB_GT_CRS
+REQUEST HB_GT_XWC_DEFAULT
+#endif
+
 /*! \file sc1g/base/base.prg
     \brief Inicijalizacija systema, bazne funkcije
     \note prebaciti u potpunosti na objektni model (ionako se koristi oApp)
@@ -213,7 +221,7 @@ gPTKONV:="0"
 gPicSif:="V"
 gcDirekt:="V"
 gSKSif:="D"
-gArhDir:=ToUnix("C:"+SLASH+"SIGARH")
+//gArhDir:=ToUnix("C:"+SLASH+"SIGARH")
 gPFont:="Arial"
 
 private cSection:="1", cHistory:=" "; aHistory:={}

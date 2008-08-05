@@ -208,7 +208,7 @@ if lEnter == nil
  	lEnter := .t.
 endif
   
-IF !FILE(SIFPATH+"VALUTE.DBF")
+IF !FILE(ToUnix(SIFPATH+"VALUTE.DBF"))
 	RETURN
 ENDIF
 

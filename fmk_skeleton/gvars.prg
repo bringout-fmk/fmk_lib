@@ -114,7 +114,12 @@ public SifraKorisn:=""
 public KLevel:="9"
 
 public gArhDir
-gArhDir:=ToUnix("C:"+SLASH+"SIGARH")
+
+#ifdef __WINDOWS__
+gArhDir:=ToUnix("C:" + SLASH + "fmk_arhiva")
+#else
+gArhDir:=GetEnv("HOME")+"/fmk_arhiva"
+#endif
 
 public gPFont
 gPFont:="Arial"
@@ -152,7 +157,11 @@ PUBLIC gSifk
 gSifk:=.t.
 
 PUBLIC gHostOS
-gHostOS:="Win9X"
+#ifdef __WINDOWS
+gHostOS:="Linux"
+#else
+gHostOS:="WindowsXP"
+#endif
 
 public cBteksta
 public cBokvira
@@ -204,8 +213,11 @@ public KLevel:="9"
 
 public gPTKONV:="0 "
 public gPicSif:="V", gcDirekt:="V", gShemaVF:="B5", gSKSif:="D"
-public gArhDir:=padr(ToUnix("C:\SIGARH"),20)
-public gPFont:="Arial CE"
+
+//public gArhDir:=padr(ToUnix("C:\SIGARH"),20)
+gArhiDir := PADR(gArhDir, 20)
+
+public gPFont:="Arial"
 public gKodnaS:="8"
 public gWord97:="N"
 public g50f:=" "
@@ -312,26 +324,28 @@ return
 function IniPrinter()
 
 *
-* procitaj gprinter, gpini, itd..
+* procitaj gPrinter, gpini, itd..
 * postavi shift F2 kao hotkey
 
 
-if gModul $ "EPDV"
-  public gPrinter:="R"
-elseif gModul $ "TOPS#HOPS"
+if gModul $ "TOPS#HOPS"
    public gPrinter:="0"
 else
-   public gPrinter:="1"
+   public gPrinter:="R"
 endif
 
 InigEpson()
+
 public gMeniSif:=.f., gValIz:="280 ", gValU:="000 ", gKurs:="1"
 
-if file(ToUnix("\GPARAMS.DBF"))
+if file(ToUnix("\gparams.dbf"))
 
 O_GPARAMS
 O_PARAMS
-private cSection:="1",cHistory:=" "; aHistory:={}
+
+private cSection:="1",cHistory:=" "
+aHistory:={}
+
 RPar("px",@gPrinter)
 RPar("vi",@gValIz)
 RPar("vu",@gValU)
@@ -339,13 +353,16 @@ RPar("vk",@gKurs)
 select params
 use
 
-select gparams
-private cSection:="P",cHistory:=gPrinter; aHistory:={}
+select gParams
+private cSection:="P", cHistory := gPrinter
+aHistory:={}
 
 RPar_Printer()
 
 /// EPSON STAMPACI
-private cSection:="P",cHistory:="E"; aHistory:={}
+private cSection:="P", cHistory:="E"
+aHistory:={}
+
 gPINI:="xx"
 cPom:="xx"
 RPAR("01",@cPom)
@@ -354,7 +371,9 @@ if cPom=="xx"
 endif
 
 // HP STAMPACI  
-private cSection:="P",cHistory:="H"; aHistory:={}
+private cSection:="P", cHistory:="H"
+aHistory:={}
+
 cPom:="xx"
 RPAR("01",@cPom)
 if cPom=="xx"
@@ -395,7 +414,7 @@ gPINI:=""
 RPAR("01",@gPINI)
 
 
-select gparams; use
+select gParams; use
 
 endif // postoji gparams
 

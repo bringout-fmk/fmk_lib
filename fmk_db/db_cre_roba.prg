@@ -1,13 +1,9 @@
 #include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- */
- 
-
+//---------------------------------------------------
+//---------------------------------------------------
 function OFmkRoba()
+
 O_SIFK
 O_SIFV
 O_KONTO
@@ -18,7 +14,8 @@ O_ROBA
 O_SAST
 return
 
-
+//---------------------------------------------------
+//---------------------------------------------------
 function CreRoba()
 
 aDbf:={}
@@ -63,59 +60,51 @@ AADD(aDBf,{ 'Opis'                , 'M' ,  10 ,  0 })
 // omoguciti editovanje opisa
 AADD(aDBf,{ 'BARKOD'                , 'C' ,  13 ,  0 })
 
-if !file(SIFPATH+"ROBA.dbf")
-        dbcreate2(SIFPATH+'ROBA.DBF',aDbf)
+if !file(SIFPATH+"roba.dbf")
+        dbcreate2(SIFPATH+'roba.dbf', aDbf)
+	
 endif
 
-if !file(PRIVPATH+"_ROBA.dbf")
-        dbcreate2(PRIVPATH+'_ROBA.DBF',aDbf)
+if !file(PRIVPATH+"_roba.dbf")
+        dbcreate2(PRIVPATH+'_roba.dbf',aDbf)
 endif
 
-DBT2FPT(SIFPATH+"ROBA")
-DBT2FPT(PRIVPATH+"_ROBA")
-
-CREATE_INDEX("ID","id",SIFPATH+"ROBA") 
-index_mcode(SIFPATH, "ROBA")
-CREATE_INDEX("NAZ","LEFT(Naz,40)", SIFPATH+"ROBA")
-CREATE_INDEX("ID","id", PRIVPATH+"_ROBA") 
+CREATE_INDEX("ID","id",SIFPATH+"roba") 
+index_mcode(SIFPATH, "roba")
+CREATE_INDEX("NAZ","LEFT(naz,40)", SIFPATH+"roba")
+CREATE_INDEX("ID","id", PRIVPATH+"_roba") 
 O_ROBA
 
 if fieldpos("KATBR")<>0
   select (F_ROBA)
   use
-  CREATE_INDEX("KATBR","KATBR",SIFPATH+"ROBA") // roba, artikli
+  CREATE_INDEX("KATBR","KATBR",SIFPATH+"roba") // roba, artikli
 endif
 
 O_ROBA
 if fieldpos("BARKOD")<>0
   select (F_ROBA)
   use
-  CREATE_INDEX("BARKOD","BARKOD",SIFPATH+"ROBA") // roba, artikli
+  CREATE_INDEX("BARKOD","BARKOD",SIFPATH+"roba") // roba, artikli
 endif
 
 O_ROBA
 if fieldpos("SIFRADOB")<>0
   select (F_ROBA)
   use
-  CREATE_INDEX("SIFRADOB","SIFRADOB",SIFPATH+"ROBA") // roba, artikli
+  CREATE_INDEX("SIFRADOB","SIFRADOB",SIFPATH+"roba") // roba, artikli
 endif
 
-if IzFMKINI("ROBA","Planika","N",SIFPATH)=="D"
-	select (F_ROBA)
-	use
-  	CREATE_INDEX("BROBA", IzFMKINI("ROBA","Sort","K1+SUBSTR(id,7,3)",SIFPATH), SIFPATH+"ROBA") 
-	// roba, artikli
-endif
 
 if IsVindija()
 	select (F_ROBA)
   	use
-  	CREATE_INDEX("ID_VSD","SIFRADOB",SIFPATH+"ROBA") // sifra dobavljaca
+  	CREATE_INDEX("ID_VSD","SIFRADOB", SIFPATH + "roba") // sifra dobavljaca
 endif
 
 
 // TARIFA
-if !file(SIFPATH+"TARIFA.dbf")
+if !file(SIFPATH+"tarifa.dbf")
         aDbf:={}
         AADD(aDBf,{ 'ID'                  , 'C' ,   6 ,  0 })
         add_f_mcode(@aDbf)
@@ -126,14 +115,14 @@ if !file(SIFPATH+"TARIFA.dbf")
         AADD(aDBf,{ 'VPP'                 , 'N' ,   6 ,  2 })  // pnamar
         AADD(aDBf,{ 'MPP'                 , 'N' ,   6 ,  2 })  // pnamar MP
         AADD(aDBf,{ 'DLRUC'               , 'N' ,   6 ,  2 })  // donji limit RUC-a(%)
-        dbcreate2(SIFPATH+'TARIFA.DBF',aDbf)
+        dbcreate2( SIFPATH+'tarifa', aDbf)
 endif
-CREATE_INDEX("ID","id", SIFPATH+"TARIFA")
+CREATE_INDEX("ID","id",  SIFPATH+"TARIFA")
 CREATE_INDEX("naz","naz", SIFPATH+"TARIFA")
 index_mcode(SIFPATH, "TARIFA")
 
 // KONCIJ
-if !file(SIFPATH+"KONCIJ.dbf")
+if !file(SIFPATH+"koncij.dbf")
    aDbf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   7 ,  0 })
    add_f_mcode(@aDbf)
@@ -168,7 +157,7 @@ index_mcode(SIFPATH, "TRFP")
 
 
 // SAST
-if !file(SIFPATH+"SAST.DBF")
+if !file(SIFPATH + "sast.dbf")
    aDBf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   10 ,  0 })
    AADD(aDBf,{ 'R_BR'                , 'N' ,    4 ,  0 })
@@ -180,6 +169,7 @@ if !file(SIFPATH+"SAST.DBF")
    AADD(aDBf,{ 'N2'                  , 'N' ,   20 ,  5 })
    dbcreate2(SIFPATH+'SAST.DBF',aDbf)
 endif
+
 CREATE_INDEX("ID", "ID+ID2", SIFPATH + "SAST")
 O_SAST
 if sast->(fieldpos("R_BR"))<>0
@@ -190,7 +180,7 @@ use
 CREATE_INDEX("NAZ", "ID2+ID", SIFPATH + "SAST")
 
 
-if !file(PRIVPATH+"BARKOD.DBF")
+if !file(PRIVPATH+"barkod.dbf")
    aDBf:={}
    AADD(aDBf,{ 'ID'                  , 'C' ,   10 ,  0 })
    AADD(aDBf,{ 'BARKOD'              , 'C' ,   13 ,  0 })

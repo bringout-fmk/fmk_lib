@@ -1,23 +1,5 @@
 #include "fmk.ch"
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/fmk/pi/db_cre.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.2 $
- * $Log: db_cre.prg,v $
- * Revision 1.2  2002/06/16 14:16:43  ernad
- * ciscenja ...
- *
- * Revision 1.1  2002/06/16 11:42:41  ernad
- *
- *
- * komponenta pi - proizvoljni izvjestaji
- *
- *
- */
 
 /* \brief CreFmkPi()
  * \fn Kreiraj tabele proizvoljnih izvjestaja 

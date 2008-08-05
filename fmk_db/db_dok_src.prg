@@ -35,8 +35,8 @@ AADD(aDBf,{ "src_partne"         , "C" ,   6 ,  0 })
 AADD(aDBf,{ "src_opis"            , "C" ,  30 ,  0 })
 
 // kreiraj u KUMPATH
-if !FILE(KUMPATH + cDokSrcName + ".DBF")
-	DBCREATE2(KUMPATH + cDokSrcName + ".DBF", aDbf)
+if !FILE( ToUnix(KUMPATH + cDokSrcName + ".dbf"))
+	DBCREATE2(KUMPATH + cDokSrcName + ".dbf", aDbf)
 endif
 
 // indexi....
@@ -45,7 +45,7 @@ CREATE_INDEX("1","idfirma+idvd+brdok+DTOS(datdok)+src_modul+src_idfirm+src_idvd+
 CREATE_INDEX("2","src_modul+src_idfirm+src_idvd+src_brdok+DTOS(src_datdok)", KUMPATH + cDokSrcName)
 
 // kreiraj u PRIVPATH
-if !FILE(PRIVPATH + cPDokSrcName + ".DBF")
+if !FILE(ToUnix(PRIVPATH + cPDokSrcName + ".dbf"))
 	DBCREATE2(PRIVPATH + cPDokSrcName + ".DBF", aDbf)
 endif
 // indexi....
@@ -433,7 +433,7 @@ AADD(aDBf,{ "p_up_date"           , "D" ,   8 ,  0 })
 AADD(aDBf,{ "p_up_time"           , "C" ,  10 ,  0 })
 
 // kreiraj u KUMPATH
-if !FILE(KUMPATH + cDbfName + ".DBF")
+if !FILE(ToUnix(KUMPATH + cDbfName + ".DBF"))
 	DBCREATE2(KUMPATH + cDbfName + ".DBF", aDbf)
 endif
 // indexi....
@@ -456,7 +456,7 @@ cPath := ALLTRIM(cPath)
 
 AddBS(@cPath)
 
-if !FILE(cPath + "P_UPDATE.DBF")
+if !FILE(ToUnix(cPath + "P_UPDATE.DBF"))
 	select (nTArea)
 	return 0
 endif

@@ -116,7 +116,7 @@ if !fPostoji
   return
 endif
 
-if !FILE(cImeCdx)  .or. nOrder==0  .or. UPPER(cOrdKey)<>UPPER(cKljuc)
+if !FILE(LOWER(cImeCdx))  .or. nOrder==0  .or. UPPER(cOrdKey)<> UPPER(cKljuc)
 
 
      cFulDbf:=cImeDbf

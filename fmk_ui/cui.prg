@@ -1391,8 +1391,8 @@ next
 
 cIme:=cDir+right(dtos(date()),6)
 for i:=1 to 99
- if !file(cIme+alltrim(str(i))+".ART")
-     cIme:=cIme+alltrim(str(i))+".ART"
+ if !file(cIme+alltrim(str(i))+".art")
+     cIme:=cIme+alltrim(str(i))+".art"
      exit
  endif
 next

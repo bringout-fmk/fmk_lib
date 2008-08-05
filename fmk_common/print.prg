@@ -4,7 +4,7 @@
 //  * D - ide direktno na stampac
 //  * N - ne ide
 
-static lPrn:="D" 
+static cPrinter := "D" 
 
 static nZagrada:=0 
 
@@ -52,6 +52,7 @@ nZagrada:=0
 
 cTekPrinter:=gPrinter
 
+altd()
 cOutfTXT:=IzFMKIni('Printeri', 'DirektnoOUTFTXT','N')
 
 if !(lUFajl)
@@ -84,7 +85,7 @@ else
 	cDirekt:="V"
 endif
 
-lPrn:=cDirekt
+cPrinter := cDirekt
 
 if cDirekt=="D" .and. gPrinter<>"R" .and. gPrinter<>"G" .and. cOutfTxt<>"D"
 	do while .t.
@@ -237,25 +238,25 @@ Tone(440,2)
 Tone(440,2)
 
 * ako nije direktno na printer
-if lPrn<>"D" .or. (gPPort $ "89" .and. lPrn=="D") .or. gPrinter=="R" .or. gPrinter=="G" .or. (cOutftxt=="D" .and. lPrn=="D")  
+if cPrinter<>"D" .or. (gPPort $ "89" .and. cPrinter=="D") .or. gPrinter=="R" .or. gPrinter=="G" .or. (cOutftxt=="D" .and. cPrinter=="D")  
 
 if gAppSrv
     return
 endif
 
-if lPrn <> "D" .or. gPrinter == "R" .or. gPrinter == "G" .or. (cOutftxt=="D" .and. lPrn=="D")
+if cPrinter <> "D" .or. gPrinter == "R" .or. gPrinter == "G" .or. (cOutftxt=="D" .and. cPrinter=="D")
  MsgC()
 endif
 
 save screen to cS
 
-if cOutfTXT=="D" .and. lPrn="D"
+if cOutfTXT=="D" .and. cPrinter="D"
 	// direktno na printer, ali preko outf.txt
 	cKom:=ckom+" LPT"+gPPort
 	cPom:=cKom
 	!copy &cPom
 
-elseif gPPort $ "89" .and. lPrn="D"
+elseif gPPort $ "89" .and. cPrinter="D"
 	cKom:=ckom+" LPT"
 	if gPPort=="8"
 	cKom+="1"
@@ -267,15 +268,15 @@ elseif gPPort $ "89" .and. lPrn="D"
 	if gnDebug>=5
 		MsgBeep("LPT port 8 ili 9##!copy " + AllTrim(cKom))
 	endif
-elseif lPrn=="N"
+elseif cPrinter=="N"
 	cPom:=cKom
 	!ll &cPom
 
-elseif lPrn=="E"
+elseif cPrinter=="E"
 	cPom:=cKom
 	!q &cPom
 
-elseif lPrn=="V"
+elseif cPrinter=="V"
 	
 	IF "U" $ TYPE("gaZagFix")
 		gaZagFix:=NIL
@@ -288,7 +289,8 @@ elseif lPrn=="V"
 
 	gaZagFix:=NIL
 	gaKolFix:=NIL
-elseif lPrn=="G"
+
+elseif cPrinter=="G"
 	// gvim stampa...
 	cKom := PRIVPATH + cFName
 	gvim_cmd(cKom)
@@ -323,8 +325,10 @@ else
 	
 endif
 restore screen from cS
+altd()
+
 endif 
-// lPrn
+// cPrinter
 
 // nemoj "brze izvjestaje"
 if nSek2-nSekundi>10  
@@ -510,9 +514,9 @@ endif
 return
 
 
-function lPrn()
+//function cPrinter()
 
-return lPrn
+//return cPrinter
 
 
 // ------------------------------------------

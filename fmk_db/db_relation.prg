@@ -9,7 +9,7 @@ local aDbf
 
 aDbf := g_rel_tbl()
 
-if !FILE( SIFPATH + "RELATION.DBF" )
+if !FILE( SIFPATH + "relation.dbf" )
 	DBCREATE2( SIFPATH + "RELATION.DBF", aDbf)
 endif
 
