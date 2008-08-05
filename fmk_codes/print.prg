@@ -1,24 +1,5 @@
 #include "fmk.ch" 
 
-/*
- * ----------------------------------------------------------------
- *                                     Copyright Sigma-com software 
- * ----------------------------------------------------------------
- * $Source: c:/cvsroot/cl/sigma/sclib/sif/1g/sif_prn.prg,v $
- * $Author: ernad $ 
- * $Revision: 1.4 $
- * $Log: sif_prn.prg,v $
- * Revision 1.4  2002/07/30 17:40:59  ernad
- * SqlLog funkcije - Fin modul
- *
- * Revision 1.3  2002/07/04 16:33:53  ernad
- *
- *
- * debug StampaTabele - nije uziman uslov debug u obzir
- *
- *
- */
- 
 
 #define  MEMOEXT  ".MEM"
 

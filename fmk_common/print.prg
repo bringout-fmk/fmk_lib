@@ -155,7 +155,7 @@ else
 		set printer to (ckom)
 		recover
 		bErr:=ERRORBLOCK(bErr)
-		cKom:=ToUnix("C"+DRVPATH+"sigma"+SLASH+cFName) 
+		cKom:= ToUnix("C" + DRVPATH + "sigma" + SLASH + cFName) 
 		if gnDebug>=5
 			MsgBeep("Radi se o fajlu !##set printer to (cKom)##var cKom=" + AllTrim(cKom))
 		endif
@@ -270,17 +270,22 @@ elseif gPPort $ "89" .and. lPrn="D"
 elseif lPrn=="N"
 	cPom:=cKom
 	!ll &cPom
+
 elseif lPrn=="E"
 	cPom:=cKom
 	!q &cPom
+
 elseif lPrn=="V"
+	
 	IF "U" $ TYPE("gaZagFix")
 		gaZagFix:=NIL
 	ENDIF
 	IF "U" $ TYPE("gaKolFix")
 		gaKolFix:=NIL
 	ENDIF
-	VidiFajl(cKom,gaZagFix,gaKolFix)
+	//VidiFajl(cKom,gaZagFix,gaKolFix)
+        run ("gedit " + ToUnix(PRIVPATH + cFName)) 
+
 	gaZagFix:=NIL
 	gaKolFix:=NIL
 elseif lPrn=="G"
@@ -299,7 +304,7 @@ else
 		DirMak2(cpom)
 		cKom:=cPom+cFName
 	else
-		ckom:=PRIVPATH+cFName
+		cKom:=PRIVPATH+cFName
 	endif
 
 	if gPrinter == "R"
