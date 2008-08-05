@@ -28,11 +28,14 @@ private cKljuciz
 close all
   
 cImeDbf:=ToUnix(cImeDbf)
+
 if fSilent==nil
     fSilent:=.f.
 endif
 
-if AT(SLASH, cImeDbf)==0  // onda se radi o kumulativnoj datoteci
+altd()
+if AT(SLASH, cImeDbf) == 0  
+     // onda se radi o kumulativnoj datoteci
      cImeCdx :=  alltrim(cDirRad) + SLASH + ImeDBFCDX(cImeDbf)
 else
      cImeCdx := ImeDbfCdx(cImeDbf)
@@ -42,6 +45,7 @@ endif
 nPom:=RAT(SLASH,cImeInd)
 cTag:=""
 cKljucIz:=cKljuc
+
 if nPom<>0
    cTag:=substr(cImeInd, nPom+1)
 else
@@ -120,46 +124,53 @@ if !FILE(LOWER(cImeCdx))  .or. nOrder==0  .or. UPPER(cOrdKey)<> UPPER(cKljuc)
 
 
      cFulDbf:=cImeDbf
-     if right(cFulDbf,4)<>"."+DBFEXT
-       cFulDbf:=trim(cFulDbf)+"."+DBFEXT
-       if at(SLASH,cFulDbf)==0  // onda se radi o kumulativnoj datoteci
-          cFulDbf:=alltrim(cDirRad)+SLASH+cFulDbf
-       endif
+     if right(cFulDbf,4) <> "." + DBFEXT
+        
+	cFulDbf:=trim(cFulDbf)+"."+DBFEXT
+        if at(SLASH,cFulDbf)==0  // onda se radi o kumulativnoj datoteci
+             cFulDbf := alltrim(cDirRad) + SLASH + cFulDbf
+        endif
+     
      endif
      
      if  !IsFreeForReading(cFulDBF,fSilent)
-   return .f.
+           return .f.
      endif
     
-DBUSEAREA (.f., nil, cImeDbf, nil, .t. )
+     DBUSEAREA (.f., nil, cImeDbf, nil, .t. )
 
-   if !fSilent
-    MsgO("Baza:"+cImeDbf+", Kreiram index-tag :"+cImeInd+"#"+ExFileName(cImeCdx))
-   endif
+     if !fSilent
+          MsgO("Baza:"+cImeDbf+", Kreiram index-tag :"+cImeInd+"#"+ExFileName(cImeCdx))
+     endif
     
-    nPom:=RAT(SLASH,cImeInd)
-    private cTag:=""
-    private cKljuciz:=cKljuc
-    if nPom<>0
-     cTag:=substr(cImeInd,nPom)
-    else
-     cTag:=cImeInd
-    endif
+     nPom:=RAT( SLASH, cImeInd)
+    
+     private cTag:=""
+     private cKljuciz:=cKljuc
+    
+     if nPom<>0
+       cTag:=substr(cImeInd, nPom)
+     else
+       cTag:=cImeInd
+     endif
 
 
      if (LEFT(cTag,4)=="ID_J" .and. fieldpos("ID_J")==0) .or. (cTag=="_M1_" .and. FIELDPOS("_M1_")==0)
         // da ne bi ispao ovo stavljam !!
      else
-  cImeCdx:=strtran(cImeCdx,"."+INDEXEXT,"")
-  INDEX ON &cKljucIz  TAG (cTag)  TO (cImeCdx) 
-  USE
+
+     cImeCdx:=strtran(cImeCdx,"."+INDEXEXT,"")
+     
+     INDEX ON &cKljucIz  TAG (cTag)  TO (cImeCdx) 
+     USE
      endif
 
-   if !fSilent
-    MsgC()
-   endif
-    use
-  endif
+     if !fSilent
+       MsgC()
+     endif
+     use
+
+endif
 
 return
 

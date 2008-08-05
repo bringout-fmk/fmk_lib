@@ -13,10 +13,10 @@ PRG_SOURCES= \
         install.prg \
         app.prg db.prg \
         arhiviraj.prg \
-        specif_vars.prg \
         global_vars.prg \
         global_vars_roba.prg \
-        desktop.prg
+        desktop.prg \
+	specifificnosti_vars.prg
 
 
 LIBNAME=fmk_skeleton
