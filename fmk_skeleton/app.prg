@@ -212,8 +212,6 @@ method quit(lVratiseURP)
 local cKontrDbf
 close all
 
-altd()
-
 if (lVratiseURP==nil)
   lVratiseURP:=.t.
 endif
@@ -239,7 +237,11 @@ CLEAR SCREEN
 if !(::hasParent())
   if !gReadonly
     if FOUND()
-      REPLACE field->nk WITH .f.
+      altd()
+      SELECT korisn
+      if RLOCK()
+           REPLACE field->nk WITH .f.
+      endif
     else
       QUIT
     endif

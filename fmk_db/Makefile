@@ -16,4 +16,4 @@ LIBNAME=fmk_db
 include $(TOP)$(ROOT)config/lib.cf
 
 
-HB_FLAGS = -n -ufmk_std.ch -kM -gc0 -I$(TOP) -I$(HB_INC_COMPILE)
+HB_FLAGS = -n -DPROBA -ufmk_std.ch -kM -gc0 -I$(TOP) -I$(HB_INC_COMPILE)
