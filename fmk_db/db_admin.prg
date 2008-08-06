@@ -12,7 +12,7 @@ static nSlogova:=0
 
 // -----------------------------------------------------
 // -----------------------------------------------------
-function CREATE_INDEX(cImeInd, cKljuc, cImeDbf, fSilent)
+function create_index(cImeInd, cKljuc, cImeDbf, fSilent)
 
 local bErr
 local cFulDbf
@@ -44,8 +44,9 @@ else
 endif
 
   
-nPom:=RAT(SLASH,cImeInd)
+nPom := RAT(SLASH,cImeInd)
 cTag:=""
+
 cKljucIz:=cKljuc
 
 if nPom<>0
@@ -56,9 +57,11 @@ endif
 
 fPostoji:=.t.
 
-bErr:=ERRORBLOCK({|o| MyErrH(o)})
-BEGIN SEQUENCE
-  
+#ifndef FMK_DEBUG
+ bErr:=ERRORBLOCK({|o| MyErrH(o)})
+ BEGIN SEQUENCE
+#endif
+
   select (F_TMP)
   USEX(cImeDbf)
   
@@ -111,17 +114,22 @@ BEGIN SEQUENCE
     fPostoji:=.f.
   endif
   
+
+#ifndef FMK_DEBUG
+
 RECOVER
   fPostoji:=.f.
 END SEQUENCE
 
 bErr:=ERRORBLOCK(bErr)
+#endif
 
 if !fPostoji
   // nisam uspio otvoriti, znaci ne mogu ni kreirati indexs ..
   return
 endif
 
+altd()
 if !FILE(LOWER(cImeCdx))  .or. nOrder==0  .or. UPPER(cOrdKey)<> UPPER(cKljuc)
 
 
@@ -343,7 +351,7 @@ for nDbf:=1 to 250
   if !gAppSrv
            @ m_x+1,m_y+2 SAY SPACE(54)
      endif
-  #ifndef PROBA
+#ifndef FMK_DEBUG
     bErr:=ERRORBLOCK({|o| MyErrHt(o)})
     BEGIN SEQUENCE
     // sprijeciti ispadanje kad je neko vec otvorio bazu
@@ -362,12 +370,12 @@ for nDbf:=1 to 250
     endif
     END SEQUENCE
     bErr:=ERRORBLOCK(bErr)
-  #else
+#else
     goModul:oDatabase:obaza(nDbf)
     if !gAppSrv
       @ m_x+1,m_y+2  SAY SPACE(40)
     endif
-  #endif
+#endif
 
   DBSELECTArea (nDbf)
   if !gAppSrv
@@ -469,10 +477,12 @@ if fSilent==nil
   fSilent:=.f.
 endif
 
-#ifdef proba
+#ifdef FMK_DEBUG
+
 if !gAppSrv
   Msgbeep("Brisipak procedura...")
 endif
+
 #endif
 
 if fSilent .or. if(!gAppSrv, Pitanje(,"Izbrisati "+INDEXEXT+" fajlove pa ih nanovo kreirati","N")=="D", .t.)

@@ -3,7 +3,7 @@ ROOT = ../../harbour/harbour/
 HB_INC_COMPILE += -I$(TOP)../include
 
 PRG_SOURCES= \
-  cui.prg std_dlg.prg \
+  fmk_character_user_interface.prg fmk_standard_dialogs.prg \
   event.prg fvidi.prg get_extend.prg \
   screen_saver.prg \
   objdbedit_direktni_edit.prg objdbedit.prg \

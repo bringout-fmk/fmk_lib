@@ -589,7 +589,7 @@ do case
           return DE_CONT
         endif
 
-#IFDEF PROBA
+#IFDEF FMK_DEBUG 
   case Ch==K_ALT_V
 #ELSE
   case Ch==K_ALT_C

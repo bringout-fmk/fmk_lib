@@ -54,7 +54,7 @@
 // --------------------------------------------
 // postavi globalne varijable
 // --------------------------------------------
-function SetScGVars()
+function set_global_vars_0()
 
 public ZGwPoruka:=""
 public GW_STATUS:="-"
@@ -65,7 +65,9 @@ public gModul:=""
 public gVerzija:=""
 public gAppSrv:=.f.
 public gSQL:="N"
+
 public gSQLLogBase:=ToUnix("c:"+SLASH+"sigma")
+
 public ZGwPoruka:=""
 public GW_STATUS:="-"
 public GW_HANDLE:=0
@@ -184,19 +186,11 @@ return
 
 
 
-/* \fn SetScGVar2(()
- * \fn postavljanje varijabli koje traze setovane *PATH varijable Db-a
- */
-function SetScGVar2()
-
-gSql:=IzFmkIni("Svi", "SQLLog", "N", KUMPATH)
-gSqlLogBase:=IzFmkIni("SQL","SQLLogBase","c:\sigma",EXEPATH)
-
 
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
-function IniGparams(fSve)
+function set_global_vars_0_prije_prijave(fSve)
 
 local cImeDbf
 
@@ -214,10 +208,8 @@ public KLevel:="9"
 public gPTKONV:="0 "
 public gPicSif:="V", gcDirekt:="V", gShemaVF:="B5", gSKSif:="D"
 
-//public gArhDir:=padr(ToUnix("C:\SIGARH"),20)
-gArhiDir := PADR(gArhDir, 20)
+//public gPFont:="Arial"
 
-public gPFont:="Arial"
 public gKodnaS:="8"
 public gWord97:="N"
 public g50f:=" "
@@ -259,6 +251,16 @@ return nil
 
 
 
+/* \fn SetScGVar2(()
+ * \fn postavljanje varijabli koje traze setovane *PATH varijable Db-a
+ */
+function set_global_vars_0_nakon_prijave()
+
+gSql:=IzFmkIni("Svi", "SQLLog", "N", KUMPATH)
+gSqlLogBase:=IzFmkIni("SQL","SQLLogBase", ToUnix("c:\sigma"), EXEPATH)
+
+
+
 /*! \fn IniGParam2(lSamoKesiraj)
  *  \brief Ucitava globalne parametre gPTKonv ... gKesiraj
  *  \param lSamoKesiraj - ucitaj samo gKesiraj
@@ -286,10 +288,16 @@ SELECT params
 USE
 
 if (cPosebno=="D")
+
+#ifndef FMK_DEBUG
   bErr := ERRORBLOCK({|o| MyErrH(o)})
+#endif
   O_GPARAMSP
   SEEK "1"
+
+#ifndef FMK_DEBUG
   bErr := ERRORBLOCK(bErr)
+#endif
 
   if !lSamoKesiraj
     Rpar("pt",@gPTKonv)

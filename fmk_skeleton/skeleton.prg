@@ -59,7 +59,7 @@ endif
 ? "setujem globalne varijable"
 
 SetgaSDbfs()
-SetScGVars()
+set_global_vars_0()
 
 gModul:=oApp:cName
 gVerzija:=oApp:cVerzija
@@ -81,12 +81,12 @@ if mpar37("/INSTALL",oApp)
   CreGParam()
 endif
 
-IniGparams()
+set_global_vars_0_prije_prijave()
 
 // inicijalizacija, prijava
 InitE(oApp)
 
-SetScGVar2()
+set_global_vars_0_nakon_prijave()
 if oApp:lTerminate
   return
 endif
@@ -97,7 +97,8 @@ if mpar37("/INSTALL",oApp)
   oApp:oDatabase:install()
 endif
 
-IniGparam2()
+//IniGparam2()
+
 BosTipke()
 KonvTable()
 
@@ -179,8 +180,9 @@ CreKorisn()
 SetDirs(oApp)
 CreSystemDB()
     
-IniGparams(.f.)
-IniGparam2(.f.)
+set_global_vars_0_nakon_prijave(.f.)
+
+//IniGparam2(.f.)
 
 oApp:oDatabase:loadSezonaRadimUSezona()
 oApp:oDatabase:radiUSezonskomPodrucju()
@@ -299,8 +301,9 @@ function SetNaslov(oApp)
 
 gNaslov:= oApp:cName + " HB, " + oApp:cPeriod 
 
-
+#ifndef FMK_DEBUG
 SETCANCEL(.f.)
+#endif
 
 #IFDEF  READONLY
      gNaslov+="-RO"
@@ -477,136 +480,6 @@ endif
 return cPars
 
 
-/*! \fn PID(cStart)
- *  \brief funkcije za kreiranje/brisanje PID fajla
- *  \note PID (Program Idefntifcation)
- *
- *  \param cStart - "START" - na ulasku u aplikaciju napravi PID; "STOP"  - izbrisi pid fajl
- *
- * Primjer koda:
- * \code
- *
- * //pocetak aplikacije
- * PID("START")
- * ....
- * //u Quit proceduri (na kraju):
- * PID("STOP")
- * 
- * \endcode
- *
- *
- * Primjer FMK.INI
- * \code
- * 
- * Ime PID-a koji ce kreirati se cita iz EXEPATH/FMK.INI 
- * [PID]
- * <IME_MODULA>_<IME_KORISNIKA> = IME_PID_FAJLA
- * Default vrijednost je <BROJMODULA>
- *
- *
- * Tako je za modul TOPS, za korisnika sistem 
- * [PID]
- * TOPS_SYSTEM=8
- * 
- * Ako imamo vise poziva TOPS-a iz istog EXE direktorija moramo u fmk ini za
- * svakog korisnika definisati ime PID-fajla:
- * [PID]
- * ;korisnik SYSTEM 
- * TOPS_SYSTEM=8_KASA
- * ;za sve instal module isti je PID sto znaci da ga moze pokrenuti 
- * ;samo jedan korisnik istovremeno
- * I_TOPS_SYSTEM=I_8
- * ;korisnik NELA
- * TOPS_NELA=8_KNJIG
- * I_TOPS_NELA=I_8
- * ;korisnik MEVLIDA
- * TOPS_MEVLIDA=8_KNJIG2
- * I_TOPS_NELA=I_8
- *
- * \endcode
- *
- */
-
-function PID(cStart)
-
-local cPom, cDefault, cPidFile
-local lKoristitiPid
-
-#ifdef CLIP
-  ? "pid ", cStart
-#endif
-
-cPidDefault := IIF (goModul:cName =="TOPS", "D", "N")
-lKoristitiPid := IzFmkIni("FMK","KoristiSePID", cPidDefault , EXEPATH)=="N" 
-
-if ((cStart=="START") .and. (goModul:lStarted) .or. lKoristitiPid )
-  // glavni aplikacijski objekat je vec startovan
-  return
-endif
-
-if gModul="FIN"
-  cDefault:="1"
-elseif gModul="KALK"
-  cDefault:="2"
-elseif gModul="FAKT"
-  cDefault:="3"
-elseif gModul="OS"
-  cDefault:="4"
-elseif gModul="LD"
-  cDefault:="5"
-elseif gModul="VIRM"
-  cDefault:="6"
-elseif gModul="KAM"
-  cDefault:="7"
-elseif gModul="TOPS"
-  cDefault:="8"
-elseif gModul="HOPS"
-  cDefault:="9"
-elseif gModul="KADEV"
-  cDefault:="10"
-elseif gModul="TNAM"
-  cDefault:="11"
-endif
-
-cPom:=gModul
-if type("gInstall")="L"
-   if gInstall
-      cDefault:="I_"+cDefault
-      cPom:="I_"+cPom
-   else
-   endif
-endif
-
-cPom:=cPom+"_"+UPPER(alltrim(ImeKorisn))
-
-// koji PID pripada ovoj aplikaciji ?
-// primjer TOPS_SYSTEM
-
-cPid:= IzFmkIni("PID", cPom, cDefault, EXEPATH)
-
-cPidFile:= ToUnix( EXEPATH + cPid+".pid" )
-
-if cStart="STOP"
-  // zatvori PID
-  if type("gHndPid")<>"U"
-   fclose(gHndPid)
-  endif
-  ferase(cPidFile)
-else
-
-  public gHndPid:=fcreate(cPidFile)
-  fclose(gHndPid)
-  gHndPid:=fopen(cPidFile,2+16) // exclusive
-  if gHndPid<0
-       // ne mogu izbrisati  pid
-       MsgBeep(" PID:"+cDefault+" je vec aktiviran !")
-       CLEAR SCREEN
-       QUIT
-  endif
-
-endif
-
-return
 
 
 
@@ -1021,43 +894,4 @@ if (lIB)
 endif
 
 
-/*
-function T_Start(nHPid, cPath, cModul, cUser )
-
-local hH, nCnt
-local cFN
-local cBuf
-
-cBuf:=space(10)
-cFN:=cPath+gmodul+'.pid'
-do while .t.
-  nHPid:=FCREATE(cFN)
-  if nHPid < 0
-     nH:=fopen(cFN)
-     nCnt:=fread(nH,@cBuf)
-     FClose(nH)
-     @ 23,65 SAY "..azurira:"+left(cBuf,nCnt)
-     inkey(1)
-     @ 23,65 SAY space(10)
-     if lastkey()=27
-        exit
-     endif
-  else
-     fwrite(nHPid,cUser)
-     exit
-  endif
-enddo
-return nHPid
-
-
-function T_Stop(nHPid, cPath, cModul, cUser )
-
-local cFN
-cFN:=cPath+cmodul+'.pid'
-fclose(nHPid)
-ferase(cFN)
-return
-
-
-*/
 

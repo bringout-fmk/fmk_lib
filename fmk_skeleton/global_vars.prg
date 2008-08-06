@@ -1,13 +1,14 @@
 #include "fmk.ch"
 
 
-function SetFmkSGVars()
+function set_global_vars()
 
 SetSpecifVars()
 SetValuta()
 
 public gFirma:="10"
 public gTS:="Preduzece"
+
 private cSection:="K",cHistory:=" "; aHistory:={}
 public gNFirma:=space(20)  // naziv firme
 public gZaokr:=2
@@ -153,7 +154,4 @@ if gPDV=="D"
 	return .t.
 endif
 return .f.
-
-
-
 

@@ -127,9 +127,6 @@ if ::lStarted==nil
 endif
 
 SC_START(self, .t.)
-if !::lStarted
-  PID("START")
-endif
 // da se zna da je objekat jednom vec startovan
 ::lStarted:=.t.
 
@@ -231,13 +228,11 @@ endif
 
 ::lTerminate:=.t.
 
-PID("STOP")
 CLEAR SCREEN
 
 if !(::hasParent())
   if !gReadonly
     if FOUND()
-      altd()
       SELECT korisn
       if RLOCK()
            REPLACE field->nk WITH .f.
