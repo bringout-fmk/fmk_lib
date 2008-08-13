@@ -676,24 +676,63 @@ return nDec
 * provjeravani znak nije "9", zamjenjuje se sa znakom ciji je kod veci za 1
 * i zavrsava se sa pravljenjem sifre tj. neprovjeravani znakovi ostaju isti.
 // -----------------------------------------------------------------------
-
 function NovaSifra(cSifra)
 
 local i:=0
-local cPom
+local cPom, cPom2
 
 if EMPTY(cSifra)
-   cSifra:=STRTRAN(cSifra," ","0")
+   cSifra := STRTRAN(cSifra, " ", "0")
 endif
 
-for i:=LEN(cSifra) TO 1 STEP -1
-   if (cPom:=SUBSTR(cSifra,i,1)) != "9"
-     cSifra:=STUFF(cSifra,i,1,CHR(ASC(cPom)+1))
-     EXIT
+//altd()
+for i := LEN(cSifra) TO 1 STEP -1
+
+   if (cPom := substr(cSifra, i, 1)) < "9"
+     //if i==1
+     //  cSifra:=STUFF(cSifra, i, 1, novi_znak_extended(cPom))
+     //endif
+       cSifra:=STUFF(cSifra, i, 1, CHR(ASC(cPom) + 1))
+     //endif
+     exit
    endif
 
-   cSifra:=STUFF(cSifra,i,1,IF(i==1,IF(cPom=="9","A",CHR(ASC(cPom)+1)),"0"))
+   if i==1
+     cPom2 := novi_znak_extended(cPom) 
+   else
+     cPom2 := "0"
+   endif
+
+   cSifra := stuff(cSifra, i, 1, cPom2)
 next
 
 RETURN cSifra
 
+
+// -------------------------------------
+// -------------------------------------
+static function novi_znak_extended( cChar)
+
+if cChar == "9"
+    return "A"
+
+elseif cChar == "Z"
+    return chr(143)
+
+elseif cChar == CHR(143)
+    return chr(166)
+
+elseif cChar == CHR(166)
+    return chr(172)
+
+elseif cChar == CHR(172)
+    return chr(209)
+
+elseif cChar == CHR(209)
+    return chr(230)
+
+elseif cChar == chr(230)
+    return "?"
+else
+    return CHR(ASC(cChar) + 1)
+endif

@@ -1,4 +1,4 @@
-DIRS = fmk_codes fmk_common fmk_event fmk_security fmk_skeleton fmk_db fmk_ui
+DIRS = fmk_codes fmk_common fmk_event fmk_security fmk_skeleton fmk_db fmk_ui tests
 
 all: compile install
 
@@ -19,3 +19,7 @@ copy4debug:
 	for d in $(DIRS); do \
 	 cp -v $$d/*.prg /c/sigma; \
 	done
+
+
+run:
+	tests/linux/gcc/test_all

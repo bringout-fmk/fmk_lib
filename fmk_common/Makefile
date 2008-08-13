@@ -30,4 +30,4 @@ LIBNAME=fmk_common
 include $(TOP)$(ROOT)config/lib.cf
 
 
-HB_FLAGS := -n -ufmk_std.ch -kM -gc0  -I$(TOP) -I$(HB_INC_COMPILE)
+HB_FLAGS := -n -b -ufmk_std.ch -kM -gc0  -I$(TOP) -I$(HB_INC_COMPILE)
