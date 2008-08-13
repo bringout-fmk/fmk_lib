@@ -26,8 +26,6 @@ private cTag
 private cKljuciz
 
 
-altd()
-
 close all
   
 cImeDbf:=ToUnix(cImeDbf)
@@ -129,7 +127,6 @@ if !fPostoji
   return
 endif
 
-altd()
 if !FILE(LOWER(cImeCdx))  .or. nOrder==0  .or. UPPER(cOrdKey)<> UPPER(cKljuc)
 
 

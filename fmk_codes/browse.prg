@@ -2450,31 +2450,6 @@ KEYBOARD CHR(K_END)
 RETURN (NIL)
 
 
-// -----------------------------------------------------------------------
-* F-ja vraca novu sifru koju odredjuje uvecavanjem postojece po sljedecem
-* principu: Provjeravaju se znakovi pocevsi od posljednjeg i dok god je
-* znak cifra "9" uzima se sljedeci znak, a "9" se mijenja sa "0". Ukoliko
-* provjeravani znak nije "9", zamjenjuje se sa znakom ciji je kod veci za 1
-* i zavrsava se sa pravljenjem sifre tj. neprovjeravani znakovi ostaju isti.
-// -----------------------------------------------------------------------
-
-function NovaSifra(cSifra)
-
-
-LOCAL i:=0,cPom
- IF EMPTY(cSifra); cSifra:=STRTRAN(cSifra," ","0"); ENDIF
- FOR i=LEN(cSifra) TO 1 STEP -1
-   IF (cPom:=SUBSTR(cSifra,i,1))!="9"
-     cSifra:=STUFF(cSifra,i,1,CHR(ASC(cPom)+1))
-     EXIT
-   ENDIF
-   cSifra:=STUFF(cSifra,i,1,IF(i==1,IF(cPom=="9","A",CHR(ASC(cPom)+1)),"0"))
- NEXT
-RETURN cSifra
-
-
-
-
 function SeekBarKod(cId,cIdBk,lNFGR)
 local nRec
 if lNFGR==nil

@@ -666,3 +666,34 @@ next
 
 return nDec
 
+
+
+
+// -----------------------------------------------------------------------
+* F-ja vraca novu sifru koju odredjuje uvecavanjem postojece po sljedecem
+* principu: Provjeravaju se znakovi pocevsi od posljednjeg i dok god je
+* znak cifra "9" uzima se sljedeci znak, a "9" se mijenja sa "0". Ukoliko
+* provjeravani znak nije "9", zamjenjuje se sa znakom ciji je kod veci za 1
+* i zavrsava se sa pravljenjem sifre tj. neprovjeravani znakovi ostaju isti.
+// -----------------------------------------------------------------------
+
+function NovaSifra(cSifra)
+
+local i:=0
+local cPom
+
+if EMPTY(cSifra)
+   cSifra:=STRTRAN(cSifra," ","0")
+endif
+
+for i:=LEN(cSifra) TO 1 STEP -1
+   if (cPom:=SUBSTR(cSifra,i,1)) != "9"
+     cSifra:=STUFF(cSifra,i,1,CHR(ASC(cPom)+1))
+     EXIT
+   endif
+
+   cSifra:=STUFF(cSifra,i,1,IF(i==1,IF(cPom=="9","A",CHR(ASC(cPom)+1)),"0"))
+next
+
+RETURN cSifra
+

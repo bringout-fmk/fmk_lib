@@ -145,7 +145,8 @@ SET(_SET_DEVICE,cPom)
 return ItemNo
 
 
-
+// ---------------------------------------------------------
+// ---------------------------------------------------------
 function Calc_xy(N,Length)
 
 // OPIS  : Odredjuje poziciju za ispis sljedeceg menija na
@@ -282,9 +283,9 @@ return
 
 
 
-function MsgO(text,sec)
+function MsgO(cText, sec)
 
-local l
+local nLen
 local msg_x1
 local msg_x2
 local msg_y1
@@ -299,16 +300,22 @@ endif
 
 SET DEVICE TO SCREEN
 
-l:=Len(Text)
+nLen := Len(cText)
+
 msg_x1:=8
 msg_x2:=14
-msg_y1:=(79-l-7)/2
-msg_y2:=79 - msg_y1
-StackPush(aMsgStack,{if(setcursor()==0,0,iif(readinsert(),2,1)),setcolor(Invert),l,;
-          SaveScreen(msg_x1,msg_y1,msg_x2,msg_y2) })
-@ msg_x1,msg_y1 CLEAR TO msg_x2,msg_y2
-@ msg_x1+1,msg_y1+2 TO msg_x2-1,msg_y2-2 DOUBLE
-@ msg_x1+3,msg_y1+4 SAY Text
+msg_y1:=( 79 - nLen - 7 )/2
+msg_y2:= 79 - msg_y1
+
+StackPush( aMsgStack, ;
+         {if(setcursor()==0, 0, iif(readinsert(),2,1)), setcolor(Invert), nLen, ;
+          SaveScreen(msg_x1, msg_y1, msg_x2, msg_y2) })
+
+@ msg_x1, msg_y1 CLEAR TO msg_x2, msg_y2
+
+@ msg_x1 + 1, msg_y1 + 2 TO msg_x2-1, msg_y2-2 DOUBLE
+@ msg_x1 + 3, msg_y1 + 4 SAY cText
+
 set cursor off
 SET(_SET_DEVICE,cPom)
 return
