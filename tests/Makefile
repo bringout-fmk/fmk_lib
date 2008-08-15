@@ -6,6 +6,7 @@ HB_INC_COMPILE += -I$(TOP)../include
 PRG_SOURCES=\
       test_all.prg \
       test_cp.prg \
+      test_screen.prg \
       test_novasifra.prg
 
 LIBS=\
