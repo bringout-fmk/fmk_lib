@@ -862,30 +862,13 @@ do while .t.
 		 endif
 
 		 if LEN(ToStr(&cPom))>50
-		    if gPicSif=="M"
-		      UsTipke()
-		      cPic:="@S50"
-		    elseif gPicSif=="8"
-		      BH7u8()
-		      cPic:="@S50"
-		    else
-		      BosTipke()
-		      cPic:="@!S50"
-		    endif
+		    cPic:="@S50"
 		    @ m_x+nTekRed+1,m_y+67 SAY Chr(16)
-		 elseif Len(ImeKol[i])>=7 .and. ImeKol[i,7]<>NIL
+		 
+                 elseif Len(ImeKol[i])>=7 .and. ImeKol[i,7]<>NIL
 		     cPic:= ImeKol[i,7]
 		 else
-		    if gPicSif=="M"
-		     UsTipke()
 		     cPic:=""
-		    elseif gPicSif=="8"
-		      BH7u8()
-		      cPic:=""
-		    else
-		     BosTipke()
-		     cPic:="@!"
-		    endif
 		 endif
 
 		 nRed:=1

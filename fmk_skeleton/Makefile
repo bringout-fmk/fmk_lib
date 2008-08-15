@@ -19,6 +19,9 @@ PRG_SOURCES= \
         desktop.prg \
 	specifificnosti_vars.prg
 
+LIBS=\
+        hbextern 
+
 
 LIBNAME=fmk_skeleton
 

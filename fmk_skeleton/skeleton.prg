@@ -1,10 +1,12 @@
 #include "fmk.ch"
 #include "achoice.ch"
 #include "fileio.ch"
+#include "hbgtinfo.ch"
+#include "hbcompat.ch"
 
 REQUEST DBFCDX
 
-#ifdef __WINDOWS__
+#ifdef __PLATFORM__WINDOWS
 REQUEST HB_GT_WIN
 REQUEST HB_GT_GTXWT_DEFAULT
 #else
@@ -12,13 +14,13 @@ REQUEST HB_GT_GTXWT_DEFAULT
 REQUEST HB_GT_XWC_DEFAULT
 #endif
 
-/*! \file sc1g/base/base.prg
-    \brief Inicijalizacija systema, bazne funkcije
-    \note prebaciti u potpunosti na objektni model (ionako se koristi oApp)
- */
+/*
 
-/*! \fn SC_START(oApp, lSezone)
- *  \brief Aktiviranje "glavnog" programskog modula"
+    Inicijalizacija systema, bazne funkcije
+    prebaciti u potpunosti na objektni model (ionako se koristi oApp)
+*/
+
+/* SC_START(oApp, lSezone)
  */
 
 
@@ -31,10 +33,8 @@ REQUEST HB_GT_XWC_DEFAULT
  */
 
 
-/*! \fn SC_START(oApp, lSezone)
- *  \brief Inicijalizacija sclib sistema
- *
- *  \todo Nakon verzije 1.5 ... kreiranje F_SECUR  treba ukinuti
+/* SC_START(oApp, lSezone)
+ * Inicijalizacija sclib sistema
  *
  */
  
@@ -51,6 +51,25 @@ if !oApp:lStarted
 
   ? "setujem default engine ..." + RDDENGINE
   RDDSETDEFAULT( RDDENGINE )
+
+#ifdef __PLATFORM__LINUX
+   
+   REQUEST HB_CODEPAGE_SL852 
+   REQUEST HB_CODEPAGE_SLISO
+
+   hb_setCodePage( "SL852" )
+   hb_setTermCP("SLISO")
+
+#else
+
+   REQUEST HB_CODEPAGE_SL852 
+   REQUEST HB_CODEPAGE_SLWIN
+
+   hb_setCodePage( "SL852" )
+   hb_setTermCP("SLWIN")
+
+#endif
+
   ? "startujem oApp:db()"
   oApp:initdb()
 

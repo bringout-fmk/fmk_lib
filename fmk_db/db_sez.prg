@@ -93,20 +93,21 @@ else
 endif
 //MsgBeep(cFull)
 
-if fDa .or. !fInverse .and. (!File(cFull) .or. Pitanje(,cPath+cIme+" je vec pohranjen u "+cSezona+". Spremiti D/N ?"," ")="D") .or. fInverse .and. (!File(cFull) .or. Pitanje(,cPath+cIme+" iz RP prekriti sadrzajem iz "+cSezona+" ?"," ")="D")
-	Otkljucaj(cPath+cIme)
+if fDa .or. !fInverse .and. (!File(cFull) .or. Pitanje( , cPath + cIme + " je vec pohranjen u "+cSezona+". Spremiti D/N ?"," ")="D") .or. fInverse .and. (!File(cFull) .or. Pitanje(,cPath+cIme+" iz RP prekriti sadrzajem iz "+cSezona+" ?"," ")="D")
+	Otkljucaj(cPath + cIme)
    	if fInverse
 		// preimenuj ciljni fajl radi sigurnosti
-     		cBackup:=cPath+STRTRAN(lower(cIme), "." + DBFEXT, "._bf")
+     		cBackup:=cPath + STRTRAN(lower(cIme), "." + DBFEXT, "._bf")
      		cBackup:=STRTRAN(cBackup,"."+MEMOEXTENS,"._bt")
 		FErase(cBackup)
-     		if FRename(cPath+cIme,cBackup)=-1   // ne moze preimenovati
+     		if FRename(cPath+cIme, cBackup)=-1   // ne moze preimenovati
           		if File(cPath+cIme)   // a fajl postoji
               			MsgBeep("Neko je zauzeo datoteku "+cPath+cIme)
               			return .f.
           		endif
      		endif
      		nKopirano:=FileCopy(cPath+cSezona+SLASH+cIme,cPath+cIme)
+
      		// izbrisi kopiju
      		cKom:="copy "+cPath+cSezona+SLASH+cIme+" "+cPath+cIme
      		CopySve(STRTRAN(cIme,"."+DBFEXT,"*."+INDEXEXT),cPath+cSezona+SLASH,cPath)

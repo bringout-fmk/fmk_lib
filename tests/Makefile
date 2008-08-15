@@ -15,6 +15,7 @@ LIBS=\
         hbrtl \
         hbmacro \
         hbpp \
+	hbcpage \
         rddcdx \
         rddfpt \
         rddntx \
@@ -52,3 +53,6 @@ test_all.o : test_all.c
 copy:
 	cp -v w32/mingw32/test_all.exe /c/sigma/test_fmk_lib_all.exe
 
+
+run:
+	linux/gcc/test_all

@@ -167,89 +167,12 @@ function KSto7(cStr)
   cStr:=strtran(cStr,"è","]")
 return cStr
 
-* ako je gPTKonv == 0   nema konverzije
-* ako je gPTKonv == 1   7bih - 852
-* ako je gPTKonv == 2   7bih - Americki
-* ako je gPTKonv == 3   852 -  7bih
-* ako je gPTKonv == 4   852 -  Americki
-
 function KonvTable(fGraf)
-if left(gPTKonv,1)=="0"
- SetPxLat()
-elseif left(gPTKonv,1)=="1"
- SetPxLat(ASC("["),"Ê"  )
- SetPxLat(ASC("{"),"Á"  )
- SetPxLat(ASC("}"),"Ü"  )
- SetPxLat(ASC("]"),"è"  )
- SetPxLat(ASC("^"),"¨" )
- SetPxLat(ASC("~"),"ü" )
- SetPxLat(ASC("`"),"ß" )
- SetPxLat(ASC("@"),"¶" )
- SetPxLat(ASC("|"),"–" )
- SetPxLat(ASC("\"),"—" )
-elseif left(gPTKonv,1)=="2"
- SetPxLat(ASC("["),"S"  )
- SetPxLat(ASC("{"),"s"  )
- SetPxLat(ASC("}"),"c"  )
- SetPxLat(ASC("]"),"C"  )
- SetPxLat(ASC("^"),"C" )
- SetPxLat(ASC("~"),"c" )
- SetPxLat(ASC("`"),"z" )
- SetPxLat(ASC("@"),"Z" )
- SetPxLat(ASC("|"),"d" )
- SetPxLat(ASC("\"),"D" )
-elseif left(gPTKonv,1)=="3"
- SetPxLat(ASC("Ê"),"["  )
- SetPxLat(ASC("Á"),"{"  )
- SetPxLat(ASC("Ü"),"}"  )
- SetPxLat(ASC("è"),"]"  )
- SetPxLat(ASC("¨"),"^" )
- SetPxLat(ASC("ü"),"~" )
- SetPxLat(ASC("ß"),"`" )
- SetPxLat(ASC("¶"),"@" )
- SetPxLat(ASC("–"),"|" )
- SetPxLat(ASC("—"),"\" )
-elseif left(gPTKonv,1)=="4"
- SetPxLat(ASC("Ê"),"S"  )
- SetPxLat(ASC("Á"),"s"  )
- SetPxLat(ASC("Ü"),"c"  )
- SetPxLat(ASC("è"),"C"  )
- SetPxLat(ASC("¨"),"C" )
- SetPxLat(ASC("ü"),"c" )
- SetPxLat(ASC("ß"),"z" )
- SetPxLat(ASC("¶"),"Z" )
- SetPxLat(ASC("–"),"d" )
- SetPxLat(ASC("—"),"D" )
-endif
 
-if fGraf<>NIL .or. substr(gPtkonv,2,1)="1"
- SetPxLat(ASC("ƒ"),"-" )
- SetPxLat(ASC("≥"),":" )
- SetPxLat(ASC("⁄"),"+" )
- SetPxLat(ASC("¿"),"+" )
- SetPxLat(ASC("ø"),"+" )
- SetPxLat(ASC("Ÿ"),"+" )
- SetPxLat(ASC("ﬂ"),"=" )
- SetPxLat(ASC("…"),"+" )
- SetPxLat(ASC("…"),"+" )
- SetPxLat(ASC("ª"),"+" )
- SetPxLat(ASC("Ã"),"+" )
- SetPxLat(ASC("π"),"+" )
- SetPxLat(ASC("»"),"+" )
- SetPxLat(ASC("º"),"+" )
- SetPxLat(ASC("∫"),":" )
- SetPxLat(ASC("≈"),"+" )
- SetPxLat(ASC("√"),"+" )
-
- SetPxLat(ASC("√"),"+" )
- SetPxLat(ASC("¥"),"+" )
- SetPxLat(ASC("¬"),"+" )
- SetPxLat(ASC("¡"),"+" )
-endif
+return nil
 
 
-
-FUNCTION BHSORT(cInput)
+function bhsort(cInput)
  IF gKodnaS=="7"
    cInput:=STRTRAN(cInput,"[","S"+CHR(255))
    cInput:=STRTRAN(cInput,"\","D"+CHR(255))
@@ -273,13 +196,14 @@ FUNCTION BHSORT(cInput)
    cInput:=STRTRAN(cInput,"Ü","c"+CHR(255))
    cInput:=STRTRAN(cInput,"ß","z"+CHR(255))
  ENDIF
-RETURN PADR(cInput,100)
+RETURN PADR(cInput, 100)
 
 
 // ------------------------------------------
 // ------------------------------------------
 function BosTipke()
-  
+
+/*  
   SETKEY( ASC('{') , {|| __KEYBOARD('[') }  )
   SETKEY( ASC('|') , {|| __KEYBOARD('\') }  )
   SETKEY( ASC('`') , {|| __KEYBOARD('@') }  )
@@ -290,12 +214,16 @@ function BosTipke()
   SETKEY( ASC('ü') , {|| __KEYBOARD('¨') }  )
   SETKEY( ASC('–') , {|| __KEYBOARD('—') }  )
   SETKEY( ASC('ß') , {|| __KEYBOARD('¶') }  )
+*/
+
 RETURN
 
 
 // -------------------------------------------
 // -------------------------------------------
 function USTipke()
+
+/*
 SET KEY ASC('{') TO
   SET KEY ASC('|') TO
   SET KEY ASC('`') TO
@@ -307,10 +235,13 @@ SET KEY ASC('{') TO
   SET KEY ASC('–') TO
   SET KEY ASC('ß') TO
 RETURN
+*/
 
 // ------------------------------
 // ------------------------------
 function KSTo852(cStr)
+
+/*
   cStr:=strtran(cStr,"{","Á")
   cStr:=strtran(cStr,"|","–")
   cStr:=strtran(cStr,"`","ß")
@@ -321,20 +252,8 @@ function KSTo852(cStr)
   cStr:=strtran(cStr,"@","¶")
   cStr:=strtran(cStr,"^","¨")
   cStr:=strtran(cStr,"]","è")
+*/
+
 return cStr
 
-// ------------------------------
-// ------------------------------
-function BH7u8()
-SETKEY( ASC('}') , {|| __KEYBOARD('Á') }  )
-  SETKEY( ASC('{') , {|| __KEYBOARD('Ü') }  )
-  SETKEY( ASC('~') , {|| __KEYBOARD('ü') }  )
-  SETKEY( ASC('|') , {|| __KEYBOARD('–') }  )
-  SETKEY( ASC('`') , {|| __KEYBOARD('ß') }  )
-  SETKEY( ASC(']') , {|| __KEYBOARD('Ê') }  )
-  SETKEY( ASC('[') , {|| __KEYBOARD('è') }  )
-  SETKEY( ASC('^') , {|| __KEYBOARD('¨') }  )
-  SETKEY( ASC('\') , {|| __KEYBOARD('—') }  )
-  SETKEY( ASC('@') , {|| __KEYBOARD('¶') }  )
-RETURN
 
