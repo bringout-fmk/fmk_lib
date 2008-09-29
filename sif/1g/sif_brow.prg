@@ -6,6 +6,8 @@
 static __PSIF_NIVO__:=0
 // ;
 
+static _LOG_PROMJENE := .f.
+
 // static array __A_SIFV__;
 #ifndef CPP
 static __A_SIFV__:= { {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}, {NIL,NIL,NIL}}
@@ -25,10 +27,14 @@ if aZabIsp == nil
 	aZabIsp := {}
 endif
 
-
 FOR i:=1 TO LEN(aZabIsp)
 	aZabIsp[i] := UPPER(aZabIsp[i])
 NEXT
+
+// provjeri da li treba logirati promjene
+if Logirati("FMK","SIF","PROMJENE")
+	_LOG_PROMJENE := .t.	
+endif
 
 private nOrdId
 private fBosanski:=.f.
@@ -551,6 +557,7 @@ do case
 		go top
 		do while !eof()
 			dbrecall()
+			replace brisano with " "
 			skip 1
 		enddo
 	endif
@@ -560,6 +567,18 @@ do case
     if Pitanje(,"Zelite li izbrisati ovu stavku ??","D")=="D"
       sql_delete()
       delete
+      
+      nTArea := SELECT()
+      
+      // logiraj promjenu brisanja stavke
+      if _LOG_PROMJENE == .t.
+      	EventLog(nUser, "FMK", "SIF", "PROMJENE", nil, nil, nil, nil, ;
+		"stavka: " + FIELDGET(1), "", "", DATE(), DATE(), "", ;
+		"brisanje sifre iz sifrarnika")
+      endif
+      
+      select (nTArea)
+
       return DE_REFRESH
     else
       return DE_CONT
@@ -583,10 +602,32 @@ do case
   case Ch==K_CTRL_F9
 
         if Pitanje(,"Zelite li sigurno izbrisati SVE zapise ??","N")=="D"
-          Beep(6)
-          if Pitanje(,"Ponavljam : izbrisati BESPOVRATNO kompletan sifrarnik ??","N")=="D"
-             zap
+          
+	  Beep(6)
+          
+	  nTArea := SELECT()
+	   // logiraj promjenu brisanja stavke
+          if _LOG_PROMJENE == .t.
+      	       EventLog(nUser, "FMK", "SIF", "PROMJENE", nil, nil, nil, nil, ;
+	           "", "", "", DATE(), DATE(), "", ;
+	           "pokusaj brisanja kompletnog sifrarnika")
           endif
+	  select (nTArea)
+	  
+	  if Pitanje(,"Ponavljam : izbrisati BESPOVRATNO kompletan sifrarnik ??","N")=="D"
+             zap
+
+             nTArea := SELECT()
+	     // logiraj promjenu brisanja stavke
+             if _LOG_PROMJENE == .t.
+      	        EventLog(nUser, "FMK", "SIF", "PROMJENE", nil, nil, nil, nil, ;
+		     "", "", "", DATE(), DATE(), "", ;
+		     "brisanje kompletnog sifrarnika")
+             endif
+	     
+	     select (nTArea)
+
+	  endif
           return DE_REFRESH
         else
           return DE_CONT
@@ -749,6 +790,11 @@ private aStruct
 
 nPrevRecNo:=RECNO()
 lNovi:=.f.
+
+if _LOG_PROMJENE == .t.
+        // daj stare vrijednosti
+	cOldDesc := _g_fld_desc("w")
+endif
 
 // dodaj u matricu match_code ako ne postoji
 cMCField := ALIAS()
@@ -1019,15 +1065,54 @@ do while .t.
          return 0
       endif
    else
+
+     
       if lNovi
+	
 	append blank
+
+	if _LOG_PROMJENE == .t. 
+	    // ako je novi zapis .. ovo su stare vrijednosti (prazno)
+	    cOldDesc := _g_fld_desc("w")
+	endif
+
 	sql_append()
+      
       endif
+      
       GatherR("w")
       GatherSifk("w", lNovi )
       sql_azur(.t.)
       Scatter("w")
       GathSQL("w")
+      
+      if _LOG_PROMJENE == .t.
+         // daj nove vrijednosti
+         cNewDesc := _g_fld_desc("w") 
+      endif
+
+      nTArea := SELECT()
+      // logiraj promjenu sifrarnika...
+      if _LOG_PROMJENE == .t.
+        
+	cChanges := _g_fld_changes(cOldDesc, cNewDesc)
+	if LEN(cChanges) > 250
+		cCh1 := SUBSTR(cChanges,1,250)
+		cCh2 := SUBSTR(cChanges,251,LEN(cChanges))
+	else
+		cCh1 := cChanges
+		cCh2 := ""
+	endif
+
+      	EventLog(nUser, "FMK", "SIF", "PROMJENE", nil, nil, nil, nil, ;
+		"promjena na sifri: " + FIELDGET(1), cCh1,cCh2, ;
+		DATE(),DATE(), "", ;
+		"promjene u tabeli " +  ALIAS() + " : " + ;
+		IF(Ch==K_F2,"ispravka",IF(Ch==K_F4,"dupliciranje", ;
+		"nova stavka")))
+      endif
+      select (nTArea)
+
       if Ch==K_F4 .and. Pitanje( , "Vrati se na predhodni zapis","D")=="D"
         go (nPrevRecNo)
       endif
@@ -1037,7 +1122,74 @@ do while .t.
 return 0
 
 
- 
+// --------------------------------------------------
+// vraca naziv polja + vrijednost za tekuci alias
+// cMarker = "w" ako je Scatter("w")
+// --------------------------------------------------
+static function _g_fld_desc( cMarker )
+local cRet := ""
+local i
+local cFName
+local xFVal
+local cFVal
+local cType
+
+for i := 1 to FCOUNT()
+
+	cFName := ALLTRIM( FIELD(i) )
+	
+	xFVal := FIELDGET(i)
+	
+	cType := VALTYPE(xFVal)
+	
+	if cType == "C"
+		// string
+		cFVal := ALLTRIM(xFVal)
+	elseif cType == "N"
+		// numeric
+		cFVal := ALLTRIM(STR(xFVal, 12, 2))
+	elseif cType == "D"
+		// date
+		cFVal := DTOC(xFVal)
+	endif
+	
+	cRet += cFName + "=" + cFVal + "#"
+next
+
+return cRet
+
+// ----------------------------------------------------
+// uporedjuje liste promjena na sifri u sifrarniku
+// ----------------------------------------------------
+static function _g_fld_changes( cOld, cNew )
+local cChanges := "nema promjena - samo prolaz sa F2"
+local aOld
+local aNew
+local cTmp := ""
+
+// stara matrica
+aOld := TokToNiz(cOld, "#")
+// nova matrica
+aNew := TokToNiz(cNew, "#")
+
+// kao osnovnu referencu uzmi novu matricu
+for i := 1 to LEN( aNew )
+	cVOld := ALLTRIM(aOld[i])
+	cVNew := ALLTRIM(aNew[i])
+	if cVNew == cVOld
+		// do nothing....
+	else
+		cTmp += "nova " + cVNew + " stara " + cVOld + ","
+	endif
+next
+
+if !EMPTY(cTmp)
+	cChanges := cTmp
+endif
+
+return cChanges
+
+
 function SetSifVars()
 
 aStruct:=DBSTRUCT()

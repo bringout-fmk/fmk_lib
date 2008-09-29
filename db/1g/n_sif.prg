@@ -1,3 +1,5 @@
+#include "sc.ch"
+
 // -----------------------------------------------------------------------
 * F-ja vraca novu sifru koju odredjuje uvecavanjem postojece po sljedecem
 * principu: Provjeravaju se znakovi pocevsi od posljednjeg i dok god je
