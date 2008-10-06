@@ -573,7 +573,7 @@ do case
       // logiraj promjenu brisanja stavke
       if _LOG_PROMJENE == .t.
       	EventLog(nUser, "FMK", "SIF", "PROMJENE", nil, nil, nil, nil, ;
-		"stavka: " + FIELDGET(1), "", "", DATE(), DATE(), "", ;
+		"stavka: " + to_str( FIELDGET(1) ), "", "", DATE(), DATE(), "", ;
 		"brisanje sifre iz sifrarnika")
       endif
       
@@ -1105,7 +1105,7 @@ do while .t.
 	endif
 
       	EventLog(nUser, "FMK", "SIF", "PROMJENE", nil, nil, nil, nil, ;
-		"promjena na sifri: " + FIELDGET(1), cCh1,cCh2, ;
+		"promjena na sifri: " + to_str( FIELDGET(1) ), cCh1,cCh2, ;
 		DATE(),DATE(), "", ;
 		"promjene u tabeli " +  ALIAS() + " : " + ;
 		IF(Ch==K_F2,"ispravka",IF(Ch==K_F4,"dupliciranje", ;
@@ -1157,6 +1157,24 @@ for i := 1 to FCOUNT()
 next
 
 return cRet
+
+// ------------------------------------------------------------
+// vraca vrijednost u tip string - bilo kojeg polja
+// ------------------------------------------------------------
+static function to_str( val )
+local cVal := ""
+local cType := VALTYPE(val)
+
+if cType == "C"
+	cVal := val
+elseif cType == "N"
+	cVal := STR(val)
+elseif cType == "D"
+	cVal := DTOC(val)
+endif
+
+return cVal
+
 
 // ----------------------------------------------------
 // uporedjuje liste promjena na sifri u sifrarniku
