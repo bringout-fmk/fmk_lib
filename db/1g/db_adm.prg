@@ -625,12 +625,13 @@ static function PitMstru(cImeChs)
 *{
 local cDN:="N"
 
-cImeChs:=padr(cImeChs,30)
+cImeChs:=padr(cImeChs,200)
+
 Box(,3,50)
   @ m_x+1,m_y+2 SAY "Izvrsiti modifikaciju struktura D/N" GET cDN pict "@!" valid cdn $ "DN"
   read
   if cDN=="D"
-    @ m_x+3,m_y+2 SAY "CHS Skript:" GET cImeCHS
+    @ m_x+3,m_y+2 SAY "CHS Skript:" GET cImeCHS PICT "@S30"
     read
     cImeCHS:=trim(cImeChs)
   endif
