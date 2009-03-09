@@ -339,13 +339,13 @@ do while .t.
        enddo
     case gPrinter="R" .and. (nZnak=K_CTRL_P .or. nZnak==K_ALT_P)
        
-       if gPDFPrint == "X"
+       if gPDFPrint == "X" .and. goModul:oDataBase:cName=="FAKT"
        	if Pitanje(,"Print u PDF/PTXT", "D") == "D"
 		PDFView(cImeF)
 	else
 		Ptxt(cImeF)
 	endif
-       elseif gPDFPrint == "D"
+       elseif gPDFPrint == "D" .and. goModul:oDataBase:cName == "FAKT"
        	PDFView(cImeF)
        else
        	Ptxt(cImeF)

@@ -310,13 +310,17 @@ else
 	endif
 
 	if gPrinter == "R"
-		if gPDFprint == "X"
-			if Pitanje(,"Print u PDF/PTXT (D/N)?", "D") == "N"
-				Ptxt(cKom)
-			else
+		
+		altd()
+
+		if gPDFprint == "X" .and. goModul:oDataBase:cName == "FAKT" 
+			if Pitanje(,"Print u PDF/PTXT (D/N)?", "D") == "D" 
 				PDFView(cKom)
+			else
+				Ptxt(cKom)
 			endif
-		elseif gPDFprint == "D"
+		elseif gPDFprint == "D" .and. ;
+			goModul:oDataBase:cName == "FAKT" 
 			PDFView(cKom)
 		else
 			Ptxt(cKom)
