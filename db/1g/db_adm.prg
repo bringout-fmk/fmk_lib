@@ -526,6 +526,7 @@ endif
 return
 *}
 
+
 /*! \fn AppModS(cCHSName)
  *  \brief Modifikacija struktura APPSRV rezim rada
  *  \param cCHSName - ime chs fajla (npr. FIN)
@@ -539,7 +540,7 @@ if !gAppSrv
 endif
 
 // ako nije zadan parametar uzmi osnovnu modifikaciju
-if cCHSName==NIL
+if cCHSName==NIL .or. EMPTY(cChsName)
 	cCHSFile:=(EXEPATH + gModul + ".CHS")
 else
 	cCHSFile:=(EXEPATH + cCHSName + ".CHS")
@@ -551,15 +552,12 @@ endif
 cEXT:=SLASH+"*."+INDEXEXT
 
 ? "Modifikacija u privatnom direktoriju ..."
-close all
 Modstru(TRIM(cCHSFile),trim(goModul:oDataBase:cDirPriv))
 
 ? "Modifikacija u direktoriju sifrarnika ..."
-close all
 Modstru(TRIM(cCHSFile),trim(goModul:oDataBase:cDirSif))
 
 ? "Modifikacija u direktoriju kumulativa ..."
-close all
 Modstru(TRIM(cCHSFile),trim(goModul:oDataBase:cDirKum))
 
 
@@ -650,6 +648,9 @@ endif
 function ModStru
 *{
 parameters cImeF,cPath, fString
+
+altd()
+
 
 ? SPACE(40),"SIGMA-COM, 10.99, ver 02.33 CDX"
 ? SPACE(40),"-------------------------------"
