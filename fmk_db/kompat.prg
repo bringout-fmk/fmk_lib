@@ -1,4 +1,4 @@
-#include "fmk.ch"
+#include "SC.CH"
 
 /* \fn DBT2FPT(cImeDBF)
  * \brief Konvertuje memo polja iz DBT u FTP format (Clipper NTX -> FOX CDX)
@@ -66,22 +66,21 @@ return
 *}
 
 
-function kopi(cPath, cDbf, fBrisiDbf, fRenameDbf, fProm)
+function kopi(fProm)
+*{
+
+altd()
 
 if fBrisiDBF
-
      nPos:=at(".",cDbf)
      select olddbf; use
-     
-     ferase(cPath+left(cDbf, npos) + "DBF")
-
+     ferase(cpath+left(cdbf,npos)+"DBF")
      ? "BRISEM :",cpath+left(cdbf,npos)+"DBF"
      ferase(cpath+left(cdbf,npos)+"FPT")
      ? "BRISEM :",cpath+left(cdbf,npos)+"FPT"
      fBrisiDBF:=.f.
      return
 endif
-
 if fRenameDBF
      nPos:=at(".",cDbf)
      nPos2:=at(".",cImeP)
@@ -172,4 +171,5 @@ if fProm
 endif  // fprom
 
 return
+*}
 

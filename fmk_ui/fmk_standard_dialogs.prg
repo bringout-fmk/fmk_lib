@@ -250,11 +250,11 @@ Set cursor off
 
      @ m_x+2,m_y+2 SAY PADC(cNaslov,60)
      @ m_x+3,m_y+2 SAY PADC("Ver. "+cVer,60)
-     @ m_x+5,m_y+2 SAY PADC("SIGMA-COM",60)
-     @ m_x+7,m_y+2 SAY PADC("Travnicka 64, Zenica, BiH", 60)
-     @ m_x+8,m_y+2 SAY PADC("tel: 032/440-170, fax: 032/440-173", 60)
-     @ m_x+9,m_y+2 SAY PADC("web: http://www.sigma-com.net",60)
-     @ m_x+10,m_y+2 SAY PADC("email: cs@sigma-com.net",60)
+     @ m_x+5,m_y+2 SAY PADC("bring.out d.o.o. Sarajevo",60)
+     @ m_x+7,m_y+2 SAY PADC("Juraja Najtharta 3, Sarajevo, BiH", 60)
+     @ m_x+8,m_y+2 SAY PADC("tel: 033/269-291, fax: 033/269-292", 60)
+     @ m_x+9,m_y+2 SAY PADC("web: http://bring.out.ba",60)
+     @ m_x+10,m_y+2 SAY PADC("email: podrska@bring.out.ba",60)
      IF lGreska
          @ m_x+11,m_y+4 SAY "Prosli put program nije regularno zavrsen"
          Beep(2)

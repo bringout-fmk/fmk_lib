@@ -79,7 +79,6 @@ local aWin:= {"Š", "Ð", "Æ", "È", "Ž", "š", "ð", "æ", "è", "ž"}
 local i:=0, aIz:={}, aU:={}
 
 
-// sasa, 04.02.04, konverzija "B"
 if cIz=="7"
 	aIz:=a437
 elseif cIz=="8"
