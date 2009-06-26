@@ -16,7 +16,7 @@ cScr:=SaveScreen()
 SET COLOR TO "W/N"
 set cursor off
 nSek:=SECONDS()
-cTXT:="SIGMA-COM SOFTWARE"
+cTXT:="bring.out Sarajevo"
 nBroji3:=Seconds()
 do while nextkey()==0
      	if GwStaMai(@nBroji3) $ "CB_KRAJ#CB_IDLE"

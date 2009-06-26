@@ -1831,7 +1831,7 @@ else
    setcursor(2)
    @ 0,50 SAY  '< INS  >' COLOR Invert
 endif
-@ 0,69 SAY "SIGMA-COM" COLOR "GR+/B"
+@ 0,69 SAY "bring.out" COLOR "GR+/B"
 setpos(nx,ny)
 
 return .t.
