@@ -75,6 +75,7 @@
 #define F__VALUTE   72
 #define F_RJ        73
 #define F_OPS       74
+#define F_REFER     75
 #define F_STRINGS  180
 
 //KALK
@@ -207,6 +208,11 @@
 #define F_REKLDP   214
 #define F_IZDANJA  215
 #define F_RNAL	   216
+#define F_PRIPNO   233
+#define F_LDNO	   234
+#define F_RJES	   235
+#define F_PK_RADN   236
+#define F_PK_DATA   237
 
 //kam
 #define F_KAMPRIPR 204
@@ -323,6 +329,7 @@
 #define F_OBJECTS	155
 
 // relation
+
 #define F_RELATION	171
 
 // DOK_SRC
@@ -343,6 +350,3 @@
 #define POR_I_MPC3	4
 #define POR_I_PPP	5
 #define POR_I_MPC4	6
-
-#define F_R_UIO 249
-#define F_R_EXP 250
