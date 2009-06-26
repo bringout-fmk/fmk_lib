@@ -13,7 +13,7 @@ PRG_SOURCES= \
    rnal.prg \
    valute.prg \
    vrste_naloga_dokumenata.prg \
-   fakt_doks_txt.prg \
+   fakt_doks_txt.prg referenti.prg \
    roba.prg tarifa.prg sifk.prg trfp.prg \
    codes_util_2.prg \
    ugov.prg gen_ugov.prg \

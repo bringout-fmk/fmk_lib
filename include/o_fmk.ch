@@ -39,7 +39,7 @@
 #xcommand O_BARKOD  => select(F_BARKOD);  usex (PRIVPATH + "barkod"); set order to tag "1"
 
 #xcommand O_RJ   => select(F_RJ);  use  (KUMPATH + "rj")         ; set order to tag "ID"
-
+#xcommand O_REFER   => select(F_REFER);  use  (SIFPATH+"REFER")         ; set order to tag "ID"
 #xcommand O_OPS   => select(F_OPS);  use  (SIFPATH + "ops" )         ; set order to tag "ID"
 
 #xcommand O_RNAL  => select(F_RNAL);  use  (SIFPATH + "rnal" )      ; set order to tag "ID"
