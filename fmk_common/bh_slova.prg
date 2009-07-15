@@ -76,6 +76,9 @@ local a437:={"[","\","^","]","@","{","|","~","}","`"}
 local aEng:={"S","D","C","C","Z","s","d","c","c","z"}
 local aEngB:={"SS","DJ","CH","CC","ZZ","ss","dj","ch","cc","zz"}
 local aWin:= {"Š", "Ð", "Æ", "È", "Ž", "š", "ð", "æ", "è", "ž"}
+local aUTF:= {"&#352;", "&#272;", "&#268;", "&#262;", "&#381;", "&#353;", ;
+	"&#273;", "&#269;", "&#263;", "&#382;"}
+
 local i:=0, aIz:={}, aU:={}
 
 
@@ -95,6 +98,8 @@ if cU=="7"
 	aU:=a437
 elseif cU=="8"
 	aU:=a852
+elseif cU=="U"
+	aU:=aUTF
 elseif goModul:oDataBase:cName=="LD" .and. cU=="B"
 	aU:=aEngB
 else

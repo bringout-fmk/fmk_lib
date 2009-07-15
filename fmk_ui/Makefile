@@ -5,7 +5,7 @@ HB_INC_COMPILE += -I$(TOP)../include
 PRG_SOURCES= \
   fmk_character_user_interface.prg fmk_standard_dialogs.prg \
   event.prg fvidi.prg get_extend.prg \
-  screen_saver.prg \
+  screen_saver.prg scget.prg \
   objdbedit_direktni_edit.prg objdbedit.prg \
   browsekey.prg
 
