@@ -310,8 +310,6 @@ else
 
 	if gPrinter == "R"
 		
-		altd()
-
 		if gPDFprint == "X" .and. goModul:oDataBase:cName == "FAKT" 
 			if Pitanje(,"Print u PDF/PTXT (D/N)?", "D") == "D" 
 				PDFView(cKom)

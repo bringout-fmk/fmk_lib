@@ -6,7 +6,7 @@
 
 #define SC_DEFINED
 
-#define FMK_LIB_VER  "7.1.0"
+#define FMK_LIB_VER  "7.1.1"
 
 
 #define EXEPATH   GetExePath(trim(cDirRad))

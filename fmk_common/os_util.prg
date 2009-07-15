@@ -8,7 +8,7 @@
 function GetExePath( cPath )
 local cRet := ""
 local i
-local n
+local n := 0
 local cTmp
 
 for i:=1 to LEN(cPath)
@@ -16,7 +16,7 @@ for i:=1 to LEN(cPath)
 	cTmp := SUBSTR( cPath, i, 1 )
 	
 	if cTmp == "\"
-		++ n
+		n += 1
 	endif
 
 	cRet += cTmp

@@ -71,7 +71,6 @@ public gPartnBlock
 gPartnBlock:=NIL
 
 public gSecurity
-altd()
 gSecurity:=IzFmkIni("Svi","Security","N",EXEPATH)
 
 public gnDebug
