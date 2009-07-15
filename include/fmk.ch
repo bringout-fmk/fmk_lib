@@ -9,8 +9,7 @@
 #define FMK_LIB_VER  "7.1.0"
 
 
-
-#define EXEPATH   FilePath(Arg0())
+#define EXEPATH   GetExePath(trim(cDirRad))
 #define SIFPATH   trim(cDirSif)+SLASH
 #define PRIVPATH  trim(cDirPriv)+SLASH
 #define KUMPATH   trim(cDirRad)+SLASH

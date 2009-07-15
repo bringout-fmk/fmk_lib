@@ -2,6 +2,35 @@
 
 #define D_STAROST_DANA   25
 
+// ------------------------------------
+// vraca putanju exe fajlova
+// ------------------------------------
+function GetExePath( cPath )
+local cRet := ""
+local i
+local n
+local cTmp
+
+for i:=1 to LEN(cPath)
+
+	cTmp := SUBSTR( cPath, i, 1 )
+	
+	if cTmp == "\"
+		++ n
+	endif
+
+	cRet += cTmp
+
+	if n = 2
+		exit
+	endif
+
+next
+
+return cRet
+
+
+
 /*! \fn FilePath(cFile)
  *  \brief  Extract the full path name from a filename
  *  \return cFilePath
