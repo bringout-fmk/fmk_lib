@@ -13,6 +13,7 @@ PRG_SOURCES= \
 	print_ptxt.prg \
 	print_gvim.prg \
         util.prg \
+	num_ut.prg \
         dummy.prg \
         array_util.prg \
         string_util.prg \
