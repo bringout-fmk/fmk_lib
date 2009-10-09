@@ -15,7 +15,6 @@ PRG_SOURCES= \
    vrste_naloga_dokumenata.prg \
    fakt_doks_txt.prg referenti.prg \
    roba.prg tarifa.prg sifk.prg trfp.prg \
-   codes_util_2.prg \
    ugov.prg gen_ugov.prg \
    roba_db_admin.prg \
    konta_tipovi_cijena.prg \
