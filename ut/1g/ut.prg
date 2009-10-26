@@ -267,7 +267,7 @@ do while .t. .and. LastKey()!=K_ESC
         	exit
         else
         	cFile := Trim(LEFT(OpcF[IzbF],15))
-        	if lSilent == .f. .and. Pitanje(,"Koristiti ovaj fajl ?","D")=="D"
+        	if lSilent == .t. .or. (lSilent == .f. .and. Pitanje(,"Koristiti ovaj fajl ?","D")=="D" )
         		IzbF:=0
 			lRet:=.t.
 		endif
