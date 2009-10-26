@@ -222,3 +222,67 @@ return
 
 
 
+// ---------------------------------------------------------------
+// vraca fajl iz matrice na osnovu direktorija prema filteru
+// ---------------------------------------------------------------
+function g_afile( cPath, cFilter, cFile, lSilent )
+local nPx := m_x
+local nPy := m_y
+
+if lSilent == nil
+	lSilent := .f.
+endif
+
+if EMPTY( cFilter )
+	cFilter := "*.*"
+endif
+
+OpcF:={}
+
+aFiles := DIRECTORY( cPath + cFilter )
+
+// da li postoje templejti
+if LEN( aFiles )==0 .and. lSilent == .f.
+	MsgBeep("Ne postoji definisan niti jedan template !")
+	return 0
+endif
+
+// sortiraj po datumu
+ASORT(aFiles,,,{|x,y| x[3]>y[3]})
+AEVAL(aFiles,{|elem| AADD(OpcF, PADR(elem[1],15)+" "+dtos(elem[3]))},1)
+// sortiraj listu po datumu
+ASORT(OpcF,,,{|x,y| RIGHT(x,10)>RIGHT(y,10)})
+
+h:=ARRAY(LEN(OpcF))
+for i:=1 to LEN(h)
+	h[i]:=""
+next
+
+// selekcija fajla
+IzbF:=1
+lRet := .f.
+do while .t. .and. LastKey()!=K_ESC
+	IzbF:=Menu("imp", OpcF, IzbF, .f.)
+	if IzbF == 0
+        	exit
+        else
+        	cFile := Trim(LEFT(OpcF[IzbF],15))
+        	if lSilent == .f. .and. Pitanje(,"Koristiti ovaj fajl ?","D")=="D"
+        		IzbF:=0
+			lRet:=.t.
+		endif
+        endif
+enddo
+
+m_x := nPx
+m_y := nPy
+
+if lRet
+	return 1
+else
+	return 0
+endif
+
+return 1
+
+
