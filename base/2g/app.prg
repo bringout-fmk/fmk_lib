@@ -335,6 +335,7 @@ local cPosebno:="N"
 local cOldBoje:=SETCOLOR(INVERT)
 local cInstall:="N"
 local lPushWa := .f.
+local cWinParams := "N"
 private GetList:={}
 
 if used()
@@ -406,6 +407,10 @@ Box(, 20, 70)
  	
  	@ m_x+18, m_y+2 SAY "PDF stampa (N/D/X)?" GET gPDFPrint VALID {|| gPDFPrint $ "DNX" .and. if(gPDFPrint $ "XD", pdf_box(), .t. ) } PICT "@!"
 	
+	@ m_x+18, col()+2 SAY "windows parametri" GET cWinParams ;
+		VALID {|| cWinParams $ "DN".and. ;
+		if( cWinParams == "D", win_box(), .t. ) } PICT "@!"
+
 	@ m_x+20,m_y+2 SAY "Ispravka FMK.INI (D/S/P/K/M/N)" GET cFMKINI valid cFMKINI $ "DNSPKM" pict "@!"
  	@ m_x+20,m_y+36 SAY "M - FMKMREZ"
 		
@@ -482,7 +487,59 @@ if lPushWa
 	PopWa()
 endif
 return
-*}
+
+
+
+// ------------------------------------------------------------
+// prikaz dodatnog box-a za stimanje windows parametara
+// ------------------------------------------------------------
+static function win_box()
+local nX := 1
+private GetList:={}
+
+if Pitanje(,"Podesiti windows parametre (D/N) ?", "D" ) == "N"
+	return .t.
+endif
+
+Box(, 20, 75 )
+	
+	@ m_x + nX, m_y + 2 SAY "Podesavanje windows parametara *******"
+	
+	nX += 2
+	
+	@ m_x + nX, m_y + 2 SAY "OO lokacija:" GET gOOPath PICT "@S56"
+	
+ 	nX += 1
+	
+	@ m_x + nX, m_y + 2 SAY "OO Writer pokretac:" GET gOOWriter PICT "@S30"
+	
+	nX += 1
+	
+	@ m_x + nX, m_y + 2 SAY "OO Spread pokretac:" GET gOOSpread PICT "@S30"
+	
+	nX += 2
+
+	@ m_x + nX, m_y + 2 SAY "Java bin path:" GET gJavaPath PICT "@S56"
+
+	nX += 1
+	
+	@ m_x + nX, m_y + 2 SAY "JODReports lokacija:" GET gJODRep PICT "@S30"
+	
+	read
+BoxC()
+
+if LastKey() <> K_ESC
+
+	// snimi parametre.....
+	Wpar( "oP", gOOPath )
+	Wpar( "oW", gOOWriter )
+	Wpar( "oS", gOOSpread )
+	Wpar( "oJ", gJavaPath )
+	Wpar( "jR", gJODRep )
+	
+endif
+
+return .t.
 
 
 

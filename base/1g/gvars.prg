@@ -158,8 +158,14 @@ public gPDFPAuto := "D"
 public gPDFViewer := SPACE(150)
 public gDefPrinter := SPACE(150)
 
+// windows parametri
+public gOOPath := PADR("c:\Program Files\OpenOffice.org 3\program\", 200)
+public gOOWriter := PADR("swriter.exe", 100)
+public gOOSpread := PADR("scalc.exe", 100)
+public gJavaPath := SPACE(200)
+public gJODRep := PADR("c:\sigma\java\jodrep.jar", 200)
+
 return
-*}
 
 
 /* \fn SetScGVar2(()
@@ -221,6 +227,11 @@ if fsve
 	Rpar("pV",@gPDFViewer)
 	Rpar("pA",@gPDFPAuto)
 	Rpar("dP",@gDefPrinter)
+	Rpar("oP",@gOOPath)
+	Rpar("oW",@gOOWriter)
+	Rpar("oS",@gOOSpread)
+	Rpar("oJ",@gJavaPath)
+	Rpar("jR",@gJODRep)
 endif
 
 Rpar("FK",@gFKolor)
@@ -289,6 +300,11 @@ if (cPosebno=="D")
 		Rpar("pV",@gPDFViewer)
 		Rpar("pA",@gPDFPAuto)
 		Rpar("dP",@gDefPrinter)
+		Rpar("oP",@gOOPath)
+		Rpar("oW",@gOOWriter)
+		Rpar("oS",@gOOSpread)
+		Rpar("oJ",@gJavaPath)
+		Rpar("jR",@gJODRep)
 	endif
 	Rpar("kE",@gKesiraj)
 	SELECT (F_GPARAMSP)
