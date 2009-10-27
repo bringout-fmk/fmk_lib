@@ -163,7 +163,7 @@ public gOOPath := PADR("c:\Program Files\OpenOffice.org 3\program\", 200)
 public gOOWriter := PADR("swriter.exe", 100)
 public gOOSpread := PADR("scalc.exe", 100)
 public gJavaPath := SPACE(200)
-public gJODRep := PADR("c:\sigma\java\jodrep.jar", 200)
+public gJODRep := PADR("c:\bout\java\jodrep.jar", 200)
 
 return
 
