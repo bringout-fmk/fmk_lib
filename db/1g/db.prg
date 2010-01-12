@@ -1164,3 +1164,75 @@ if aWa[1]<>nil
 endif  // wa[1]<>NIL
 return NIL
 
+
+
+// ---------------------------------------------------------
+// modificiranje polja, ubacivanje predznaka itd...
+//
+// params:
+//   - cField = "SIFRADOB" 
+//   - cIndex - indeks na tabeli "1" ili "ID" itd...
+//   - cInsChar - karakter koji se insertuje
+//   - nLen - duzina sifra na koju se primjenjuje konverzija
+//            i insert (napomena: nije duzina kompletne sifre)
+//            IDROBA = LEN(10), ali mi zelimo da konvertujemo
+//            na LEN(5) sifre sa vodecom nulom
+//   - nSufPref - sufiks (1) ili prefiks (2)
+//   - funkcija vraca konvertovani broj zapisa
+//   - lSilent - tihi mod rada .t. ili .f.
+//   
+//   Napomena:
+//   tabela na kojoj radimo konverziju moraju biti prije pokretanja 
+//   funkcije otvoreni
+// ---------------------------------------------------------
+function mod_f_val( cField, cIndex, cInsChar, nLen, nSufPref, lSilent )
+local nCount := 0
+
+if cIndex == nil
+	cIndex := "1"
+endif
+
+if nSufPref == nil
+	nSufPref := 2
+endif
+
+if lSilent == nil
+	lSilent := .f.
+endif
+
+if lSilent == .f. .and. Pitanje(,"Izvrsiti konverziju ?", "N") == "N"
+	return -1
+endif
+
+set order to tag cIndex
+go top
+
+do while !EOF()
+	
+	// trazena vrijednost iz polja
+	cVal := ALLTRIM( field->&cField )
+	nFld_len := LEN( field->&cField )
+ 
+ 	if !EMPTY( cVal ) .and. LEN( cVal ) < nLen
+
+		if nSufPref == 1
+			// sufiks
+			cNew_val := PADR( cVal, nLen, cInsChar )
+		else
+			// prefiks
+			cNew_Val := PADL( cVal, nLen, cInsChar )
+ 		endif
+
+		// ubaci novu sifru sa nulama
+		replace field->&cField with PADR( cNew_val, nFld_len )
+		++ nCount 
+	endif
+	
+	skip
+
+enddo
+
+return nCount
+
+
+

@@ -7,7 +7,7 @@
 * provjeravani znak nije "9", zamjenjuje se sa znakom ciji je kod veci za 1
 * i zavrsava se sa pravljenjem sifre tj. neprovjeravani znakovi ostaju isti.
 // -----------------------------------------------------------------------
-function NovaSifra(cSifra)
+function NovaSifra( cSifra )
 
 local i:=0
 local cPom, cPom2
@@ -16,15 +16,10 @@ if EMPTY(cSifra)
    cSifra := STRTRAN(cSifra, " ", "0")
 endif
 
-//altd()
 for i := LEN(cSifra) TO 1 STEP -1
 
    if (cPom := substr(cSifra, i, 1)) < "9"
-     //if i==1
-     //  cSifra:=STUFF(cSifra, i, 1, novi_znak_extended(cPom))
-     //endif
-       cSifra:=STUFF(cSifra, i, 1, CHR(ASC(cPom) + 1))
-     //endif
+       cSifra:=STUFF(cSifra, i, 1, CHR(ASC(cPom) + 1 ))
      exit
    endif
 
