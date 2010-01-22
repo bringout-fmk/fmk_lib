@@ -69,8 +69,7 @@ return cTekst
  *  \brief Vrsi zamjenu cInputa
  */
  
-function StrKZN(cInput, cIz, cU)
-
+function StrKZN( cInput, cIz, cU, aFrom, aTo )
 local a852:={"Ê","—","¨","è","¶","Á","–","ü","Ü","ß"}
 local a437:={"[","\","^","]","@","{","|","~","}","`"}
 local aEng:={"S","D","C","C","Z","s","d","c","c","z"}
@@ -78,21 +77,27 @@ local aEngB:={"SS","DJ","CH","CC","ZZ","ss","dj","ch","cc","zz"}
 local aWin:= {"ä", "–", "∆", "»", "é", "ö", "", "Ê", "Ë", "û"}
 local aUTF:= {"&#352;", "&#272;", "&#268;", "&#262;", "&#381;", "&#353;", ;
 	"&#273;", "&#269;", "&#263;", "&#382;"}
+local i := 0
+local aIz := {}
+local aU := {}
+local lTakeArr := .t.
 
-local i:=0, aIz:={}, aU:={}
-
+if aFrom == nil .and. aTo == nil
+	lTakeArr := .f.
+endif
 
 if cIz=="7"
-	aIz:=a437
+	aIz := a437
 elseif cIz=="8"
-	aIz:=a852
+	aIz := a852
 elseif (goModul:oDataBase:cName=="LD" .and. cIz=="B")
-	aIz:=aEngB
+	aIz := aEngB
 elseif (cIz=="W")
-	aIz:=aWin
+	aIz := aWin
 else
-	aIz:=aEng
+	aIz := aEng
 endif
+
 
 if cU=="7"
 	aU:=a437
@@ -106,13 +111,16 @@ else
 	aU:=aEng
 endif
 
-// Ove dvije linije zamjenio sa gornjim kodom
-// aIz:=IF(cIz=="7", a437, IF(cIz=="8", a852, aEng))
-// aU:=IF(cU=="7", a437, IF(cU=="8", a852, aEng))
+// uzmi ponudjene iz parametara
+if lTakeArr == .t.
+	aIz := aFrom
+	aU := aTo
+endif
 
-cPocStanjeSif:=cInput
+cPocStanjeSif := cInput
 
-for i:=1 to 10
+for i:=1 to LEN( aU )
+
 	if (goModul:oDataBase:cName=="LD" .and. i==5)
 		if AT("D@", cInput)<>0
 			cInput:=STRTRAN(cInput, "D@", "DZ")
@@ -120,6 +128,7 @@ for i:=1 to 10
 			cInput:=STRTRAN(cInput, "D|", "DZ")
 		endif
 	endif
+	
 	if (goModul:oDataBase:cName=="LD" .and. i==10)
 		if AT("dß", cInput)<>0
 			cInput:=STRTRAN(cInput, "dß", "dz")
@@ -128,11 +137,10 @@ for i:=1 to 10
 		endif
 	endif
 
-	cInput:=STRTRAN(cInput,aIz[i],aU[i])
+	cInput:=STRTRAN( cInput, aIz[i], aU[i] )
 next
 
-
-if (cU=="B" .and. LEN(ALLTRIM(cInput)) > 6)
+if (cU == "B" .and. LEN(ALLTRIM(cInput)) > 6)
 	// provjeri da li ovaj par postoji u nizu
 	nPos:=ASCAN(aKonvZN, {|aVal| aVal[1] == cPocStanjeSif})
 	if nPos > 0
@@ -149,12 +157,126 @@ if (cU=="B" .and. LEN(ALLTRIM(cInput)) > 6)
 		cRet:=cNoviID
 	endif
 else
-	cRet:=cInput
+	cRet := cInput
 endif
 
 cKrajnjeStanjeSif:=cRet
 
 return cRet
+
+
+// ---------------------------------------------------
+// konverzija u utf-8
+// ---------------------------------------------------
+function strkznutf8( cInput, cIz )
+local aWin := {} 
+local aUTF := {}
+local a852 := {}
+local aTmp := {}
+
+// windows kodovi...
+AADD( aWin, "ä" )
+AADD( aWin, "–" )
+AADD( aWin, "∆" )
+AADD( aWin, "»" )
+AADD( aWin, "é" )
+AADD( aWin, "ö" )
+AADD( aWin, "" )
+AADD( aWin, "Ê" )
+AADD( aWin, "Ë" )
+AADD( aWin, "û" )
+AADD( aWin, "!" ) 
+AADD( aWin, '"' ) 
+AADD( aWin, "&" ) 
+AADD( aWin, "'" ) 
+AADD( aWin, "," ) 
+AADD( aWin, "-" ) 
+AADD( aWin, "." ) 
+AADD( aWin, "\" ) 
+AADD( aWin, "/" ) 
+AADD( aWin, "=" ) 
+AADD( aWin, "(" ) 
+AADD( aWin, ")" ) 
+AADD( aWin, "[" ) 
+AADD( aWin, "]" ) 
+AADD( aWin, "{" ) 
+AADD( aWin, "}" ) 
+AADD( aWin, "<" ) 
+AADD( aWin, ">" ) 
+
+// pandan 852 je...
+AADD( a852, "Ê" ) // SS
+AADD( a852, "—" ) // DJ
+AADD( a852, "¨" ) // CC
+AADD( a852, "è" ) // CH
+AADD( a852, "¶" ) // ZZ
+AADD( a852, "Á" ) // ss
+AADD( a852, "–" ) // dj
+AADD( a852, "ü" ) // cc
+AADD( a852, "Ü" ) // ch
+AADD( a852, "ß" ) // zz
+AADD( a852, "!" ) // uzvicnik
+AADD( a852, '"' ) // navodnici
+AADD( a852, "&" ) // feature
+AADD( a852, "'" ) // jedan navodnik
+AADD( a852, "," ) // zarez
+AADD( a852, "-" ) // minus
+AADD( a852, "." ) // tacka
+AADD( a852, "\" ) // b.slash
+AADD( a852, "/" ) // slash
+AADD( a852, "=" ) // jedanko
+AADD( a852, "(" ) // otv.zagrada
+AADD( a852, ")" ) // zatv.zagrada
+AADD( a852, "[" ) // otv.ugl.zagrada
+AADD( a852, "]" ) // zatv.ugl.zagrada
+AADD( a852, "{" ) // otv.vit.zagrada
+AADD( a852, "}" ) // zatv.vit.zagrada
+AADD( a852, "<" ) // manje
+AADD( a852, ">" ) // vece
+// itd...
+
+// pandan UTF je...
+AADD( aUTF, "&#352;" )
+AADD( aUTF, "&#272;" )
+AADD( aUTF, "&#268;" )
+AADD( aUTF, "&#262;" )
+AADD( aUTF, "&#381;" )
+AADD( aUTF, "&#353;" )
+AADD( aUTF, "&#273;" )
+AADD( aUTF, "&#269;" )
+AADD( aUTF, "&#263;" )
+AADD( aUTF, "&#382;" )
+AADD( aUTF, "&#33;" ) 
+AADD( aUTF, "&#34;" ) 
+AADD( aUTF, "&#38;" ) 
+AADD( aUTF, "&#39;" ) 
+AADD( aUTF, "&#44;" ) 
+AADD( aUTF, "&#45;" ) 
+AADD( aUTF, "&#46;" ) 
+AADD( aUTF, "&#92;" ) 
+AADD( aUTF, "&#97;" ) 
+AADD( aUTF, "&#8215;" ) 
+AADD( aUTF, "&#40;" ) 
+AADD( aUTF, "&#41;" ) 
+AADD( aUTF, "&#91;" ) 
+AADD( aUTF, "&#93;" ) 
+AADD( aUTF, "&#123;" ) 
+AADD( aUTF, "&#125;" ) 
+AADD( aUTF, "&#60;" ) 
+AADD( aUTF, "&#62;" ) 
+
+
+if cIz == "8"
+	aTmp := a852
+elseif cIz == "W"
+	aTmp := aWin
+endif
+
+cRet := strkzn( cInput, cIz, "U", aTmp, aUtf )
+
+return cRet
+
+
 
 
 function KSto7(cStr)
