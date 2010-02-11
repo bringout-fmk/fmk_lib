@@ -634,11 +634,8 @@ do case
           return DE_CONT
         endif
 
-#IFDEF PROBA
-  case Ch==K_ALT_V
-#ELSE
   case Ch==K_ALT_C
-#ENDIF
+    
     return SifClipBoard()
 
   case Ch==K_F10
