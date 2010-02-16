@@ -1067,6 +1067,12 @@ do while .t.
      
       if lNovi
 	
+	// provjeri da li vec ovaj id postoji ?
+	if _chk_sif("w") == .t.
+		msgbeep("Ova sifra vec postoji !")
+		return 0
+	endif
+
 	append blank
 
 	if _LOG_PROMJENE == .t. 
@@ -1090,6 +1096,7 @@ do while .t.
       endif
 
       nTArea := SELECT()
+      
       // logiraj promjenu sifrarnika...
       if _LOG_PROMJENE == .t.
         
@@ -1118,6 +1125,39 @@ do while .t.
     endif
 
 return 0
+
+
+
+// --------------------------------------------------
+// --------------------------------------------------
+static function _chk_sif( cMarker )
+local cFName
+local xFVal
+local cFVal
+local cType
+local nTArea := SELECT()
+local nTREC := RECNO()
+local lRet := .f.
+local i := 1
+local cArea := ALIAS( nTArea )
+private cF_Seek
+
+cFName := ALLTRIM( FIELD(i) )
+xFVal := FIELDGET(i)
+cType := VALTYPE(xFVal)
+cF_Seek := &( cMarker + cFName )
+
+if ( cType == "C" ) .and. ( cArea $ "#PARTN#ROBA#TARIFA#" )
+	go top
+	seek cF_seek
+	if FOUND()
+		lRet := .t.
+		go (nTREC)
+	endif
+endif
+	
+select (nTArea)
+return lRet
 
 
 // --------------------------------------------------
