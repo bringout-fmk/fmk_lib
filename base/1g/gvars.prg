@@ -163,7 +163,9 @@ public gOOPath := PADR("c:\Program Files\OpenOffice.org 3\program\", 200)
 public gOOWriter := PADR("swriter.exe", 100)
 public gOOSpread := PADR("scalc.exe", 100)
 public gJavaPath := SPACE(200)
+public gJavaStart := PADR("java -Xmx128m -jar",200)
 public gJODRep := PADR("c:\bout\java\jodrep.jar", 200)
+public gJODTemplate := PADR("c:\", 200)
 
 return
 
@@ -231,7 +233,9 @@ if fsve
 	Rpar("oW",@gOOWriter)
 	Rpar("oS",@gOOSpread)
 	Rpar("oJ",@gJavaPath)
+	Rpar("jS",@gJavaStart)
 	Rpar("jR",@gJODRep)
+	Rpar("jT",@gJODTemplate)
 endif
 
 Rpar("FK",@gFKolor)
@@ -304,6 +308,7 @@ if (cPosebno=="D")
 		Rpar("oW",@gOOWriter)
 		Rpar("oS",@gOOSpread)
 		Rpar("oJ",@gJavaPath)
+		Rpar("jS",@gJavaStart)
 		Rpar("jR",@gJODRep)
 	endif
 	Rpar("kE",@gKesiraj)

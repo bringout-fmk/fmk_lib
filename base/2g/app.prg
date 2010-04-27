@@ -520,11 +520,20 @@ Box(, 20, 75 )
 	nX += 2
 
 	@ m_x + nX, m_y + 2 SAY "Java bin path:" GET gJavaPath PICT "@S56"
+	
+	nX += 1
+
+	@ m_x + nX, m_y + 2 SAY "Java starna komanda:" GET gJavaStart ;
+		PICT "@S56"
 
 	nX += 1
 	
 	@ m_x + nX, m_y + 2 SAY "JODReports lokacija:" GET gJODRep PICT "@S30"
+
+	nX += 1
 	
+	@ m_x + nX, m_y + 2 SAY "Lokacija template fajlova:" GET gJODTemplate PICT "@S30"
+
 	read
 BoxC()
 
@@ -535,7 +544,9 @@ if LastKey() <> K_ESC
 	Wpar( "oW", gOOWriter )
 	Wpar( "oS", gOOSpread )
 	Wpar( "oJ", gJavaPath )
+	Wpar( "jS", gJavaStart )
 	Wpar( "jR", gJODRep )
+	Wpar( "jT", gJODTemplate )
 	
 endif
 
