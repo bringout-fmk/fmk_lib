@@ -94,6 +94,10 @@ elseif (goModul:oDataBase:cName=="LD" .and. cIz=="B")
 	aIz := aEngB
 elseif (cIz=="W")
 	aIz := aWin
+elseif (cIz=="U")
+	aIz := aUTF
+elseif (cIz=="E")
+	aIz := aEng
 else
 	aIz := aEng
 endif
@@ -105,6 +109,10 @@ elseif cU=="8"
 	aU:=a852
 elseif cU=="U"
 	aU:=aUTF
+elseif cU=="W"
+	aU:=aWin
+elseif cU=="E"
+	aU:=aEng
 elseif goModul:oDataBase:cName=="LD" .and. cU=="B"
 	aU:=aEngB
 else
