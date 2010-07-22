@@ -1008,12 +1008,15 @@ do while .t.
 	      endif
 	    enddo // i
 	    SET KEY K_F8 TO NNSifru()
+	    SET KEY K_F9 TO n_num_sif()
 	    SET KEY K_F5 TO NNSifru2()
 
 
 	    READ
 	    SET KEY K_F8 TO
+	    SET KEY K_F9 TO
 	    SET KEY K_F5 TO
+
 	    if ( len(imeKol) < i)
 	      exit
 	    endif
@@ -2223,64 +2226,164 @@ for i=1 to len(aUsl)
 next
 return .t.
 
+
+// -----------------------------------------
+// nadji sifru, v2 funkcije
+// -----------------------------------------
+function n_num_sif()
+local cFilter := "val(id) <> 0"
+local i
+local nLId
+local lCheck
+local lLoop
+
+// ime polja : "wid"
+private cImeVar := READVAR()
+// vrijednost unjeta u polje
+cPom := &(cImeVar)
+
+if cImeVar == "WID"
+	
+	PushWA()
+	
+	nDuzSif := LEN( cPom )
+
+	// postavi filter na numericke sifre
+	set filter to &cFilter
+  	
+	// kreiraj indeks
+	index on VAL(id) tag "_VAL"
+	
+	go bottom
+
+	// zapis
+	nTRec := RECNO()
+
+	// sifra kao uzorak
+	nLId := VAL( ID )
+	lCheck := .f.
+
+	do while lCheck = .f.
+	   
+	   lLoop := .f.
+	   // ispitaj prekid sifri
+	   for i := 1 to 10
+
+		skip -1
+		
+		if nLId - VAL( field->id ) <> i
+			// ima prekid
+			// idi, ponovo...
+			nLID := VAL( field->id )
+			nTRec := RECNO()
+			lCheck := .f.
+			lLoop := .f.
+			exit
+		else
+			lLoop := .t.
+		endif
+
+	   next
+
+	   if lLoop = .t.
+	   	lCheck := .t.
+	   endif
+
+	enddo
+
+	go (nTREC)
+	
+    	&(cImeVar) := PADR(NovaSifra( IF( EMPTY(id) , id , RTRIM(id) ) ), nDuzSif, " " )
+
+	set filter to
+
+	if nOrdId <> 0
+   		set order to tag "ID"
+  	else
+   		set order to tag "1"
+  	endif
+  	
+	GO TOP
+
+endif
+
+AEVAL(GetList,{|o| o:display()})
+PopWA()
+
+return nil
+
+
 // ----------------------------------------------------
 // nadji novu sifru - radi na pritisak F8 pri unosu
 // nove sifre
 // ----------------------------------------------------
 function NNSifru()      
- local cPom
- local nDuzSif:=0
- local lPopuni:=.f.
- local nDuzUn:=0
- local cLast:="¨è¶Ê—"
- local nKor:=0
+local cPom
+local nDuzSif:=0
+local lPopuni:=.f.
+local nDuzUn:=0
+local cLast:="¨è¶Ê—"
+local nKor:=0
 
- IF IzFmkIni("NovaSifraOpc_F8","PopunjavaPraznine","N")=="D"
-   lPopuni:=.t.
- ENDIF
+IF IzFmkIni("NovaSifraOpc_F8","PopunjavaPraznine","N")=="D"
+	lPopuni:=.t.
+ENDIF
 
- PRIVATE cImeVar:=READVAR()
- cPom:=&(cImeVar)
- IF cImeVar=="WID"
-  nDuzSif:=LEN(cPom)
-  nDuzUn:=LEN(TRIM(cPom))
-  cPom:=PADR(RTRIM(cPom),nDuzSif,"Z")
-  PushWA()
-  if nordid<>0
-   set order to tag "ID"
-  else
-   set order to tag "1"
-  endif
-  GO TOP
-  IF lPopuni
-    SEEK LEFT(cPom,nDuzUn)
-    DO WHILE !EOF() .and. LEFT(cPom,2)=LEFT(id,2)
-      // preskoci stavke opisa grupe artikala
-      IF LEN(TRIM(id))<=nDuzUn .or. RIGHT(TRIM(id),1)=="."; SKIP 1; ENDIF
-      IF cLast=="¨è¶Ê—" // tj. prva konkretna u nizu
-        IF VAL(SUBSTR(id,nDuzUn+1)) > 1
-          // rupa odmah na poüetku
-          nKor:= nDuzSif-LEN(TRIM(id))
-          EXIT
-        ENDIF
-      ELSEIF VAL(SUBSTR(id,nDuzUn+1))-VAL(cLast) > 1
-        // rupa izme–u
-        EXIT
-      ENDIF
-      cLast:=SUBSTR(id,nDuzUn+1)
-      SKIP 1
-    ENDDO
-    // na osnovu cLast formiram slijedeÜu Áifru
-    cPom:=LEFT(cPom,nDuzUn)+IF(cLast=="¨è¶Ê—",REPL("0",nDuzSif-nDuzUn-nKor),cLast)
-    &(cImeVar):=PADR(NovaSifra( IF( EMPTY(cPom) , cPom , RTRIM(cPom) ) ),nDuzSif," ")
-  ELSE
-    SEEK cPom
-    SKIP -1
-    &(cImeVar):=PADR(NovaSifra( IF( EMPTY(id) , id , RTRIM(id) ) ),nDuzSif," ")
-  ENDIF
-  AEVAL(GetList,{|o| o:display()})
-  PopWA()
- ENDIF
+// ime polja
+private cImeVar := READVAR()
+// vrijednost unjeta u polje
+cPom := &(cImeVar)
+
+IF cImeVar == "WID"
+	
+	nDuzSif := LEN(cPom)
+  	nDuzUn := LEN(TRIM(cPom))
+  	cPom := PADR(RTRIM(cPom),nDuzSif,"Z")
+  	
+	PushWA()
+  	
+	if nOrdId <> 0
+   		set order to tag "ID"
+  	else
+   		set order to tag "1"
+  	endif
+  	
+	GO TOP
+  	IF lPopuni
+    		SEEK LEFT(cPom,nDuzUn)
+    		DO WHILE !EOF() .and. LEFT(cPom,2)=LEFT(id,2)
+      			// preskoci stavke opisa grupe artikala
+      			IF LEN(TRIM(id))<=nDuzUn .or. RIGHT(TRIM(id),1)=="."
+				SKIP 1
+			ENDIF
+      			IF cLast=="¨è¶Ê—" // tj. prva konkretna u nizu
+        			IF VAL(SUBSTR(id,nDuzUn+1)) > 1
+          				// rupa odmah na poüetku
+          				nKor:= nDuzSif-LEN(TRIM(id))
+          				EXIT
+        			ENDIF
+      			ELSEIF VAL(SUBSTR(id,nDuzUn+1))-VAL(cLast) > 1
+        			// rupa izme–u
+        			EXIT
+      			ENDIF
+      			cLast:=SUBSTR(id,nDuzUn+1)
+      			SKIP 1
+    		ENDDO
+    		// na osnovu cLast formiram slijedeÜu Áifru
+    		cPom:=LEFT(cPom,nDuzUn)+IF(cLast=="¨è¶Ê—",REPL("0",nDuzSif-nDuzUn-nKor),cLast)
+    		&(cImeVar):=PADR(NovaSifra( IF( EMPTY(cPom) , cPom , RTRIM(cPom) ) ),nDuzSif," ")
+  	ELSE
+    		
+		SEEK cPom
+    		SKIP -1
+    		&(cImeVar):=PADR(NovaSifra( IF( EMPTY(id) , id , RTRIM(id) ) ),nDuzSif," ")
+  	
+	ENDIF
+
+  	AEVAL(GetList,{|o| o:display()})
+	PopWA()
+ENDIF
+
 RETURN (NIL)
 
 
