@@ -260,7 +260,13 @@ if !lsilent
        			fURP:=.t.
    		endif
 	endif
-endif // fsilent
+else
+	
+	if ( ::cSezona==cSezona .or. cSezona=="RADP") 
+		fURP := .t.
+	endif
+
+endif 
 
 // novi radni direktoriji
 if !EMPTY(::cSezondir)
