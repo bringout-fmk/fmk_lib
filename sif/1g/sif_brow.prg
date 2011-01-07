@@ -1145,6 +1145,8 @@ local i := 1
 local cArea := ALIAS( nTArea )
 private cF_Seek
 
+altd()
+
 cFName := ALLTRIM( FIELD(i) )
 xFVal := FIELDGET(i)
 cType := VALTYPE(xFVal)
