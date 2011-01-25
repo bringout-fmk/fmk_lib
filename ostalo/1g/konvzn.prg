@@ -125,6 +125,8 @@ if lTakeArr == .t.
 	aU := aTo
 endif
 
+altd()
+
 cPocStanjeSif := cInput
 
 for i:=1 to LEN( aU )
@@ -183,6 +185,7 @@ local a852 := {}
 local aTmp := {}
 
 // windows kodovi...
+AADD( aWin, "&" ) 
 AADD( aWin, "Š" )
 AADD( aWin, "Ð" )
 AADD( aWin, "Æ" )
@@ -195,7 +198,6 @@ AADD( aWin, "è" )
 AADD( aWin, "ž" )
 AADD( aWin, "!" ) 
 AADD( aWin, '"' ) 
-AADD( aWin, "&" ) 
 AADD( aWin, "'" ) 
 AADD( aWin, "," ) 
 AADD( aWin, "-" ) 
@@ -213,6 +215,7 @@ AADD( aWin, "<" )
 AADD( aWin, ">" ) 
 
 // pandan 852 je...
+AADD( a852, "&" ) // feature
 AADD( a852, "æ" ) // SS
 AADD( a852, "Ñ" ) // DJ
 AADD( a852, "¬" ) // CC
@@ -225,7 +228,6 @@ AADD( a852, "†" ) // ch
 AADD( a852, "§" ) // zz
 AADD( a852, "!" ) // uzvicnik
 AADD( a852, '"' ) // navodnici
-AADD( a852, "&" ) // feature
 AADD( a852, "'" ) // jedan navodnik
 AADD( a852, "," ) // zarez
 AADD( a852, "-" ) // minus
@@ -244,6 +246,7 @@ AADD( a852, ">" ) // vece
 // itd...
 
 // pandan UTF je...
+AADD( aUTF, "&#38;" ) 
 AADD( aUTF, "&#352;" )
 AADD( aUTF, "&#272;" )
 AADD( aUTF, "&#268;" )
@@ -256,7 +259,6 @@ AADD( aUTF, "&#263;" )
 AADD( aUTF, "&#382;" )
 AADD( aUTF, "&#33;" ) 
 AADD( aUTF, "&#34;" ) 
-AADD( aUTF, "&#38;" ) 
 AADD( aUTF, "&#39;" ) 
 AADD( aUTF, "&#44;" ) 
 AADD( aUTF, "&#45;" ) 
