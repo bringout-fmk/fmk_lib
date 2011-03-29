@@ -336,6 +336,8 @@ endif
 
 close all
 
+altd()
+
 // CDX verzija
 set exclusive on
 for nDbf:=1 to 250
