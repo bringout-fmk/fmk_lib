@@ -125,8 +125,6 @@ if lTakeArr == .t.
 	aU := aTo
 endif
 
-altd()
-
 cPocStanjeSif := cInput
 
 for i:=1 to LEN( aU )
@@ -277,6 +275,7 @@ AADD( aUTF, "&#125;" )
 AADD( aUTF, "&#60;" ) 
 AADD( aUTF, "&#62;" ) 
 
+altd()
 
 if cIz == "8"
 	aTmp := a852
