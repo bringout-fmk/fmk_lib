@@ -129,7 +129,7 @@ cScr:=SaveScreen()
 SET COLOR TO "W/N"
 set cursor off
 nSek:=SECONDS()
-cTXT:="SIGMA-COM SOFTWARE"
+cTXT:='"bring.out" d.o.o Sarajevo, podrska@bring.out.ba'
 nBroji3:=Seconds()
 do while nextkey()==0
      	OL_YIELD()
