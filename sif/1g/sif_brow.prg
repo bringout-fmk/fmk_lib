@@ -1071,8 +1071,13 @@ do while .t.
       if lNovi
 	
 	// provjeri da li vec ovaj id postoji ?
-	if _chk_sif("w") == .t.
+	
+	nNSInfo := _chk_sif("w")
+	
+	if nNSInfo = 1  
 		msgbeep("Ova sifra vec postoji !")
+		return 0
+	elseif nNSInfo = -1
 		return 0
 	endif
 
@@ -1140,29 +1145,39 @@ local cFVal
 local cType
 local nTArea := SELECT()
 local nTREC := RECNO()
-local lRet := .f.
+local nRet := 0
 local i := 1
 local cArea := ALIAS( nTArea )
 private cF_Seek
-
-altd()
+private GetList := {}
 
 cFName := ALLTRIM( FIELD(i) )
 xFVal := FIELDGET(i)
 cType := VALTYPE(xFVal)
 cF_Seek := &( cMarker + cFName )
 
-if ( cType == "C" ) .and. ( cArea $ "#PARTN#ROBA#TARIFA#" )
+if ( cType == "C" ) .and. ( cArea $ "#PARTN##" )
+	
+	Box(,1,40)
+		@ m_x + 1, m_y + 2 SAY "Potvrdi sifru sa ENTER: " GET cF_seek
+		read
+	BoxC()
+	
+	if LastKey() == K_ESC
+		nRet := -1
+		return nRet
+	endif
+	
 	go top
 	seek cF_seek
 	if FOUND()
-		lRet := .t.
+		nRet := 1
 		go (nTREC)
 	endif
 endif
 	
 select (nTArea)
-return lRet
+return nRet
 
 
 // --------------------------------------------------
@@ -2260,6 +2275,7 @@ if cImeVar == "WID"
 
 	// zapis
 	nTRec := RECNO()
+	nLast := nTRec
 
 	// sifra kao uzorak
 	nLId := VAL( ID )
@@ -2276,6 +2292,8 @@ if cImeVar == "WID"
 		if nLId = VAL( field->id )
 			// ako je zadnja sifra ista kao i prethodna
 			// idi na sljedecu
+			// ili idi na zadnju sifru
+			nTRec := nLast
 			lLoop := .t.
 			exit
 		endif
