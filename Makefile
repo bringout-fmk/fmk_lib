@@ -16,6 +16,7 @@ liball:
 	make -C params/1g
 	make -C ostalo/1g
 	make -C rpt/1g
+	make -C email
 	make -C keyb/1g
 
 
@@ -37,6 +38,7 @@ cleanall:
 	cd params/1g; make clean
 	cd ostalo/1g; make clean
 	cd rpt/1g; make clean
+	cd email; make clean
 	cd keyb/1g; make clean
 	rm -f *.obj
 
