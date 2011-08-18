@@ -2272,7 +2272,14 @@ if cImeVar == "WID"
 	   for i := 1 to 10
 
 		skip -1
-		
+
+		if nLId = VAL( field->id )
+			// ako je zadnja sifra ista kao i prethodna
+			// idi na sljedecu
+			lLoop := .t.
+			exit
+		endif
+
 		if nLId - VAL( field->id ) <> i
 			// ima prekid
 			// idi, ponovo...
