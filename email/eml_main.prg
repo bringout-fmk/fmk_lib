@@ -41,7 +41,7 @@ if cM_file == nil
 	cM_file := ""
 endif
 
-cScript := IzFmkIni("Ruby","FiscMail","c:\sigma\eFisc.rb", EXEPATH)
+cScript := IzFmkIni("Ruby","FiscMail","c:\scruby\eFisc.rb", EXEPATH)
 
 cEmlCmd := cScript + " " + cM_sub + " " + cM_file
 
@@ -73,7 +73,7 @@ if cM_body == nil
 	cM_body := ""
 endif
 
-cScript := IzFmkIni("Ruby","StdMail","c:\sigma\stdeml.rb", EXEPATH)
+cScript := IzFmkIni("Ruby","StdMail","c:\scruby\stdeml.rb", EXEPATH)
 
 cEmlCmd := cScript + " " + cM_from + " " + cM_to + " " + ;
 	" " + cM_sub + " " + cM_body + " " + cM_file
@@ -121,7 +121,7 @@ return
 // vraca cmd line za slanje emailom
 // -------------------------------------------
 static function _get_varE( cCmd )
-local cScript := IzFmkIni("Ruby","Err2Mail","c:\sigma\err2mail.rb", EXEPATH)
+local cScript := IzFmkIni("Ruby","Err2Mail","c:\scruby\err2mail.rb", EXEPATH)
 local cRptFile := PRIVPATH + "outf.txt"
 
 cCmd := cScript + " " + cRptFile
