@@ -1,8 +1,11 @@
-*.bak
-*.BAK
-*.obj
 *.OBJ
+*.obj
+.svn
 *.LIB
-*.lib
-lst
+*.BAK
+*.lnk
+*.LST
+*~
 LST
+*.EXE
+
