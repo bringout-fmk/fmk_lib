@@ -206,7 +206,7 @@ IF cId <>NIL
    elseif RIGHT(trim(cId),1) == "$"
    	
 	// postavljanje filtera po dijelu naziva sifre
-	cSFilt := cm2str( LEFT( cId, LEN( TRIM( cId ) ) - 1 ) ) + " $ naz "
+	cSFilt := cm2str( LEFT( UPPER(cId), LEN( TRIM( cId ) ) - 1 ) ) + " $ UPPER( naz ) "
 	set filter to
 	set filter to &( cSFilt )
 	go top
