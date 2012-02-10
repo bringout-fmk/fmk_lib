@@ -34,6 +34,7 @@ private cNazSrch
 private cUslovSrch
 private fPoNaz:=.f.  // trazenje je po nazivu
 private fID_J := .f.
+private cSFilt
 
 if aZabIsp == nil
 	aZabIsp := {}
@@ -152,7 +153,7 @@ IF cId <>NIL
      endif
    endif
 
- elseif right(trim(cid),1) $ "./"
+ elseif right(trim(cid),1) $ "./$"
  // POSTAVI FILTER SA "/"
 
    if nordid<>0
@@ -166,9 +167,11 @@ IF cId <>NIL
    else
     set order to tag "2"
    endif
+   
    fPoNaz:=.t.
    cNazSrch:=""
    cUslovSrch:=""
+
    if left(trim(cid),1)=="/"
      private GetList:={}
      Box(,1,60)
@@ -183,8 +186,8 @@ IF cId <>NIL
 
      BoxC()
 
-  elseif left(trim(cid),1)=="."
- // SEEK PO NAZ kada se unese DUGACKI DIO
+   elseif left(trim(cid),1)=="."
+     // SEEK PO NAZ kada se unese DUGACKI DIO
      Box(,1,60)
        cNazSrch:=space(len(naz))
        Beep(1)
@@ -197,8 +200,19 @@ IF cId <>NIL
      else
         seek trim(cNazSrch)
      endif
+
      cId:=Id
+   
+   elseif RIGHT(trim(cId),1) == "$"
+   	
+	// postavljanje filtera po dijelu naziva sifre
+	cSFilt := cm2str( LEFT( cId, LEN( TRIM( cId ) ) - 1 ) ) + " $ naz "
+	set filter to
+	set filter to &( cSFilt )
+	go top
+
    else
+     
      if fbosanski
         seek left(BTOEU(cid), len(trim(cid))-1)
      else
@@ -213,7 +227,6 @@ IF cId <>NIL
  else
  
    // SEEK PO ID , SEEK PO ID_J
-   altd()
    seek cID
    
    cId := &(FIELDNAME(1))
