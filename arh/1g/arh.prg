@@ -246,34 +246,34 @@ if nPos<>0; fclose(aFilesP[nPos,2]); endif
 return
 *}
 
-function Zipuj(aFiles, cImeArh, cDest)
-*{
-local cAbc:="A"
-local fRet:=.t.
+
+
+function Zipuj( aFiles, cImeArh, cDest, cTip )
+local cAbc := "A"
+local fRet := .t.
 local nH
 local cFileName
+local l7zip := .f.
+
+if cTip == nil
+	cTip := "arj"
+endif
 
 if IzFmkIni("Svi","Arh7zip","N", EXEPATH)=="D"
 	l7zip := .t.
-else
-	l7zip := .f.
 endif
 
-#ifdef CLIP
-	MsgBeep("Nije implementirano")
-	return
-#else
-
-if cDest==NIL // zadaj destinaciju
+if cDest == NIL 
+	// zadaj destinaciju
 	Box(,1,50)
  	@ m_x+1,m_y+2 SAY "Arhivirati na disk A/B/C/D/E/F/G ?" get cabc pict "@!" valid cabc $ "ABCDEFG"
  	read
 	ESC_BCR
 	BoxC()
-	cDest:=cAbc+":\"
+	cDest := cAbc + ":\"
 endif
 
-if cImearh==NIL
+if cImearh == NIL
   	cImeArh:="ARHSIG"
 endif
 

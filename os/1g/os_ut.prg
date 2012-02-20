@@ -272,9 +272,25 @@ return UPPER(cFileName)
 
 
 function ShowOsInfo(gsOsInfo)
-*{
-
 @ 24, 2 SAY gsOsInfo
+return
+
+
+// ------------------------------------------
+// otvara folder
+// ------------------------------------------
+function open_folder( folder )
+local _cmd
+local _screen
+
+_cmd := "explorer " + '"' + ALLTRIM( folder ) + '"'
+
+save screen to _screen
+
+run ( _cmd )
+
+restore screen from _screen
 
 return
-*}
+
+
