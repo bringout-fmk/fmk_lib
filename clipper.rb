@@ -1,26 +1,4 @@
 #!/usr/bin/env ruby
-# == Synopsis
-#    This is program for compilig dos/clipper programs
-#    under linux environment
-#
-# == Usage
-#
-#      clipper.rb [-h | --help] [ -s | --switches  switches ]  [ -c | --compile  prg_file ]
-#      
-#      prg_file - program file to compile
-#      switches - compiler switches
-#
-#      NOTE: "switches" arguments have to precede "compile" argument 
-#
-# == Example
-#      ~/sc/sclib/clipper.rb --switches /b /d --compile test.prg
-#
-# == Author
-# Ernad Husremovic, Sigma-com software Zenica
-#
-# == Copyright
-#
-#
 # Copyright (c) bring.out
 # 17.05.06-24.03.12, ver. 03.00
 #
@@ -29,7 +7,7 @@
 VER = '03.08'
 
 require 'optparse'
-require 'rdoc/usage'
+#require 'rdoc/usage'
 
 ERRORS= ["No code generated",
          "include error", 
@@ -309,7 +287,7 @@ end
 opts = OptionParser.new
 builder = Builder.new
 
-opts.on("-h", "--help") { RDoc::usage }
+#opts.on("-h", "--help") { RDoc::usage }
 opts.on("-s", "--switches SW") { |sw| builder.switches += " " + sw }
 opts.on("-c", "--compile ARGS") { |args| builder.compile(args) }
 opts.on("-ca", "--compile-all ARGS") { |args| builder.compile_all(args) }
