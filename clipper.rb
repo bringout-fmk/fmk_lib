@@ -21,12 +21,12 @@
 # == Copyright
 #
 #
-# Copyright (c) 2006 Sigma-com, 
-# 17.05.06-27.05.06, ver. 02.08
+# Copyright (c) bring.out
+# 17.05.06-24.03.12, ver. 03.00
 #
 # Licensed under the same terms as Ruby
 
-VER = '02.08'
+VER = '03.08'
 
 require 'optparse'
 require 'rdoc/usage'
@@ -56,6 +56,12 @@ class Builder
           @output_exe_name="e.exe"
 	  @debug="0"
           @clipper_root="c:\\Clipper\\"
+
+          @dosemu_root = ENV['DOSEMU_ROOT']
+          if @dosemu_root.nil?
+               @dosemu_root = ENV['HOME'] + "/.dosemu/drive_c"
+          end
+
 	end
 
 	def rewrite_path(unix_name)
@@ -140,15 +146,9 @@ class Builder
 	  # create a batch file c:\dev\clp_bc\tmp\lib.bat
           f_bat_name = 'libtmp.bat'
 
-          dosemu_root = ENV['DOSEMU_ROOT']
-         
-          if dosemu_root.nil?
-               dosemu_root = ENV['HOME'] + "/.dosemu/drive_c"
-          end
+          puts "dosemu root", @dosemu_root
 
-          puts "dosemu root", dosemu_root
-
-          f_bat_full_name = dosemu_root + '/' + f_bat_name
+          f_bat_full_name = @dosemu_root + '/' + f_bat_name
 	  f_bat = File.open( f_bat_full_name, 'w')
           puts "keiram:", f_bat_full_name
           f_bat.puts "@echo off"
@@ -207,13 +207,23 @@ class Builder
 
         def blink(base_dir)
 
+          dosemu_env = false
+
 	  STDERR.puts "link with blinker 5.00"
 	  STDERR.puts "cmd : create #{base_dir}/#{self.output_exe_name}"
 
 	  base_dir = rewrite_path(base_dir)
 
           f_lnk_name = '_bl_.lnk'
-          f_lnk_full_name = ENV['SC_BUILD_HOME_DIR'] + '/Clipper/tmp/' + f_lnk_name
+
+          if ENV['SC_BUILD_HOME_DIR'].nil?
+             f_lnk_full_name = @dosemu_root + '/' + f_lnk_name
+             @dos_base_path = "c:\\"
+             dosemu_env = true
+          else
+             f_lnk_full_name = ENV['SC_BUILD_HOME_DIR'] + '/Clipper/tmp/' + f_lnk_name
+          end 
+      
 	  f_lnk = File.open( f_lnk_full_name, "a+")
 
           f_lnk.puts "#---- #{Time.now} ----"
@@ -243,6 +253,8 @@ class Builder
 	  #f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmxfox52.obj"
 	  f_lnk.puts "file #{@dos_base_path}Clipper\\comix\\obj\\cm52.obj"
 	  f_lnk.puts "file #{@dos_base_path}Clipper\\comix\\obj\\cmx52.obj"
+
+
 	  f_lnk.puts "file #{@dos_base_path}Clipper\\ct\\obj\\ctusp.obj"
 
 	  f_lnk.puts "file #{@dos_base_path}Clipper\\CSY\\LIB\\CSYINSP.LIB"
@@ -257,7 +269,7 @@ class Builder
 
 
           # clp_bc/vendor
-	  f_lnk.puts "lib CLIPMOUS.LIB"
+	  #f_lnk.puts "lib CLIPMOUS.LIB"
 
 
 
@@ -271,7 +283,12 @@ class Builder
 
 	  f_lnk.close
 
-	  @dos_cmd = "#{@dos_base_path}Clippper\\blink.bat #{unix_to_dos(base_dir)} " 
+          if dosemu_env
+	    @dos_cmd = "#{@dos_base_path}\\blink.bat #{unix_to_dos(base_dir)} "
+          else 
+	    @dos_cmd = "#{@dos_base_path}Clipper\\blink.bat #{unix_to_dos(base_dir)} " 
+          end
+
 	  @dosemu_launch_cmd = "dosemu -dumb -quiet -E \"#{@dos_cmd}\""
 	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
 	  result = system(@dosemu_launch_cmd)

@@ -20,8 +20,8 @@ CLIPPERCOMP=$(BASEDIR)/fmk_lib/clipper.rb
 CLIPPERROOT=$(DOSEMUROOT)/Clipper
 CLIPPERROOT_DOS=c:\\Clipper
 
-EXEDEST=$(BASEDIR)/bout
-EXEDOSDEST=c:\\dev\\sc\\exe
+EXEDEST=$(BASEDIR)/fmk_lib/exe
+EXEDOSDEST=c:\\git\\fmk_lib\\exe
 
 LINKEREXE=$(BASEDIR)/fmk_lib/blink_linux.sh
 LIBEXE=$(BASEDIR)/fmk_lib/clipper.rb --make-lib 
@@ -55,10 +55,10 @@ endif
 
 ifeq "$(DEBUG)" "1"
  #LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
- LIB_DEST=$(BASEDIR)/fmk_lib/lib
+ LIB_DEST=$(BASEDIR)/fmk_lib/lib/
  DEBUGCMD=--debug 1
 else
- LIB_DEST=$(BASEDIR)/fmk_lib/lib
+ LIB_DEST=$(BASEDIR)/fmk_lib/lib/
  DEBUGCMD=
 endif
 
@@ -90,7 +90,7 @@ e.exe :  $(ALL_LIBS) $(OBJS)
 	$(BASEDIR)/fmk_lib/gen_bl_lnk.sh create $(FMKLIBCMD)
 	$(BASEDIR)/fmk_lib/gen_bl_lnk.sh add $(LINKCMD)
 	$(BASEDIR)/fmk_lib/clipper.rb $(DBG) --output-exe "e.exe" $(DEBUGCMD) --blink $(CURR_DIR) 
-	cp $(CURR_DIR)/e.exe $(SC_BUILD_HOME_DIR)/sc/exe/$(EXENAME) 
+	cp $(CURR_DIR)/e.exe $(EXE_DEST)/$(EXENAME) 
 
 zip:
 	$(BASEDIR)/fmk_lib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
