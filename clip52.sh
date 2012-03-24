@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "                            Copyright Sigma-com Zenica"
+echo "                            Copyright bring.out"
 echo "------------------------------------------------------"
 echo "clipper cl-sc build sistem, ver 01.10, 03.2002-06.2008"
 echo "                            autor: hernad@bring.out.ba"

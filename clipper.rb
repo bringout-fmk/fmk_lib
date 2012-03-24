@@ -50,15 +50,23 @@ class Builder
 
 	def initialize
 	  @prg_name=nil
-	  @dos_base_path="c:\\dev\\"
+	  @dos_base_path="c:\\git\\"
 	  @dos_cmd=nil
 	  @switches=""
           @output_exe_name="e.exe"
 	  @debug="0"
+          @clipper_root="c:\\Clipper\\"
 	end
 
 	def rewrite_path(unix_name)
-	  sc_dir = ENV['SC_BUILD_HOME_DIR'] + '/'
+
+          if ENV['BASEDIR'] == ""
+              puts "BASEDIR envar mora biti postavljena !"
+          else
+              puts "basedir: " + ENV['BASEDIR']
+          end
+ 
+	  sc_dir = ENV['BASEDIR'] + '/'
           # test.prg => /home/hernad/sc/sclib/db/1g/test.prg
 	  if  unix_name[0].chr != '/' 
 		unix_name = (`pwd`).strip! + '/' + unix_name.strip
@@ -81,12 +89,19 @@ class Builder
 
 	def compile(prgname, sw="", compile_batch_name="run_clp.bat", sw_first=FALSE)
 	  @prg_name = prgname
+
 	  @prg_name = rewrite_path(@prg_name)
 	  @switches += " " + sw
-	  @dos_cmd = "#{@dos_base_path}clp_bc\\#{compile_batch_name} " 
 
-	  # + c:\dev\sclib\print\1g
-	  @dos_cmd += unix_to_dos(File.dirname(@prg_name))
+	  @dos_cmd = "c:\\#{compile_batch_name} " 
+
+	  # cd c:\git\fmk_lib\print\1g  
+	  @dos_cmd +=  unix_to_dos(File.dirname(@prg_name))
+
+
+	  #@dos_cmd += "#{@clipper_root}bin\\clipper " 
+
+
 	  # + ptxt.prg
 	  if sw_first
             @dos_cmd += " "+ @switches
@@ -124,22 +139,32 @@ class Builder
 
 	  # create a batch file c:\dev\clp_bc\tmp\lib.bat
           f_bat_name = 'libtmp.bat'
-          f_bat_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_bat_name
+
+          dosemu_root = ENV['DOSEMU_ROOT']
+         
+          if dosemu_root.nil?
+               dosemu_root = ENV['HOME'] + "/.dosemu/drive_c"
+          end
+
+          puts "dosemu root", dosemu_root
+
+          f_bat_full_name = dosemu_root + '/' + f_bat_name
 	  f_bat = File.open( f_bat_full_name, 'w')
+          puts "keiram:", f_bat_full_name
           f_bat.puts "@echo off"
           f_bat.puts "@echo --- clipper.rb ver. #{VER} ---"
 	  for i in 1..(a_cmds.size-1)
-	     @dos_cmd = "call #{@dos_base_path}clp_bc\\#{compile_batch_name} " 
+	     @dos_cmd = "call c:\\#{compile_batch_name} " 
 	     # + c:\dev\sclib\print\1g
 	     @dos_cmd += unix_to_dos(File.dirname(@prg_name))
 	     # + libname.lib  +obj1
-     	     @dos_cmd += " "+lib_name+" "+a_cmds[i] 
+     	     @dos_cmd += " " + lib_name + " " + a_cmds[i] 
              @dos_cmd += " "+ @switches
              f_bat.puts @dos_cmd
           end
 	  f_bat.puts "exitemu"
 	  f_bat.close
-	  @dos_cmd = "#{@dos_base_path}clp_bc\\tmp\\#{f_bat_name} " 
+	  @dos_cmd = "c:\\#{f_bat_name} " 
 	  @dosemu_launch_cmd = "dosemu -dumb -quiet -E \"#{@dos_cmd}\""
 	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
 	  result = system(@dosemu_launch_cmd)
@@ -188,7 +213,7 @@ class Builder
 	  base_dir = rewrite_path(base_dir)
 
           f_lnk_name = '_bl_.lnk'
-          f_lnk_full_name = ENV['SC_BUILD_HOME_DIR'] + '/clp_bc/tmp/' + f_lnk_name
+          f_lnk_full_name = ENV['SC_BUILD_HOME_DIR'] + '/Clipper/tmp/' + f_lnk_name
 	  f_lnk = File.open( f_lnk_full_name, "a+")
 
           f_lnk.puts "#---- #{Time.now} ----"
@@ -213,22 +238,22 @@ class Builder
 	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\EXTEND.LIB"
 	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\DBFNTX.LIB"
 
-	  f_lnk.puts "search #{@dos_base_path}clp_bc\\blinker\\lib\\blxclp52.lib"
+	  f_lnk.puts "search #{@dos_base_path}Clipper\\blinker\\lib\\blxclp52.lib"
 
 	  #f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmxfox52.obj"
-	  f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cm52.obj"
-	  f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmx52.obj"
-	  f_lnk.puts "file #{@dos_base_path}clp_bc\\ct\\obj\\ctusp.obj"
+	  f_lnk.puts "file #{@dos_base_path}Clipper\\comix\\obj\\cm52.obj"
+	  f_lnk.puts "file #{@dos_base_path}Clipper\\comix\\obj\\cmx52.obj"
+	  f_lnk.puts "file #{@dos_base_path}Clipper\\ct\\obj\\ctusp.obj"
 
-	  f_lnk.puts "file #{@dos_base_path}clp_bc\\CSY\\LIB\\CSYINSP.LIB"
+	  f_lnk.puts "file #{@dos_base_path}Clipper\\CSY\\LIB\\CSYINSP.LIB"
 
 	  #cm*.lib mora ici prva, pa onda cmx*.lib
-	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\comix\\lib\\cm52.lib"
-	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\comix\\lib\\cmx52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\comix\\lib\\cm52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\comix\\lib\\cmx52.lib"
 
-	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\ct\\lib\\ctp52.lib"
-	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\daveh\\lib\\oslib.lib"
-	  f_lnk.puts "lib #{@dos_base_path}clp_bc\\CSY\\LIB\\CLASSY.LIB"
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\ct\\lib\\ctp52.lib"
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\daveh\\lib\\oslib.lib"
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\CSY\\LIB\\CLASSY.LIB"
 
 
           # clp_bc/vendor
@@ -237,7 +262,7 @@ class Builder
 
 
 	  if self.debug == "1"          
-		f_lnk.puts "file #{@dos_base_path}clp_bc\\clipper\\lib\\cld.lib"
+		f_lnk.puts "file #{@dos_base_path}Clipper\\clipper\\lib\\cld.lib"
           end
 
 	  f_lnk.puts "output #{self.output_exe_name}"
@@ -246,7 +271,7 @@ class Builder
 
 	  f_lnk.close
 
-	  @dos_cmd = "#{@dos_base_path}clp_bc\\blink.bat #{unix_to_dos(base_dir)} " 
+	  @dos_cmd = "#{@dos_base_path}Clippper\\blink.bat #{unix_to_dos(base_dir)} " 
 	  @dosemu_launch_cmd = "dosemu -dumb -quiet -E \"#{@dos_cmd}\""
 	  puts "Launch dosemu: #{@dosemu_launch_cmd} , clipper.rb ver. #{VER}"
 	  result = system(@dosemu_launch_cmd)
