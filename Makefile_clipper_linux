@@ -20,7 +20,7 @@ CLIPPERCOMP=$(BASEDIR)/fmk_lib/clipper.rb
 CLIPPERROOT=$(DOSEMUROOT)/Clipper
 CLIPPERROOT_DOS=c:\\Clipper
 
-EXEDEST=$(BASEDIR)/fmk_lib/exe
+EXE_DEST=$(BASEDIR)/fmk_lib/exe
 EXEDOSDEST=c:\\git\\fmk_lib\\exe
 
 LINKEREXE=$(BASEDIR)/fmk_lib/blink_linux.sh
