@@ -5,6 +5,6 @@ set PATH=%PATH%;C:\clipper\bin;c:\clipper\c5\bin
 set INCLUDE=C:\CLIPPER\INCLUDE;c:\git\fmk_lib\;c:\git\fmk_c\cdx;c:\clipper\comix
 set LIB=c:\clipper\lib;c:\clipper\c5\lib;c:\clipper\comix
 
-lib %2 %3 %4 %5 %6
+c:\clipper\c5\bin\lib.exe %2 %3 %4 %5 %6 , lst,
 
 
