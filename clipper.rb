@@ -66,20 +66,27 @@ class Builder
 
 	def rewrite_path(unix_name)
 
+          puts "rewrite unix_name:", unix_name 
           if ENV['BASEDIR'] == ""
               puts "BASEDIR envar mora biti postavljena !"
           else
               puts "basedir: " + ENV['BASEDIR']
           end
+
  
-	  sc_dir = ENV['BASEDIR'] + '/'
+	  sc_dir = ENV['BASEDIR'] 
+          if sc_dir[-1] != '/'
+                sc_dir +=  '/'
+          end
+
           # test.prg => /home/hernad/sc/sclib/db/1g/test.prg
 	  if  unix_name[0].chr != '/' 
 		unix_name = (`pwd`).strip! + '/' + unix_name.strip
           end
 
 	  unix_name = unix_name.sub(sc_dir, @dos_base_path)
-	  
+	 
+          puts "rewritten sc_dir, dos_base_apth, unix_name: ", sc_dir, @dos_base_path, unix_name 
 	  return unix_name
         end
          
