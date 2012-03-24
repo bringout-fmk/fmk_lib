@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # == Synopsis
 #    This is program for compilig dos/clipper programs
 #    under linux environment
