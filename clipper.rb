@@ -182,6 +182,7 @@ class Builder
 	  @prg_name = compile_cmd
 	  @switches += " " + sw
 
+          puts "compile_al ......................................."
 	  a_cmds = @prg_name.split(' ')
 
 	  
@@ -215,6 +216,7 @@ class Builder
         def blink(base_dir)
 
           dosemu_env = false
+          puts "blink  ......................................."
 
 	  STDERR.puts "link with blinker 5.00"
 	  STDERR.puts "cmd : create #{base_dir}/#{self.output_exe_name}"

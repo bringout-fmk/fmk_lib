@@ -1,6 +1,6 @@
 @echo off
 rem autoexec.bat for DOSEMU + FreeDOS
-path z:\bin;z:\gnu;z:\dosemu
+path c:\bout;z:\bin;z:\gnu;z:\dosemu
 set HELPPATH=z:\help
 set TEMP=c:\tmp
 rem blaster
