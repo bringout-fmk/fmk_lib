@@ -228,45 +228,45 @@ class Builder
 
           f_lnk.puts "#---- #{Time.now} ----"
           f_lnk.puts "blinker message noblink"
-#         f_lnk.puts "verbose"
+#          f_lnk.puts "verbose"
+
+
+
 	  f_lnk.puts "blinker exe compress"
  	  f_lnk.puts "BLINKER EXECUTABLE EXTENDED"
-	  f_lnk.puts "blinker exe CLIPPER F:100"
-	  #f_lnk.puts "BLINKER EXECUTABLE IPX 96,64"
+	  f_lnk.puts "blinker exe CLIPPER F:90"
+	  f_lnk.puts "BLINKER EXECUTABLE IPX 96,64"
 
 #	  f_lnk.puts "BLINKER HOST DPMI  OFF"
-	  f_lnk.puts "BLINKER HOST MESSAGE ON"
+#	  f_lnk.puts "BLINKER HOST MESSAGE ON"
 #	  f_lnk.puts "BLINKER HOST QDPMI OFF"
 #	  f_lnk.puts "BLINKER HOST VCPI OFF"
 #	  f_lnk.puts "BLINKER HOST XMS OFF"
 #	  f_lnk.puts "BLINKER LINK EMS OFF"
 
-	  f_lnk.puts "stack 8192"
+	  f_lnk.puts "stack 7168"
 
-          # standard clipper libs
-	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\CLIPPER.LIB"
-	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\EXTEND.LIB"
-	  #f_lnk.puts "lib #{@dos_base_path}\\clp_bc\\clipper\\lib\\DBFNTX.LIB"
 
 	  f_lnk.puts "search #{@dos_base_path}Clipper\\blinker\\lib\\blxclp52.lib"
 
-	  #f_lnk.puts "file #{@dos_base_path}clp_bc\\comix\\obj\\cmxfox52.obj"
 	  f_lnk.puts "file #{@dos_base_path}Clipper\\comix\\obj\\cm52.obj"
 	  f_lnk.puts "file #{@dos_base_path}Clipper\\comix\\obj\\cmx52.obj"
 
-
-	  f_lnk.puts "file #{@dos_base_path}Clipper\\ct\\obj\\ctusp.obj"
-
-	  f_lnk.puts "file #{@dos_base_path}Clipper\\CSY\\LIB\\CSYINSP.LIB"
 
 	  #cm*.lib mora ici prva, pa onda cmx*.lib
 	  f_lnk.puts "lib #{@dos_base_path}Clipper\\comix\\lib\\cm52.lib"
 	  f_lnk.puts "lib #{@dos_base_path}Clipper\\comix\\lib\\cmx52.lib"
 
-	  f_lnk.puts "lib #{@dos_base_path}Clipper\\ct\\lib\\ctp52.lib"
+	  f_lnk.puts "file #{@dos_base_path}Clipper\\ct\\ctusp.obj"
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\ct\\ctp52.lib"
+
+	  f_lnk.puts "lib #{@dos_base_path}Clipper\\c5\\lib\\llibce"
+
+
 	  f_lnk.puts "lib #{@dos_base_path}Clipper\\daveh\\lib\\oslib.lib"
 	  f_lnk.puts "lib #{@dos_base_path}Clipper\\CSY\\LIB\\CLASSY.LIB"
 
+	  #f_lnk.puts "file #{@dos_base_path}Clipper\\CSY\\LIB\\CSYINSP.LIB"
 
           # clp_bc/vendor
 	  #f_lnk.puts "lib CLIPMOUS.LIB"
