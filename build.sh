@@ -2,6 +2,6 @@
 
 export BASEDIR=~/github
 
-make cleanall
+#make cleanall
 make
 
