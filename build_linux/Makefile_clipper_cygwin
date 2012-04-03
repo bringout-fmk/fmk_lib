@@ -1,0 +1,107 @@
+LINKEREXE=$(BASEDIR)/fmk/fmk_lib/blink.sh
+
+#LIBEXE=/sclib/lib.bat
+#LIBEXE=start /w /m h:\\clipper\\c5\\bin\\lib.exe
+
+
+#DBUILDVAL=`date +%d%m%y%H%M`
+
+WXP=1
+
+ifdef WXP
+ LIBSUFFIX=,,
+ LIBEXE=$(BASEDIR)/fmk/fmk_lib/lib.bat
+else
+  LIBSUFFIX=,,
+  LIBEXE=h:\\clipper\\c5\\bin\\lib.exe
+endif
+
+
+LIBEXT=.lib
+CLIPPERCOMP=$(BASEDIR)/fmk/fmk_lib/clip52.sh
+
+CLIPPERROOT=/clipper
+CLIPPERROOT_DOS=h:\\clipper
+
+
+ASMCOMP=$(BASEDIR)/fmk/fmk_lib/asm52.sh
+ASMFLAGS=
+EXEDEST=/h/SIGMA
+EXEDOSDEST=h:\\sigma
+CCOMP=$(BASEDIR)/fmk/fmk_lib/c52.sh 
+CFLAGS=/n /w /c /AL /FPa /Gs /Zl
+
+ROBODOC=robodoc
+
+ifndef DEBUG
+ DEBUG=0
+endif  
+
+ifndef VERZIJA
+  VERZIJA=CDX
+endif
+	
+ifeq "${DEBUG}" "1"
+  LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
+  LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
+else
+  LIB_DEST=$(CLIPPERROOT)/$(VERZIJA)/
+  LIB_DOS_DEST=$(CLIPPERROOT_DOS)\\$(VERZIJA)\\
+endif
+
+
+ifeq "${PP}" "1"
+ CLIPPERFLAGS += /p
+endif
+
+ifeq "${LIB}" "1"
+ CLIPPERFLAGS += /DLIB
+endif
+
+ifndef EOBJCOPY
+   EOBJCOPY=cp /dev/fmk/$(MODUL)/main/1g/e.obj e.obj
+endif
+
+lib: $(OBJS)
+	echo dependency: $(OBJS)
+	rm -f $(MODUL)$(LIBEXT) 
+	$(LIBEXE) $(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)
+	cp $(MODUL)$(LIBEXT) $(LIB_DEST)
+
+exe: $(OBJS)
+	#echo Prilikom kompilacije obj se napravi u tekucem direktoriju
+	#echo a blinker opet trazi obj fajl u orig direktoriju
+	#$(EOBJCOPY)
+	$(BASEDIR)/fmk/fmk_lib/form_blinker_lnk.sh $(LINKCMD)
+	$(BASEDIR)/fmk/fmk_lib/form_blinker_lnk_2.sh $(FMKLIBCMD)
+	$(LINKEREXE) @_bl_.lnk  @_bl_2_.lnk $(DEBUGLINK) @H:\\CLIPPER\\$(VERZIJA)\\BL.LNK output e.exe
+	cp e.exe $(EXEDEST)/$(EXENAME)
+
+zip:
+	$(BASEDIR)/fmk/fmk_lib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+
+commit:
+	$(BASEDIR)/fmk/fmk_lib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
+	$(BASEDIR)/fmk/fmk_lib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
+
+7exe:
+	$(BASEDIR)/fmk/fmk_lib/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+	
+PREF2=lib $(LIB_DOS_DEST)
+
+FMKLIBCMD=$(addprefix $(PREF2), $(SCLIB_LIBS) $(FMK_LIBS) $(MODUL_LIBS) )
+
+
+%.obj : %.prg 
+	echo trebam da napravim: $<
+	$(CLIPPERCOMP) $(SRCDOSROOT)$< $(CLIPPERFLAGS) 
+	
+
+.asm.obj:
+	$(ASMCOMP) $(ASMFLAGS) $< 
+
+.c.obj :
+	$(CCOMP) $(CFLAGS) $<
+
+
+

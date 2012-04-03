@@ -1,0 +1,114 @@
+#
+# Sigma-com Zenica 2002-2006
+#
+# authors:
+#  - ernad.husremovic@sigma-com.net
+#
+# ver 02.00, 28.05.06
+#
+BUILD_ENV_LINUX=1
+
+LIBSUFFIX=
+
+LIBEXT=.lib
+
+
+SC_BUILD_ROOT_DOS=c:\\dev
+CLIPPERCOMP=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb
+CLIPPERROOT=$(SC_BUILD_HOME_DIR)/clp_bc/clipper
+CLIPPERROOT_DOS=c:\\dev\clp_bc\\clipper
+
+EXEDEST=$(SC_BUILD_HOME_DIR)/sigma
+EXEDOSDEST=c:\\dev\\sc\\exe
+
+LINKEREXE=$(SC_BUILD_HOME_DIR)/sclib/blink_linux.sh
+LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb --make-lib 
+CPLIB=cp
+RMLIB=rm -f 
+
+#asembler
+ASMFLAGS=
+
+#c kompajler
+CFLAGS=/n /w /c /AL /FPa /Gs /Zl
+
+ROBODOC=robodoc
+
+ifndef DEBUG
+ DEBUG=0
+endif  
+
+ifndef BLINKER_SEARCH_EXT
+ BLINKER_SEARCH_EXT=1
+endif
+
+ifndef BLINKER_SEARCH_FIONS
+ BLINKER_SEARCH_FIONS=1
+endif 
+
+ifndef VERZIJA
+ VERZIJA=CDX
+endif
+	
+
+ifeq "$(DEBUG)" "1"
+ #LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
+ LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
+ DEBUGCMD=--debug 1
+else
+ LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
+ DEBUGCMD=
+endif
+
+ALL_LIBS=$(addprefix $(LIB_DEST), $(FMK_LIBS) $(SCLIB_LIBS) $(MODUL_LIBS) )
+
+LINKCMD=$(addprefix $(PREFPLUS) , $(OBJPRGS) $(OBJASMS) $(OBJCS) )
+
+ifeq "${PP}" "1"
+ CLIPPERFLAGS += /p
+endif
+
+ifeq "${LIB}" "1"
+ CLIPPERFLAGS += /DLIB
+endif
+
+lib:    $(MODUL).lib
+
+	
+$(MODUL).lib : $(OBJS)
+	$(RMLIB) $(MODUL)$(LIBEXT)
+	$(LIBEXE) "$(MODUL)$(LIBEXT) $(LIBCMD) $(LIBSUFFIX)"
+	$(CPLIB) $(MODUL)$(LIBEXT) $(LIB_DEST)
+
+exe:    e.exe
+
+e.exe :  $(ALL_LIBS) $(OBJS)
+	@echo BLINKER_SEARCH_EXT=$(BLINKER_SEARCH_EXT)
+	@echo BLINKER_SEARCH_FIONS=$(BLINKER_SEARCH_FIONS)
+	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh create $(FMKLIBCMD)
+	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh add $(LINKCMD)
+	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" $(DEBUGCMD) --blink $(CURR_DIR) 
+	cp $(CURR_DIR)/e.exe $(SC_BUILD_HOME_DIR)/sc/exe/$(EXENAME) 
+
+zip:
+	$(SC_BUILD_HOME_DIR)/sclib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+
+commit:
+	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
+	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
+
+7exe:
+	$(SC_BUILD_HOME_DIR)/sclib/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+
+
+
+%.obj : %.prg  
+	$(CLIPPERCOMP) $(DEBUGCMD) --switches '$(CLIPPERFLAGS)' --compile $< 
+	#$(CLIPPERCOMP) --switches '$(CLIPPERFLAGS)' --compile-all "$(SRCDOSROOT) $(PRGS)"
+
+.asm.obj:
+	$(CLIPPERCOMP) --switches '$(ASMFLAGS)' --asm-compile $< 
+
+.c.obj:
+	$(CLIPPERCOMP) --switches '$(CFLAGS)' --c-compile $< 
+
