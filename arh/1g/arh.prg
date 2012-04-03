@@ -348,7 +348,7 @@ endif
 inkey(5)
 restore screen from cscr
 
-#endif
+//#endif
 closeret
 
 return

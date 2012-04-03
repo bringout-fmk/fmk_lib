@@ -13,16 +13,18 @@ LIBSUFFIX=
 LIBEXT=.lib
 
 
-SC_BUILD_ROOT_DOS=c:\\dev
-CLIPPERCOMP=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb
-CLIPPERROOT=$(SC_BUILD_HOME_DIR)/clp_bc/clipper
-CLIPPERROOT_DOS=c:\\dev\clp_bc\\clipper
+DOSEMUROOT=~/.dosemu/drive_c
 
-EXEDEST=$(SC_BUILD_HOME_DIR)/sigma
-EXEDOSDEST=c:\\dev\\sc\\exe
+SC_BUILD_ROOT_DOS=c:\\git
+CLIPPERCOMP=$(BASEDIR)/fmk_lib/clipper.rb
+CLIPPERROOT=$(DOSEMUROOT)/Clipper
+CLIPPERROOT_DOS=c:\\Clipper
 
-LINKEREXE=$(SC_BUILD_HOME_DIR)/sclib/blink_linux.sh
-LIBEXE=$(SC_BUILD_HOME_DIR)/sclib/clipper.rb --make-lib 
+EXE_DEST=$(BASEDIR)/fmk_lib/exe
+EXEDOSDEST=c:\\git\\fmk_lib\\exe
+
+LINKEREXE=$(BASEDIR)/fmk_lib/blink_linux.sh
+LIBEXE=$(BASEDIR)/fmk_lib/clipper.rb --make-lib 
 CPLIB=cp
 RMLIB=rm -f 
 
@@ -53,10 +55,10 @@ endif
 
 ifeq "$(DEBUG)" "1"
  #LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/debug/
- LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
+ LIB_DEST=$(BASEDIR)/fmk_lib/lib/
  DEBUGCMD=--debug 1
 else
- LIB_DEST=$(SC_BUILD_HOME_DIR)/sc/lib/
+ LIB_DEST=$(BASEDIR)/fmk_lib/lib/
  DEBUGCMD=
 endif
 
@@ -85,20 +87,20 @@ exe:    e.exe
 e.exe :  $(ALL_LIBS) $(OBJS)
 	@echo BLINKER_SEARCH_EXT=$(BLINKER_SEARCH_EXT)
 	@echo BLINKER_SEARCH_FIONS=$(BLINKER_SEARCH_FIONS)
-	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh create $(FMKLIBCMD)
-	$(SC_BUILD_HOME_DIR)/sclib/gen_bl_lnk.sh add $(LINKCMD)
-	$(SC_BUILD_HOME_DIR)/sclib/clipper.rb $(DBG) --output-exe "e.exe" $(DEBUGCMD) --blink $(CURR_DIR) 
-	cp $(CURR_DIR)/e.exe $(SC_BUILD_HOME_DIR)/sc/exe/$(EXENAME) 
+	$(BASEDIR)/fmk_lib/gen_bl_lnk.sh create $(FMKLIBCMD)
+	$(BASEDIR)/fmk_lib/gen_bl_lnk.sh add $(LINKCMD)
+	$(BASEDIR)/fmk_lib/clipper.rb $(DBG) --output-exe "e.exe" $(DEBUGCMD) --blink $(CURR_DIR) 
+	cp $(CURR_DIR)/e.exe $(EXE_DEST)/$(EXENAME) 
 
 zip:
-	$(SC_BUILD_HOME_DIR)/sclib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+	$(BASEDIR)/fmk_lib/zip.sh h:\\cs\\FMK\\binary\\$(MODUL).zip ..\\chs\\\*.chs c:\\dev\\fmk\af\cl-af\\svi\\\*.chs ..\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
 
 commit:
-	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
-	$(SC_BUILD_HOME_DIR)/sclib/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
+	$(BASEDIR)/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\$(MODUL).zip
+	$(BASEDIR)/commit.sh $(MODUL) h:\\cs\\FMK\\binary\\sfx\\$(MODUL).exe
 
 7exe:
-	$(SC_BUILD_HOME_DIR)/sclib/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
+	$(BASEDIR)/7exe.sh h:\\cs\\fmk\\binary\\sfx\\$(MODUL).exe ..\\chs\\\*.chs \\dev\\fmk\\af\\cl-af\\svi\\\*.chs ..\\template\\\*.txt $(EXEDOSDEST)\\$(MODUL).EXE
 
 
 

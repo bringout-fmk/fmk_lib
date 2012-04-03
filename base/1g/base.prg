@@ -1133,11 +1133,10 @@ for i:=1 to 20
  nCheck+=ASC(substr(cSbr,i,1))+i
 next
 
-#ifdef CLIP
- ? "Preskacem BIOS funkcije ..."
+? "Preskacem BIOS funkcije ..."
 
- return .t.
-#endif
+return .t.
+
 if !fimodul
 
   fid:=.f.
