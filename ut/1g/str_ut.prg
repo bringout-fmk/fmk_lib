@@ -309,8 +309,6 @@ if cSE==NIL
 	cSE := "." 
 endif
 
-altd()
-
 nE := NUMTOKEN(cTok,cSE)
 
 for i:=1 to nE

@@ -348,8 +348,6 @@ endif
 
 close all
 
-altd()
-
 // CDX verzija
 set exclusive on
 for nDbf:=1 to 250
@@ -662,8 +660,6 @@ endif
 function ModStru
 *{
 parameters cImeF,cPath, fString
-
-altd()
 
 
 ? SPACE(40),"SIGMA-COM, 10.99, ver 02.33 CDX"

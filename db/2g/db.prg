@@ -213,8 +213,6 @@ local fURp:=.f.
 local cDanasnjaSezona
 private lURp:=.f.
 
-altd()
-
 //ako sam u administratorskom rezimu, za svaki slucaj kreiraj
 //parametarske tabele
 if ::lAdmin

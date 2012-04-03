@@ -287,8 +287,6 @@ AADD( aUTF, "&#125;" )
 AADD( aUTF, "&#60;" ) 
 AADD( aUTF, "&#62;" ) 
 
-altd()
-
 if cIz == "8"
 	aTmp := a852
 elseif cIz == "W"

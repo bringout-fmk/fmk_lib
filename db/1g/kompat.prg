@@ -81,8 +81,6 @@ return
 function kopi(fProm)
 *{
 
-altd()
-
 if fBrisiDBF
      nPos:=at(".",cDbf)
      select olddbf; use
