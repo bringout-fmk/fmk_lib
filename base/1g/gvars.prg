@@ -351,7 +351,7 @@ endif
 InigEpson()
 public gMeniSif:=.f., gValIz:="280 ", gValU:="000 ", gKurs:="1"
 
-if file(ToUnix("\GPARAMS.DBF"))
+if file(ToUnix("\FMK\GPARAMS.DBF"))
 
 O_GPARAMS
 O_PARAMS

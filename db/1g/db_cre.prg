@@ -234,7 +234,7 @@ AADD(aDbf, {"Tip","C",1,0} ) // tip varijable
 AADD(aDbf, {"Fv","C",15,0}  ) // sadrzaj
 
 if (nArea==-1 .or. nArea==F_GPARAMS)
-	cImeDBf:=ToUnix("\GPARAMS.DBF")
+	cImeDBf:=ToUnix("\FMK\GPARAMS.DBF")
 	if !file(cImeDbf)
 		DBCREATE2(cImeDbf,aDbf)
 	endif

@@ -4,7 +4,7 @@
 
 #xcommand O_KORISN    => select (F_KORISN);  use (CURDIR+"Korisn") ; set order to tag "IME"
 #xcommand O_PARAMS    => select (F_PARAMS);  use (PRIVPATH+"params"); set order to tag  "ID"
-#xcommand O_GPARAMS   => select (F_GPARAMS); use (SLASH+"gparams")  ;   set order to tag  "ID"
+#xcommand O_GPARAMS   => select (F_GPARAMS); use ("\FMK\gparams")  ;   set order to tag  "ID"
 #xcommand O_GPARAMSP  => select (F_GPARAMSP);use (PRIVPATH+"gparams")  ; set order to tag  "ID"
 #xcommand O_MPARAMS   => select (F_MPARAMS); use (CURDIR+"mparams")   ; set order  to tag  "ID"
 #xcommand O_KPARAMS   => select (F_KPARAMS); use (KUMPATH+"kparams") ; set order to tag  "ID"
